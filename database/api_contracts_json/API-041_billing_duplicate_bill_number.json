@@ -1,0 +1,40 @@
+{
+  "functionality_id": "API-041",
+  "module": "Billing",
+  "functionality": "Duplicate Bill Number",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing",
+  "description": "Documents the specific error scenario of API-033 (Create Bill) where billNumber already exists within the organization + branch. Same endpoint as API-033, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "billNumber": "string - duplicate of an existing bill_number in this scenario" }
+  },
+
+  "required_fields": ["billNumber"],
+
+  "validation": ["billNumber must be unique within organization + branch (UNIQUE uq_bill_number)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-033 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "billNumber already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate bill number" },
+      "source": "database/api_contracts_test/013_billing.sql"
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master"],
+    "relationships": [],
+    "constraints": ["UNIQUE (organization_id, branch_id, bill_number) -- uq_bill_number"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql"]
+}

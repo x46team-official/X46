@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-094",
+  "module": "Result Entry",
+  "functionality": "Duplicate Result Detail",
+  "http_method": "POST",
+  "endpoint": "/api/result-entries/{resultEntryId}/details",
+  "description": "Documents the specific error scenario of API-089 where the request fails this validation. Same endpoint as API-089, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "parameterId": "parameter_id that already has a result_entry_details row for this resultEntryId"
+    }
+  },
+  "required_fields": [
+    "parameterId"
+  ],
+  "validation": [
+    "parameterId must not already have a result recorded for this resultEntryId"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "parameterId must not already have a result recorded for this resultEntryId",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Result already recorded for this parameter"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T153)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry_details"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_result_parameter UNIQUE (result_entry_id, parameter_id)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/018_result_entry.sql (API-T153)"
+  ],
+  "test_ids": [
+    "API-T153"
+  ]
+}

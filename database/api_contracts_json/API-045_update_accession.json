@@ -1,0 +1,59 @@
+{
+  "functionality_id": "API-045",
+  "module": "Accession",
+  "functionality": "Update Accession",
+  "http_method": "PUT",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}",
+  "description": "Updates an existing accession's priority and remarks.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "accessionId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "priority": "enum, optional - NORMAL | URGENT | STAT",
+      "remarks": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionId"],
+
+  "validation": [
+    "accession must exist and belong to organization + branch",
+    "priority, if provided, must be one of NORMAL, URGENT, STAT (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Accession updated successfully",
+      "data": { "id": "uuid", "accessionNumber": "ACC0001", "priority": "URGENT", "status": "PENDING", "remarks": "Urgent processing" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "priority is not a recognized enum value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid priority" }
+    },
+    {
+      "condition": "accession not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_master"],
+    "relationships": [],
+    "constraints": ["priority CHECK IN (NORMAL, URGENT, STAT)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql (Update Accession)"],
+
+  "test_ids": ["API-T103"]
+}

@@ -1,0 +1,95 @@
+{
+  "functionality_id": "API-002",
+  "module": "Branch Management",
+  "functionality": "Create Branch",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches",
+  "description": "Creates a new physical branch under an organization.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "branchCode": "string(50), required",
+      "branchName": "string(200), required",
+      "isActive": "boolean, optional - defaults to true"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchCode", "branchName"],
+
+  "validation": [
+    "organizationId must reference an existing organization",
+    "branchCode must not be null (NOT NULL)",
+    "branchName must not be null (NOT NULL)",
+    "branchCode must be unique within the organization (UNIQUE organization_id, branch_code)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Branch created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchCode": "PUNE-01",
+        "branchName": "Pune Main Branch",
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "branchCode is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "branchCode is required" },
+      "source": "database/api_contracts_test/002_api_branch.sql"
+    },
+    {
+      "condition": "branchName is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "branchName is required" },
+      "source": "database/api_contracts_test/002_api_branch.sql"
+    },
+    {
+      "condition": "organizationId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization not found" },
+      "source": "database/api_contracts_test/002_api_branch.sql"
+    },
+    {
+      "condition": "branchCode already exists within the organization",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate branch code" },
+      "source": "database/api_contracts_test/002_api_branch.sql"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["branches", "organizations"],
+    "relationships": ["branches.organization_id -> organizations.id"],
+    "constraints": [
+      "branch_code NOT NULL",
+      "branch_name NOT NULL",
+      "UNIQUE (organization_id, branch_code)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": false },
+
+  "e2e_reference": [
+    "database/e2e-validation/001_lab_setup.sql",
+    "database/api_contracts_test/002_api_branch.sql"
+  ],
+
+  "test_ids": ["API-T005", "API-T006", "API-T007", "API-T008"],
+  "notes": "database/api_contracts_test/002_api_branch.sql labels its invalid-organization scenario as 'API-T009' in an inline comment, but docs/API_Contracts_and_Test_Results.xlsx assigns API-T009 to Role Management's 'Valid role creation' test. The invalid-organization-for-branch scenario (branches insert with a non-existent organization_code -> 0 rows / FK mismatch) is preserved here as a 404 error condition without asserting a specific Test ID, since the SQL comment and the xlsx numbering disagree."
+}

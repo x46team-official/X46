@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-082",
+  "module": "Worklist Management",
+  "functionality": "Duplicate Worklist Name",
+  "http_method": "POST",
+  "endpoint": "/api/worklists",
+  "description": "Documents the specific error scenario of API-077 where the request fails this validation. Same endpoint as API-077, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "worklistName": "'Hematology Worklist' - duplicate of an existing worklist_name in this scenario"
+    }
+  },
+  "required_fields": [
+    "worklistName"
+  ],
+  "validation": [
+    "worklistName must be unique within organization + branch"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "worklistName must be unique within organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate worklist name"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T141)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "worklist_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_worklist_name UNIQUE (organization_id, branch_id, worklist_name)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/017_worklist.sql (API-T141)"
+  ],
+  "test_ids": [
+    "API-T141"
+  ]
+}

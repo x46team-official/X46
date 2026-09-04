@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-072",
+  "module": "Sample Collection",
+  "functionality": "Invalid Sample Condition",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Documents the specific error scenario of API-069 (Create Sample Collection) where sampleCondition is not a recognized value. Same endpoint as API-069, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "sampleCondition": "'INVALID_CONDITION' - not a valid sample_condition value in this scenario" }
+  },
+
+  "required_fields": ["sampleCondition"],
+
+  "validation": ["sampleCondition must be one of GOOD, HEMOLYZED, CLOTTED, LEAKING, INSUFFICIENT, DAMAGED (CHECK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-069 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "sampleCondition is not one of the allowed enum values",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid sample condition" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T131)"
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection"],
+    "relationships": [],
+    "constraints": ["sample_condition VARCHAR(30) NOT NULL DEFAULT 'GOOD' CHECK IN (GOOD, HEMOLYZED, CLOTTED, LEAKING, INSUFFICIENT, DAMAGED)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/016_sample_collection.sql (API-T131)"],
+
+  "test_ids": ["API-T131"]
+}

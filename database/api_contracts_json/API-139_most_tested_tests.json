@@ -1,0 +1,56 @@
+{
+  "functionality_id": "API-139",
+  "module": "Most Tested Tests",
+  "functionality": "Most Tested Tests",
+  "description": "Returns the most frequently ordered tests within a date range.",
+
+  "reused_apis": [],
+
+  "operations": [
+    {
+      "operation": "Get Most Tested Tests",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/reports/most-tested-tests",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": {
+          "fromDate": "date, optional - filters accession_master.accession_date",
+          "toDate": "date, optional - filters accession_master.accession_date",
+          "limit": "integer, optional, default 10 - max rows returned"
+        },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId"],
+      "validation": [
+        "organization and branch must exist",
+        "fromDate must be <= toDate when both are provided",
+        "limit, if provided, must be a positive integer",
+        "counts accession_tests grouped by test_id, joined to accession_master for the date filter, ordered by count descending"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Most tested tests fetched successfully",
+          "data": [ { "testId": "uuid", "testCode": "CBC001", "testName": "Complete Blood Count", "orderCount": 342 } ]
+        }
+      },
+      "errors": [
+        { "condition": "fromDate is after toDate", "status_code": 400, "response": { "success": false, "error": "Invalid date range" } },
+        { "condition": "limit is not a positive integer", "status_code": 400, "response": { "success": false, "error": "Invalid limit" } },
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_tests", "accession_master", "test_master"],
+    "relationships": ["accession_tests.accession_id -> accession_master.id", "accession_tests.test_id -> test_master.id"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet."
+}

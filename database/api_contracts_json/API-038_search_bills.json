@@ -1,0 +1,60 @@
+{
+  "functionality_id": "API-038",
+  "module": "Billing",
+  "functionality": "Search Bills",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing/search",
+  "description": "Searches bills within an organization/branch by bill number.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": { "query": "string, required - matched against bill_number" },
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "query"],
+
+  "validation": ["query must not be empty", "search is organization + branch scoped"],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Bills searched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "billNumber": "BILL0001",
+          "patientRegistrationId": "uuid",
+          "totalAmount": 350,
+          "payableAmount": 350,
+          "paidAmount": 0,
+          "balanceAmount": 350,
+          "paymentStatus": "Pending",
+          "isCancelled": false
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "query is missing or empty",
+      "status_code": 400,
+      "response": { "success": false, "error": "Search query is required" }
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql (API-T096)"],
+
+  "test_ids": ["API-T096"]
+}

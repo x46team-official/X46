@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-104",
+  "module": "Report Generation",
+  "functionality": "Invalid Report Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/reports/{reportId}/status",
+  "description": "Documents the specific error scenario of API-100 (Generate Report) where the request fails this validation. Same endpoint as API-100, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "reportStatus": "'INVALID_STATUS' - not a valid report_status value in this scenario"
+    }
+  },
+  "required_fields": [
+    "reportStatus"
+  ],
+  "validation": [
+    "reportStatus must be one of DRAFT, GENERATED, AUTHORIZED, RELEASED, CANCELLED (CHECK)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "reportStatus must be one of DRAFT, GENERATED, AUTHORIZED, RELEASED, CANCELLED (CHECK)",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid report status"
+      },
+      "source": "database/api_contracts_test/020_report_generation.sql (API-T163)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "report_status CHECK IN (DRAFT, GENERATED, AUTHORIZED, RELEASED, CANCELLED)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/020_report_generation.sql (API-T163)"
+  ],
+  "test_ids": [
+    "API-T163"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "functionality_id": "API-116",
+  "module": "Reference Range Master",
+  "functionality": "Overlapping Demographic Band",
+  "http_method": "POST",
+  "endpoint": "/api/reference-ranges",
+  "description": "Documents the specific error scenario of API-112 where the request fails this validation. Same endpoint as API-112, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "gender": "'MALE'",
+      "ageMin": 18,
+      "ageMax": 120,
+      "ageUnit": "'YEARS'",
+      "pregnancyFlag": false,
+      "effectiveFrom": "'2021-06-01' - overlaps the existing 2020-01-01..NULL band for the same parameter/gender/age band"
+    }
+  },
+  "required_fields": [
+    "parameterId",
+    "gender",
+    "ageMin",
+    "ageMax",
+    "ageUnit",
+    "pregnancyFlag",
+    "effectiveFrom"
+  ],
+  "validation": [
+    "must not overlap an existing active band for the same demographic scope and effective-date range (DB trigger)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "must not overlap an existing active band for the same demographic scope and effective-date range (DB trigger)",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Overlapping demographic band"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T175)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "reference_range_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "trg_prevent_reference_range_overlap BEFORE INSERT OR UPDATE trigger raises 'overlapping demographic band' exception"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/022_reference_range_master.sql (API-T175)"
+  ],
+  "test_ids": [
+    "API-T175"
+  ]
+}

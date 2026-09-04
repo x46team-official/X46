@@ -1,0 +1,149 @@
+{
+  "functionality_id": "API-069",
+  "module": "Sample Collection",
+  "functionality": "Create Sample Collection",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Records collection of a physical sample for a specific accession test line item. Unlike the accession status-update endpoints (API-048/API-049), this creates the actual sample_collection record; organizationId and branchId are supplied in the request body rather than the path, consistent with the payment endpoint's convention.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionTestId": "uuid, required - references accession_tests.id",
+      "collectorId": "uuid, optional - references users.id",
+      "collectionDatetime": "timestamptz, optional, default CURRENT_TIMESTAMP",
+      "collectionLocation": "string(150), optional",
+      "sampleCondition": "enum, optional, default GOOD - GOOD | HEMOLYZED | CLOTTED | LEAKING | INSUFFICIENT | DAMAGED",
+      "quantity": "numeric(10,2), optional",
+      "quantityUnit": "string(20), optional",
+      "temperature": "numeric(5,2), optional",
+      "collectionStatus": "enum, optional, default COLLECTED - COLLECTED | RECOLLECTION_REQUIRED | REJECTED",
+      "rejectionReason": "string(255), optional",
+      "remarks": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionTestId"],
+
+  "validation": [
+    "organization and branch must exist",
+    "accessionTestId must reference an existing accession test (NOT NULL FK)",
+    "accessionTestId must belong to the same organization + branch as the caller",
+    "collectorId, if provided, must reference an existing user",
+    "sampleCondition, if provided, must be one of GOOD, HEMOLYZED, CLOTTED, LEAKING, INSUFFICIENT, DAMAGED (CHECK)",
+    "collectionStatus, if provided, must be one of COLLECTED, RECOLLECTION_REQUIRED, REJECTED (CHECK)",
+    "quantity, if provided, must be > 0 - see database_gap note",
+    "accessionTestId must not already have a sample_collection record (UNIQUE constraint uq_sample_collection)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Sample collection recorded successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "accessionTestId": "uuid",
+        "collectorId": "uuid",
+        "collectionDatetime": "2026-08-17T10:00:00Z",
+        "collectionLocation": "Sample Collection Center",
+        "sampleCondition": "GOOD",
+        "quantity": 5,
+        "quantityUnit": "mL",
+        "collectionStatus": "COLLECTED",
+        "remarks": "E2E Sample Collection Validation"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "accessionTestId does not reference an existing accession test",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not found" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T129)",
+      "related_functionality_id": "API-070"
+    },
+    {
+      "condition": "collectorId does not reference an existing user",
+      "status_code": 404,
+      "response": { "success": false, "error": "Collector not found" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T130)",
+      "related_functionality_id": "API-071"
+    },
+    {
+      "condition": "sampleCondition is not a recognized value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid sample condition" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T131)",
+      "related_functionality_id": "API-072"
+    },
+    {
+      "condition": "collectionStatus is not a recognized value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid collection status" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T132)",
+      "related_functionality_id": "API-073"
+    },
+    {
+      "condition": "quantity is 0 or negative",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid quantity" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T133)",
+      "related_functionality_id": "API-074",
+      "database_gap": true
+    },
+    {
+      "condition": "accessionTestId already has a sample_collection record",
+      "status_code": 409,
+      "response": { "success": false, "error": "Sample already collected for this accession test" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T134)",
+      "related_functionality_id": "API-075"
+    },
+    {
+      "condition": "accessionTestId exists but does not belong to the caller's organization/branch",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not accessible" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T135)",
+      "related_functionality_id": "API-076"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection", "accession_tests", "users"],
+    "relationships": [
+      "sample_collection.accession_test_id -> accession_tests.id (ON DELETE CASCADE)",
+      "sample_collection.collector_id -> users.id"
+    ],
+    "constraints": [
+      "accession_test_id NOT NULL",
+      "uq_sample_collection UNIQUE (accession_test_id)",
+      "sample_condition NOT NULL DEFAULT 'GOOD' CHECK IN (GOOD, HEMOLYZED, CLOTTED, LEAKING, INSUFFICIENT, DAMAGED)",
+      "collection_status NOT NULL DEFAULT 'COLLECTED' CHECK IN (COLLECTED, RECOLLECTION_REQUIRED, REJECTED)",
+      "quantity NUMERIC(10,2) - nullable, no CHECK constraint (see database_gap note)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/008_sample_collection.sql",
+    "database/api_contracts_test/016_sample_collection.sql"
+  ],
+
+  "test_ids": ["API-T128"],
+
+  "database_gap": true,
+  "notes": "DB GAP: quantity is defined as NUMERIC(10,2) with no CHECK constraint, so quantity = 0 (or negative) is currently accepted by the database (database/api_contracts_test/016_sample_collection.sql TEST 5 confirms the insert succeeds and must be rolled back manually). Per the task's DB GAP rule, the 400 error condition above reflects the INTENDED API behavior, not what the database currently enforces - the database itself needs a CHECK (quantity > 0) added to database/schema/019_sample_collection.sql to actually back this contract. The 404 (invalid accession_test_id/collector), 400 (invalid sample_condition/collection_status), and 409 (duplicate) conditions are all genuinely enforced today via FK and CHECK/UNIQUE constraints."
+}

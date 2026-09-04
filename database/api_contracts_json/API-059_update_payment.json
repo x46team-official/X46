@@ -1,0 +1,67 @@
+{
+  "functionality_id": "API-059",
+  "module": "Payment",
+  "functionality": "Update Payment",
+  "http_method": "PUT",
+  "endpoint": "/api/payments/{paymentId}",
+  "description": "Updates an existing payment record's editable fields.",
+
+  "request": {
+    "path_parameters": { "paymentId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "paymentMode": "enum, optional - CASH | CARD | UPI | NET_BANKING | CHEQUE | WALLET | CORPORATE_CREDIT",
+      "amountPaid": "numeric(12,2), optional",
+      "transactionReference": "string(100), optional",
+      "paymentStatus": "enum, optional - SUCCESS | PENDING | FAILED | PARTIAL",
+      "remarks": "text, optional"
+    }
+  },
+
+  "required_fields": ["paymentId"],
+
+  "validation": [
+    "payment must exist",
+    "paymentMode, if provided, must reference a code in payment_mode_master",
+    "amountPaid, if provided, must be >= 0 (CHECK)",
+    "paymentStatus, if provided, must be one of SUCCESS, PENDING, FAILED, PARTIAL (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Payment updated successfully",
+      "data": { "id": "uuid", "transactionReference": "TXN0001", "paymentMode": "CASH", "amountPaid": 350, "paymentStatus": "SUCCESS", "remarks": "Payment updated" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "Invalid paymentMode, amountPaid, or paymentStatus value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Validation error" }
+    },
+    {
+      "condition": "payment not found",
+      "status_code": 404,
+      "response": { "success": false, "error": "Payment not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["payment", "payment_mode_master"],
+    "relationships": ["payment.payment_mode -> payment_mode_master.payment_mode_code"],
+    "constraints": ["amount_paid CHECK (amount_paid >= 0)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T118)"],
+
+  "test_ids": ["API-T118"],
+
+  "database_gap": true,
+  "notes": "database/api_contracts_test/015_payment.sql's API-T118 update targets rows by transaction_reference = 'TXN0001' scoped to organization/branch, and the API Test Results sheet records this as 'UPDATE 2 — multiple rows updated' marked DB GAP. This is a direct consequence of the missing UNIQUE constraint on transaction_reference (see API-057/API-064's database_gap) - because transaction_reference is not unique, filtering an update by it can match more than one payment row. This endpoint should be addressed/updated by paymentId (the primary key) rather than by transaction_reference to avoid the ambiguity; the test script's use of transaction_reference for targeting is what surfaced the gap, not the endpoint's own path parameter (which is already paymentId)."
+}

@@ -1,0 +1,82 @@
+{
+  "functionality_id": "API-007",
+  "module": "Test Management",
+  "functionality": "View Test",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/tests/{testId}",
+  "description": "Retrieves a single test record scoped to organization and branch, including inactive tests.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "testId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "testId"],
+
+  "validation": [
+    "organization and branch must exist",
+    "testId must exist and belong to the specified organization + branch"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Test fetched successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "departmentId": "uuid",
+        "testCode": "LFT001",
+        "testName": "Liver Function Test",
+        "sellingPrice": 600,
+        "costPrice": 350,
+        "cprr": 0,
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "testId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Test not found" },
+      "source": "database/api_contracts_test/007_api_view_test.sql (API-T034)"
+    },
+    {
+      "condition": "organizationId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization not found" },
+      "source": "database/api_contracts_test/007_api_view_test.sql (API-T035)"
+    },
+    {
+      "condition": "branchId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Branch not found" },
+      "source": "database/api_contracts_test/007_api_view_test.sql (API-T036)"
+    },
+    {
+      "condition": "testId exists but does not belong to the specified organization/branch",
+      "status_code": 404,
+      "response": { "success": false, "error": "Test not accessible" },
+      "source": "database/api_contracts_test/007_api_view_test.sql (API-T037)"
+    }
+  ],
+
+  "database": {
+    "tables": ["test_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/007_api_view_test.sql"],
+
+  "test_ids": ["API-T033", "API-T034", "API-T035", "API-T036", "API-T037", "API-T038"],
+  "notes": "API-T038 (View inactive test) confirms inactive tests (is_active = false) are still returned by this endpoint at 200 OK - inactivity does not hide a test from direct retrieval by ID."
+}

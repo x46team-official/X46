@@ -1,0 +1,65 @@
+{
+  "functionality_id": "API-024",
+  "module": "Patient Registration",
+  "functionality": "Registration History",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/registrations",
+  "description": "Returns all registration records for a specific patient, scoped to organization and branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId"],
+
+  "validation": [
+    "patientId must be a valid UUID",
+    "patient must exist and belong to organization + branch",
+    "only the specified patient's registrations are returned, ordered by registered_at descending"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Patient registration history fetched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "patientId": "uuid",
+          "registrationNumber": "REG001",
+          "registrationStatus": "REGISTERED",
+          "registeredAt": "timestamp with time zone"
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "patientId is not a valid UUID",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid patient ID" }
+    },
+    {
+      "condition": "patient does not exist / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_registrations", "patients"],
+    "relationships": ["patient_registrations.patient_id -> patients.id"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/011_patient_registration.sql (API-T078, API-T079)"],
+
+  "test_ids": ["API-T078", "API-T079"]
+}

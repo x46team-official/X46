@@ -1,0 +1,56 @@
+{
+  "functionality_id": "API-020",
+  "module": "Patient Management",
+  "functionality": "Update Patient Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/status",
+  "description": "Toggles a patient's is_active flag.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "isActive": "boolean, required" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId", "isActive"],
+
+  "validation": [
+    "patientId must be a valid UUID and exist within organization + branch",
+    "isActive must be a boolean value"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Patient status updated successfully",
+      "data": { "id": "uuid", "isActive": false }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "isActive missing or not boolean / patientId not a valid UUID",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid status value" }
+    },
+    {
+      "condition": "patient not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patients"],
+    "relationships": [],
+    "constraints": ["is_active NOT NULL DEFAULT TRUE"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/010_patient_management.sql"],
+
+  "test_ids": ["API-T069", "API-T070"]
+}

@@ -1,0 +1,64 @@
+{
+  "functionality_id": "API-048",
+  "module": "Accession",
+  "functionality": "Update Sample Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}/tests/{accessionTestId}/sample-status",
+  "description": "Updates the sample_status of a specific accession test line item.",
+
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionId": "uuid, required",
+      "accessionTestId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "sampleStatus": "enum, required - PENDING | COLLECTED | RECEIVED | PROCESSING | COMPLETED | REJECTED | IN_TRANSIT | RECOLLECTION_REQUESTED" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionId", "accessionTestId", "sampleStatus"],
+
+  "validation": [
+    "accessionTestId must exist and belong to organization + branch + accessionId",
+    "sampleStatus must reference a row in sample_status_master for the same organization + branch (FK fk_accession_tests_sample_status)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Sample status updated successfully",
+      "data": { "id": "uuid", "accessionId": "uuid", "sampleStatus": "COLLECTED" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "sampleStatus missing, or not a code present in sample_status_master for this organization + branch",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid sample status" }
+    },
+    {
+      "condition": "accessionTestId not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_tests", "sample_status_master"],
+    "relationships": ["accession_tests.sample_status -> sample_status_master.sample_status_code (organization_id, branch_id scoped)"],
+    "constraints": ["fk_accession_tests_sample_status FOREIGN KEY (organization_id, branch_id, sample_status)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/api_contracts_test/014_accession.sql (Update Sample Status)",
+    "database/e2e-validation/016_sample_status_master.sql"
+  ],
+
+  "test_ids": ["API-T106"]
+}

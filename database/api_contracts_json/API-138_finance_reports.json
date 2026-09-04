@@ -1,0 +1,74 @@
+{
+  "functionality_id": "API-138",
+  "module": "Finance Reports",
+  "functionality": "Date-wise / Payment-mode-wise / User-wise Collection, Branch-wise / Organization-wise Billing, Payment Transaction Report",
+  "description": "One consolidated report endpoint parameterized by reportType, per instruction to prefer one endpoint over several closely-related ones - all six report types are aggregations over the same billing_master/payment tables, differing only in the GROUP BY dimension. Bill-wise Payment Details is already covered by API-065 and is not duplicated here.",
+
+  "reused_apis": [
+    { "functionality_id": "API-065", "functionality": "Payment Search", "note": "Already covers 'Bill-wise payment details' - GET /api/payments?billNumber=... returns every payment against a bill." }
+  ],
+
+  "operations": [
+    {
+      "operation": "Get Finance Report",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/finance/reports",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": {
+          "reportType": "enum, required - DATE_WISE_COLLECTION | PAYMENT_MODE_WISE_COLLECTION | USER_WISE_COLLECTION | BRANCH_WISE_BILLING | ORGANIZATION_WISE_BILLING | PAYMENT_TRANSACTION",
+          "fromDate": "date, required",
+          "toDate": "date, required"
+        },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "reportType", "fromDate", "toDate"],
+      "validation": [
+        "organization and branch must exist",
+        "reportType must be one of the six enum values",
+        "fromDate must be <= toDate",
+        "DATE_WISE_COLLECTION groups payment by payment_date::date, SUM(amount_paid)",
+        "PAYMENT_MODE_WISE_COLLECTION groups payment by payment_mode (joined to payment_mode_master for display name), SUM(amount_paid)",
+        "USER_WISE_COLLECTION groups payment by created_by (joined to users), SUM(amount_paid)",
+        "BRANCH_WISE_BILLING groups billing_master by branch_id (joined to branches), SUM(total_amount), SUM(payable_amount), SUM(paid_amount), SUM(balance_amount)",
+        "ORGANIZATION_WISE_BILLING groups billing_master by patient_registrations.client_id (joined to client_organization_master), SUM(total_amount), SUM(payable_amount)",
+        "PAYMENT_TRANSACTION returns the raw payment rows (transactionReference, paymentMode, amountPaid, paymentStatus, paymentDate, billNumber) in the date range, unaggregated"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Finance report generated successfully",
+          "data": {
+            "reportType": "PAYMENT_MODE_WISE_COLLECTION",
+            "fromDate": "2026-08-01",
+            "toDate": "2026-08-21",
+            "rows": [ { "paymentMode": "CASH", "paymentModeName": "Cash", "totalCollected": 45000, "transactionCount": 120 } ]
+          }
+        }
+      },
+      "errors": [
+        { "condition": "reportType missing or not a recognized value", "status_code": 400, "response": { "success": false, "error": "Invalid report type" } },
+        { "condition": "fromDate is after toDate, or either is missing/malformed", "status_code": 400, "response": { "success": false, "error": "Invalid date range" } },
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["payment", "billing_master", "payment_mode_master", "users", "branches", "patient_registrations", "client_organization_master"],
+    "relationships": [
+      "payment.billing_master_id -> billing_master.id",
+      "payment.created_by -> users.id",
+      "billing_master.branch_id -> branches.id",
+      "billing_master.patient_registration_id -> patient_registrations.id",
+      "patient_registrations.client_id -> client_organization_master.id"
+    ],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet. Report row shapes above are illustrative for one reportType (PAYMENT_MODE_WISE_COLLECTION) per the 'concise' instruction - the other five follow the same { reportType, fromDate, toDate, rows[] } envelope with columns matching their GROUP BY dimension, as listed in validation."
+}

@@ -1,0 +1,62 @@
+{
+  "functionality_id": "API-049",
+  "module": "Accession",
+  "functionality": "Update Collection Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}/tests/{accessionTestId}/collection-status",
+  "description": "Updates the collection_status of a specific accession test line item (distinct from sample_collection.collection_status - see notes).",
+
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionId": "uuid, required",
+      "accessionTestId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "collectionStatus": "enum, required - NOT_COLLECTED | COLLECTED | PARTIALLY_COLLECTED" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionId", "accessionTestId", "collectionStatus"],
+
+  "validation": [
+    "accessionTestId must exist and belong to organization + branch + accessionId",
+    "collectionStatus must be one of NOT_COLLECTED, COLLECTED, PARTIALLY_COLLECTED (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Collection status updated successfully",
+      "data": { "id": "uuid", "accessionId": "uuid", "collectionStatus": "COLLECTED" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "collectionStatus missing or not a recognized enum value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid collection status" }
+    },
+    {
+      "condition": "accessionTestId not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_tests"],
+    "relationships": [],
+    "constraints": ["collection_status CHECK IN (NOT_COLLECTED, COLLECTED, PARTIALLY_COLLECTED)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql (Update Collection Status)"],
+
+  "test_ids": ["API-T107"],
+  "notes": "accession_tests.collection_status (NOT_COLLECTED / COLLECTED / PARTIALLY_COLLECTED) is a distinct column from sample_collection.collection_status (COLLECTED / RECOLLECTION_REQUIRED / REJECTED, see API-072 in the Sample Collection module) - the two tables share a field name but different enums and different tables. Frontend/design consumers should not conflate them."
+}

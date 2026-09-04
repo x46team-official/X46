@@ -1,0 +1,86 @@
+{
+  "functionality_id": "API-001",
+  "module": "Organization Management",
+  "functionality": "Create Organization",
+  "http_method": "POST",
+  "endpoint": "/api/organizations",
+  "description": "Creates a new customer organization (lab / hospital / diagnostic center) - the top-level tenant entity.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationName": "string(200), required",
+      "organizationCode": "string(50), required",
+      "isActive": "boolean, optional - defaults to true"
+    }
+  },
+
+  "required_fields": ["organizationName", "organizationCode"],
+
+  "validation": [
+    "organizationName must not be null (NOT NULL)",
+    "organizationCode must not be null (NOT NULL)",
+    "organizationCode must be unique across all organizations (UNIQUE organizations_organization_code_key)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Organization created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationCode": "ORG001",
+        "organizationName": "X46 Diagnostics",
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "organizationName is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "organizationName is required" },
+      "source": "database/api_contracts_test/001_api_organization.sql (Test 2)"
+    },
+    {
+      "condition": "organizationCode is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "organizationCode is required" },
+      "source": "database/api_contracts_test/001_api_organization.sql (Test 3)"
+    },
+    {
+      "condition": "organizationCode already exists",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate organization code" },
+      "source": "database/api_contracts_test/001_api_organization.sql (Test 4)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["organizations"],
+    "relationships": [],
+    "constraints": [
+      "organization_code NOT NULL, UNIQUE",
+      "organization_name NOT NULL",
+      "is_active NOT NULL DEFAULT TRUE"
+    ]
+  },
+
+  "scope": { "organization_required": false, "branch_required": false },
+
+  "e2e_reference": [
+    "database/e2e-validation/001_lab_setup.sql",
+    "database/api_contracts_test/001_api_organization.sql"
+  ],
+
+  "test_ids": ["API-T001", "API-T002", "API-T003", "API-T004"]
+}

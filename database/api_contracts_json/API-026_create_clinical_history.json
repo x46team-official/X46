@@ -1,0 +1,112 @@
+{
+  "functionality_id": "API-026",
+  "module": "Clinical History",
+  "functionality": "Create Clinical History",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/clinical-history",
+  "description": "Records a clinical history entry (disease/symptom/allergy/condition) against a patient, optionally linked to a specific registration.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "registrationId": "uuid, optional - references patient_registrations.id",
+      "clinicalId": "uuid, required - references clinical_master.id",
+      "severity": "string(30), optional",
+      "durationValue": "integer, optional",
+      "durationUnit": "string(20), optional",
+      "status": "string(30), optional",
+      "diagnosedDate": "date, optional",
+      "notes": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId", "clinicalId"],
+
+  "validation": [
+    "organization and branch must exist",
+    "patientId must reference an existing patient (patient_id NOT NULL FK)",
+    "clinicalId must reference an existing clinical_master row (clinical_id NOT NULL FK)",
+    "registrationId, if provided, must reference an existing patient_registrations row belonging to patientId"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Clinical history created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "patientId": "uuid",
+        "registrationId": "uuid",
+        "clinicalId": "uuid",
+        "severity": "MODERATE",
+        "durationValue": 3,
+        "durationUnit": "DAY",
+        "status": "ACTIVE",
+        "notes": "Fever since last three days"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "clinicalId missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "clinicalId is required" }
+    },
+    {
+      "condition": "patientId does not reference an existing patient",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" },
+      "source": "database/api_contracts_test/012_clinical_history.sql (API-T084)",
+      "related_functionality_id": "API-029"
+    },
+    {
+      "condition": "clinicalId does not reference an existing clinical_master row",
+      "status_code": 404,
+      "response": { "success": false, "error": "Clinical master record not found" },
+      "source": "database/api_contracts_test/012_clinical_history.sql (API-T085)",
+      "related_functionality_id": "API-030"
+    },
+    {
+      "condition": "registrationId does not reference an existing registration",
+      "status_code": 404,
+      "response": { "success": false, "error": "Registration not found" },
+      "source": "database/api_contracts_test/012_clinical_history.sql (API-T086)",
+      "related_functionality_id": "API-031"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_clinical_history", "patients", "patient_registrations", "clinical_master"],
+    "relationships": [
+      "patient_clinical_history.patient_id -> patients.id",
+      "patient_clinical_history.registration_id -> patient_registrations.id (nullable)",
+      "patient_clinical_history.clinical_id -> clinical_master.id"
+    ],
+    "constraints": [
+      "patient_id NOT NULL",
+      "clinical_id NOT NULL",
+      "registration_id NULLABLE"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/004_clinical_history.sql",
+    "database/api_contracts_test/012_clinical_history.sql"
+  ],
+
+  "test_ids": ["API-T081"],
+  "notes": "API-029, API-030, and API-031 in this module document the invalid-patient, invalid-clinical-master, and invalid-registration error scenarios for this same Create endpoint as their own functionality IDs (matching the original docs/API_Contracts_and_Test_Results.xlsx numbering) - see their individual JSON files for the isolated scenario detail."
+}

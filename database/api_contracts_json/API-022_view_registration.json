@@ -1,0 +1,65 @@
+{
+  "functionality_id": "API-022",
+  "module": "Patient Registration",
+  "functionality": "View Registration",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/registrations/{registrationId}",
+  "description": "Retrieves a single registration record scoped to organization and branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "registrationId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "registrationId"],
+
+  "validation": [
+    "registrationId must be a valid UUID",
+    "registration must exist and belong to the specified organization + branch"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Registration fetched successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "patientId": "uuid",
+        "registrationNumber": "REG001",
+        "registrationStatus": "REGISTERED",
+        "registeredAt": "timestamp with time zone"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "registrationId is not a valid UUID",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid registration ID" }
+    },
+    {
+      "condition": "registration does not exist / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Registration not found" },
+      "source": "database/api_contracts_test/011_patient_registration.sql (API-T077)"
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_registrations"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/011_patient_registration.sql"],
+
+  "test_ids": ["API-T072", "API-T077"]
+}

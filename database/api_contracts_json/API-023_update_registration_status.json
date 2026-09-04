@@ -1,0 +1,67 @@
+{
+  "functionality_id": "API-023",
+  "module": "Patient Registration",
+  "functionality": "Update Registration Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/registrations/{registrationId}/status",
+  "description": "Updates the registration_status of an existing registration (e.g. REGISTERED -> COMPLETED).",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "registrationId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "status": "string(50), required - persisted as registration_status" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "registrationId", "status"],
+
+  "validation": [
+    "registration must exist and belong to organization + branch",
+    "status must not be null (registration_status is NOT NULL)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Registration status updated successfully",
+      "data": { "id": "uuid", "registrationStatus": "COMPLETED" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "status missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "status is required" }
+    },
+    {
+      "condition": "registration not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Registration not found" },
+      "source": "database/api_contracts_test/011_patient_registration.sql (API-T077)"
+    },
+    {
+      "condition": "status value is not a recognized registration status, or transition is not allowed from the current status",
+      "status_code": 422,
+      "response": { "success": false, "error": "Invalid status transition" },
+      "status_definition": "TO_BE_CONFIRMED"
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_registrations"],
+    "relationships": [],
+    "constraints": ["registration_status NOT NULL DEFAULT 'REGISTERED'"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/011_patient_registration.sql (API-T076)"],
+
+  "test_ids": ["API-T076"],
+
+  "database_gap": true,
+  "notes": "SCHEMA GAP: registration_status has no CHECK constraint and no enum/lookup FK in any schema version through v25 (database/schema/versions/v25.sql line 842 shows it as plain character varying(50) NOT NULL DEFAULT 'REGISTERED'). Any string value is currently accepted at the database level - there is no DB-level enforcement of a fixed status set (REGISTERED, COMPLETED, CANCELLED, etc.) or of a valid transition sequence. database/api_contracts_test/011_patient_registration.sql only exercises the REGISTERED -> COMPLETED transition; no other transitions, and no rejection of an unrecognized status string, are tested anywhere in the source material.",
+  "requires_confirmation": "What is the full set of valid registration_status values, and which transitions between them are allowed? Should this be enforced with a CHECK constraint (as accession_tests and sample_collection do for their status columns) or an FK to a status master table (as sample_status_master now does for accession_tests.sample_status)?"
+}

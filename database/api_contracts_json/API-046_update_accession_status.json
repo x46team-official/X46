@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-046",
+  "module": "Accession",
+  "functionality": "Update Accession Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}/status",
+  "description": "Updates the overall status of an accession.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "accessionId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "status": "enum, required - PENDING | PARTIALLY_COLLECTED | COLLECTED | PROCESSING | COMPLETED | CANCELLED" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionId", "status"],
+
+  "validation": [
+    "accession must exist and belong to organization + branch",
+    "status must be one of PENDING, PARTIALLY_COLLECTED, COLLECTED, PROCESSING, COMPLETED, CANCELLED (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Accession status updated successfully",
+      "data": { "id": "uuid", "accessionNumber": "ACC0001", "status": "COLLECTED" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "status missing or not a recognized enum value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid status" }
+    },
+    {
+      "condition": "accession not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_master"],
+    "relationships": [],
+    "constraints": ["status CHECK IN (PENDING, PARTIALLY_COLLECTED, COLLECTED, PROCESSING, COMPLETED, CANCELLED)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql (Update Accession Status)"],
+
+  "test_ids": ["API-T104"],
+  "notes": "No CHECK constraint or state-machine enforces which status transitions are valid (e.g. whether CANCELLED can move back to PENDING) - the database accepts any value from the fixed enum list regardless of the current status. Only the value-set is enforced, not the transition sequence."
+}

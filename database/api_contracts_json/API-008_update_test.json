@@ -1,0 +1,117 @@
+{
+  "functionality_id": "API-008",
+  "module": "Test Management",
+  "functionality": "Update Test",
+  "http_method": "PUT",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/tests/{testId}",
+  "description": "Updates an existing test's details (name, pricing, department, and other test_master fields).",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "testId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "departmentId": "uuid, required",
+      "testCode": "string(50), required",
+      "testName": "string(200), required",
+      "sellingPrice": "numeric(10,2), optional",
+      "costPrice": "numeric(10,2), optional",
+      "cprr": "numeric(10,2), optional",
+      "displayName": "string(200), optional",
+      "printName": "string(200), optional",
+      "shortCode": "string(50), optional",
+      "testMethod": "string(200), optional",
+      "testType": "string(100), optional",
+      "tatMinutes": "integer, optional",
+      "description": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "testId", "testCode", "testName", "departmentId"],
+
+  "validation": [
+    "test must exist and belong to organization + branch",
+    "departmentId must belong to the same organization + branch",
+    "testCode and testName must not be null",
+    "testCode must remain unique within organization + branch (UNIQUE uq_test_code)",
+    "testName must remain unique within organization + branch (UNIQUE uq_test_name)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Test updated successfully",
+      "data": {
+        "id": "uuid",
+        "testCode": "LFT001",
+        "testName": "Liver Function Test Updated",
+        "sellingPrice": 650,
+        "costPrice": 350,
+        "cprr": 0,
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "testCode is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "testCode is required" }
+    },
+    {
+      "condition": "testName is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "testName is required" }
+    },
+    {
+      "condition": "testId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Test not found" },
+      "source": "database/api_contracts_test/009_test_update_status.sql (API-T051)"
+    },
+    {
+      "condition": "organizationId scope invalid (test not accessible in that org)",
+      "status_code": 404,
+      "response": { "success": false, "error": "Test not found" },
+      "source": "database/api_contracts_test/009_test_update_status.sql (API-T053)"
+    },
+    {
+      "condition": "branchId scope invalid (test not accessible in that branch)",
+      "status_code": 404,
+      "response": { "success": false, "error": "Test not found" },
+      "source": "database/api_contracts_test/009_test_update_status.sql (API-T054)"
+    },
+    {
+      "condition": "testName collides with another test's name within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate test name" },
+      "source": "database/api_contracts_test/009_test_update_status.sql (API-T052)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["test_master", "department_master"],
+    "relationships": ["test_master.department_id -> department_master.id"],
+    "constraints": [
+      "test_code NOT NULL, UNIQUE (organization_id, branch_id, test_code)",
+      "test_name NOT NULL, UNIQUE (organization_id, branch_id, test_name)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/api_contracts_test/008_test_management_api.sql",
+    "database/api_contracts_test/009_test_update_status.sql",
+    "database/dry-run/F015_test_master.sql"
+  ],
+
+  "test_ids": ["API-T039", "API-T040", "API-T041", "API-T050", "API-T051", "API-T052", "API-T053", "API-T054"]
+}

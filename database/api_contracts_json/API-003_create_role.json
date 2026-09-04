@@ -1,0 +1,97 @@
+{
+  "functionality_id": "API-003",
+  "module": "Role Management",
+  "functionality": "Create Role",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/roles",
+  "description": "Creates a new staff role scoped to an organization and branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "roleCode": "string(50), required",
+      "roleName": "string(100), required"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "roleCode", "roleName"],
+
+  "validation": [
+    "organizationId must reference an existing organization",
+    "branchId must reference an existing branch belonging to organizationId",
+    "roleCode must not be null (NOT NULL)",
+    "roleName must not be null (NOT NULL)",
+    "roleCode must be unique within organization + branch (UNIQUE uq_roles_org_branch_code)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Role created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "roleCode": "ADMIN",
+        "roleName": "Administrator"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "roleCode is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "roleCode is required" },
+      "source": "database/api_contracts_test/003_api_roles.sql (API-3-T010)"
+    },
+    {
+      "condition": "roleName is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "roleName is required" },
+      "source": "database/api_contracts_test/003_api_roles.sql (API-3-T011)"
+    },
+    {
+      "condition": "organizationId or branchId does not exist / branch does not belong to organization",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" },
+      "source": "database/api_contracts_test/003_api_roles.sql (API-3-T013)"
+    },
+    {
+      "condition": "roleCode already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate role code" },
+      "source": "database/api_contracts_test/003_api_roles.sql (API-3-T012)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["roles", "organizations", "branches"],
+    "relationships": [
+      "roles.organization_id -> organizations.id",
+      "roles.branch_id -> branches.id"
+    ],
+    "constraints": [
+      "role_code NOT NULL",
+      "role_name NOT NULL",
+      "UNIQUE (organization_id, branch_id, role_code) -- uq_roles_org_branch_code"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/001_lab_setup.sql",
+    "database/api_contracts_test/003_api_roles.sql"
+  ],
+
+  "test_ids": ["API-T009", "API-T010", "API-T011", "API-T012", "API-T013"]
+}

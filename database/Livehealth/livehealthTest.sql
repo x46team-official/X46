@@ -1,0 +1,20 @@
+CREATE TABLE staging_livehealth_tests (
+    sr_no INTEGER,
+    test_name TEXT,
+    test_id TEXT,
+    test_code TEXT,
+    test_amount NUMERIC(10,2),
+    outsource_amount NUMERIC(10,2),
+    outsource_center TEXT,
+    sample_type TEXT,
+    container_type TEXT,
+    test_category TEXT,
+    department_name TEXT,
+    accreditation TEXT,
+    integration_code TEXT,
+    short_text TEXT,
+    cap_test TEXT,
+    target_tat TEXT,
+    verification_status TEXT,
+    target_tat_hhmm TEXT
+);

@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-096",
+  "module": "Result Entry",
+  "functionality": "Invalid Result Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/result-entries/{resultEntryId}/status",
+  "description": "Documents the specific error scenario of API-090 where the request fails this validation. Same endpoint as API-090, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "resultStatus": "'INVALID_STATUS' - not a valid result_status value in this scenario"
+    }
+  },
+  "required_fields": [
+    "resultStatus"
+  ],
+  "validation": [
+    "resultStatus must be one of PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED (CHECK)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "resultStatus must be one of PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED (CHECK)",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid result status"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T155)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry"
+    ],
+    "relationships": [],
+    "constraints": [
+      "result_status CHECK IN (PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/018_result_entry.sql (API-T155)"
+  ],
+  "test_ids": [
+    "API-T155"
+  ]
+}

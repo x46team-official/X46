@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-083",
+  "module": "Worklist Management",
+  "functionality": "Duplicate Worksheet Code",
+  "http_method": "POST",
+  "endpoint": "/api/worksheets",
+  "description": "Documents the specific error scenario of API-078 where the request fails this validation. Same endpoint as API-078, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "worksheetCode": "'WS001' - duplicate of an existing worksheet_code in this scenario"
+    }
+  },
+  "required_fields": [
+    "worksheetCode"
+  ],
+  "validation": [
+    "worksheetCode must be unique within organization + branch"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "worksheetCode must be unique within organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate worksheet code"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T142)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "worksheet_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_worksheet_code UNIQUE (organization_id, branch_id, worksheet_code)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/017_worklist.sql (API-T142)"
+  ],
+  "test_ids": [
+    "API-T142"
+  ]
+}

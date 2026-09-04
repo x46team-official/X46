@@ -1,0 +1,55 @@
+{
+  "functionality_id": "API-137",
+  "module": "Finance Overview",
+  "functionality": "Finance Dashboard Summary, Billing Summary, Collection Summary",
+  "description": "One consolidated read endpoint over dashboard_cache (per instruction to prefer one endpoint over several closely-related ones). Billing Summary and Collection Summary are two more dashboard_key values of the same generic cache row shape, not separate tables.",
+
+  "reused_apis": [],
+
+  "operations": [
+    {
+      "operation": "Get Finance Dashboard Summary",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/finance/dashboard",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": { "key": "enum, required - FINANCE_SUMMARY | BILLING_SUMMARY | COLLECTION_SUMMARY" },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "key"],
+      "validation": [
+        "organization and branch must exist",
+        "key must be one of FINANCE_SUMMARY, BILLING_SUMMARY, COLLECTION_SUMMARY",
+        "reads the most recent dashboard_cache row for (organization_id, branch_id, dashboard_key = key)"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Finance dashboard summary fetched successfully",
+          "data": {
+            "dashboardKey": "BILLING_SUMMARY",
+            "generatedAt": "timestamp with time zone",
+            "dashboardValue": { "totalBilled": 125000, "totalPaid": 98000, "totalOutstanding": 27000, "totalWriteOff": 1500 }
+          }
+        }
+      },
+      "errors": [
+        { "condition": "key missing or not a recognized value", "status_code": 400, "response": { "success": false, "error": "Invalid dashboard key" } },
+        { "condition": "no cached dashboard value exists yet for this key", "status_code": 404, "response": { "success": false, "error": "Dashboard summary not available" } },
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["dashboard_cache", "billing_master", "payment"],
+    "relationships": ["dashboard_cache.organization_id -> organizations.id", "dashboard_cache.branch_id -> branches.id"],
+    "constraints": ["UNIQUE (organization_id, branch_id, dashboard_key) -- uq_dashboard_cache"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "dashboard_cache.dashboard_value is a precomputed JSONB blob; this contract documents the read side only. Population of dashboard_cache rows for BILLING_SUMMARY/COLLECTION_SUMMARY from billing_master/payment (e.g. via a scheduled job) is an implementation detail outside this contract's scope - billing_master and payment are listed above as the real source tables so no new table is implied."
+}

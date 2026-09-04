@@ -1,0 +1,46 @@
+{
+  "functionality_id": "API-063",
+  "module": "Payment",
+  "functionality": "Invalid Payment Amount",
+  "http_method": "POST",
+  "endpoint": "/api/payments",
+  "description": "Documents the specific error scenario of API-057 (Create Payment) where amountPaid is zero. Same endpoint as API-057, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering. This is a confirmed DB GAP.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "amountPaid": "0.00 - the failing value in this scenario" }
+  },
+
+  "required_fields": ["amountPaid"],
+
+  "validation": ["amountPaid should be > 0 per the intended API contract"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-057 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "amountPaid = 0.00",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid payment amount" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T122)",
+      "source_annotation": "E2E validation identifies DB GAP"
+    }
+  ],
+
+  "database": {
+    "tables": ["payment"],
+    "relationships": [],
+    "constraints": ["amount_paid NOT NULL CHECK (amount_paid >= 0)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T122)"],
+
+  "test_ids": ["API-T122"],
+
+  "database_gap": true,
+  "notes": "database/schema/026_payment.sql defines amount_paid NUMERIC(12,2) NOT NULL CHECK (amount_paid >= 0) - this CHECK permits exactly 0, so database/api_contracts_test/015_payment.sql's API-T122 scenario (amountPaid = 0.00) is currently ACCEPTED by PostgreSQL ('INSERT 0 1 — amount 0.00 accepted'), even though the intended API behavior is 400 Bad Request. The database constraint would need to change to CHECK (amount_paid > 0) to actually enforce this at the DB layer; until then, rejection of a zero amount must happen at the API layer only."
+}

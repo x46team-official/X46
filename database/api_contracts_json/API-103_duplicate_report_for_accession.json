@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-103",
+  "module": "Report Generation",
+  "functionality": "Duplicate Report for Accession",
+  "http_method": "POST",
+  "endpoint": "/api/reports",
+  "description": "Documents the specific error scenario of API-100 (Generate Report) where the request fails this validation. Same endpoint as API-100, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "accessionId": "accession_id that already has a report_master row in this scenario"
+    }
+  },
+  "required_fields": [
+    "accessionId"
+  ],
+  "validation": [
+    "accessionId must not already have a report"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "accessionId must not already have a report",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Report already exists for this accession"
+      },
+      "source": "database/api_contracts_test/020_report_generation.sql (API-T162)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_report_accession UNIQUE (organization_id, branch_id, accession_id)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/020_report_generation.sql (API-T162)"
+  ],
+  "test_ids": [
+    "API-T162"
+  ]
+}

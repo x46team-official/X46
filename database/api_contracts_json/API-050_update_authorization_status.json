@@ -1,0 +1,61 @@
+{
+  "functionality_id": "API-050",
+  "module": "Accession",
+  "functionality": "Update Authorization Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}/tests/{accessionTestId}/authorization-status",
+  "description": "Updates the authorization_status of a specific accession test line item, typically after result authorization.",
+
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionId": "uuid, required",
+      "accessionTestId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "authorizationStatus": "enum, required - PENDING | AUTHORIZED | REJECTED" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionId", "accessionTestId", "authorizationStatus"],
+
+  "validation": [
+    "accessionTestId must exist and belong to organization + branch + accessionId",
+    "authorizationStatus must be one of PENDING, AUTHORIZED, REJECTED (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Authorization status updated successfully",
+      "data": { "id": "uuid", "accessionId": "uuid", "authorizationStatus": "AUTHORIZED" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "authorizationStatus missing or not a recognized enum value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid authorization status" }
+    },
+    {
+      "condition": "accessionTestId not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_tests"],
+    "relationships": [],
+    "constraints": ["authorization_status CHECK IN (PENDING, AUTHORIZED, REJECTED)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql (Update Authorization Status)"],
+
+  "test_ids": ["API-T108"]
+}

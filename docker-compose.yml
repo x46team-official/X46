@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: x46-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: x46
+      POSTGRES_USER: x46
+      POSTGRES_PASSWORD: x46
+    ports:
+      - "5434:5432"
+    volumes:
+      - x46-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  x46-postgres-data:

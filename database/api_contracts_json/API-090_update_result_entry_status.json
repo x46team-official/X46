@@ -1,0 +1,89 @@
+{
+  "functionality_id": "API-090",
+  "module": "Result Entry",
+  "functionality": "Update Result Entry Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/result-entries/{resultEntryId}/status",
+  "description": "Updates the result_status of a result_entry header, e.g. moving it to COMPLETED once all parameters are recorded.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "resultEntryId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "resultStatus": "enum, required - PENDING | IN_PROGRESS | COMPLETED | AUTHORIZED | REJECTED"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "resultEntryId",
+    "resultStatus"
+  ],
+  "validation": [
+    "resultEntryId must exist and belong to organization + branch",
+    "resultStatus must be one of PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED (CHECK)"
+  ],
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Result entry status updated successfully",
+      "data": {
+        "id": "uuid",
+        "resultStatus": "COMPLETED"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "resultStatus is not one of the allowed enum values",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid result status"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T155)",
+      "related_functionality_id": "API-096"
+    },
+    {
+      "condition": "resultEntryId not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Result entry not found"
+      }
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry"
+    ],
+    "relationships": [],
+    "constraints": [
+      "result_status NOT NULL CHECK IN (PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/010_result_entry.sql",
+    "database/api_contracts_test/018_result_entry.sql"
+  ],
+  "test_ids": [
+    "API-T149"
+  ]
+}

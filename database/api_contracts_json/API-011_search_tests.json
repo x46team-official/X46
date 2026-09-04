@@ -1,0 +1,59 @@
+{
+  "functionality_id": "API-011",
+  "module": "Test Management",
+  "functionality": "Search Tests",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/tests/search",
+  "description": "Searches tests within an organization/branch by test code or test name.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": { "query": "string, required - matched against test_code and test_name" },
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "query"],
+
+  "validation": [
+    "organization and branch must exist",
+    "query must not be empty",
+    "search is organization + branch scoped; matches test_code or test_name (ILIKE)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Tests searched successfully",
+      "data": [
+        { "id": "uuid", "testCode": "CBC001", "testName": "Complete Blood Count", "isActive": true }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "query is missing or empty",
+      "status_code": 400,
+      "response": { "success": false, "error": "Search query is required" }
+    },
+    {
+      "condition": "organizationId or branchId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["test_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/008_test_management_api.sql (API-T049)"],
+
+  "test_ids": ["API-T049"]
+}

@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-062",
+  "module": "Payment",
+  "functionality": "Invalid Payment Mode",
+  "http_method": "POST",
+  "endpoint": "/api/payments",
+  "description": "Documents the specific error scenario of API-057 (Create Payment) where paymentMode is not a recognized value. Same endpoint as API-057, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "paymentMode": "'BITCOIN' - not a valid code in payment_mode_master in this scenario" }
+  },
+
+  "required_fields": ["paymentMode"],
+
+  "validation": ["paymentMode must reference an existing code in payment_mode_master for the organization + branch (FK fk_payment_payment_mode)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-057 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "paymentMode is not a code present in payment_mode_master",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid payment mode" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T121)"
+    }
+  ],
+
+  "database": {
+    "tables": ["payment", "payment_mode_master"],
+    "relationships": ["payment.payment_mode -> payment_mode_master.payment_mode_code (organization_id, branch_id scoped)"],
+    "constraints": ["fk_payment_payment_mode FOREIGN KEY (organization_id, branch_id, payment_mode)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T121)", "database/e2e-validation/017_payment_mode_master.sql"],
+
+  "test_ids": ["API-T121"]
+}

@@ -1,0 +1,62 @@
+{
+  "functionality_id": "API-015",
+  "module": "Department Management",
+  "functionality": "Activate/Deactivate Department",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/departments/{departmentId}/status",
+  "description": "Toggles a department's is_active flag.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "departmentId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "isActive": "boolean, required" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "departmentId", "isActive"],
+
+  "validation": [
+    "department must exist and belong to organization + branch",
+    "isActive must be a boolean value"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Department status updated successfully",
+      "data": { "id": "uuid", "isActive": false }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "isActive missing or not boolean",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid status value" }
+    },
+    {
+      "condition": "department not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Department not found" }
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["department_master"],
+    "relationships": [],
+    "constraints": ["is_active DEFAULT TRUE"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/e2e-validation/002_master_data.sql"],
+
+  "test_ids": ["API-T190"],
+  "notes": "No dedicated api_contracts_test SQL file existed yet for Department Management; API-T190 is a net-new ID continuing the global sequence (previous max was API-T186) and still needs a backing api_contracts_test script."
+}

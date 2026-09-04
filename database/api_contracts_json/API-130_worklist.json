@@ -1,0 +1,84 @@
+{
+  "functionality_id": "API-130",
+  "module": "Worklist",
+  "functionality": "List/Search Worklist, View Worklist Item, Assign/Update Worklist Status",
+  "description": "Covers worklist browsing and lookup on top of the already-existing create/assign contracts.",
+
+  "reused_apis": [
+    { "functionality_id": "API-077", "functionality": "Create Worklist", "note": "Worklist creation is already covered." },
+    { "functionality_id": "API-079", "functionality": "Assign Sample to Worklist", "note": "Already covers 'Assign/update worklist status' - assigns an accession_test to a worklist+worksheet and advances accession_tests.sample_status to PROCESSING. Not duplicated here." }
+  ],
+
+  "operations": [
+    {
+      "operation": "List/Search Worklist",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/worklists",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": {
+          "departmentId": "uuid, optional - filters worklist_master.department_id",
+          "isActive": "boolean, optional",
+          "search": "string, optional - matched against worklist_code, worklist_name"
+        },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId"],
+      "validation": ["organization and branch must exist", "results are scoped to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Worklists fetched successfully",
+          "data": [ { "id": "uuid", "worklistCode": "WL001", "worklistName": "Hematology Worklist", "departmentId": "uuid", "estimatedTatMinutes": 60, "isActive": true } ]
+        }
+      },
+      "errors": [
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    },
+    {
+      "operation": "View Worklist Item",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/worklists/{worklistId}",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "worklistId": "uuid, required" },
+        "query_parameters": {},
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "worklistId"],
+      "validation": ["worklist must exist and belong to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Worklist fetched successfully",
+          "data": {
+            "id": "uuid", "worklistCode": "WL001", "worklistName": "Hematology Worklist", "departmentId": "uuid",
+            "estimatedTatMinutes": 60, "isActive": true,
+            "assignedTests": [
+              { "accessionTestId": "uuid", "accessionId": "uuid", "testId": "uuid", "barcode": "PUN-260821-000001", "sampleStatus": "PROCESSING", "authorizationStatus": "PENDING" }
+            ]
+          }
+        }
+      },
+      "errors": [
+        { "condition": "worklistId not found / not in organization+branch scope", "status_code": 404, "response": { "success": false, "error": "Worklist not found" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["worklist_master", "accession_tests", "department_master"],
+    "relationships": [
+      "worklist_master.department_id -> department_master.id",
+      "accession_tests.worklist_id -> worklist_master.id"
+    ],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet for these two operations."
+}

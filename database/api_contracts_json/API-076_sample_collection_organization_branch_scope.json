@@ -1,0 +1,46 @@
+{
+  "functionality_id": "API-076",
+  "module": "Sample Collection",
+  "functionality": "Invalid Organization/Branch Scope",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Documents the specific error scenario of API-069 (Create Sample Collection) where organizationId/branchId in the request do not match the accession test's actual organization/branch (tenant isolation). Same endpoint as API-069, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "organizationId": "'00000000-0000-0000-0000-000000000000' - does not match the accession test's organization in this scenario", "branchId": "'00000000-0000-0000-0000-000000000000' - does not match the accession test's branch in this scenario" }
+  },
+
+  "required_fields": ["organizationId", "branchId"],
+
+  "validation": ["organizationId and branchId must reference existing organizations/branches, and must match the referenced accessionTestId's tenant scope"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-069 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "organizationId/branchId does not reference an existing organization/branch (or does not match the accession test's tenant scope)",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not accessible" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T135)"
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection", "organizations", "branches"],
+    "relationships": [
+      "sample_collection.organization_id -> organizations.id",
+      "sample_collection.branch_id -> branches.id"
+    ],
+    "constraints": ["organization_id NOT NULL REFERENCES organizations(id)", "branch_id NOT NULL REFERENCES branches(id)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/016_sample_collection.sql (API-T135)"],
+
+  "test_ids": ["API-T135"],
+  "notes": "The test scenario supplies non-existent organization_id/branch_id values, which fail the NOT NULL FK constraints directly. A true cross-tenant check (existing org/branch that simply doesn't own the accessionTestId) must additionally be enforced at the API layer, since the FK alone does not verify that accessionTestId belongs to the supplied organization/branch."
+}

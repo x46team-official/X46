@@ -1,0 +1,83 @@
+{
+  "functionality_id": "API-018",
+  "module": "Patient Management",
+  "functionality": "Update Patient",
+  "http_method": "PUT",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}",
+  "description": "Updates an existing patient's editable demographic fields.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "firstName": "string(100), optional",
+      "lastName": "string(100), optional",
+      "middleName": "string(100), optional",
+      "gender": "string(30), optional",
+      "dateOfBirth": "date, optional",
+      "patientType": "string(50), optional",
+      "patientCategory": "string(100), optional",
+      "contact": "string, optional - updates/creates primary patient_contacts row",
+      "email": "string, optional - updates/creates primary patient_contacts row"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId"],
+
+  "validation": [
+    "patientId must be a valid UUID and must exist within organization + branch",
+    "firstName, if provided, must not be set to null",
+    "dateOfBirth, if provided, must be a valid date"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Patient updated successfully",
+      "data": {
+        "id": "uuid",
+        "firstName": "Updated",
+        "lastName": "Patient",
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "Invalid field format (e.g. malformed dateOfBirth)",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid request" }
+    },
+    {
+      "condition": "patient not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" }
+    },
+    {
+      "condition": "Semantic validation failure (e.g. invalid gender/patientType value)",
+      "status_code": 422,
+      "response": { "success": false, "error": "Validation failed" },
+      "status_definition": "TO_BE_CONFIRMED"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patients", "patient_contacts"],
+    "relationships": ["patient_contacts.patient_id -> patients.id"],
+    "constraints": ["patients.first_name NOT NULL"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/010_patient_management.sql"],
+
+  "test_ids": ["API-T066"]
+}

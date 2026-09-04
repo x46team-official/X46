@@ -1,0 +1,61 @@
+{
+  "functionality_id": "API-109",
+  "module": "Report Delivery",
+  "functionality": "Invalid Recipient Type",
+  "http_method": "POST",
+  "endpoint": "/api/reports/{reportId}/deliveries",
+  "description": "Documents the specific error scenario of API-105 where the request fails this validation. Same endpoint as API-105, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "reportId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "recipientType": "'INSURER' - not a valid recipient_type value in this scenario"
+    }
+  },
+  "required_fields": [
+    "recipientType"
+  ],
+  "validation": [
+    "recipientType must be one of PATIENT, DOCTOR, REFERRAL, COLLECTION_CENTER, LAB (CHECK)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "recipientType must be one of PATIENT, DOCTOR, REFERRAL, COLLECTION_CENTER, LAB (CHECK)",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid recipient type"
+      },
+      "source": "database/api_contracts_test/021_report_delivery.sql (API-T167)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_delivery_log"
+    ],
+    "relationships": [],
+    "constraints": [
+      "recipient_type CHECK IN (PATIENT, DOCTOR, REFERRAL, COLLECTION_CENTER, LAB)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/021_report_delivery.sql (API-T167)"
+  ],
+  "test_ids": [
+    "API-T167"
+  ]
+}

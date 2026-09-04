@@ -1,0 +1,62 @@
+{
+  "functionality_id": "API-107",
+  "module": "Report Delivery",
+  "functionality": "Invalid Report ID (Delivery)",
+  "http_method": "POST",
+  "endpoint": "/api/reports/{reportId}/deliveries",
+  "description": "Documents the specific error scenario of API-105 where the request fails this validation. Same endpoint as API-105, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "reportId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "reportId": "'00000000-0000-0000-0000-000000000000' - not an existing report_master row"
+    }
+  },
+  "required_fields": [
+    "reportId"
+  ],
+  "validation": [
+    "reportId must reference an existing report"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "reportId must reference an existing report",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Report not found"
+      },
+      "source": "database/api_contracts_test/021_report_delivery.sql (API-T165)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_delivery_log",
+      "report_master"
+    ],
+    "relationships": [
+      "report_delivery_log.report_id -> report_master.id"
+    ],
+    "constraints": []
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/021_report_delivery.sql (API-T165)"
+  ],
+  "test_ids": [
+    "API-T165"
+  ]
+}

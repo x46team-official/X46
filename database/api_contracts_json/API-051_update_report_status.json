@@ -1,0 +1,62 @@
+{
+  "functionality_id": "API-051",
+  "module": "Accession",
+  "functionality": "Update Report Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}/tests/{accessionTestId}/report-status",
+  "description": "Updates the report_status of a specific accession test line item, typically after report generation.",
+
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionId": "uuid, required",
+      "accessionTestId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "reportStatus": "enum, required - PENDING | READY | RELEASED" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionId", "accessionTestId", "reportStatus"],
+
+  "validation": [
+    "accessionTestId must exist and belong to organization + branch + accessionId",
+    "reportStatus must be one of PENDING, READY, RELEASED (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Report status updated successfully",
+      "data": { "id": "uuid", "accessionId": "uuid", "reportStatus": "READY" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "reportStatus missing or not a recognized enum value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid report status" }
+    },
+    {
+      "condition": "accessionTestId not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_tests"],
+    "relationships": [],
+    "constraints": ["report_status CHECK IN (PENDING, READY, RELEASED)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql (Update Report Status)"],
+
+  "test_ids": ["API-T109"],
+  "notes": "docs/API_Contracts_and_Test_Results.xlsx documents the sample response value as GENERATED, but the actual CHECK constraint on accession_tests.report_status (database/schema/018_accession_tests.sql) only allows PENDING, READY, RELEASED - GENERATED is not a valid value at the database level. The success example here uses READY (matching API-T109's tested value) instead."
+}

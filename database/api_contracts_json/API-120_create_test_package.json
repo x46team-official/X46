@@ -1,0 +1,109 @@
+{
+  "functionality_id": "API-120",
+  "module": "Test Package Management",
+  "functionality": "Create Test Package",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/test-packages",
+  "description": "Creates a test package (bundle) master entry so multiple tests can be sold, billed, and accessioned together as a single item.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "testCategoryId": "uuid, optional - references test_category_master.id",
+      "billingCategoryId": "uuid, optional - references billing_category_master.id",
+      "packageCode": "string(50), required",
+      "packageName": "string(200), required",
+      "displayName": "string(200), optional",
+      "shortCode": "string(50), optional",
+      "sellingPrice": "numeric(10,2), optional - default 0",
+      "costPrice": "numeric(10,2), optional - default 0",
+      "tatMinutes": "integer, optional - default 0",
+      "description": "text, optional"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "packageCode",
+    "packageName"
+  ],
+  "validation": [
+    "organization and branch must exist",
+    "packageCode must be unique within organization + branch (uq_test_package_code)",
+    "packageName must be unique within organization + branch (uq_test_package_name)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Test package created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "packageCode": "PKG001",
+        "packageName": "Basic Health Package",
+        "sellingPrice": 550.00,
+        "isActive": true
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "packageCode already exists for the organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate package code"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T182)",
+      "related_functionality_id": "API-123"
+    },
+    {
+      "condition": "packageName already exists for the organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate package name"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T183)",
+      "related_functionality_id": "API-124"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "test_package_master"
+    ],
+    "relationships": [
+      "test_package_master.test_category_id -> test_category_master.id (optional)",
+      "test_package_master.billing_category_id -> billing_category_master.id (optional)"
+    ],
+    "constraints": [
+      "uq_test_package_code UNIQUE (organization_id, branch_id, package_code)",
+      "uq_test_package_name UNIQUE (organization_id, branch_id, package_name)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/018_test_package.sql",
+    "database/api_contracts_test/023_test_package.sql"
+  ],
+  "test_ids": [
+    "API-T179"
+  ]
+}

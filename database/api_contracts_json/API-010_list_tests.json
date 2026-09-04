@@ -1,0 +1,66 @@
+{
+  "functionality_id": "API-010",
+  "module": "Test Management",
+  "functionality": "List Tests",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/tests",
+  "description": "Returns all tests belonging to the specified organization and branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId"],
+
+  "validation": [
+    "organization and branch must exist",
+    "only tests belonging to the specified organization + branch are returned"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Tests fetched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "testCode": "LFT001",
+          "testName": "Liver Function Test",
+          "departmentId": "uuid",
+          "sellingPrice": 600,
+          "costPrice": 350,
+          "isActive": true
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "organizationId or branchId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" }
+    },
+    {
+      "condition": "Invalid request (malformed path parameters)",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid request" }
+    }
+  ],
+
+  "database": {
+    "tables": ["test_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/008_test_management_api.sql"],
+
+  "test_ids": ["API-T048"]
+}

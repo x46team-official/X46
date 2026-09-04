@@ -1,0 +1,59 @@
+{
+  "functionality_id": "API-134",
+  "module": "Report History",
+  "functionality": "Search/List Patient Report History",
+  "description": "Lists all reports generated across a patient's registrations/accessions, most recent first.",
+
+  "reused_apis": [],
+
+  "operations": [
+    {
+      "operation": "Search/List Patient Report History",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientRegistrationId}/reports",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientRegistrationId": "uuid, required - references patient_registrations.id" },
+        "query_parameters": {
+          "fromDate": "date, optional - filters report_master.generated_at",
+          "toDate": "date, optional - filters report_master.generated_at",
+          "reportStatus": "enum, optional - DRAFT | GENERATED | AUTHORIZED | RELEASED | CANCELLED"
+        },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "patientRegistrationId"],
+      "validation": [
+        "patientRegistrationId must exist and belong to organization + branch",
+        "fromDate must be <= toDate when both are provided",
+        "reportStatus, if provided, must be one of DRAFT, GENERATED, AUTHORIZED, RELEASED, CANCELLED (CHECK)"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Report history fetched successfully",
+          "data": [
+            {
+              "reportId": "uuid", "reportNumber": "RPT-ACC0001", "accessionId": "uuid", "accessionNumber": "ACC0001",
+              "reportStatus": "RELEASED", "generatedAt": "timestamp with time zone", "releasedAt": "timestamp with time zone"
+            }
+          ]
+        }
+      },
+      "errors": [
+        { "condition": "fromDate is after toDate", "status_code": 400, "response": { "success": false, "error": "Invalid date range" } },
+        { "condition": "patientRegistrationId not found / not in organization+branch scope", "status_code": 404, "response": { "success": false, "error": "Patient registration not found" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["report_master", "accession_master", "patient_registrations"],
+    "relationships": ["report_master.accession_id -> accession_master.id", "accession_master.patient_registration_id -> patient_registrations.id"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet."
+}

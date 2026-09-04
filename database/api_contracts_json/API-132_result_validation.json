@@ -1,0 +1,55 @@
+{
+  "functionality_id": "API-132",
+  "module": "Result Validation",
+  "functionality": "List Pending Results",
+  "description": "Lists result_entry rows awaiting authorization. Validate and Reject are already covered by existing contracts and are not duplicated here.",
+
+  "reused_apis": [
+    { "functionality_id": "API-097", "functionality": "Authorize Result Entry", "note": "Already covers 'Validate result' - PATCH /api/result-entries/{resultEntryId}/authorize sets result_status = AUTHORIZED." },
+    { "functionality_id": "API-090", "functionality": "Update Result Entry Status", "note": "Already covers 'Reject result' - PATCH /api/result-entries/{resultEntryId}/status with body { resultStatus: 'REJECTED' }; use the existing result_entry.remarks column to record a rejection reason (no dedicated rejection_reason column on result_entry - see notes)." }
+  ],
+
+  "operations": [
+    {
+      "operation": "List Pending Results",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/result-entries",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": {
+          "resultStatus": "enum, optional, default COMPLETED - PENDING | IN_PROGRESS | COMPLETED | AUTHORIZED | REJECTED"
+        },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId"],
+      "validation": [
+        "organization and branch must exist",
+        "resultStatus, if provided, must be one of PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED (CHECK)",
+        "default filter (resultStatus=COMPLETED) represents results awaiting validation - completed but not yet authorized/rejected"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Pending results fetched successfully",
+          "data": [ { "id": "uuid", "accessionTestId": "uuid", "resultStatus": "COMPLETED", "enteredAt": "timestamp with time zone", "enteredBy": "uuid" } ]
+        }
+      },
+      "errors": [
+        { "condition": "resultStatus is not one of the allowed enum values", "status_code": 400, "response": { "success": false, "error": "Invalid result status" } },
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["result_entry"],
+    "relationships": [],
+    "constraints": ["result_status NOT NULL CHECK IN (PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "result_authorization (database/schema/021_result_authorization.sql) has a dedicated rejection_reason column but, per API-097's notes, is not exercised by the current e2e authorization flow - result_entry.result_status is authoritative instead. Reject Result therefore reuses result_entry.remarks for the reason rather than inventing a new column; if rejection_reason tracking on result_authorization is required, that needs product/DB confirmation."
+}

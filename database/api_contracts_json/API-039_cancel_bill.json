@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-039",
+  "module": "Billing",
+  "functionality": "Cancel Bill",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing/{billingId}/cancel",
+  "description": "Marks a bill as cancelled (is_cancelled = true).",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "billingId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "remarks": "text, optional" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "billingId"],
+
+  "validation": [
+    "bill must exist and belong to organization + branch",
+    "bill must not already be cancelled"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Bill cancelled successfully",
+      "data": { "id": "uuid", "billNumber": "BILL0001", "isCancelled": true, "remarks": "Cancelled by admin" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "bill not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Bill not found" }
+    },
+    {
+      "condition": "bill is already cancelled (is_cancelled = true)",
+      "status_code": 422,
+      "response": { "success": false, "error": "Bill already cancelled" },
+      "status_definition": "TO_BE_CONFIRMED"
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master"],
+    "relationships": [],
+    "constraints": ["is_cancelled DEFAULT FALSE"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql"],
+
+  "notes": "database/api_contracts_test/013_billing.sql exercises setting is_cancelled = TRUE once, but does not test attempting to cancel an already-cancelled bill - the 422 'already cancelled' guard from docs/API_Contracts_and_Test_Results.xlsx is not backed by any DB constraint (is_cancelled has no CHECK preventing re-cancellation) and would need to be enforced at the API layer."
+}

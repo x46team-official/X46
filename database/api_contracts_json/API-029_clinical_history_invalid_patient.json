@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-029",
+  "module": "Clinical History",
+  "functionality": "Invalid Patient",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/clinical-history",
+  "description": "Documents the specific error scenario of API-026 (Create Clinical History) where patientId does not reference an existing patient. This is the same endpoint as API-026, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid - invalid/non-existent in this scenario" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "clinicalId": "uuid, required" }
+  },
+
+  "required_fields": ["patientId", "clinicalId"],
+
+  "validation": ["patientId must reference an existing patient row (patient_clinical_history.patient_id NOT NULL FK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-026 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "patientId does not reference an existing patient",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" },
+      "source": "database/api_contracts_test/012_clinical_history.sql (API-T084)"
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_clinical_history", "patients"],
+    "relationships": ["patient_clinical_history.patient_id -> patients.id"],
+    "constraints": ["patient_id NOT NULL"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/012_clinical_history.sql (API-T084)"],
+
+  "test_ids": ["API-T084"]
+}

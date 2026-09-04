@@ -1,0 +1,91 @@
+{
+  "functionality_id": "API-021",
+  "module": "Patient Registration",
+  "functionality": "Create Registration",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/registrations",
+  "description": "Creates a new registration/visit record for an existing patient. A patient may have multiple registrations over time.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "registrationNumber": "string(100), required",
+      "registrationType": "string, optional - not a persisted column (see notes)",
+      "status": "string(50), optional - persisted as registration_status, default REGISTERED"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId", "registrationNumber"],
+
+  "validation": [
+    "organization and branch must exist",
+    "patientId must reference an existing patient (patient_registrations.patient_id NOT NULL FK)",
+    "registrationNumber must not be null (NOT NULL)",
+    "registrationNumber must be unique within organization + branch (UNIQUE organization_id, branch_id, registration_number)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Registration created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "patientId": "uuid",
+        "registrationNumber": "REG-API-001",
+        "registrationStatus": "REGISTERED",
+        "registeredAt": "timestamp with time zone"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "registrationNumber is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "registrationNumber is required" },
+      "source": "database/api_contracts_test/011_patient_registration.sql (API-T073)"
+    },
+    {
+      "condition": "patientId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" },
+      "source": "database/api_contracts_test/011_patient_registration.sql (API-T075)"
+    },
+    {
+      "condition": "registrationNumber already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate registration number" },
+      "source": "database/api_contracts_test/011_patient_registration.sql (API-T074)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_registrations", "patients"],
+    "relationships": ["patient_registrations.patient_id -> patients.id"],
+    "constraints": [
+      "registration_number NOT NULL",
+      "UNIQUE (organization_id, branch_id, registration_number)",
+      "created_by NOT NULL (references users.id)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/003_patient_registration.sql",
+    "database/api_contracts_test/011_patient_registration.sql"
+  ],
+
+  "test_ids": ["API-T071", "API-T073", "API-T074", "API-T075", "API-T078"],
+  "notes": "docs/API_Contracts_and_Test_Results.xlsx documents a 'registrationType' request field (e.g. WALK_IN), but patient_registrations has no registration_type column in any schema version through v25 - only registration_status exists. registrationType is listed here for completeness of the documented contract but is not currently persisted anywhere; it is either dead in the current schema or planned but not yet migrated. Also note: created_by is a required (NOT NULL) FK to users on this table - the creating user's ID must be resolved server-side (e.g. from the authenticated session), it is not a documented request field."
+}

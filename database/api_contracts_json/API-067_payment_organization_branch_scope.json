@@ -1,0 +1,43 @@
+{
+  "functionality_id": "API-067",
+  "module": "Payment",
+  "functionality": "Organization/Branch Scope",
+  "http_method": "GET",
+  "endpoint": "/api/payments/{paymentId}",
+  "description": "Documents the specific error scenario of API-058 (View Payment) where the payment exists but does not belong to the caller's organization/branch (tenant isolation). Same endpoint as API-058, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "paymentId": "uuid - belongs to a different organization/branch than the caller in this scenario" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "paymentId"],
+
+  "validation": ["payment.organization_id and payment.branch_id must match the caller's tenant scope"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-058 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "paymentId exists but belongs to a different organization or branch",
+      "status_code": 404,
+      "response": { "success": false, "error": "Payment not accessible" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T126)"
+    }
+  ],
+
+  "database": {
+    "tables": ["payment"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T126)"],
+
+  "test_ids": ["API-T126"],
+  "notes": "Since /api/payments/{paymentId} is not org/branch path-scoped (see API-058 notes), this tenant-isolation check must be enforced entirely at the API layer by comparing payment.organization_id/branch_id against the authenticated caller's session context - there is no path parameter to validate against."
+}

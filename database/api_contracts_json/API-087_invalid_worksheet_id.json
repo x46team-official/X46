@@ -1,0 +1,58 @@
+{
+  "functionality_id": "API-087",
+  "module": "Worklist Management",
+  "functionality": "Invalid Worksheet ID (Assignment)",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accession-tests/{accessionTestId}/worklist",
+  "description": "Documents the specific error scenario of API-078 where the request fails this validation. Same endpoint as API-078, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "worksheetId": "'00000000-0000-0000-0000-000000000000' - not an existing worksheet_master row"
+    }
+  },
+  "required_fields": [
+    "worksheetId"
+  ],
+  "validation": [
+    "worksheetId must reference an existing worksheet_master row"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "worksheetId must reference an existing worksheet_master row",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Worksheet not found"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T146)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "accession_tests",
+      "worksheet_master"
+    ],
+    "relationships": [
+      "accession_tests.worksheet_id -> worksheet_master.id"
+    ],
+    "constraints": []
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/017_worklist.sql (API-T146)"
+  ],
+  "test_ids": [
+    "API-T146"
+  ]
+}

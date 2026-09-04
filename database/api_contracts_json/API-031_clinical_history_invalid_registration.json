@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-031",
+  "module": "Clinical History",
+  "functionality": "Invalid Registration",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/clinical-history",
+  "description": "Documents the specific error scenario of API-026 (Create Clinical History) where registrationId does not reference an existing registration belonging to the patient. Same endpoint as API-026, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "registrationId": "uuid - invalid/non-existent in this scenario", "clinicalId": "uuid, required" }
+  },
+
+  "required_fields": ["registrationId"],
+
+  "validation": ["registrationId, when provided, must reference an existing patient_registrations row belonging to the patient (patient_clinical_history.registration_id FK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-026 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "registrationId does not reference an existing registration",
+      "status_code": 404,
+      "response": { "success": false, "error": "Registration not found" },
+      "source": "database/api_contracts_test/012_clinical_history.sql (API-T086)"
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_clinical_history", "patient_registrations"],
+    "relationships": ["patient_clinical_history.registration_id -> patient_registrations.id (nullable)"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/012_clinical_history.sql (API-T086)"],
+
+  "test_ids": ["API-T086"]
+}

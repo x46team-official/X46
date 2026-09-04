@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-052",
+  "module": "Accession",
+  "functionality": "Invalid Accession ID",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}",
+  "description": "Documents the specific error scenario of API-044 (View Accession) where accessionId does not reference an existing record. Same endpoint as API-044, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "accessionId": "uuid - invalid/non-existent in this scenario" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["accessionId"],
+
+  "validation": ["accessionId must reference an existing accession in organization + branch scope"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-044 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "accessionId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession not found" },
+      "source": "database/api_contracts_test/014_accession.sql"
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql"],
+
+  "test_ids": ["API-T110"]
+}

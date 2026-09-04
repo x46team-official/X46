@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-073",
+  "module": "Sample Collection",
+  "functionality": "Invalid Collection Status",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Documents the specific error scenario of API-069 (Create Sample Collection) where collectionStatus is not a recognized value. Same endpoint as API-069, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "collectionStatus": "'INVALID_STATUS' - not a valid collection_status value in this scenario" }
+  },
+
+  "required_fields": ["collectionStatus"],
+
+  "validation": ["collectionStatus must be one of COLLECTED, RECOLLECTION_REQUIRED, REJECTED (CHECK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-069 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "collectionStatus is not one of the allowed enum values",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid collection status" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T132)"
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection"],
+    "relationships": [],
+    "constraints": ["collection_status VARCHAR(30) NOT NULL DEFAULT 'COLLECTED' CHECK IN (COLLECTED, RECOLLECTION_REQUIRED, REJECTED)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/016_sample_collection.sql (API-T132)"],
+
+  "test_ids": ["API-T132"]
+}

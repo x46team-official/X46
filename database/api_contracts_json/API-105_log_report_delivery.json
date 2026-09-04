@@ -1,0 +1,116 @@
+{
+  "functionality_id": "API-105",
+  "module": "Report Delivery",
+  "functionality": "Log Report Delivery",
+  "http_method": "POST",
+  "endpoint": "/api/reports/{reportId}/deliveries",
+  "description": "Records a delivery attempt (print/email/SMS/WhatsApp/portal) for a generated report.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "reportId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "deliveryType": "enum, required - PRINT | EMAIL | SMS | WHATSAPP | PORTAL",
+      "recipientType": "enum, required - PATIENT | DOCTOR | REFERRAL | COLLECTION_CENTER | LAB",
+      "recipientName": "string(255), optional",
+      "recipientContact": "string(255), optional"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "reportId",
+    "deliveryType",
+    "recipientType"
+  ],
+  "validation": [
+    "reportId must reference an existing report (NOT NULL FK)",
+    "deliveryType must be one of PRINT, EMAIL, SMS, WHATSAPP, PORTAL (CHECK)",
+    "recipientType must be one of PATIENT, DOCTOR, REFERRAL, COLLECTION_CENTER, LAB (CHECK)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Report delivery logged successfully",
+      "data": {
+        "id": "uuid",
+        "reportId": "uuid",
+        "deliveryType": "PRINT",
+        "recipientType": "PATIENT",
+        "deliveryStatus": "DELIVERED",
+        "deliveredAt": "2026-08-17T10:00:00Z"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "reportId does not reference an existing report",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Report not found"
+      },
+      "source": "database/api_contracts_test/021_report_delivery.sql (API-T165)",
+      "related_functionality_id": "API-107"
+    },
+    {
+      "condition": "deliveryType is not one of the allowed enum values",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid delivery type"
+      },
+      "source": "database/api_contracts_test/021_report_delivery.sql (API-T166)",
+      "related_functionality_id": "API-108"
+    },
+    {
+      "condition": "recipientType is not one of the allowed enum values",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid recipient type"
+      },
+      "source": "database/api_contracts_test/021_report_delivery.sql (API-T167)",
+      "related_functionality_id": "API-109"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_delivery_log",
+      "report_master"
+    ],
+    "relationships": [
+      "report_delivery_log.report_id -> report_master.id (ON DELETE CASCADE)"
+    ],
+    "constraints": [
+      "report_id NOT NULL",
+      "delivery_type CHECK IN (PRINT, EMAIL, SMS, WHATSAPP, PORTAL)",
+      "recipient_type CHECK IN (PATIENT, DOCTOR, REFERRAL, COLLECTION_CENTER, LAB)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/013_notification.sql",
+    "database/api_contracts_test/021_report_delivery.sql"
+  ],
+  "test_ids": [
+    "API-T164"
+  ],
+  "notes": "database/e2e-validation/013_notification.sql is named for the 'notification' e2e stage but its content is entirely about report_delivery_log and releasing report_master - it does not touch the notification_log/notification_template tables at all. This contract and API-106/107-110 document what that e2e file actually exercises (report delivery), not the separate notification_log table, which currently has no e2e-validation or api_contracts_test coverage."
+}

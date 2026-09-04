@@ -1,0 +1,126 @@
+{
+  "functionality_id": "API-122",
+  "module": "Test Package Management",
+  "functionality": "Bill Test Package",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billings/{billingId}/test-packages",
+  "description": "Adds a test package to an existing bill. Expands the package into one billing_tests line item per member test, each tagged with package_id, and allocates the package's selling_price across the member tests proportionally to their individual selling_price so line-item net amounts sum back to the package price.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "billingId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "packageId": "uuid, required - references test_package_master.id"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "billingId",
+    "packageId"
+  ],
+  "validation": [
+    "billingId must reference an existing billing_master row",
+    "packageId must reference an existing test_package_master row",
+    "package must have at least one active member test (test_package_test_mapping)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Package billed successfully",
+      "data": {
+        "billingId": "uuid",
+        "packageId": "uuid",
+        "packageCode": "PKG001",
+        "packagePrice": 550.00,
+        "billingTests": [
+          {
+            "id": "uuid",
+            "testId": "uuid",
+            "testCode": "CBC001",
+            "rate": 350.00,
+            "discountAmount": 93.33,
+            "netAmount": 256.67
+          },
+          {
+            "id": "uuid",
+            "testId": "uuid",
+            "testCode": "BILIRUBIN",
+            "rate": 250.00,
+            "discountAmount": 66.67,
+            "netAmount": 183.33
+          },
+          {
+            "id": "uuid",
+            "testId": "uuid",
+            "testCode": "CREATININE",
+            "rate": 150.00,
+            "discountAmount": 40.00,
+            "netAmount": 110.00
+          }
+        ]
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "packageId does not reference an existing test_package_master row",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Test package not found"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T186)",
+      "related_functionality_id": "API-127"
+    },
+    {
+      "condition": "billingId does not reference an existing billing_master row",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Bill not found"
+      }
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "billing_tests",
+      "billing_master",
+      "test_package_master",
+      "test_package_test_mapping",
+      "test_master"
+    ],
+    "relationships": [
+      "billing_tests.package_id -> test_package_master.id (nullable)",
+      "billing_tests.billing_id -> billing_master.id",
+      "billing_tests.test_id -> test_master.id"
+    ],
+    "constraints": [
+      "billing_tests.package_id REFERENCES test_package_master(id)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/018_test_package.sql",
+    "database/api_contracts_test/023_test_package.sql"
+  ],
+  "test_ids": [
+    "API-T181"
+  ]
+}

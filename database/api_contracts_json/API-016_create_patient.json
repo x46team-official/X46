@@ -1,0 +1,114 @@
+{
+  "functionality_id": "API-016",
+  "module": "Patient Management",
+  "functionality": "Create Patient",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients",
+  "description": "Creates a new patient demographic record. Optionally creates an associated primary contact (patient_contacts) when contact/email is supplied.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "firstName": "string(100), required",
+      "lastName": "string(100), optional",
+      "middleName": "string(100), optional",
+      "gender": "string(30), required at API layer (nullable at DB layer)",
+      "dateOfBirth": "date, required at API layer (nullable at DB layer)",
+      "patientType": "string(50), optional",
+      "patientCategory": "string(100), optional",
+      "title": "string(20), optional",
+      "designation": "string(100), optional",
+      "nationality": "string(100), optional",
+      "contact": "string, optional - convenience field, inserted into patient_contacts as contact_type = PHONE",
+      "email": "string, optional - convenience field, inserted into patient_contacts as contact_type = EMAIL"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "firstName", "gender", "dateOfBirth"],
+
+  "validation": [
+    "organization and branch must exist",
+    "firstName must not be null (NOT NULL at DB layer)",
+    "gender and dateOfBirth are nullable at the DB layer but required at the API layer per documented contract",
+    "dateOfBirth must be a valid date",
+    "if contact/email provided, resulting patient_contacts row must be unique per (organization_id, branch_id, contact_type, contact_value) -- uq_patient_contact"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Patient created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "firstName": "Test",
+        "lastName": "Patient",
+        "gender": "MALE",
+        "dateOfBirth": "1995-05-15",
+        "patientType": "GENERAL",
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "firstName missing/null, or gender/dateOfBirth missing (API-layer required)",
+      "status_code": 400,
+      "response": { "success": false, "error": "Validation error" },
+      "source": "database/api_contracts_test/010_patient_management.sql (API-T064)"
+    },
+    {
+      "condition": "dateOfBirth is not a valid date / gender or patientType is not a recognized value",
+      "status_code": 422,
+      "response": { "success": false, "error": "Semantic validation failed" },
+      "status_definition": "TO_BE_CONFIRMED"
+    },
+    {
+      "condition": "Duplicate patient contact (same contact_type + contact_value already exists in organization + branch)",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate contact value" }
+    },
+    {
+      "condition": "organizationId or branchId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" }
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patients", "patient_contacts", "organizations", "branches"],
+    "relationships": [
+      "patients.organization_id -> organizations.id",
+      "patients.branch_id -> branches.id",
+      "patient_contacts.patient_id -> patients.id"
+    ],
+    "constraints": [
+      "patients.first_name NOT NULL",
+      "patients.gender, date_of_birth are NULLABLE at DB layer",
+      "UNIQUE (organization_id, branch_id, contact_type, contact_value) -- uq_patient_contact"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/003_patient_registration.sql",
+    "database/api_contracts_test/010_patient_management.sql"
+  ],
+
+  "test_ids": ["API-T061", "API-T064"],
+
+  "database_gap": true,
+  "notes": "SCHEMA GAP: database/api_contracts_test/010_patient_management.sql inserts into a patients.patient_code column and tests 'Duplicate Patient Code' (API-T065) as a 409 scenario, but no patient_code column exists on the patients table in any schema file, including the current database/schema/versions/v25.sql snapshot - the test script would fail with 'column does not exist' if run against the live schema. There is also no other DB-level uniqueness constraint on the patients table itself (no unique index on name/DOB), so the 'Prevent Duplicate Patient Record' rule (PM005 in the Functionality Tracker, noted there as 'Depends on business rules') is NOT currently enforced by the database - the only real per-tenant uniqueness in this area is uq_patient_identifier on the separate patient_identifiers table (organization_id, branch_id, identifier_type, identifier_value), which is a distinct, not-yet-contracted functionality (PM006-010 in the tracker).",
+  "requires_confirmation": "Is patient_code a planned column that has not yet been migrated into the schema, or should duplicate-patient detection be implemented via patient_identifiers (e.g. an MRN identifier_type) instead? The Functionality Tracker explicitly defers this decision ('Depends on business rules') and no schema migration currently backs it."
+}

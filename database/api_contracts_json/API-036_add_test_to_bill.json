@@ -1,0 +1,81 @@
+{
+  "functionality_id": "API-036",
+  "module": "Billing",
+  "functionality": "Add Test to Bill",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing/{billingId}/tests",
+  "description": "Adds a test line item (billing_tests) to an existing bill.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "billingId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "testId": "uuid, required - references test_master.id",
+      "quantity": "integer, optional - default 1",
+      "rate": "numeric(10,2), optional - default 0",
+      "discountAmount": "numeric(10,2), optional",
+      "concessionAmount": "numeric(10,2), optional",
+      "netAmount": "numeric(10,2), optional",
+      "sampleTypeId": "uuid, optional",
+      "performingLabId": "uuid, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "billingId", "testId"],
+
+  "validation": [
+    "bill must exist and belong to organization + branch",
+    "testId must reference an existing test in test_master (NOT NULL FK) belonging to the organization"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Billing test added successfully",
+      "data": {
+        "id": "uuid",
+        "billingId": "uuid",
+        "testId": "uuid",
+        "quantity": 1,
+        "rate": 350,
+        "netAmount": 350,
+        "status": "Pending"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "testId missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "testId is required" }
+    },
+    {
+      "condition": "billingId or testId does not exist / test does not belong to organization",
+      "status_code": 404,
+      "response": { "success": false, "error": "Bill or test not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_tests", "billing_master", "test_master"],
+    "relationships": [
+      "billing_tests.billing_id -> billing_master.id",
+      "billing_tests.test_id -> test_master.id"
+    ],
+    "constraints": [
+      "billing_id NOT NULL",
+      "test_id NOT NULL",
+      "quantity NOT NULL DEFAULT 1",
+      "rate NOT NULL DEFAULT 0"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql (API-T094)"],
+
+  "test_ids": ["API-T094"]
+}

@@ -1,0 +1,85 @@
+{
+  "functionality_id": "API-113",
+  "module": "Reference Range Master",
+  "functionality": "Lookup Reference Range",
+  "http_method": "GET",
+  "endpoint": "/api/reference-ranges/lookup",
+  "description": "Looks up the single applicable reference range band for a parameter given a patient's gender, age, and pregnancy status, as of a given date.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {
+      "parameterId": "uuid, required",
+      "gender": "enum, required - MALE | FEMALE | ANY",
+      "age": "numeric, required",
+      "ageUnit": "enum, required - DAYS | MONTHS | YEARS",
+      "pregnancyFlag": "boolean, optional, default false",
+      "asOfDate": "date, optional, default CURRENT_DATE"
+    },
+    "headers": {},
+    "body": "None"
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "parameterId",
+    "gender",
+    "age",
+    "ageUnit"
+  ],
+  "validation": [
+    "parameterId must reference an existing parameter",
+    "exactly one band should match given the overlap-prevention trigger guarantees non-overlapping active bands"
+  ],
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "data": {
+        "referenceMin": 13.0,
+        "referenceMax": 17.0,
+        "referenceRange": "13.0 - 17.0",
+        "criticalLow": 7.0,
+        "criticalHigh": 20.0,
+        "effectiveFrom": "2020-01-01",
+        "effectiveTo": null
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "no band matches the given parameter/gender/age/pregnancy/effective-date combination",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "No matching reference range found"
+      }
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "reference_range_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "Lookup filters on gender, pregnancy_flag, age_unit, age_min <= age <= age_max, effective_from <= date <= COALESCE(effective_to, infinity), ordered by effective_from DESC LIMIT 1"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/015_reference_range_master.sql"
+  ],
+  "test_ids": [
+    "API-T172"
+  ]
+}

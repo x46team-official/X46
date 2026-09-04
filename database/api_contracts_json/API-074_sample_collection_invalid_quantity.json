@@ -1,0 +1,46 @@
+{
+  "functionality_id": "API-074",
+  "module": "Sample Collection",
+  "functionality": "Invalid Quantity",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Documents the specific error scenario of API-069 (Create Sample Collection) where quantity is 0. Same endpoint as API-069, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering. This is a confirmed DB GAP.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "quantity": "0 - not a valid collected quantity in this scenario" }
+  },
+
+  "required_fields": ["quantity"],
+
+  "validation": ["quantity should be > 0 per the intended API contract"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-069 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "quantity is 0 or negative",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid quantity" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T133)",
+      "source_annotation": "E2E validation identifies DB GAP"
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection"],
+    "relationships": [],
+    "constraints": ["quantity NUMERIC(10,2) - nullable, no CHECK constraint in the current schema"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/016_sample_collection.sql (API-T133)"],
+
+  "test_ids": ["API-T133"],
+
+  "database_gap": true,
+  "notes": "database/schema/019_sample_collection.sql defines quantity as a plain nullable NUMERIC(10,2) with no CHECK constraint. database/api_contracts_test/016_sample_collection.sql's TEST 5 scenario confirms an insert with quantity = 0 is currently accepted by PostgreSQL, even though the intended API behavior is 400 Bad Request. A CHECK (quantity > 0) constraint (allowing NULL, since quantity is optional) would need to be added to database/schema/019_sample_collection.sql to actually enforce this at the DB layer; until then, quantity validation must happen at the API layer only."
+}

@@ -1,0 +1,101 @@
+{
+  "functionality_id": "API-121",
+  "module": "Test Package Management",
+  "functionality": "Add Test to Package",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/test-packages/{packageId}/tests",
+  "description": "Adds a member test to a test package, so it is included whenever the package is billed.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "packageId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "testId": "uuid, required - references test_master.id",
+      "displayOrder": "integer, optional - default 1"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "packageId",
+    "testId"
+  ],
+  "validation": [
+    "packageId must reference an existing test_package_master row",
+    "testId must reference an existing test_master row",
+    "(packageId, testId) must be unique (uq_test_package_test_mapping) - a test cannot be added twice to the same package"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Test added to package successfully",
+      "data": {
+        "id": "uuid",
+        "packageId": "uuid",
+        "testId": "uuid",
+        "displayOrder": 1,
+        "isActive": true
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "testId does not reference an existing test",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Test not found"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T184)",
+      "related_functionality_id": "API-125"
+    },
+    {
+      "condition": "testId already added to this packageId",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Test already in package"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T185)",
+      "related_functionality_id": "API-126"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "test_package_test_mapping",
+      "test_package_master",
+      "test_master"
+    ],
+    "relationships": [
+      "test_package_test_mapping.package_id -> test_package_master.id",
+      "test_package_test_mapping.test_id -> test_master.id"
+    ],
+    "constraints": [
+      "uq_test_package_test_mapping UNIQUE (organization_id, branch_id, package_id, test_id)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/018_test_package.sql",
+    "database/api_contracts_test/023_test_package.sql"
+  ],
+  "test_ids": [
+    "API-T180"
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "functionality_id": "API-111",
+  "module": "Reference Range Master",
+  "functionality": "Create Parameter",
+  "http_method": "POST",
+  "endpoint": "/api/parameters",
+  "description": "Creates a test parameter definition (e.g. Hemoglobin, Total Bilirubin) used by result entry and reference ranges.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "parameterCode": "string(50), required",
+      "parameterName": "string(255), required",
+      "unit": "string(50), optional",
+      "defaultReferenceRange": "string(255), optional"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "parameterCode",
+    "parameterName"
+  ],
+  "validation": [
+    "organization and branch must exist",
+    "parameterCode must be unique within organization + branch (uq_parameter_master_code)",
+    "parameterName must be unique within organization + branch (uq_parameter_master_name)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Parameter created successfully",
+      "data": {
+        "id": "uuid",
+        "parameterCode": "TBIL",
+        "parameterName": "Total Bilirubin",
+        "unit": "mg/dL",
+        "defaultReferenceRange": "0.3 - 1.2"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "parameterCode already exists for the organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate parameter code"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T174)",
+      "related_functionality_id": "API-115"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "parameter_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_parameter_master_code UNIQUE (organization_id, branch_id, parameter_code)",
+      "uq_parameter_master_name UNIQUE (organization_id, branch_id, parameter_name)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/015_reference_range_master.sql",
+    "database/api_contracts_test/022_reference_range_master.sql"
+  ],
+  "test_ids": [
+    "API-T170"
+  ]
+}
