@@ -1,0 +1,74 @@
+{
+  "functionality_id": "API-028",
+  "module": "Clinical History",
+  "functionality": "Update Clinical History",
+  "http_method": "PUT",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/clinical-history/{clinicalHistoryId}",
+  "description": "Updates an existing clinical history record's severity, status, and notes.",
+
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "patientId": "uuid, required",
+      "clinicalHistoryId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "severity": "string(30), optional",
+      "status": "string(30), optional",
+      "durationValue": "integer, optional",
+      "durationUnit": "string(20), optional",
+      "notes": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId", "clinicalHistoryId"],
+
+  "validation": [
+    "clinical history record must exist and belong to the specified patient + organization + branch"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Clinical history updated successfully",
+      "data": {
+        "id": "uuid",
+        "patientId": "uuid",
+        "clinicalId": "uuid",
+        "severity": "MILD",
+        "status": "ACTIVE",
+        "notes": "Updated notes"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "Invalid field format",
+      "status_code": 400,
+      "response": { "success": false, "error": "Validation error" }
+    },
+    {
+      "condition": "clinicalHistoryId not found / does not belong to the specified patient + organization + branch",
+      "status_code": 404,
+      "response": { "success": false, "error": "Clinical history record not found" },
+      "source": "database/api_contracts_test/012_clinical_history.sql (API-T087)"
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_clinical_history"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/012_clinical_history.sql (API-T083)"],
+
+  "test_ids": ["API-T083", "API-T087"]
+}

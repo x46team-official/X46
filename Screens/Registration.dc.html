@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; overflow-x: auto; overflow-y: hidden; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.35; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 5px 8px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 3px; letter-spacing: .01em; }
+    .req::after { content: " *"; color: var(--color-error); }
+    .num { font-variant-numeric: tabular-nums; }
+    .card { background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; }
+    .chd { padding: 8px 12px; border-bottom: 1px solid var(--color-border-light); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; }
+    .sub { padding: 6px 12px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary); flex-shrink: 0; }
+    .row { display: flex; justify-content: space-between; font-size: 11.5px; }
+    .scroll { overflow-y: auto; min-height: 0; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; height: 100vh; overflow: hidden; min-width: 1180px;">
+  <nav style="width: 190px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700;">X46</div>
+      <div style="font-size: 12.5px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 8px 14px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 11.5px; font-weight: 600; margin-top: 1px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 6px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Patients</a>
+      <div style="display: block; padding: 6px 14px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Registration &amp; Billing</div>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <a href="Accession.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Accession</a>
+      <a href="Worklist.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist</a>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; overflow: hidden; position: relative;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 9px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px 14px; flex-wrap: wrap; flex-shrink: 0;">
+      <div style="display: flex; align-items: baseline; gap: 10px; flex: 1 1 200px; min-width: 0;">
+        <h1 style="margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; flex-shrink: 0;">Registration &amp; Billing</h1>
+        <div style="font-size: 11px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ patientSummary }}</div>
+      </div>
+      <div style="display: flex; gap: 8px 10px; align-items: flex-end; flex-wrap: wrap; justify-content: flex-end;">
+        <div style="width: 132px; flex-shrink: 0;"><label>Sample Collect Time</label><input type="datetime-local" value="{{ collectTime }}" onChange="{{ updateField }}" data-field="collectTime" /></div>
+        <div style="width: 140px; flex-shrink: 0;">
+          <label>Registration No. <span style="color: var(--color-error);">*</span></label>
+          <input type="text" value="{{ registrationNumber }}" onChange="{{ updateField }}" data-field="registrationNumber" maxlength="100" class="num" style="border-color: {{ regBorder }};" />
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em;">Bill No.</div>
+          <input type="text" value="{{ billNumber }}" onChange="{{ updateField }}" data-field="billNumber" class="num" style="width: 128px; padding: 3px 6px; font-size: 12px; font-weight: 700; text-align: right; border: 1px solid {{ billNumberBorder }}; border-radius: 4px; background: #fff;" />
+        </div>
+        <a href="Registration Settings.dc.html" title="Registration Settings" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 11px; background: #fff; color: var(--color-text-secondary); border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11.5px; font-weight: 600; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Settings</a>
+        <button onClick="{{ openBulk }}" style="padding: 7px 12px; background: #fff; color: var(--color-primary-deep); border: 1px solid var(--color-primary-bright); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-interactive-hover);">Bulk Registration</button>
+        <button onClick="{{ cancel }}" style="padding: 7px 12px; background: #fff; color: var(--color-text-secondary); border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; cursor: pointer;" style-hover="background: var(--color-gray-50);">Cancel</button>
+        <button onClick="{{ submit }}" disabled="{{ submitting }}" style="padding: 7px 14px; background: var(--color-primary-deep); color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">{{ submitLabel }}</button>
+      </div>
+    </div>
+
+    <div style="flex: 1; min-height: 0; padding: 10px 16px 12px; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px; position: relative;">
+      <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: 16px; right: 16px; top: 10px; z-index: 9; padding: 6px 12px; border-radius: 5px; font-size: 11.5px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border: 1px solid {{ bannerBorder }}; box-shadow: 0 4px 10px rgba(17,24,39,.12);">
+          <span style="font-weight: 700;">{{ bannerTitle }} · </span>{{ banner }}
+        </div>
+      </sc-if>
+
+      <div class="card">
+        <div class="chd">
+          <span>Patient Details</span>
+          <span style="display: flex; align-items: center; gap: 8px;">
+            <sc-if value="{{ isExisting }}" hint-placeholder-val="{{ false }}">
+              <span style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px; background: var(--color-interactive-hover); color: var(--color-primary-deep); font-size: 10.5px; font-weight: 700;">
+                Existing patient · {{ loadedMrn }}
+                <button onClick="{{ clearPatient }}" title="Register a new patient instead" style="background: none; border: none; padding: 0; font-family: inherit; font-size: 11px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;">✕</button>
+              </span>
+            </sc-if>
+            <span style="font-size: 10px; font-weight: 500; color: var(--color-text-tertiary);">Type a mobile number to find an existing patient · fields marked * are required</span>
+          </span>
+        </div>
+        <div style="padding: 10px 12px; display: flex; gap: 12px; align-items: flex-start;">
+          <div style="width: 66px; flex-shrink: 0; display: flex; flex-direction: column; gap: 4px;">
+            <div style="width: 66px; height: 62px; border: 1px dashed var(--color-border-base); border-radius: 4px; background: var(--color-surface-alt); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+              {{ photoPreview }}
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <button onClick="{{ pickPhoto }}" style="flex: 1; padding: 3px 0; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Photo</button>
+              <button onClick="{{ capturePhoto }}" style="flex: 1; padding: 3px 0; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Cam</button>
+            </div>
+            <input type="file" accept="image/*" ref="{{ photoInput }}" onChange="{{ onPhotoFile }}" style="display: none;" />
+          </div>
+
+          <div style="flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px 10px;">
+            <div>
+              <label class="req">MRN</label>
+              <input type="text" placeholder="MRN-000000" maxlength="24" value="{{ mrn }}" onChange="{{ updateField }}" data-field="mrn" disabled="{{ isExisting }}" title="{{ mrnTitle }}" style="font-weight: 700; border-color: {{ mrnBorder }}; background: {{ mrnBg }};" class="num" />
+            </div>
+            <div>
+              <label>Title</label>
+              <select value="{{ title }}" onChange="{{ updateField }}" data-field="title"><option value="Mr">Mr</option><option value="Ms">Ms</option><option value="Mrs">Mrs</option><option value="Miss">Miss</option><option value="Dr">Dr</option><option value="Master">Master</option><option value="Baby">Baby</option></select>
+            </div>
+            <div>
+              <label class="req">First Name</label>
+              <input type="text" placeholder="First" maxlength="80" value="{{ firstName }}" onChange="{{ updateField }}" data-field="firstName" style="border-color: {{ firstNameBorder }};" />
+            </div>
+            <div>
+              <label>Middle Name</label>
+              <input type="text" placeholder="Middle" maxlength="80" value="{{ middleName }}" onChange="{{ updateField }}" data-field="middleName" />
+            </div>
+            <div>
+              <label>Last Name</label>
+              <input type="text" placeholder="Last" maxlength="80" value="{{ lastName }}" onChange="{{ updateField }}" data-field="lastName" />
+            </div>
+            <div>
+              <label class="req">Gender</label>
+              <select value="{{ gender }}" onChange="{{ updateField }}" data-field="gender" style="border-color: {{ genderBorder }};"><option value="">Select</option><option value="MALE">Male</option><option value="FEMALE">Female</option><option value="OTHER">Other</option></select>
+            </div>
+            <div>
+              <label class="req">Age (Y / M / D)</label>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                <input type="number" min="0" placeholder="Y" value="{{ ageY }}" onChange="{{ updateField }}" data-field="ageY" style="border-color: {{ ageBorder }}; padding: 5px 4px;" class="num" />
+                <input type="number" min="0" placeholder="M" value="{{ ageM }}" onChange="{{ updateField }}" data-field="ageM" style="padding: 5px 4px;" class="num" />
+                <input type="number" min="0" placeholder="D" value="{{ ageD }}" onChange="{{ updateField }}" data-field="ageD" style="padding: 5px 4px;" class="num" />
+              </div>
+            </div>
+            <div>
+              <label class="req">Mobile</label>
+              <input type="tel" placeholder="+91 00000 00000" value="{{ phone }}" onChange="{{ updateField }}" data-field="phone" style="border-color: {{ phoneBorder }};" class="num" />
+            </div>
+
+            <sc-if value="{{ hasPhoneMatch }}" hint-placeholder-val="{{ false }}">
+              <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; padding: 7px 10px; border: 1px solid var(--color-primary-bright); border-radius: 4px; background: var(--color-interactive-hover); flex-wrap: wrap;">
+                <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-primary-deep); white-space: nowrap;">Already on file</span>
+                <span class="num" style="font-size: 11.5px; font-weight: 700;">{{ matchMrn }}</span>
+                <span style="font-size: 11.5px; font-weight: 600;">{{ matchName }}</span>
+                <span style="font-size: 11px; color: var(--color-text-secondary);">{{ matchMeta }}</span>
+                <span style="flex: 1;"></span>
+                <button onClick="{{ loadPhoneMatch }}" style="padding: 4px 11px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Load patient</button>
+                <button onClick="{{ dismissPhoneMatch }}" style="padding: 4px 9px; background: none; border: none; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;">Register new anyway</button>
+
+                <div style="flex: 1 1 100%; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; padding-top: 7px; border-top: 1px dashed var(--color-primary-bright);">
+                  <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary); white-space: nowrap;">Last visit {{ matchVisit }}</span>
+                  <sc-for list="{{ matchTests }}" as="mt" hint-placeholder-count="3">
+                    <button onClick="{{ mt.onAdd }}" title="{{ mt.tip }}" style="display: inline-flex; align-items: baseline; gap: 5px; padding: 3px 8px; border: 1px solid {{ mt.border }}; border-radius: 4px; background: {{ mt.bg }}; font-family: inherit; cursor: pointer;" style-hover="border-color: var(--color-primary-deep);">
+                      <span style="font-size: 11px; font-weight: 700; font-family: ui-monospace, monospace; color: {{ mt.fg }};">{{ mt.code }}</span>
+                      <span style="font-size: 10px; font-weight: 700; color: var(--color-primary-deep);">{{ mt.tick }}</span>
+                      <span class="num" style="font-size: 10px; color: var(--color-text-secondary);">₹{{ mt.rate }}</span>
+                    </button>
+                  </sc-for>
+                  <span style="flex: 1;"></span>
+                  <button onClick="{{ repeatMatchTests }}" style="padding: 3px 10px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-family: inherit; font-size: 10.5px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer; white-space: nowrap;" style-hover="background: #fff;">Repeat all {{ matchTestCount }}</button>
+                </div>
+              </div>
+            </sc-if>
+            <div>
+              <label>Email</label>
+              <input type="email" placeholder="name@example.com" value="{{ email }}" onChange="{{ updateField }}" data-field="email" />
+            </div>
+            <div>
+              <label>Referring Doctor</label>
+              <select value="{{ referringDoctor }}" onChange="{{ updateField }}" data-field="referringDoctor">
+                <option value="">Select doctor</option>
+                <option value="SELF">Self / walk-in</option>
+                <option value="DR-ANAND">Dr. Anand Rao · General Medicine</option>
+                <option value="DR-MEHTA">Dr. Priya Mehta · Endocrinology</option>
+                <option value="DR-SHAIKH">Dr. Imran Shaikh · Cardiology</option>
+                <option value="DR-NAIR">Dr. Latha Nair · Paediatrics</option>
+                <option value="DR-JOSHI">Dr. Sameer Joshi · Orthopaedics</option>
+              </select>
+            </div>
+            <div>
+              <label>Upload TRF</label>
+              <button onClick="{{ pickTrf }}" style="width: 100%; padding: 5px 8px; background: #fff; border: 1px dashed var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: {{ trfColor }}; cursor: pointer; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright);">{{ trfLabel }}</button>
+              <input type="file" accept="application/pdf,image/*" ref="{{ trfInput }}" onChange="{{ onTrfFile }}" style="display: none;" />
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap;">
+              <label style="display: flex; align-items: center; gap: 6px; margin: 0 0 5px; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); white-space: nowrap;">
+                <input type="checkbox" checked="{{ whatsappConsent }}" onChange="{{ toggleField }}" data-field="whatsappConsent" /> WhatsApp
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; margin: 0 0 5px; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); white-space: nowrap;">
+                <input type="checkbox" checked="{{ emergency }}" onChange="{{ toggleField }}" data-field="emergency" /> Urgent
+              </label>
+            </div>
+            <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 7px; border-top: 1px dashed var(--color-border-light);">
+              <span style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Optional sections</span>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;">
+                <input type="checkbox" checked="{{ addressOpen }}" onChange="{{ toggleAddress }}" style="accent-color: var(--color-primary-deep); cursor: pointer;" /> Add address
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;">
+                <input type="checkbox" checked="{{ historyOpen }}" onChange="{{ toggleHistory }}" style="accent-color: var(--color-primary-deep); cursor: pointer;" /> Add patient history
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; min-height: 0; align-items: stretch;">
+
+        <sc-if value="{{ anyOptional }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 0 0 208px; display: flex; flex-direction: column; gap: 10px; min-height: 0;">
+          <sc-if value="{{ addressOpen }}" hint-placeholder-val="{{ false }}">
+          <div class="card">
+            <div class="chd"><span>Address</span></div>
+            <div class="scroll" style="padding: 9px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; align-content: start;">
+              <div style="grid-column: span 2;"><label>Address Line</label><input type="text" placeholder="House / street" maxlength="255" value="{{ addressLine1 }}" onChange="{{ updateField }}" data-field="addressLine1" /></div>
+              <div><label>City</label><input type="text" placeholder="City" value="{{ city }}" onChange="{{ updateField }}" data-field="city" /></div>
+              <div><label>Pincode</label><input type="text" placeholder="411001" maxlength="20" value="{{ pincode }}" onChange="{{ updateField }}" data-field="pincode" class="num" /></div>
+              <div><label>District</label><input type="text" placeholder="District" value="{{ district }}" onChange="{{ updateField }}" data-field="district" /></div>
+              <div><label>State</label><input type="text" placeholder="State" value="{{ state }}" onChange="{{ updateField }}" data-field="state" /></div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ historyOpen }}" hint-placeholder-val="{{ false }}">
+          <div class="card">
+            <div class="chd"><span>Patient History</span></div>
+            <div class="scroll" style="padding: 9px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; align-content: start;">
+              <div>
+                <label>Type</label>
+                <select value="{{ clinicalType }}" onChange="{{ updateField }}" data-field="clinicalType"><option value="">Select</option><option value="DISEASE">Disease</option><option value="SYMPTOM">Symptom</option><option value="ALLERGY">Allergy</option><option value="CONDITION">Condition</option></select>
+              </div>
+              <div>
+                <label>Severity</label>
+                <select value="{{ severity }}" onChange="{{ updateField }}" data-field="severity"><option value="">Select</option><option value="MILD">Mild</option><option value="MODERATE">Moderate</option><option value="SEVERE">Severe</option></select>
+              </div>
+              <div style="grid-column: span 2;"><label>Condition</label><input type="text" placeholder="e.g. Diabetes, Fever" value="{{ clinical }}" onChange="{{ updateField }}" data-field="clinical" /></div>
+              <div>
+                <label>Duration</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                  <input type="number" min="0" placeholder="3" value="{{ durationValue }}" onChange="{{ updateField }}" data-field="durationValue" style="padding: 5px 4px;" class="num" />
+                  <select value="{{ durationUnit }}" onChange="{{ updateField }}" data-field="durationUnit" style="padding: 5px 4px;"><option value="DAY">Days</option><option value="WEEK">Wks</option><option value="MONTH">Mon</option><option value="YEAR">Yrs</option></select>
+                </div>
+              </div>
+              <div><label>Notes</label><input type="text" placeholder="Notes" value="{{ notes }}" onChange="{{ updateField }}" data-field="notes" /></div>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <div class="card" style="flex: 1 1 62%; min-width: 0;">
+          <div class="chd">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>Tests &amp; Billing</span>
+              <span style="font-size: 10px; font-weight: 700; color: var(--color-primary-deep); background: var(--color-interactive-hover); border-radius: 999px; padding: 1px 7px;" class="num">{{ lineCount }} selected</span>
+            </div>
+            <div style="display: flex; gap: 5px;">
+              <sc-for list="{{ pickerTabs }}" as="tab" hint-placeholder-count="3">
+                <button onClick="{{ tab.onPick }}" style="padding: 4px 10px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid {{ tab.border }}; background: {{ tab.bg }}; color: {{ tab.fg }}; white-space: nowrap;">{{ tab.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); background: var(--color-surface-alt); flex: 0 0 auto; min-height: fit-content; max-height: 168px; overflow-y: auto;">
+            <sc-if value="{{ showSearch }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; flex-direction: column; gap: 7px;">
+                <div style="display: flex; align-items: center; gap: 7px;">
+                  <div style="position: relative; flex: 1; max-width: 460px;">
+                    <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); display: flex; color: var(--color-text-tertiary); pointer-events: none;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+                    </span>
+                    <input type="text" placeholder="Search by test name or test code…" value="{{ testQuery }}" onChange="{{ onTestQuery }}" style="padding-left: 26px;" />
+                  </div>
+                  <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ clearTestQuery }}" style="padding: 5px 10px; border-radius: 4px; font-family: inherit; font-size: 10.5px; font-weight: 600; cursor: pointer; border: 1px solid var(--color-border-base); background: #fff; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+                  </sc-if>
+                </div>
+
+                <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ searchHint }}</div>
+
+                <sc-if value="{{ showTestResults }}" hint-placeholder-val="{{ true }}">
+                  <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <sc-for list="{{ testResults }}" as="t" hint-placeholder-count="8">
+                      <button onClick="{{ t.onPick }}" title="{{ t.tip }}" aria-label="{{ t.tip }}" style="display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; flex: 0 0 auto; padding: 4px 9px; border: 1px solid {{ t.border }}; border-radius: 4px; background: {{ t.bg }}; font-family: inherit; text-align: left; cursor: pointer;" style-hover="border-color: var(--color-primary-bright);">
+                        <span style="display: flex; align-items: baseline; gap: 4px;">
+                          <span style="font-size: 12px; font-weight: 700; letter-spacing: .01em; color: {{ t.codeFg }}; white-space: nowrap; font-family: ui-monospace, monospace;">{{ t.code }}</span>
+                          <span style="font-size: 10px; font-weight: 700; color: {{ t.tickFg }};">{{ t.tick }}</span>
+                        </span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ noTestResults }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding: 16px 12px; text-align: center; border: 1px solid var(--color-border-light); border-radius: 4px; background: #fff;">
+                    <div style="font-size: 11.5px; font-weight: 700; margin-bottom: 2px;">No tests found</div>
+                    <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Try a different test name or code.</div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showTop10 }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <sc-for list="{{ topTests }}" as="t" hint-placeholder-count="10">
+                      <button onClick="{{ t.onPick }}" title="{{ t.tip }}" aria-label="{{ t.tip }}" style="display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; flex: 0 0 auto; padding: 4px 9px; border: 1px solid {{ t.border }}; border-radius: 4px; background: {{ t.bg }}; font-family: inherit; text-align: left; cursor: pointer;" style-hover="border-color: var(--color-primary-bright);">
+                        <span style="display: flex; align-items: baseline; gap: 4px;">
+                          <span style="font-size: 12px; font-weight: 700; letter-spacing: .01em; color: {{ t.codeFg }}; white-space: nowrap; font-family: ui-monospace, monospace;">{{ t.code }}</span>
+                          <span style="font-size: 10px; font-weight: 700; color: {{ t.tickFg }};">{{ t.tick }}</span>
+                        </span>
+                      </button>
+                    </sc-for>
+                  </div>
+            </sc-if>
+
+            <sc-if value="{{ showPackages }}" hint-placeholder-val="{{ false }}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px;">
+                <sc-for list="{{ packages }}" as="p" hint-placeholder-count="4">
+                  <div style="border: 1px solid {{ p.border }}; background: #fff; border-radius: 4px; padding: 8px 10px; display: flex; flex-direction: column; gap: 5px;">
+                    <div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline;">
+                      <span style="font-size: 11.5px; font-weight: 700;">{{ p.name }}</span>
+                      <span style="font-size: 12px; font-weight: 700;" class="num">₹ {{ p.price }}</span>
+                    </div>
+                    <div style="font-size: 10px; color: var(--color-text-secondary); line-height: 1.35; max-height: 27px; overflow: hidden;">{{ p.included }}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                      <span style="font-size: 10px; font-weight: 700; color: var(--color-secondary-green); background: #F0FDF4; border-radius: 999px; padding: 1px 7px;" class="num">Saves ₹ {{ p.savings }}</span>
+                      <button onClick="{{ p.onPick }}" style="padding: 4px 10px; border-radius: 4px; font-family: inherit; font-size: 10.5px; font-weight: 700; cursor: pointer; border: 1px solid var(--color-primary-deep); background: {{ p.btnBg }}; color: {{ p.btnFg }};">{{ p.btnLabel }}</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 22px minmax(110px,1fr) 62px 44px 58px 76px 20px; gap: 6px; padding: 6px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em; flex-shrink: 0;">
+            <div>#</div><div>Test Name</div><div>Rate</div><div>Qty</div><div>Disc.</div><div style="text-align: right;">Net</div><div></div>
+          </div>
+          <div class="scroll" style="flex: 1 1 40%; min-height: 0;">
+            <sc-for list="{{ lines }}" as="line" hint-placeholder-count="2">
+              <div style="display: grid; grid-template-columns: 22px minmax(110px,1fr) 62px 44px 58px 76px 20px; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center;">
+                <div style="font-size: 11px; color: var(--color-text-tertiary);" class="num">{{ line.no }}</div>
+                <div style="min-width: 0;">
+                  <div style="font-size: 11.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ line.name }}</div>
+                  <div style="font-size: 9.5px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ line.catSub }}</div>
+                </div>
+                <input type="number" min="0" value="{{ line.rate }}" onChange="{{ line.onRate }}" style="padding: 4px 6px;" class="num" />
+                <input type="number" min="1" value="{{ line.qty }}" onChange="{{ line.onQty }}" style="padding: 4px 6px;" class="num" />
+                <input type="number" min="0" value="{{ line.discount }}" onChange="{{ line.onDiscount }}" style="padding: 4px 6px;" class="num" />
+                <div style="font-size: 11.5px; font-weight: 700; text-align: right;" class="num">₹ {{ line.net }}</div>
+                <button onClick="{{ line.onRemove }}" title="Remove test" style="background: none; border: none; padding: 0; font-size: 13px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;" style-hover="color: var(--color-error);">✕</button>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noTests }}" hint-placeholder-val="{{ true }}">
+              <div style="padding: 22px 12px; text-align: center;">
+                <div style="font-size: 11.5px; font-weight: 700; margin-bottom: 2px;">No tests selected</div>
+                <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Click a test code above to add it as a bill line.</div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="padding: 7px 12px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; font-size: 11px; color: var(--color-text-secondary);">
+            <div>Subtotal <span style="font-weight: 700;" class="num">₹ {{ subtotalAmount }}</span> · Line discount <span style="font-weight: 700;" class="num">₹ {{ lineDiscountShown }}</span></div>
+            <div>Payable <span style="font-size: 14px; font-weight: 700; color: var(--color-text-primary);" class="num">₹ {{ payableAmount }}</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="flex: 1 1 38%; min-width: 262px;">
+          <div class="chd"><span>Billing, Summary &amp; Payment</span></div>
+          <div class="scroll" style="flex: 1 1 auto; min-height: 0;">
+            <div style="padding: 9px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px;">
+              <div><label>Billing Category</label><select value="{{ billingCategory }}" onChange="{{ updateField }}" data-field="billingCategory"><option value="WALK_IN">Walk-in</option><option value="CORPORATE">Corporate</option><option value="INSURANCE">Insurance</option><option value="CAMP">Camp</option><option value="HOME_VISIT">Home Visit</option></select></div>
+              <div><label>Performing Lab</label><select value="{{ performingLab }}" onChange="{{ updateField }}" data-field="performingLab"><option value="INHOUSE">In-house</option><option value="OUTSOURCE">Outsource</option></select></div>
+              <div><label>Org Price List</label><select value="{{ orgPriceList }}" onChange="{{ updateField }}" data-field="orgPriceList"><option value="STANDARD">Standard 2026</option><option value="CORPORATE">Corporate</option><option value="CAMP">Camp</option><option value="HOME_VISIT">Home Visit</option></select></div>
+              <div><label>Referral Price List</label><select value="{{ referralPriceList }}" onChange="{{ updateField }}" data-field="referralPriceList"><option value="SELF">Self</option><option value="DOCTOR">Doctor</option><option value="PARTNER">Partner lab</option></select></div>
+              <div><label>Bill Discount (₹)</label><input type="number" min="0" value="{{ discountAmount }}" onChange="{{ updateField }}" data-field="discountAmount" class="num" /></div>
+              <div><label>Additional (₹)</label><input type="number" min="0" value="{{ additionalAmount }}" onChange="{{ updateField }}" data-field="additionalAmount" class="num" /></div>
+              <sc-if value="{{ isHomeVisit }}" hint-placeholder-val="{{ false }}">
+                <div><label>Home Visit Charge (₹)</label><input type="number" min="0" value="{{ homeVisitCharge }}" onChange="{{ updateField }}" data-field="homeVisitCharge" class="num" /></div>
+                <div><label>Visit Slot</label><input type="datetime-local" value="{{ homeVisitSlot }}" onChange="{{ updateField }}" data-field="homeVisitSlot" /></div>
+                <div><label>Phlebotomist</label><select value="{{ homeVisitPhlebo }}" onChange="{{ updateField }}" data-field="homeVisitPhlebo"><option value="">Assign later</option><option value="PH-01">Vaibhav Kadam</option><option value="PH-02">Sneha Pawar</option><option value="PH-03">Rahul Gaikwad</option></select></div>
+                <div style="grid-column: span 2; display: flex; align-items: center; gap: 8px; padding: 6px 9px; border: 1px solid var(--color-primary-bright); border-radius: 4px; background: var(--color-interactive-hover);">
+                  <span style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-primary-deep); white-space: nowrap;">Home visit</span>
+                  <span style="font-size: 10.5px; color: var(--color-text-secondary);">{{ homeVisitHint }}</span>
+                </div>
+              </sc-if>
+              <label style="grid-column: span 2; display: flex; align-items: center; gap: 7px; margin: 0; font-size: 11px; font-weight: 500; color: var(--color-text-secondary);">
+                <input type="checkbox" checked="{{ preset }}" onChange="{{ toggleField }}" data-field="preset" /> Apply preset concession (5%)
+              </label>
+            </div>
+
+            <div class="sub">Bill Summary</div>
+            <div style="padding: 9px 12px; display: flex; flex-direction: column; gap: 5px;">
+              <div class="row"><span style="color: var(--color-text-secondary);">Total Tests</span><span style="font-weight: 700;" class="num">{{ lineCount }}</span></div>
+              <div class="row"><span style="color: var(--color-text-secondary);">Subtotal</span><span style="font-weight: 700;" class="num">₹ {{ subtotalAmount }}</span></div>
+              <div class="row"><span style="color: var(--color-text-secondary);">Discount</span><span style="font-weight: 700;" class="num">− ₹ {{ discountTotalShown }}</span></div>
+              <div class="row"><span style="color: var(--color-text-secondary);">Concession</span><span style="font-weight: 700;" class="num">− ₹ {{ concessionShown }}</span></div>
+              <div class="row"><span style="color: var(--color-text-secondary);">Additional</span><span style="font-weight: 700;" class="num">+ ₹ {{ additionalShown }}</span></div>
+              <sc-if value="{{ isHomeVisit }}" hint-placeholder-val="{{ false }}">
+                <div class="row"><span style="color: var(--color-text-secondary);">Home visit charge</span><span style="font-weight: 700;" class="num">+ ₹ {{ homeVisitShown }}</span></div>
+              </sc-if>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; margin: 2px 0; border-radius: 5px; background: var(--color-interactive-hover); border: 1px solid var(--color-primary-bright);">
+                <span style="font-size: 11.5px; font-weight: 700;">Payable</span>
+                <span style="font-size: 19px; font-weight: 700; color: var(--color-primary-deep); letter-spacing: -.01em;" class="num">₹ {{ payableAmount }}</span>
+              </div>
+              <div class="row"><span style="color: var(--color-text-secondary);">Paid</span><span style="font-weight: 700;" class="num">₹ {{ paidShown }}</span></div>
+              <div class="row"><span style="color: var(--color-text-secondary);">Balance</span><span style="font-weight: 700; color: {{ balanceColor }};" class="num">₹ {{ balanceAmount }}</span></div>
+            </div>
+
+            <div class="sub">Payment</div>
+            <div style="padding: 9px 12px; display: flex; flex-direction: column; gap: 8px;">
+              <div>
+                <label>Payment Mode</label>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                  <sc-for list="{{ modes }}" as="m" hint-placeholder-count="4">
+                    <button onClick="{{ m.onPick }}" style="padding: 4px 9px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid {{ m.border }}; background: {{ m.bg }}; color: {{ m.fg }};">{{ m.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div><label>Amount Paid (₹)</label><input type="number" min="0" value="{{ paidAmount }}" onChange="{{ updateField }}" data-field="paidAmount" class="num" /></div>
+                <div style="display: flex; align-items: flex-end;"><button onClick="{{ payFull }}" style="width: 100%; padding: 5px 8px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 10.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Collect full</button></div>
+              </div>
+              <div><label>Transaction Reference</label><input type="text" placeholder="UPI / card / receipt ref" value="{{ transactionReference }}" onChange="{{ updateField }}" data-field="transactionReference" /></div>
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;"><span style="color: var(--color-text-secondary);">Status</span><span style="padding: 1px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ statusBg }}; color: {{ statusFg }};">{{ paymentStatus }}</span></div>
+              <button onClick="{{ submit }}" disabled="{{ submitting }}" style="width: 100%; padding: 8px 12px; background: var(--color-primary-deep); color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;" style-hover="background: var(--color-primary-bright);">{{ submitLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ bulkOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; z-index: 30; background: rgba(17,24,39,.45); display: flex; align-items: center; justify-content: center; padding: 22px;">
+        <div style="width: 100%; max-width: 1000px; max-height: 100%; background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; box-shadow: 0 18px 40px rgba(17,24,39,.22); display: flex; flex-direction: column; min-height: 0;">
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Bulk Registration</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary); margin-top: 1px;">Paste or upload rows to register multiple patients in one pass. MRNs are generated on save.</div>
+            </div>
+            <button onClick="{{ closeBulk }}" style="background: none; border: none; padding: 2px 6px; font-size: 15px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;">×</button>
+          </div>
+
+          <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: 290px minmax(0, 1fr);">
+            <div style="border-right: 1px solid var(--color-border-light); padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; min-height: 0;">
+              <label style="margin: 0;">Paste rows (CSV)</label>
+              <textarea value="{{ bulkText }}" onChange="{{ onBulkText }}" placeholder="Title,First Name,Middle Name,Last Name,Gender,Age,Mobile,Tests" style="flex: 1; min-height: 150px; resize: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; line-height: 1.5;"></textarea>
+              <div style="display: flex; gap: 6px;">
+                <button onClick="{{ parseBulk }}" style="flex: 1; padding: 6px 8px; background: var(--color-primary-deep); color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer;" style-hover="background: var(--color-primary-bright);">Parse Rows</button>
+                <button onClick="{{ clearBulk }}" style="padding: 6px 8px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Clear</button>
+              </div>
+              <button onClick="{{ loadBulkSample }}" style="padding: 6px 8px; background: #fff; border: 1px dashed var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;" style-hover="border-color: var(--color-primary-bright);">Load sample template</button>
+              <div style="font-size: 10px; color: var(--color-text-tertiary); line-height: 1.5;">Gender accepts MALE / FEMALE / OTHER. Tests use codes separated by <span style="font-weight: 700;">;</span> — e.g. CBC;LIPID. Mobile must be 10 digits.</div>
+              <sc-if value="{{ bulkHasNote }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 6px 8px; border-radius: 4px; background: #EFF6FF; border: 1px solid #93C5FD; color: #1E40AF; font-size: 10.5px; font-weight: 600;">{{ bulkNote }}</div>
+              </sc-if>
+            </div>
+
+            <div style="display: flex; flex-direction: column; min-height: 0;">
+              <div class="sub" style="border-top: none;">Preview</div>
+              <div class="scroll" style="flex: 1;">
+                <sc-if value="{{ bulkEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding: 46px 20px; text-align: center; color: var(--color-text-tertiary); font-size: 11.5px;">No rows yet. Paste CSV rows on the left, or load the sample template.</div>
+                </sc-if>
+                <sc-for list="{{ bulkRows }}" as="r" hint-placeholder-count="4">
+                  <div style="display: grid; grid-template-columns: 26px minmax(0, 1.5fr) 58px 42px 84px minmax(0, 1fr) minmax(0, 1.1fr) 22px; gap: 8px; align-items: center; padding: 7px 12px; border-bottom: 1px solid var(--color-border-light); font-size: 11.5px;">
+                    <div style="color: var(--color-text-tertiary); font-weight: 700;" class="num">{{ r.no }}</div>
+                    <div style="font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.name }}</div>
+                    <div style="color: var(--color-text-secondary); font-size: 10.5px;">{{ r.genderShown }}</div>
+                    <div style="color: var(--color-text-secondary);" class="num">{{ r.ageShown }}</div>
+                    <div style="color: var(--color-text-secondary);" class="num">{{ r.phoneShown }}</div>
+                    <div style="color: var(--color-text-secondary); font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.testsShown }}</div>
+                    <div><span style="display: inline-block; max-width: 100%; padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.statusLabel }}</span></div>
+                    <button onClick="{{ r.onRemove }}" title="Remove row" style="background: none; border: none; padding: 0; font-size: 13px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;">×</button>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 9px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0;">
+            <div style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary);" class="num">{{ bulkCountLabel }}</div>
+            <div style="display: flex; gap: 8px;">
+              <button onClick="{{ closeBulk }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: #fff;">Cancel</button>
+              <button onClick="{{ submitBulk }}" disabled="{{ bulkSubmitDisabled }}" style="padding: 7px 14px; background: {{ bulkSubmitBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; white-space: nowrap;">{{ bulkSubmitLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+const CATALOG = [
+  { code: 'CBC', name: 'Complete Blood Count', category: 'Haematology', sample: 'EDTA Whole Blood', rate: 350, rank: 1 },
+  { code: 'HBA1C', name: 'Glycated Haemoglobin (HbA1c)', category: 'Biochemistry', sample: 'EDTA Whole Blood', rate: 600, rank: 2 },
+  { code: 'LFT', name: 'Liver Function Panel', category: 'Biochemistry', sample: 'Serum', rate: 900, rank: 3 },
+  { code: 'KFT', name: 'Kidney Function Panel', category: 'Biochemistry', sample: 'Serum', rate: 850, rank: 4 },
+  { code: 'TSH', name: 'Thyroid Stimulating Hormone', category: 'Immunoassay', sample: 'Serum', rate: 400, rank: 5 },
+  { code: 'LIPID', name: 'Lipid Profile', category: 'Biochemistry', sample: 'Serum', rate: 700, rank: 6 },
+  { code: 'UR1', name: 'Urine Routine', category: 'Clinical Pathology', sample: 'Urine', rate: 200, rank: 7 },
+  { code: 'VITD', name: 'Vitamin D (25-OH)', category: 'Immunoassay', sample: 'Serum', rate: 1400, rank: 8 },
+  { code: 'GLUPP', name: 'Blood Glucose (Post Prandial)', category: 'Biochemistry', sample: 'Fluoride Plasma', rate: 180, rank: 9 },
+  { code: 'VITB12', name: 'Vitamin B12', category: 'Immunoassay', sample: 'Serum', rate: 1100, rank: 10 },
+  { code: 'URIC', name: 'Uric Acid', category: 'Biochemistry', sample: 'Serum', rate: 250 },
+  { code: 'CULT', name: 'Urine Culture & Sensitivity', category: 'Microbiology', sample: 'Urine', rate: 750 },
+  { code: 'HBSAG', name: 'HbsAg (Australian Antigen)', category: 'Immunoassay', sample: 'Serum', rate: 450 },
+  { code: 'ESR', name: 'ESR (Westergren)', category: 'Haematology', sample: 'EDTA Whole Blood', rate: 150 },
+  { code: 'CRP', name: 'C-Reactive Protein', category: 'Immunoassay', sample: 'Serum', rate: 550 },
+  { code: 'FT4', name: 'Free T4', category: 'Immunoassay', sample: 'Serum', rate: 420 }
+];
+
+const PACKAGES = [
+  { code: 'PKG-MASTER', name: 'Master Health Check', tests: ['CBC', 'LFT', 'KFT', 'LIPID', 'TSH', 'UR1'], price: 2600 },
+  { code: 'PKG-DIAB', name: 'Diabetes Care Panel', tests: ['HBA1C', 'GLUPP', 'KFT', 'UR1'], price: 1400 },
+  { code: 'PKG-THYRO', name: 'Thyroid Profile Plus', tests: ['TSH', 'FT4', 'CBC'], price: 950 },
+  { code: 'PKG-VITAL', name: 'Vitamin & Anaemia Panel', tests: ['VITD', 'VITB12', 'CBC', 'ESR'], price: 2500 }
+];
+
+const byCode = (c) => CATALOG.find(t => t.code === c);
+
+const BULK_SAMPLE = [
+  'Title,First Name,Middle Name,Last Name,Gender,Age,Mobile,Tests',
+  'Mr,Rohan,Vasant,Deshpande,MALE,34,9822014577,CBC;LIPID',
+  'Mrs,Sunita,,Kulkarni,FEMALE,52,9890123344,HBA1C;KFT',
+  'Ms,Aarti,Ramesh,Jadhav,FEMALE,27,9765004411,TSH',
+  'Master,Ved,,Patil,MALE,9,9922114400,CBC;UR1',
+  'Mr,Imran,,Shaikh,,45,98220,LFT'
+].join('\n');
+
+class Component extends DCLogic {
+  state = {
+    registrationNumber: 'REG-2026-004182',
+    billNumber: 'BL-2026-009114',
+    mrn: 'MRN-193418',
+    collectTime: '2026-08-17T09:30',
+    picker: 'SEARCH',
+    lines: [], testQuery: '',
+    title: 'Mr', gender: '',
+    firstName: '', middleName: '', lastName: '',
+    bulkOpen: false, bulkText: '', bulkRows: [], bulkNote: '', bulkSubmitting: false,
+    ageY: '', ageM: '', ageD: '', phone: '', email: '',
+    whatsappConsent: true, isActive: true,
+    addressLine1: '', city: '', district: '', state: '', pincode: '',
+    addressOpen: false, historyOpen: false,
+    trfFileName: '', referringDoctor: '',
+    photoName: '', photoUrl: '',
+    clinicalType: '', clinical: '', severity: '',
+    durationValue: '', durationUnit: 'DAY', notes: '',
+    billingCategory: 'WALK_IN', performingLab: 'INHOUSE',
+    homeVisitCharge: 250, homeVisitSlot: '', homeVisitPhlebo: '',
+    orgPriceList: 'STANDARD', referralPriceList: 'SELF', discountPriceList: '',
+    discountAmount: 0, additionalAmount: 0, preset: false,
+    paymentMode: 'CASH', paidAmount: 0, transactionReference: '', remarks: '',
+    emergency: false, sameForReport: true,
+    submitting: false, touched: false, banner: '', bannerKind: 'error', bannerTitle: '',
+    patientId: null, loadedMrn: '', lookupQuery: '', phoneMatchId: null,
+    // retained for the API contract, not shown on this screen
+    identifierType: 'MRN', identifierValue: '', srfId: '', identifierPrimary: true,
+    patientType: 'OP', patientCategory: 'GENERAL', dob: '', addressLine2: '', diagnosedDate: ''
+  };
+
+  photoInput = React.createRef();
+  trfInput = React.createRef();
+
+  /* Live duplicate-contact lookup: a number already on file surfaces the
+     existing patient before submit, so staff load it rather than create a
+     second record and hit a 409. */
+  matchPhone = (raw) => {
+    const digits = String(raw || '').replace(/\D/g, '');
+    if (digits.length < 10) return null;
+    const p = LIMS.patientByPhone(digits);
+    return p && p.id !== this.state.patientId ? p : null;
+  };
+
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    const v = e.target.type === 'number' ? (e.target.value === '' ? '' : Number(e.target.value)) : e.target.value;
+    if (f === 'phone') {
+      const hit = this.matchPhone(v);
+      this.setState({ phoneMatchId: hit ? hit.id : null });
+    }
+    const patch = { [f]: v };
+    if (f === 'mrn') patch.identifierValue = v;
+    this.setState(patch);
+  };
+  toggleField = (e) => { const f = e.target.dataset.field; this.setState(s => ({ [f]: !s[f] })); };
+  onTestQuery = (e) => this.setState({ testQuery: e.target.value });
+  clearTestQuery = () => this.setState({ testQuery: '' });
+
+  openBulk = () => this.setState({ bulkOpen: true, banner: '' });
+  closeBulk = () => this.setState({ bulkOpen: false, bulkNote: '' });
+  onBulkText = (e) => this.setState({ bulkText: e.target.value });
+
+  parseBulk = () => {
+    const raw = this.state.bulkText.trim();
+    if (!raw) { this.setState({ bulkNote: 'Paste at least one row, or use the sample template.' }); return; }
+    const rows = raw.split(/\n+/).filter(l => l.trim() && !/^\s*title\s*,/i.test(l)).map((l, i) => {
+      const c = l.split(',').map(x => x.trim());
+      return { id: 'P' + (i + 1), title: c[0] || 'Mr', firstName: c[1] || '', middleName: c[2] || '', lastName: c[3] || '', gender: (c[4] || '').toUpperCase(), age: c[5] || '', phone: c[6] || '', tests: c[7] || '' };
+    });
+    this.setState({ bulkRows: rows, bulkNote: rows.length + ' row(s) parsed. Review before registering.' });
+  };
+
+  loadBulkSample = () => this.setState({ bulkText: BULK_SAMPLE, bulkNote: 'Sample template loaded — click Parse Rows.' });
+  clearBulk = () => this.setState({ bulkText: '', bulkRows: [], bulkNote: '' });
+  removeBulkRow = (id) => () => this.setState(s => ({ bulkRows: s.bulkRows.filter(r => r.id !== id) }));
+
+  bulkRowErrors(r) {
+    const e = [];
+    if (!r.firstName) e.push('first name');
+    if (!['MALE', 'FEMALE', 'OTHER'].includes(r.gender)) e.push('gender');
+    if (!/^\d{10}$/.test(String(r.phone).replace(/\D/g, '').slice(-10) || '')) e.push('mobile');
+    if (!r.tests) e.push('tests');
+    return e;
+  }
+
+  submitBulk = () => {
+    const ok = this.state.bulkRows.filter(r => !this.bulkRowErrors(r).length);
+    if (!ok.length) { this.setState({ bulkNote: 'No valid rows to register.' }); return; }
+    this.setState({ bulkSubmitting: true, bulkNote: '' });
+    setTimeout(() => {
+      this.setState({
+        bulkSubmitting: false, bulkOpen: false, bulkRows: [], bulkText: '', bulkNote: '',
+        bannerKind: 'success',
+        banner: ok.length + ' patient(s) registered in bulk · MRNs generated and bills drafted. Prototype only — no API call made.'
+      });
+    }, 800);
+  };
+
+  setPicker = (p) => () => this.setState({ picker: p, testQuery: '' });
+
+  makeLine(t, discount, pkg) {
+    return {
+      id: t.code, code: t.code, name: t.name, category: t.category,
+      sub: t.code + ' · ' + t.sample + (pkg ? ' · ' + pkg : ''),
+      qty: 1, rate: t.rate, discount: discount || 0, pkg: pkg || ''
+    };
+  }
+
+  addTest = (code) => () => this.setState(s => {
+    if (s.lines.some(l => l.code === code)) {
+      return { testQuery: '', bannerKind: 'info', banner: byCode(code).name + ' is already on this bill.' };
+    }
+    return { testQuery: '', banner: '', lines: [...s.lines, this.makeLine(byCode(code))] };
+  });
+
+  addPackage = (pkg) => () => this.setState(s => {
+    const gross = pkg.tests.reduce((a, c) => a + byCode(c).rate, 0);
+    const totalDisc = Math.max(0, gross - pkg.price);
+    const fresh = pkg.tests.filter(c => !s.lines.some(l => l.code === c));
+    if (!fresh.length) return { bannerKind: 'info', banner: pkg.name + ' tests are already on this bill.' };
+    let used = 0;
+    const added = fresh.map((c, i) => {
+      const t = byCode(c);
+      const share = i === fresh.length - 1 && fresh.length === pkg.tests.length
+        ? totalDisc - used
+        : Math.round(totalDisc * (t.rate / gross));
+      used += share;
+      return this.makeLine(t, Math.max(0, share), pkg.name);
+    });
+    const skipped = pkg.tests.length - fresh.length;
+    return {
+      lines: [...s.lines, ...added],
+      bannerKind: 'success',
+      banner: pkg.name + ' added' + (skipped ? ' — ' + skipped + ' already-selected test(s) skipped.' : ' at package rate ₹ ' + pkg.price.toLocaleString('en-IN') + '.')
+    };
+  });
+
+  removeLine = (id) => () => this.setState(s => ({ lines: s.lines.filter(l => l.id !== id) }));
+  editLine = (id, key) => (e) => {
+    const v = e.target.value === '' ? '' : Number(e.target.value);
+    this.setState(s => ({ lines: s.lines.map(l => l.id === id ? { ...l, [key]: v } : l) }));
+  };
+  setMode = (m) => () => this.setState({ paymentMode: m });
+  payFull = () => this.setState(s => ({ paidAmount: this.computeTotals(s).payable }));
+
+  pickPhoto = () => this.photoInput.current && this.photoInput.current.click();
+  pickTrf = () => this.trfInput.current && this.trfInput.current.click();
+  onPhotoFile = (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    this.setState({ photoName: f.name, photoUrl: URL.createObjectURL(f) });
+  };
+  onTrfFile = (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    this.setState({ trfFileName: f.name, banner: '' });
+  };
+  capturePhoto = () => this.setState({ photoName: 'webcam-capture.jpg', photoUrl: '', banner: 'Camera capture is simulated in this prototype.', bannerKind: 'info' });
+
+  computeTotals(s) {
+    const subtotal = s.lines.reduce((a, l) => a + (Number(l.qty) || 0) * (Number(l.rate) || 0), 0);
+    const lineDiscount = s.lines.reduce((a, l) => a + (Number(l.discount) || 0), 0);
+    const billDiscount = Number(s.discountAmount) || 0;
+    const concession = s.preset ? Math.round(subtotal * 0.05) : 0;
+    const additional = Number(s.additionalAmount) || 0;
+    const homeVisit = s.billingCategory === 'HOME_VISIT' ? (Number(s.homeVisitCharge) || 0) : 0;
+    const payable = Math.max(0, subtotal - lineDiscount - billDiscount - concession + additional + homeVisit);
+    const paid = Number(s.paidAmount) || 0;
+    return { subtotal, lineDiscount, billDiscount, concession, additional, homeVisit, payable, paid, balance: payable - paid };
+  }
+
+  missing() {
+    const s = this.state;
+    const m = [];
+    if (!String(s.mrn).trim()) m.push('MRN');
+    if (!s.firstName.trim()) m.push('Patient name');
+    if (!s.gender) m.push('Gender');
+    if (s.ageY === '' && s.ageM === '' && s.ageD === '') m.push('Age');
+    if (!s.phone.trim()) m.push('Mobile');
+    if (!s.lines.length) m.push('At least one test');
+    return m;
+  }
+
+  onLookupKey = (e) => { if (e.key === 'Enter') this.loadPatient(); };
+  toggleAddress = () => this.setState({ addressOpen: !this.state.addressOpen });
+  toggleHistory = () => this.setState({ historyOpen: !this.state.historyOpen });
+
+  clearPatient = () => this.setState({ patientId: null, loadedMrn: '', lookupQuery: '', phoneMatchId: null, bannerKind: 'info', bannerTitle: '', banner: 'Switched back to new-patient registration.' });
+
+  /* Loads the patient the entered phone number already belongs to. */
+  loadPhoneMatch = () => {
+    const p = LIMS.patientById(this.state.phoneMatchId);
+    if (!p) return;
+    this.setState({
+      patientId: p.id, loadedMrn: p.mrn, phoneMatchId: null, lookupQuery: '',
+      mrn: p.mrn, title: p.title, firstName: p.firstName, middleName: p.middleName, lastName: p.lastName,
+      gender: p.gender, ageY: p.ageY, ageM: p.ageM, ageD: p.ageD,
+      phone: p.phone, email: p.email, referringDoctor: p.referringDoctor,
+      touched: false, bannerKind: 'success', bannerTitle: '200 OK',
+      banner: 'Loaded ' + p.mrn + ' — edit any field and save to update this patient.'
+    });
+  };
+
+  dismissPhoneMatch = () => this.setState({ phoneMatchId: null });
+
+  /* Adds every test from the matched patient's last visit that is not already
+     on this bill — a repeat order in one click. */
+  repeatMatchTests = () => {
+    const p = LIMS.patientById(this.state.phoneMatchId);
+    if (!p) return;
+    const have = this.state.lines.map(l => l.code);
+    const add = (p.recentTests || []).filter(c => have.indexOf(c) === -1);
+    if (!add.length) {
+      this.setState({ bannerKind: 'info', bannerTitle: '', banner: 'All tests from the last visit are already on this bill.' });
+      return;
+    }
+    add.forEach(code => this.addTest(code)());
+    this.setState({ bannerKind: 'success', bannerTitle: '', banner: add.length + ' test(s) from the last visit added to the bill.' });
+  };
+
+  /* Loads an existing patient into the form so this registration updates that
+     record (API-018) instead of creating a duplicate. */
+  loadPatient = () => {
+    const q = String(this.state.lookupQuery).trim();
+    if (!q) {
+      this.setState({ bannerKind: 'error', bannerTitle: '400 Bad Request', banner: 'Enter an MRN or mobile number to load a patient.' });
+      return;
+    }
+    const p = LIMS.patientByMrn(q) || LIMS.patientByPhone(q);
+    if (!p) {
+      this.setState({ bannerKind: 'error', bannerTitle: '404 Not Found', banner: 'No patient matches “' + q + '” in this branch.' });
+      return;
+    }
+    this.setState({
+      patientId: p.id, loadedMrn: p.mrn, lookupQuery: '', phoneMatchId: null,
+      mrn: p.mrn, title: p.title, firstName: p.firstName, middleName: p.middleName, lastName: p.lastName,
+      gender: p.gender, ageY: p.ageY, ageM: p.ageM, ageD: p.ageD,
+      phone: p.phone, email: p.email, referringDoctor: p.referringDoctor,
+      touched: false, bannerKind: 'success', bannerTitle: '200 OK',
+      banner: 'Loaded ' + p.mrn + ' — edit any field and save to update this patient.'
+    });
+  };
+
+  /* API-018 PUT …/patients/{patientId}, then API-021 for the registration. */
+  updateThenRegister = async () => {
+    const s = this.state;
+    const reg = String(s.registrationNumber).trim().toUpperCase();
+    if (!reg) {
+      this.setState({ submitting: false, touched: true, bannerKind: 'error', bannerTitle: '400 Bad Request', banner: 'registrationNumber is required — enter a registration number before saving.' });
+      return;
+    }
+    const takenReg = ['REG-2026-004171', 'REG-2026-004166', 'REG-2026-004152'];
+    if (takenReg.indexOf(reg) > -1) {
+      this.setState({ submitting: false, touched: true, bannerKind: 'error', bannerTitle: '409 Conflict', banner: 'Registration number ' + reg + ' already exists for this organization + branch. Use a different number.' });
+      return;
+    }
+    const digits = String(s.phone).replace(/\D/g, '');
+    const clash = LIMS.PATIENTS.find(p => p.id !== s.patientId && p.phone.replace(/\D/g, '') === digits);
+    if (clash) {
+      this.setState({ submitting: false, touched: true, bannerKind: 'error', bannerTitle: '409 Conflict', banner: 'Contact ' + s.phone + ' already belongs to ' + clash.mrn + '. Use a different number.' });
+      return;
+    }
+
+    try {
+      await LIMS.request('updatePatient', {
+        contract: 'API-018',
+        params: { patientId: s.patientId },
+        body: {
+          title: s.title, firstName: s.firstName, middleName: s.middleName || null, lastName: s.lastName || null,
+          gender: s.gender, ageY: s.ageY, ageM: s.ageM, ageD: s.ageD,
+          phone: s.phone, email: s.email || null, referringDoctor: s.referringDoctor || null
+        },
+        resolve: () => {
+          const p = LIMS.patientById(s.patientId);
+          if (!p) return { status: 404, error: 'Patient not found' };
+          Object.assign(p, {
+            title: s.title, firstName: s.firstName, middleName: s.middleName, lastName: s.lastName,
+            gender: s.gender, ageY: s.ageY, ageM: s.ageM, ageD: s.ageD,
+            phone: s.phone, email: s.email, referringDoctor: s.referringDoctor
+          });
+          return { status: 200, message: 'Patient updated successfully', data: { id: p.id, mrn: p.mrn } };
+        }
+      });
+    } catch (err) {
+      this.setState({ submitting: false, touched: true, bannerKind: 'error', bannerTitle: err.status ? String(err.status) : 'Error', banner: err.status ? err.message : 'Request could not be built — ' + err.message });
+      return;
+    }
+
+    this.setState({
+      submitting: false, bannerKind: 'success', bannerTitle: '200 OK',
+      banner: 'Patient ' + s.loadedMrn + ' updated · registration ' + reg + ' · ' + s.lines.length + ' test(s) · bill ' + s.billNumber + ' saved. Routing to sample collection…'
+    });
+    setTimeout(() => { window.location.href = 'Accession.dc.html'; }, 900);
+  };
+
+  /* API-033 / API-041 — billNumber is required and unique within org + branch. */
+  billNumberFault = () => {
+    const no = String(this.state.billNumber || '').trim().toUpperCase();
+    if (!no) return ['400 Bad Request', 'billNumber is required \u2014 enter a bill number before saving.'];
+    const clash = LIMS.billByNumber(no);
+    if (clash && clash.organizationId === LIMS.session.organizationId && clash.branchId === LIMS.session.branchId) {
+      return ['409 Conflict', 'Duplicate bill number \u2014 ' + no + ' already exists in this organization and branch. Use a different bill number.'];
+    }
+    return null;
+  };
+
+  submit = () => {
+    const bill = this.billNumberFault();
+    if (bill) {
+      this.setState({ submitting: false, touched: true, billNumberInvalid: true, bannerKind: 'error', bannerTitle: bill[0], banner: bill[1] });
+      return;
+    }
+    this.setState({ billNumberInvalid: false });
+    const m = this.missing();
+    if (m.length) {
+      this.setState({ touched: true, bannerKind: 'error', bannerTitle: '', banner: m.join(', ') + ' required to register and bill the patient.' });
+      return;
+    }
+    this.setState({ submitting: true, banner: '' });
+    if (this.state.patientId) { this.updateThenRegister(); return; }
+    setTimeout(() => {
+      const s = this.state;
+      const takenMrn = ['MRN-193210', 'MRN-193044', 'MRN-192877'];
+      const takenPhone = ['9822014577', '9890123344'];
+      const takenReg = ['REG-2026-004171', 'REG-2026-004166', 'REG-2026-004152'];
+      const code = String(s.mrn).trim().toUpperCase();
+      const reg = String(s.registrationNumber).trim().toUpperCase();
+      const auto = !reg
+        ? 'NO_REG'
+        : takenReg.indexOf(reg) > -1
+        ? 'DUP_REG'
+        : takenMrn.indexOf(code) > -1
+        ? 'DUP_CODE'
+        : (takenPhone.indexOf(String(s.phone).trim()) > -1 ? 'DUP_CONTACT' : '');
+
+      const fail = {
+        NO_REG: ['400 Bad Request', 'registrationNumber is required — enter a registration number before saving.'],
+        DUP_REG: ['409 Conflict', 'Registration number ' + reg + ' already exists for this organization + branch. Use a different number.'],
+        NO_PATIENT: ['404 Not Found', 'Patient not found — ' + (code || 'the given MRN') + ' does not reference an existing patient record in this branch.'],
+        DUP_CODE: ['409 Conflict', 'Patient code ' + s.mrn + ' already exists in this branch. Generate a new MRN or open the existing record.'],
+        DUP_CONTACT: ['409 Conflict', 'A patient with contact ' + (s.phone || '—') + ' is already registered in this branch. Use the existing record or change the number.'],
+        NO_ORG: ['404 Not Found', 'Organization or branch does not exist. Reselect the branch and retry.'],
+        SERVER: ['500 Server Error', 'Unexpected server or database failure. The registration was not saved.']
+      }[auto];
+
+      if (fail) {
+        this.setState({ submitting: false, bannerKind: 'error', bannerTitle: fail[0], banner: fail[1], touched: true });
+        if (auto === 'SERVER' || auto === 'NO_ORG') {
+          const errCode = auto === 'SERVER' ? '500' : '404';
+          setTimeout(() => {
+            window.location.href = 'System Error States.dc.html?state=' + errCode
+              + '&from=' + encodeURIComponent('Registration.dc.html')
+              + '&endpoint=' + encodeURIComponent('POST /api/patients/register');
+          }, 1400);
+        }
+        return;
+      }
+
+      this.setState({
+        submitting: false, bannerKind: 'success', bannerTitle: '201 Created',
+        banner: 'Registration ' + reg + ' · patient ' + code + ' · status REGISTERED · ' + s.lines.length + ' test(s) · bill ' + s.billNumber + ' saved. Routing to sample collection…'
+      });
+      setTimeout(() => { window.location.href = 'Accession.dc.html'; }, 900);
+    }, 700);
+  };
+
+  cancel = () => { window.location.href = 'Patients.dc.html'; };
+
+  money(n) { return Number(n || 0).toLocaleString('en-IN'); }
+
+  renderVals() {
+    const s = this.state;
+    const bad = (v) => (s.touched && !v ? 'var(--color-error)' : 'var(--color-border-base)');
+    const pm = s.phoneMatchId ? LIMS.patientById(s.phoneMatchId) : null;
+    const tone = {
+      error: { bg: '#FEF2F2', fg: '#991B1B', bd: '#FCA5A5', title: 'Validation' },
+      success: { bg: '#F0FDF4', fg: '#166534', bd: '#86EFAC', title: 'Success' },
+      info: { bg: '#EFF6FF', fg: '#1E40AF', bd: '#93C5FD', title: 'Note' }
+    }[s.bannerKind];
+
+    const photoPreview = s.photoUrl
+      ? React.createElement('img', { src: s.photoUrl, alt: 'Patient photo', style: { width: '100%', height: '100%', objectFit: 'cover' } })
+      : React.createElement('div', { style: { textAlign: 'center', color: 'var(--color-text-tertiary)', fontSize: '15px', lineHeight: 1 } }, '\u25CB');
+
+    const picked = s.lines.map(l => l.code);
+    const ageBits = [s.ageY !== '' ? s.ageY + 'y' : '', s.ageM !== '' ? s.ageM + 'm' : '', s.ageD !== '' ? s.ageD + 'd' : ''].filter(Boolean).join(' ');
+    const genderShort = s.gender ? s.gender.charAt(0) : '';
+    const fullName = [s.firstName, s.middleName, s.lastName].map(x => String(x || '').trim()).filter(Boolean).join(' ');
+    const patientSummary = [s.mrn, fullName ? s.title + ' ' + fullName : 'New patient', ageBits ? 'Age ' + ageBits : 'Age —', genderShort].filter(Boolean).join(' · ');
+
+    const pickerTabs = [['SEARCH', 'Search Tests'], ['TOP10', 'Top 10'], ['PACKAGES', 'Packages']].map(([k, label]) => {
+      const on = s.picker === k;
+      return {
+        label, onPick: this.setPicker(k),
+        bg: on ? 'var(--color-primary-deep)' : '#fff',
+        fg: on ? '#fff' : 'var(--color-text-secondary)',
+        border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)'
+      };
+    });
+
+    const topTests = CATALOG.filter(t => t.rank).sort((a, b) => a.rank - b.rank).map(t => {
+      const on = picked.includes(t.code);
+      return {
+        code: t.code, rate: this.money(t.rate),
+        tip: t.name + ' \u2014 ' + t.category + ' \u00b7 \u20b9' + this.money(t.rate) + (on ? ' \u00b7 on this bill (click to remove)' : ''),
+        tick: on ? '\u2713' : '',
+        tickFg: 'var(--color-primary-deep)',
+        codeFg: on ? 'var(--color-primary-deep)' : 'var(--color-text-primary)',
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        border: on ? 'var(--color-primary-deep)' : 'var(--color-border-light)',
+        onPick: on ? this.removeLine(t.code) : this.addTest(t.code)
+      };
+    });
+
+    const packages = PACKAGES.map(p => {
+      const gross = p.tests.reduce((a, c) => a + byCode(c).rate, 0);
+      const allIn = p.tests.every(c => picked.includes(c));
+      return {
+        name: p.name,
+        price: this.money(p.price),
+        savings: this.money(Math.max(0, gross - p.price)),
+        included: p.tests.length + ' tests · ' + p.tests.map(c => byCode(c).name).join(', '),
+        onPick: this.addPackage(p),
+        border: allIn ? 'var(--color-primary-deep)' : 'var(--color-border-light)',
+        btnLabel: allIn ? 'Package Added' : 'Add Package',
+        btnBg: allIn ? 'var(--color-interactive-hover)' : 'var(--color-primary-deep)',
+        btnFg: allIn ? 'var(--color-primary-deep)' : '#fff'
+      };
+    });
+
+    const q = s.testQuery.trim().toLowerCase();
+    const matches = q
+      ? CATALOG.filter(t => t.name.toLowerCase().includes(q) || t.code.toLowerCase().includes(q) || t.category.toLowerCase().includes(q)).slice(0, 12)
+      : CATALOG.filter(t => t.rank).sort((a, b) => a.rank - b.rank).slice(0, 6);
+    const testResults = matches.map(t => {
+      const on = picked.includes(t.code);
+      return {
+        code: t.code, rate: this.money(t.rate),
+        tip: t.name + ' \u2014 ' + t.category + ' \u00b7 \u20b9' + this.money(t.rate) + (on ? ' \u00b7 on this bill (click to remove)' : ''),
+        tick: on ? '\u2713' : '',
+        tickFg: 'var(--color-primary-deep)',
+        codeFg: on ? 'var(--color-primary-deep)' : 'var(--color-text-primary)',
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        border: on ? 'var(--color-primary-deep)' : 'var(--color-border-light)',
+        onPick: on ? this.removeLine(t.code) : this.addTest(t.code)
+      };
+    });
+
+    const T = this.computeTotals(s);
+    const status = T.paid <= 0 ? 'Pending' : (T.balance <= 0 ? 'Paid' : 'Partial');
+    const statusTone = { Pending: ['#FEF3C7', '#92400E'], Partial: ['#DBEAFE', '#1E40AF'], Paid: ['#DCFCE7', '#166534'] }[status];
+
+    const modes = ['CASH', 'UPI', 'CARD', 'CREDIT', 'CHEQUE'].map(m => {
+      const on = s.paymentMode === m;
+      return {
+        label: m.charAt(0) + m.slice(1).toLowerCase(),
+        onPick: this.setMode(m),
+        bg: on ? 'var(--color-primary-deep)' : '#fff',
+        fg: on ? '#fff' : 'var(--color-text-secondary)',
+        border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)'
+      };
+    });
+
+    const bulkRows = s.bulkRows.map((r, i) => {
+      const errs = this.bulkRowErrors(r);
+      const ok = errs.length === 0;
+      return {
+        ...r, no: i + 1,
+        name: [r.title, r.firstName, r.middleName, r.lastName].filter(Boolean).join(' '),
+        genderShown: r.gender || '—',
+        ageShown: r.age || '—',
+        phoneShown: r.phone || '—',
+        testsShown: r.tests ? r.tests.split(';').join(', ') : '—',
+        statusLabel: ok ? 'Ready' : 'Fix: ' + errs.join(', '),
+        statusBg: ok ? '#DCFCE7' : '#FEF2F2',
+        statusFg: ok ? '#166534' : '#991B1B',
+        onRemove: this.removeBulkRow(r.id)
+      };
+    });
+    const bulkValid = bulkRows.filter(r => r.statusLabel === 'Ready').length;
+
+    return {
+      ...s,
+      billNumberBorder: s.billNumberInvalid ? 'var(--color-error)' : 'var(--color-border-base)',
+      photoPreview, patientSummary,
+      pickerTabs,
+      showTop10: s.picker === 'TOP10',
+      showPackages: s.picker === 'PACKAGES',
+      showSearch: s.picker === 'SEARCH',
+      topTests, packages,
+      testResults, showTestResults: testResults.length > 0,
+      noTestResults: testResults.length === 0,
+      searchHint: q ? testResults.length + ' matching tests' : 'Frequently ordered — start typing to search the full catalogue',
+      hasQuery: q.length > 0,
+      onTestQuery: this.onTestQuery,
+      clearTestQuery: this.clearTestQuery,
+      lines: s.lines.map((l, i) => ({
+        ...l, no: i + 1,
+        catSub: l.category + ' · ' + l.sub,
+        net: this.money(Math.max(0, (Number(l.qty) || 0) * (Number(l.rate) || 0) - (Number(l.discount) || 0))),
+        onQty: this.editLine(l.id, 'qty'),
+        onRate: this.editLine(l.id, 'rate'),
+        onDiscount: this.editLine(l.id, 'discount'),
+        onRemove: this.removeLine(l.id)
+      })),
+      lineCount: s.lines.length,
+      noTests: s.lines.length === 0,
+      subtotalAmount: this.money(T.subtotal),
+      lineDiscountShown: this.money(T.lineDiscount),
+      discountTotalShown: this.money(T.lineDiscount + T.billDiscount),
+      concessionShown: this.money(T.concession),
+      additionalShown: this.money(T.additional),
+      isHomeVisit: s.billingCategory === 'HOME_VISIT',
+      homeVisitCharge: s.homeVisitCharge,
+      homeVisitSlot: s.homeVisitSlot,
+      homeVisitPhlebo: s.homeVisitPhlebo,
+      homeVisitShown: this.money(T.homeVisit),
+      homeVisitHint: s.addressOpen
+        ? 'Collection at the patient address below. The charge is billed as a service line on this bill.'
+        : 'Tick “Add address” in patient details so the phlebotomist has a collection address.',
+      payableAmount: this.money(T.payable),
+      paidShown: this.money(T.paid),
+      balanceAmount: this.money(Math.max(0, T.balance)),
+      balanceColor: T.balance > 0 ? 'var(--color-error)' : 'var(--color-success)',
+      paymentStatus: status, statusBg: statusTone[0], statusFg: statusTone[1],
+      modes, payFull: this.payFull,
+      hasPhoneMatch: !!pm,
+      matchMrn: pm ? pm.mrn : '',
+      matchName: pm ? [pm.title, pm.firstName, pm.middleName, pm.lastName].filter(Boolean).join(' ') : '',
+      matchMeta: pm ? (pm.ageY + ' y · ' + (pm.gender === 'MALE' ? 'Male' : pm.gender === 'FEMALE' ? 'Female' : 'Other') + (pm.email ? ' · ' + pm.email : '')) : '',
+      matchVisit: pm ? (pm.lastVisit || '—') : '',
+      matchTestCount: pm ? (pm.recentTests || []).length : 0,
+      matchTests: pm ? (pm.recentTests || []).map(code => {
+        const t = CATALOG.find(c => c.code === code) || { code, name: code, rate: 0, category: '—' };
+        const on = s.lines.some(l => l.code === code);
+        return {
+          code: t.code, rate: this.money(t.rate), tick: on ? '✓' : '',
+          tip: t.name + ' — ' + t.category + (on ? ' · already on this bill' : ' · click to add'),
+          bg: on ? 'var(--color-interactive-hover)' : '#fff',
+          border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+          fg: on ? 'var(--color-primary-deep)' : 'var(--color-text-primary)',
+          onAdd: on ? this.removeLine(code) : this.addTest(code)
+        };
+      }) : [],
+      repeatMatchTests: this.repeatMatchTests,
+      loadPhoneMatch: this.loadPhoneMatch,
+      dismissPhoneMatch: this.dismissPhoneMatch,
+      isExisting: !!s.patientId,
+      anyOptional: s.addressOpen || s.historyOpen,
+      addressOpen: s.addressOpen, addressClosed: !s.addressOpen,
+      toggleAddress: this.toggleAddress,
+      addressToggleLabel: s.addressOpen ? 'Skip' : 'Add',
+      addressSummary: [s.addressLine1, s.city, s.district, s.state, s.pincode].filter(x => String(x || '').trim()).join(', ') || 'Not added — you can skip this and save.',
+      historyOpen: s.historyOpen, historyClosed: !s.historyOpen,
+      toggleHistory: this.toggleHistory,
+      historyToggleLabel: s.historyOpen ? 'Skip' : 'Add',
+      historySummary: [s.clinical, s.clinicalType, s.severity, s.notes].filter(x => String(x || '').trim()).join(' · ') || 'Not added — you can skip this and save.',
+      mrnBg: s.patientId ? 'var(--color-gray-50)' : '#fff',
+      mrnTitle: s.patientId ? 'MRN identifies the patient and cannot be changed' : '',
+      loadedMrn: s.loadedMrn,
+      lookupQuery: s.lookupQuery,
+      onLookupKey: this.onLookupKey,
+      loadPatient: this.loadPatient,
+      clearPatient: this.clearPatient,
+      submitLabel: s.submitting ? 'Saving…' : (s.patientId ? 'Update & Bill' : 'Register & Bill'),
+      phoneMatchId: s.phoneMatchId,
+      regBorder: bad(String(s.registrationNumber).trim()),
+      mrnBorder: bad(String(s.mrn).trim()), firstNameBorder: bad(s.firstName), genderBorder: bad(s.gender),
+      ageBorder: bad(s.ageY !== '' || s.ageM !== '' || s.ageD !== ''), phoneBorder: bad(s.phone),
+      trfLabel: s.trfFileName || 'Upload TRF…',
+      trfColor: s.trfFileName ? 'var(--color-text-primary)' : 'var(--color-text-tertiary)',
+      bannerBg: tone.bg, bannerFg: tone.fg, bannerBorder: tone.bd,
+      bannerTitle: s.bannerTitle || tone.title,
+      updateField: this.updateField, toggleField: this.toggleField,
+      pickPhoto: this.pickPhoto, capturePhoto: this.capturePhoto, onPhotoFile: this.onPhotoFile,
+      pickTrf: this.pickTrf, onTrfFile: this.onTrfFile,
+      photoInput: this.photoInput, trfInput: this.trfInput,
+      submit: this.submit, cancel: this.cancel,
+      fullName,
+      openBulk: this.openBulk, closeBulk: this.closeBulk, onBulkText: this.onBulkText,
+      parseBulk: this.parseBulk, loadBulkSample: this.loadBulkSample, clearBulk: this.clearBulk,
+      submitBulk: this.submitBulk,
+      bulkRows: bulkRows,
+      bulkEmpty: bulkRows.length === 0,
+      bulkHasNote: !!s.bulkNote,
+      bulkCountLabel: bulkRows.length + ' row(s) · ' + bulkValid + ' ready · ' + (bulkRows.length - bulkValid) + ' need fixes',
+      bulkSubmitLabel: s.bulkSubmitting ? 'Registering…' : 'Register ' + bulkValid + ' Patient(s)',
+      bulkSubmitDisabled: s.bulkSubmitting || bulkValid === 0,
+      bulkSubmitBg: (s.bulkSubmitting || bulkValid === 0) ? 'var(--color-gray-300)' : 'var(--color-primary-deep)'
+    };
+  }
+}
+
+</script>
+</body>
+</html>

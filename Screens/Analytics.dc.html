@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="Analytics" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Analytics &amp; MIS / Analytics</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Lab Analytics</h1>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="width: 150px;">
+              <label>Period</label>
+              <select value="{{ period }}" onChange="{{ updateField }}" data-field="period">
+                <option value="7">Last 7 days</option>
+                <option value="14">Last 14 days</option>
+                <option value="30">Last 30 days</option>
+              </select>
+            </div>
+            <div style="width: 168px;">
+              <label>Branch</label>
+              <select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch">
+                <option value="">All branches</option>
+                <sc-for list="{{ branchOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 158px;">
+              <label>Department</label>
+              <select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept">
+                <option value="">All departments</option>
+                <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 178px;">
+              <label>Test</label>
+              <select value="{{ test }}" onChange="{{ updateField }}" data-field="test">
+                <option value="">All tests</option>
+                <sc-for list="{{ testOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <button onClick="{{ clearAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+          </div>
+          <div style="margin-top: 5px; font-size: 10.5px; color: var(--color-text-tertiary);">{{ scopeNote }}</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ reload }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reload</button>
+          <a href="MIS Data Export.dc.html" style="padding: 8px 14px; background: var(--color-primary-deep); border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap;">Export data</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <sc-if value="{{ loadError }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid #FCA5A5; border-radius: 6px; padding: 40px 20px; text-align: center;">
+          <div style="font-size: 14px; font-weight: 700; color: #B91C1C; margin-bottom: 4px;">Analytics could not be loaded</div>
+          <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">{{ loadError }}</div>
+          <button onClick="{{ reload }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Retry</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="8">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 12px 14px;">
+              <div style="height: 8px; width: 60%; border-radius: 3px; background: var(--color-gray-100);"></div>
+              <div style="height: 18px; width: 44%; border-radius: 3px; background: var(--color-gray-100); margin-top: 10px;"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; height: 260px; margin-top: 12px;"></div>
+      </sc-if>
+
+      <sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="8">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 11px 13px; display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+                <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ k.label }}</span>
+                <span class="num" style="font-size: 10.5px; font-weight: 700; color: {{ k.deltaFg }};">{{ k.delta }}</span>
+              </div>
+              <div class="num" style="font-size: 21px; font-weight: 700; line-height: 1.1;">{{ k.value }}</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ k.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 12px; margin-top: 12px;">
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; display: flex; flex-direction: column;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 12.5px; font-weight: 700;">Test volume &amp; revenue trend</div>
+              <div style="display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em;">
+                <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: var(--color-primary-deep);"></span>Tests</span>
+                <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: var(--color-accent-teal);"></span>Revenue</span>
+              </div>
+            </div>
+            <div style="padding: 14px; display: flex; align-items: flex-end; gap: 8px; height: 216px;">
+              <sc-for list="{{ trend }}" as="d" hint-placeholder-count="7">
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 100%;">
+                  <div class="num" style="font-size: 10px; font-weight: 700; text-align: center; color: var(--color-text-secondary);">{{ d.tests }}</div>
+                  <div style="display: flex; align-items: flex-end; gap: 3px; justify-content: center; height: 100%;">
+                    <div style="width: 42%; height: {{ d.testPct }}; min-height: 3px; border-radius: 3px 3px 0 0; background: var(--color-primary-deep);" title="{{ d.testTip }}"></div>
+                    <div style="width: 42%; height: {{ d.revPct }}; min-height: 3px; border-radius: 3px 3px 0 0; background: var(--color-accent-teal);" title="{{ d.revTip }}"></div>
+                  </div>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary); text-align: center; white-space: nowrap;">{{ d.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; display: flex; flex-direction: column;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 12.5px; font-weight: 700;">Test distribution by department</div>
+              <a href="Test Count.dc.html" style="font-size: 11px; font-weight: 700;">Test Count →</a>
+            </div>
+            <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
+              <sc-for list="{{ distribution }}" as="d" hint-placeholder-count="5">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                    <span style="font-size: 11.5px; font-weight: 600;">{{ d.name }}</span>
+                    <span class="num" style="font-size: 11.5px; font-weight: 700; color: var(--color-text-secondary);">{{ d.value }} · {{ d.share }}</span>
+                  </div>
+                  <div style="height: 7px; border-radius: 999px; background: var(--color-gray-100); overflow: hidden;">
+                    <div style="height: 100%; width: {{ d.share }}; background: {{ d.color }};"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 12.5px; font-weight: 700;">Sample rejection trend</div>
+              <span class="num" style="font-size: 11px; font-weight: 700; color: var(--color-text-secondary);">{{ rejectionRate }} of samples</span>
+            </div>
+            <div style="padding: 14px; display: flex; align-items: flex-end; gap: 8px; height: 170px;">
+              <sc-for list="{{ rejection }}" as="d" hint-placeholder-count="7">
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 100%;">
+                  <div class="num" style="font-size: 10px; font-weight: 700; text-align: center; color: var(--color-text-secondary);">{{ d.value }}</div>
+                  <div style="height: {{ d.pct }}; min-height: 3px; border-radius: 3px 3px 0 0; background: {{ d.color }};" title="{{ d.tip }}"></div>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary); text-align: center; white-space: nowrap;">{{ d.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 12.5px; font-weight: 700;">TAT trend (hours)</div>
+              <a href="TAT Analytics.dc.html" style="font-size: 11px; font-weight: 700;">TAT Analytics →</a>
+            </div>
+            <div style="padding: 14px; display: flex; align-items: flex-end; gap: 8px; height: 170px;">
+              <sc-for list="{{ tatTrend }}" as="d" hint-placeholder-count="7">
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 100%;">
+                  <div class="num" style="font-size: 10px; font-weight: 700; text-align: center; color: var(--color-text-secondary);">{{ d.value }}</div>
+                  <div style="height: {{ d.pct }}; min-height: 3px; border-radius: 3px 3px 0 0; background: {{ d.color }};" title="{{ d.tip }}"></div>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary); text-align: center; white-space: nowrap;">{{ d.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; margin-top: 12px; overflow: auto;">
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="font-size: 12.5px; font-weight: 700;">Branch performance</div>
+            <span style="font-size: 11px; color: var(--color-text-tertiary);">Click a branch to scope this dashboard</span>
+          </div>
+          <div style="min-width: 940px;">
+            <div style="display: grid; grid-template-columns: minmax(180px,1.2fr) 96px 104px 104px 104px 108px 116px; gap: 10px; padding: 8px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+              <div>Branch</div>
+              <div style="text-align: right;">Tests</div>
+              <div style="text-align: right;">Samples</div>
+              <div style="text-align: right;">Revenue</div>
+              <div style="text-align: right;">Avg TAT</div>
+              <div style="text-align: right;">Within TAT</div>
+              <div style="text-align: right;">Capacity</div>
+            </div>
+            <sc-for list="{{ branches }}" as="b" hint-placeholder-count="4">
+              <div onClick="{{ b.onPick }}" style="display: grid; grid-template-columns: minmax(180px,1.2fr) 96px 104px 104px 104px 108px 116px; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--color-border-light); align-items: center; cursor: pointer; background: {{ b.bg }};" style-hover="background: var(--color-gray-50);">
+                <div style="font-size: 12px; font-weight: 600;">{{ b.name }}</div>
+                <div class="num" style="font-size: 12px; text-align: right;">{{ b.tests }}</div>
+                <div class="num" style="font-size: 12px; text-align: right;">{{ b.samples }}</div>
+                <div class="num" style="font-size: 12px; font-weight: 700; text-align: right;">{{ b.revenue }}</div>
+                <div class="num" style="font-size: 12px; text-align: right;">{{ b.tat }}</div>
+                <div class="num" style="font-size: 12px; font-weight: 700; text-align: right; color: {{ b.withinFg }};">{{ b.within }}</div>
+                <div style="display: flex; align-items: center; gap: 7px; justify-content: flex-end;">
+                  <div style="flex: 1; max-width: 62px; height: 6px; border-radius: 999px; background: var(--color-gray-100); overflow: hidden;">
+                    <div style="height: 100%; width: {{ b.capacity }}; background: {{ b.capFg }};"></div>
+                  </div>
+                  <span class="num" style="font-size: 11.5px; font-weight: 700;">{{ b.capacity }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 52px 20px; text-align: center; margin-top: 12px;">
+            <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No activity in this scope</div>
+            <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">No tests were registered for the selected branch, department and test combination in this period.</div>
+            <button onClick="{{ clearAll }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Clear filters</button>
+          </div>
+        </sc-if>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const BRANCHES = [
+  ['Pune Main', 4820, 3910, 2846000, 6.4, 94, 78],
+  ['Pune — Baner', 2140, 1760, 1216000, 7.1, 89, 66],
+  ['Pimpri Collection Centre', 1180, 980, 512000, 8.6, 81, 54],
+  ['Nashik Branch', 1640, 1350, 848000, 7.8, 86, 61]
+];
+
+const DEPTS = [
+  ['Biochemistry', 3960, 'var(--color-primary-deep)'],
+  ['Haematology', 2740, 'var(--color-primary-bright)'],
+  ['Microbiology', 1180, 'var(--color-accent-teal)'],
+  ['Serology', 980, 'var(--color-secondary-green)'],
+  ['Clinical Pathology', 920, 'var(--color-secondary-lime)']
+];
+
+const TESTS = ['Complete Blood Count', 'Lipid Profile', 'Glycated Haemoglobin (HbA1c)', 'Thyroid Stimulating Hormone', 'Urine Routine', 'Culture & Sensitivity', 'Liver Function Panel'];
+
+const DAY = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const SERIES = [
+  [1420, 812000, 21, 6.2], [1560, 902000, 17, 6.0], [1380, 786000, 26, 6.9],
+  [1610, 948000, 14, 5.8], [1720, 1024000, 19, 6.1], [1240, 704000, 23, 7.4], [860, 486000, 11, 8.2]
+];
+
+const money = (n) => '\u20b9 ' + Number(n || 0).toLocaleString('en-IN');
+const compact = (n) => n >= 100000 ? '\u20b9 ' + (n / 100000).toFixed(2) + ' L' : money(n);
+
+class Component extends DCLogic {
+  state = { loading: true, loadError: '', period: '7', branch: '', dept: '', test: '' };
+
+  componentDidMount() { this.load(); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  load = () => {
+    clearTimeout(this._t);
+    this.setState({ loading: true, loadError: '' });
+    this._t = setTimeout(() => this.setState({ loading: false }), 520);
+  };
+
+  reload = () => this.load();
+  updateField = (e) => { this.setState({ [e.target.dataset.field]: e.target.value }); this.load(); };
+  clearAll = () => { this.setState({ branch: '', dept: '', test: '', period: '7' }); this.load(); };
+  pickBranch = (name) => () => { this.setState({ branch: this.state.branch === name ? '' : name }); this.load(); };
+
+  /* One scope factor keeps every card, chart and table on the same filtered
+     numbers instead of each panel inventing its own total. */
+  factor() {
+    const s = this.state;
+    let f = 1;
+    if (s.branch) {
+      const b = BRANCHES.find(x => x[0] === s.branch);
+      const all = BRANCHES.reduce((sum, x) => sum + x[1], 0);
+      f *= b ? b[1] / all : 1;
+    }
+    if (s.dept) {
+      const d = DEPTS.find(x => x[0] === s.dept);
+      const all = DEPTS.reduce((sum, x) => sum + x[1], 0);
+      f *= d ? d[1] / all : 1;
+    }
+    if (s.test) f *= 0.11;
+    return f;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const days = Number(s.period);
+    const f = this.factor();
+    const scale = days / 7;
+
+    const rows = SERIES.map((d, i) => ({
+      label: DAY[i],
+      tests: Math.round(d[0] * f),
+      revenue: Math.round(d[1] * f),
+      rejected: Math.max(0, Math.round(d[2] * f)),
+      tat: d[3]
+    }));
+
+    const totalTests = Math.round(rows.reduce((a, r) => a + r.tests, 0) * scale);
+    const totalRevenue = Math.round(rows.reduce((a, r) => a + r.revenue, 0) * scale);
+    const totalRejected = Math.round(rows.reduce((a, r) => a + r.rejected, 0) * scale);
+    const samples = Math.round(totalTests * 0.81);
+    const completed = Math.round(totalTests * 0.86);
+    const pending = totalTests - completed;
+    const avgTat = (rows.reduce((a, r) => a + r.tat, 0) / rows.length).toFixed(1);
+    const withinTat = 91;
+    const capacity = Math.min(99, Math.round(68 * (f || 1) + (s.branch ? 14 : 0)));
+
+    const maxTests = Math.max.apply(null, rows.map(r => r.tests)) || 1;
+    const maxRev = Math.max.apply(null, rows.map(r => r.revenue)) || 1;
+    const maxRej = Math.max.apply(null, rows.map(r => r.rejected)) || 1;
+    const maxTat = Math.max.apply(null, rows.map(r => r.tat)) || 1;
+
+    const deptTotal = DEPTS.reduce((a, d) => a + d[1], 0);
+    const distribution = (s.dept ? DEPTS.filter(d => d[0] === s.dept) : DEPTS).map(d => {
+      const scoped = s.dept ? 1 : d[1] / deptTotal;
+      return {
+        name: d[0],
+        value: Math.round(totalTests * scoped).toLocaleString('en-IN'),
+        share: Math.round(scoped * 100) + '%',
+        color: d[2]
+      };
+    });
+
+    return {
+      loading: s.loading,
+      loadError: s.loadError,
+      ready: !s.loading && !s.loadError,
+      isEmpty: !s.loading && !s.loadError && totalTests === 0,
+      skeletons: [1, 2, 3, 4, 5, 6, 7, 8],
+      period: s.period, branch: s.branch, dept: s.dept, test: s.test,
+      branchOptions: BRANCHES.map(b => b[0]),
+      deptOptions: DEPTS.map(d => d[0]),
+      testOptions: TESTS,
+      scopeNote: 'Scope: ' + (s.branch || 'all branches') + ' \u00b7 ' + (s.dept || 'all departments') + ' \u00b7 ' + (s.test || 'all tests') + ' \u00b7 last ' + days + ' days. Revenue counts billed amount net of discount.',
+      reload: this.reload, updateField: this.updateField, clearAll: this.clearAll,
+
+      kpis: [
+        { label: 'Total Tests', value: totalTests.toLocaleString('en-IN'), delta: '+6.2%', deltaFg: '#166534', note: 'vs previous ' + days + ' days' },
+        { label: 'Total Samples', value: samples.toLocaleString('en-IN'), delta: '+4.8%', deltaFg: '#166534', note: 'Accessioned in this scope' },
+        { label: 'Revenue', value: compact(totalRevenue), delta: '+5.1%', deltaFg: '#166534', note: 'Net of discount and concession' },
+        { label: 'Pending Samples', value: pending.toLocaleString('en-IN'), delta: '-3.4%', deltaFg: '#166534', note: 'Awaiting result or validation' },
+        { label: 'Completed Samples', value: completed.toLocaleString('en-IN'), delta: '+7.0%', deltaFg: '#166534', note: 'Reported and dispatched' },
+        { label: 'Rejected Samples', value: totalRejected.toLocaleString('en-IN'), delta: '+0.6%', deltaFg: '#B91C1C', note: 'Haemolysed, insufficient, mislabelled' },
+        { label: 'Average TAT', value: avgTat + ' h', delta: '-0.4 h', deltaFg: '#166534', note: withinTat + '% within target TAT' },
+        { label: 'Capacity Utilisation', value: capacity + '%', delta: '+2.1%', deltaFg: '#92400E', note: 'Against instrument throughput' }
+      ],
+
+      trend: rows.map(r => ({
+        label: r.label,
+        tests: r.tests.toLocaleString('en-IN'),
+        testPct: Math.round(r.tests / maxTests * 100) + '%',
+        revPct: Math.round(r.revenue / maxRev * 100) + '%',
+        testTip: r.label + ' \u00b7 ' + r.tests + ' tests',
+        revTip: r.label + ' \u00b7 ' + money(r.revenue)
+      })),
+
+      distribution,
+
+      rejection: rows.map(r => ({
+        label: r.label,
+        value: r.rejected,
+        pct: Math.round(r.rejected / maxRej * 100) + '%',
+        color: r.rejected / maxRej > 0.8 ? '#DC2626' : '#F59E0B',
+        tip: r.label + ' \u00b7 ' + r.rejected + ' rejected'
+      })),
+
+      rejectionRate: (totalRejected / Math.max(1, samples) * 100).toFixed(1) + '%',
+
+      tatTrend: rows.map(r => ({
+        label: r.label,
+        value: r.tat.toFixed(1),
+        pct: Math.round(r.tat / maxTat * 100) + '%',
+        color: r.tat > 8 ? '#DC2626' : r.tat > 7 ? '#F59E0B' : 'var(--color-accent-teal)',
+        tip: r.label + ' \u00b7 ' + r.tat + ' h average'
+      })),
+
+      branches: BRANCHES.map(b => {
+        const on = s.branch === b[0];
+        return {
+          name: b[0],
+          tests: Math.round(b[1] * scale).toLocaleString('en-IN'),
+          samples: Math.round(b[2] * scale).toLocaleString('en-IN'),
+          revenue: compact(Math.round(b[3] * scale)),
+          tat: b[4].toFixed(1) + ' h',
+          within: b[5] + '%',
+          withinFg: b[5] >= 90 ? '#166534' : b[5] >= 85 ? '#92400E' : '#B91C1C',
+          capacity: b[6] + '%',
+          capFg: b[6] >= 75 ? '#DC2626' : b[6] >= 60 ? '#F59E0B' : 'var(--color-secondary-green)',
+          bg: on ? 'var(--color-interactive-hover)' : 'transparent',
+          onPick: this.pickBranch(b[0])
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

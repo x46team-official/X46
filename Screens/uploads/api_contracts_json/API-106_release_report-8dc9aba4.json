@@ -1,0 +1,78 @@
+{
+  "functionality_id": "API-106",
+  "module": "Report Delivery",
+  "functionality": "Release Report",
+  "http_method": "PATCH",
+  "endpoint": "/api/reports/{reportId}/release",
+  "description": "Marks a generated report as RELEASED, recording released_at/released_by.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "reportId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {}
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "reportId"
+  ],
+  "validation": [
+    "reportId must exist and belong to organization + branch"
+  ],
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Report released successfully",
+      "data": {
+        "id": "uuid",
+        "reportStatus": "RELEASED",
+        "releasedAt": "2026-08-17T10:00:00Z"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "reportId does not reference an existing report",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Report not found"
+      },
+      "source": "database/api_contracts_test/021_report_delivery.sql (API-T168)",
+      "related_functionality_id": "API-110"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "report_status CHECK IN (DRAFT, GENERATED, AUTHORIZED, RELEASED, CANCELLED)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/013_notification.sql",
+    "database/api_contracts_test/021_report_delivery.sql"
+  ],
+  "test_ids": [
+    "API-T169"
+  ]
+}

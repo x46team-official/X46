@@ -1,0 +1,58 @@
+{
+  "functionality_id": "API-125",
+  "module": "Test Package Management",
+  "functionality": "Invalid Test ID in Package",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/test-packages/{packageId}/tests",
+  "description": "Documents the specific error scenario of API-121 where the request fails this validation. Same endpoint as API-121, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "testId": "'00000000-0000-0000-0000-000000000000' - not an existing test_master row"
+    }
+  },
+  "required_fields": [
+    "testId"
+  ],
+  "validation": [
+    "testId must reference an existing test_master row"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary add-test contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "testId must reference an existing test_master row",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Test not found"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T184)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "test_package_test_mapping",
+      "test_master"
+    ],
+    "relationships": [
+      "test_package_test_mapping.test_id -> test_master.id"
+    ],
+    "constraints": []
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/023_test_package.sql (API-T184)"
+  ],
+  "test_ids": [
+    "API-T184"
+  ]
+}

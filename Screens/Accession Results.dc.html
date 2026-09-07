@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --nav-bg: #16202b; --nav-bg-hover: #1f2c3a; --nav-text: #c7d1dc;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --line-soft: #eaedf1; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --green: #1f8a4c; --green-soft: #e9f6ee;
+      --yellow: #ffc107; --yellow-soft: #fff3cd; --radius: 3px; --sidebar: 244px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+  </style>
+</helmet>
+
+<div style="display: flex; min-height: 100vh; background: var(--page-bg);">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <a href="Accession.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Accession</a>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Reports</a>
+      <a href="Report Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="padding: 16px 20px;">
+      <div style="max-width: 1400px;">
+        <h1 style="margin: 0 0 16px; font-size: 16px; font-weight: 700;">Accession Results</h1>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 16px;">
+          <h2 style="margin: 0 0 14px; font-size: 13.5px; font-weight: 700;">Enter Result</h2>
+          <div id="formMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 12px; font-weight: 600;"></div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px 18px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Accession Number <span style="color: var(--red);">*</span></label>
+              <select id="accessionId" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                <option value="">Select accession</option>
+                <option value="ACC-0001">ACC-0001 - John Smith</option>
+                <option value="ACC-0002">ACC-0002 - Sarah Johnson</option>
+                <option value="ACC-0003">ACC-0003 - Michael Brown</option>
+              </select>
+              <div id="accessionIdError" style="display: none; margin-top: 3px; font-size: 11px; color: var(--red); font-weight: 600;"></div>
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Test <span style="color: var(--red);">*</span></label>
+              <select id="testId" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                <option value="">Select test</option>
+                <option value="FBS">Fasting Blood Sugar</option>
+                <option value="CBC">Complete Blood Count</option>
+                <option value="LFT">Liver Function Test</option>
+              </select>
+              <div id="testIdError" style="display: none; margin-top: 3px; font-size: 11px; color: var(--red); font-weight: 600;"></div>
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Parameter <span style="color: var(--red);">*</span></label>
+              <select id="parameterId" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                <option value="">Select parameter</option>
+                <option value="GLUCOSE">Glucose</option>
+                <option value="WBC">WBC Count</option>
+                <option value="ALT">ALT</option>
+              </select>
+              <div id="parameterIdError" style="display: none; margin-top: 3px; font-size: 11px; color: var(--red); font-weight: 600;"></div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px 18px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Result Value <span style="color: var(--red);">*</span></label>
+              <input type="text" id="resultValue" placeholder="e.g. 125.5" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text);" />
+              <div id="resultValueError" style="display: none; margin-top: 3px; font-size: 11px; color: var(--red); font-weight: 600;"></div>
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Unit</label>
+              <input type="text" id="unit" placeholder="mg/dL" maxlength="50" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text);" />
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Result Flag</label>
+              <select id="resultFlag" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                <option value="NORMAL">NORMAL</option>
+                <option value="LOW">LOW</option>
+                <option value="HIGH">HIGH</option>
+                <option value="CRITICAL">CRITICAL</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Entered By <span style="color: var(--red);">*</span></label>
+              <input type="text" id="enteredBy" placeholder="Technician name" maxlength="100" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text);" />
+              <div id="enteredByError" style="display: none; margin-top: 3px; font-size: 11px; color: var(--red); font-weight: 600;"></div>
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Status</label>
+              <select id="resultStatus" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                <option value="ENTERED">ENTERED</option>
+                <option value="PENDING_AUTH">PENDING_AUTH</option>
+                <option value="AUTHORIZED">AUTHORIZED</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr; gap: 14px 18px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Remarks</label>
+              <textarea id="remarks" placeholder="Optional notes" maxlength="500" rows="3" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); resize: vertical;"></textarea>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button type="button" id="clearBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Clear</button>
+            <button type="button" id="submitBtn" style="padding: 6px 16px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 700; font-family: inherit; cursor: pointer; min-width: 110px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Submit</button>
+          </div>
+        </div>
+
+        <div id="pageToast" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 12px; font-weight: 600;"></div>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px;">
+          <h2 style="margin: 0 0 14px; font-size: 13.5px; font-weight: 700;">Results Log</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Status</label>
+              <select id="filterStatus" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                <option value="">All Statuses</option>
+                <option value="ENTERED">ENTERED</option>
+                <option value="PENDING_AUTH">PENDING_AUTH</option>
+                <option value="AUTHORIZED">AUTHORIZED</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 4px; font-size: 11.5px; font-weight: 600; color: var(--text-2);">Search</label>
+              <input type="text" id="searchInput" placeholder="Accession #" style="width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text);" />
+            </div>
+            <div style="display: flex; align-items: flex-end;">
+              <button id="filterBtn" style="width: 100%; padding: 6px 12px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Filter</button>
+            </div>
+          </div>
+
+          <div style="padding: 8px 16px; font-size: 12px; font-weight: 700;">Rows: <span id="resultCount">3</span></div>
+
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; min-width: 1100px; border-collapse: collapse; font-size: 12.5px;">
+              <thead>
+                <tr style="background: var(--head-bg);">
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); width: 120px;">Accession #</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 120px;">Test</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 120px;">Parameter</th>
+                  <th style="padding: 8px 16px; text-align: right; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 100px;">Value</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 100px;">Flag</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 130px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr class="data-row" data-status="AUTHORIZED" data-search="acc-0001" style="border-bottom: 1px solid var(--line-soft);">
+                  <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">ACC-0001</td>
+                  <td style="padding: 9px 16px;">Fasting Blood Sugar</td>
+                  <td style="padding: 9px 16px;">Glucose</td>
+                  <td style="padding: 9px 16px; text-align: right; font-weight: 600;">125.5</td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 10px; font-weight: 700;">NORMAL</span></td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;">✓ AUTHORIZED</span></td>
+                </tr>
+                <tr class="data-row" data-status="PENDING_AUTH" data-search="acc-0002" style="border-bottom: 1px solid var(--line-soft);">
+                  <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">ACC-0002</td>
+                  <td style="padding: 9px 16px;">Complete Blood Count</td>
+                  <td style="padding: 9px 16px;">WBC Count</td>
+                  <td style="padding: 9px 16px; text-align: right; font-weight: 600;">7.5</td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 10px; font-weight: 700;">NORMAL</span></td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; background: var(--yellow-soft); color: #856404; border-radius: 2px; font-size: 11px; font-weight: 700;">⟳ PENDING_AUTH</span></td>
+                </tr>
+                <tr class="data-row" data-status="ENTERED" data-search="acc-0003" style="border-bottom: 1px solid var(--line-soft);">
+                  <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">ACC-0003</td>
+                  <td style="padding: 9px 16px;">Liver Function Test</td>
+                  <td style="padding: 9px 16px;">ALT</td>
+                  <td style="padding: 9px 16px; text-align: right; font-weight: 600;">42.0</td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 10px; font-weight: 700;">NORMAL</span></td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; background: #e8f0ff; color: var(--blue); border-radius: 2px; font-size: 11px; font-weight: 700;">⦿ ENTERED</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="emptyState" style="display: none; padding: 40px 16px; text-align: center;">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No results found</div>
+            <div style="font-size: 12.5px; color: var(--text-2);">Try a different filter or enter a new result.</div>
+          </div>
+        </div>
+
+        <div style="height: 24px;"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+class Component extends DCLogic {
+  state = { results: ['ACC-0001', 'ACC-0002', 'ACC-0003'] };
+
+  componentDidMount() {
+    const $ = (id) => document.getElementById(id);
+    $('submitBtn').addEventListener('click', this.submit);
+    $('clearBtn').addEventListener('click', this.clear);
+    $('filterBtn').addEventListener('click', this.filter);
+    $('searchInput').addEventListener('input', this.filter);
+    $('filterStatus').addEventListener('change', this.filter);
+  }
+
+  setFieldError = (id, msg) => {
+    const el = document.getElementById(id);
+    el.style.borderColor = 'var(--red)';
+    const err = document.getElementById(id + 'Error');
+    if (err) { err.textContent = msg; err.style.display = 'block'; }
+  };
+
+  clearFieldError = (id) => {
+    const el = document.getElementById(id);
+    el.style.borderColor = 'var(--line)';
+    const err = document.getElementById(id + 'Error');
+    if (err) err.style.display = 'none';
+  };
+
+  message = (elId, type, text) => {
+    const el = document.getElementById(elId);
+    const ok = type === 'success';
+    el.textContent = (ok ? '✓  ' : '✕  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  toast = (text) => { this.message('pageToast', 'success', text); setTimeout(() => { document.getElementById('pageToast').style.display = 'none'; }, 3000); };
+
+  submit = () => {
+    const acc = document.getElementById('accessionId').value.trim();
+    const test = document.getElementById('testId').value.trim();
+    const param = document.getElementById('parameterId').value.trim();
+    const val = document.getElementById('resultValue').value.trim();
+    const by = document.getElementById('enteredBy').value.trim();
+    const btn = document.getElementById('submitBtn');
+
+    ['accessionId', 'testId', 'parameterId', 'resultValue', 'enteredBy'].forEach(this.clearFieldError);
+    document.getElementById('formMessage').style.display = 'none';
+
+    let bad = false;
+    if (!acc) { this.setFieldError('accessionId', 'Accession required'); bad = true; }
+    if (!test) { this.setFieldError('testId', 'Test required'); bad = true; }
+    if (!param) { this.setFieldError('parameterId', 'Parameter required'); bad = true; }
+    if (!val) { this.setFieldError('resultValue', 'Result value required'); bad = true; }
+    if (!by) { this.setFieldError('enteredBy', 'Entered by required'); bad = true; }
+    if (bad) return this.message('formMessage', 'error', '400 Validation error');
+
+    btn.disabled = true; btn.style.opacity = '0.65'; btn.textContent = 'Submitting…';
+    setTimeout(() => {
+      btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Submit';
+      this.setState({ results: [...this.state.results, acc] });
+      this.message('formMessage', 'success', '201 Created — Result recorded');
+      this.clear();
+      this.toast('Result entered for ' + acc);
+    }, 900);
+  };
+
+  clear = () => {
+    document.getElementById('accessionId').value = '';
+    document.getElementById('testId').value = '';
+    document.getElementById('parameterId').value = '';
+    document.getElementById('resultValue').value = '';
+    document.getElementById('unit').value = '';
+    document.getElementById('resultFlag').value = 'NORMAL';
+    document.getElementById('enteredBy').value = '';
+    document.getElementById('resultStatus').value = 'ENTERED';
+    document.getElementById('remarks').value = '';
+    ['accessionId', 'testId', 'parameterId', 'resultValue', 'enteredBy'].forEach(this.clearFieldError);
+  };
+
+  filter = () => {
+    const status = document.getElementById('filterStatus').value;
+    const search = document.getElementById('searchInput').value.toLowerCase().trim();
+    let visible = 0;
+
+    document.querySelectorAll('.data-row').forEach((row) => {
+      const rowStatus = row.getAttribute('data-status');
+      const rowSearch = row.getAttribute('data-search');
+      const match = (!status || rowStatus === status) && (!search || rowSearch.includes(search));
+      row.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('resultCount').textContent = visible;
+  };
+
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="Report Formatting" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Setup / Report Formatting</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Report Formatting</h1>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="width: 226px;">
+              <label>Search Template</label>
+              <input type="text" placeholder="Template name or test category" value="{{ q }}" onChange="{{ updateField }}" data-field="q" />
+            </div>
+            <div style="width: 158px;">
+              <label>Department</label>
+              <select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept">
+                <option value="">All departments</option>
+                <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 132px;">
+              <label>Status</label>
+              <select value="{{ status }}" onChange="{{ updateField }}" data-field="status">
+                <option value="">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <button onClick="{{ clearAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+          </div>
+          <div style="margin-top: 5px; font-size: 10.5px; color: var(--color-text-tertiary);">Templates control report layout only — parameters, units and reference ranges stay in the test master. One template per department can be the default.</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ reload }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reload</button>
+          <button onClick="{{ openCreate }}" style="padding: 8px 14px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">+ Create Template</button>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBd }};">{{ banner }}</div>
+    </sc-if>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 12px; flex-wrap: wrap;">
+        <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">Templates: {{ rowCount }}</div>
+        <div style="font-size: 11px; color: var(--color-text-tertiary);">Deactivating a template falls back to the department default</div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto;">
+        <div style="min-width: 1180px;">
+          <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: minmax(200px,1.3fr) 140px minmax(170px,1fr) 104px 120px 128px 216px; gap: 10px; padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+            <div>Template Name</div><div>Department</div><div>Test / Category</div>
+            <div>Status</div><div>Last Updated</div><div>Updated By</div><div>Actions</div>
+          </div>
+
+          <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="5">
+              <div style="display: grid; grid-template-columns: minmax(200px,1.3fr) 140px minmax(170px,1fr) 104px 120px 128px 216px; gap: 10px; padding: 12px; border-bottom: 1px solid var(--color-border-light);">
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+              </div>
+            </sc-for>
+          </sc-if>
+
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="0">
+            <div style="display: grid; grid-template-columns: minmax(200px,1.3fr) 140px minmax(170px,1fr) 104px 120px 128px 216px; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center;" style-hover="background: var(--color-gray-50);">
+              <div style="min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 7px;">
+                  <span style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.name }}</span>
+                  <sc-if value="{{ r.isDefault }}" hint-placeholder-val="{{ false }}">
+                    <span style="padding: 1px 6px; border-radius: 999px; font-size: 9.5px; font-weight: 700; background: var(--color-interactive-hover); color: var(--color-primary-deep); white-space: nowrap;">Default</span>
+                  </sc-if>
+                </div>
+                <div class="mono" style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.code }}</div>
+              </div>
+              <div style="font-size: 12px;">{{ r.dept }}</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.scope }}</div>
+              <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span></div>
+              <div class="num" style="font-size: 11.5px;">{{ r.updated }}</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ r.updatedBy }}</div>
+              <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                <button onClick="{{ r.onEdit }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); background: var(--color-interactive-hover);">Edit</button>
+                <button onClick="{{ r.onPreview }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Preview</button>
+                <button onClick="{{ r.onDuplicate }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Duplicate</button>
+                <button onClick="{{ r.onToggle }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">{{ r.toggleLabel }}</button>
+                <sc-if value="{{ r.canDelete }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ r.onDelete }}" style="padding: 5px 9px; background: #fff; border: 1px solid #FCA5A5; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: #B91C1C; cursor: pointer;" style-hover="background: #FEF2F2;">Delete</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 52px 20px; text-align: center;">
+              <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No templates match these filters</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Clear the search, or create a template for this department.</div>
+              <button onClick="{{ openCreate }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">+ Create Template</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <sc-if value="{{ editorOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.38); z-index: 50; display: flex; justify-content: flex-end;" onClick="{{ closeEditor }}">
+      <div onClick="{{ stop }}" style="width: 1080px; max-width: 100%; background: #fff; height: 100%; box-shadow: -8px 0 24px rgba(17,24,39,.14); display: flex; flex-direction: column;">
+        <div style="padding: 13px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">{{ editorKind }}</div>
+            <div style="font-size: 15px; font-weight: 700;">{{ editorTitle }}</div>
+          </div>
+          <button onClick="{{ closeEditor }}" style="background: none; border: none; font-size: 17px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+
+        <sc-if value="{{ formMessage }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 8px 18px; font-size: 11.5px; font-weight: 600; background: {{ formMessageBg }}; color: {{ formMessageFg }}; border-bottom: 1px solid {{ formMessageBd }};">{{ formMessage }}</div>
+        </sc-if>
+
+        <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: 420px minmax(0, 1fr);">
+          <div style="border-right: 1px solid var(--color-border-light); overflow-y: auto; padding: 15px 18px; display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label>Template Name <span style="color: var(--color-error);">*</span></label>
+              <input type="text" placeholder="e.g. Biochemistry — Single Page" value="{{ fName }}" onChange="{{ updateForm }}" data-field="fName" />
+              <sc-if value="{{ fNameError }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 4px; font-size: 11px; font-weight: 600; color: var(--color-error);">{{ fNameError }}</div>
+              </sc-if>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label>Department <span style="color: var(--color-error);">*</span></label>
+                <select value="{{ fDept }}" onChange="{{ updateForm }}" data-field="fDept">
+                  <option value="">Select…</option>
+                  <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+                <sc-if value="{{ fDeptError }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top: 4px; font-size: 11px; font-weight: 600; color: var(--color-error);">{{ fDeptError }}</div>
+                </sc-if>
+              </div>
+              <div>
+                <label>Applies to</label>
+                <select value="{{ fScope }}" onChange="{{ updateForm }}" data-field="fScope">
+                  <option value="All tests in department">All tests in department</option>
+                  <option value="Routine profiles">Routine profiles</option>
+                  <option value="Culture &amp; sensitivity">Culture &amp; sensitivity</option>
+                  <option value="Health packages">Health packages</option>
+                  <option value="Outsourced tests">Outsourced tests</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label>Page size</label>
+                <select value="{{ fPage }}" onChange="{{ updateForm }}" data-field="fPage">
+                  <option value="A4">A4</option>
+                  <option value="Letter">Letter</option>
+                  <option value="A5">A5</option>
+                </select>
+              </div>
+              <div>
+                <label>Accent colour</label>
+                <select value="{{ fAccent }}" onChange="{{ updateForm }}" data-field="fAccent">
+                  <option value="var(--color-primary-deep)">X46 Blue</option>
+                  <option value="var(--color-accent-teal)">Teal</option>
+                  <option value="var(--color-text-primary)">Monochrome</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 7px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary);">Report sections</div>
+              <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="10">
+                <label style="display: flex; align-items: flex-start; gap: 9px; margin: 0; padding: 8px 10px; border: 1px solid {{ sec.edge }}; border-radius: 4px; background: {{ sec.bg }}; cursor: {{ sec.cursor }};">
+                  <input type="checkbox" checked="{{ sec.on }}" disabled="{{ sec.locked }}" onChange="{{ sec.onToggle }}" style="width: 14px; height: 14px; margin-top: 1px;" />
+                  <span style="min-width: 0;">
+                    <span style="display: block; font-size: 11.5px; font-weight: 600; color: var(--color-text-primary);">{{ sec.label }}</span>
+                    <span style="display: block; font-size: 10.5px; color: var(--color-text-tertiary);">{{ sec.note }}</span>
+                  </span>
+                </label>
+              </sc-for>
+            </div>
+
+            <div>
+              <label>Footer text</label>
+              <input type="text" placeholder="e.g. Not valid for medico-legal purposes" value="{{ fFooter }}" onChange="{{ updateForm }}" data-field="fFooter" />
+            </div>
+
+            <label style="display: flex; align-items: center; gap: 8px; margin: 0; padding: 9px 11px; background: var(--color-gray-50); border: 1px solid var(--color-border-light); border-radius: 4px; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">
+              <input type="checkbox" checked="{{ fDefault }}" onChange="{{ toggleDefault }}" style="width: 14px; height: 14px;" />
+              Set as department default
+            </label>
+          </div>
+
+          <div style="overflow-y: auto; background: var(--color-gray-50); padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary);">Live preview · {{ fPage }}</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Sample data: Rohan Deshpande · ACC-2026-11840</div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 2px 8px rgba(17,24,39,.06);">
+              <sc-if value="{{ sHeader }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 2px solid {{ fAccent }};">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 34px; height: 34px; border-radius: 6px; background: {{ fAccent }}; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">X46</div>
+                    <div>
+                      <div style="font-size: 14px; font-weight: 700;">X46 Diagnostics</div>
+                      <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Pune Main · NABL M-0142 · reports@x46.com</div>
+                    </div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: {{ fAccent }};">Laboratory Report</div>
+                    <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ fDeptShown }}</div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ sPatient }}" hint-placeholder-val="{{ true }}">
+                <div style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px 14px; padding: 10px 12px; border: 1px solid var(--color-border-light); border-radius: 4px;">
+                  <sc-for list="{{ patientFields }}" as="p" hint-placeholder-count="8">
+                    <div>
+                      <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ p.k }}</div>
+                      <div style="font-size: 11.5px; font-weight: 600;">{{ p.v }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ sSample }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: var(--color-text-secondary);">
+                  <span><strong style="color: var(--color-text-primary);">Sample:</strong> Serum, EDTA whole blood</span>
+                  <span><strong style="color: var(--color-text-primary);">Collected:</strong> 24 Aug 2026, 08:10</span>
+                  <span><strong style="color: var(--color-text-primary);">Received:</strong> 24 Aug 2026, 08:34</span>
+                  <span><strong style="color: var(--color-text-primary);">Reported:</strong> 24 Aug 2026, 11:05</span>
+                </div>
+              </sc-if>
+
+              <div>
+                <div style="display: grid; grid-template-columns: minmax(0,1.6fr) 96px 84px {{ rangeCol }}; gap: 10px; padding: 7px 10px; background: var(--color-gray-50); border-top: 1px solid var(--color-border-base); border-bottom: 1px solid var(--color-border-base); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+                  <div>Investigation</div>
+                  <div style="text-align: right;">Result</div>
+                  <div>{{ unitHead }}</div>
+                  <div>{{ rangeHead }}</div>
+                </div>
+                <sc-for list="{{ resultRows }}" as="r" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: minmax(0,1.6fr) 96px 84px {{ rangeCol }}; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ r.bg }};">
+                    <div style="font-size: 11.5px; font-weight: 600;">{{ r.name }}</div>
+                    <div class="num" style="font-size: 11.5px; font-weight: 700; text-align: right; color: {{ r.fg }};">{{ r.value }} {{ r.flag }}</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary);">{{ r.unit }}</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary);">{{ r.range }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <sc-if value="{{ sComments }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 9px 11px; border-left: 3px solid {{ fAccent }}; background: var(--color-gray-50); font-size: 11px; color: var(--color-text-secondary);">
+                  <strong style="color: var(--color-text-primary);">Interpretation:</strong> Mild normocytic anaemia with borderline HbA1c. Suggest clinical correlation and repeat fasting glucose after two weeks.
+                </div>
+              </sc-if>
+
+              <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding-top: 10px;">
+                <sc-if value="{{ sQr }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; align-items: center; gap: 9px;">
+                    <div style="width: 46px; height: 46px; border: 1px solid var(--color-border-base); border-radius: 3px; background: repeating-conic-gradient(var(--color-text-primary) 0% 25%, #fff 0% 50%) 50% / 9px 9px;"></div>
+                    <div style="font-size: 10px; color: var(--color-text-tertiary); max-width: 150px;">Verify this report at x46.com/verify · {{ verifyCode }}</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ sSignature }}" hint-placeholder-val="{{ true }}">
+                  <div style="text-align: right;">
+                    <div style="height: 26px;"></div>
+                    <div style="font-size: 11.5px; font-weight: 700; border-top: 1px solid var(--color-border-base); padding-top: 4px;">Dr. Anand Rao, MD (Path)</div>
+                    <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Consultant Pathologist · Reg. MH-44120</div>
+                  </div>
+                </sc-if>
+              </div>
+
+              <sc-if value="{{ sFooter }}" hint-placeholder-val="{{ true }}">
+                <div style="padding-top: 8px; border-top: 1px solid var(--color-border-light); font-size: 10px; color: var(--color-text-tertiary); text-align: center;">{{ fFooterShown }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">{{ dirtyNote }}</div>
+          <div style="display: flex; gap: 8px;">
+            <button onClick="{{ closeEditor }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+            <button onClick="{{ saveTemplate }}" disabled="{{ saving }}" style="padding: 8px 16px; background: {{ saveBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ saveCursor }}; min-width: 140px;">{{ saveLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ confirm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 70; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeConfirm }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 420px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 16px 18px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">{{ confirmTitle }}</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">{{ confirmBody }}</div>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeConfirm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep</button>
+          <button onClick="{{ runConfirm }}" style="padding: 8px 16px; background: {{ confirmBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">{{ confirmAction }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const DEPTS = ['Biochemistry', 'Haematology', 'Microbiology', 'Serology', 'Clinical Pathology'];
+
+const SECTION_DEFS = [
+  ['header', 'Lab header & logo', 'Branch name, accreditation number and contact block', true],
+  ['patient', 'Patient information', 'Name, MRN, age/gender, referring doctor', true],
+  ['sample', 'Sample information', 'Sample type, collection, receipt and report times', false],
+  ['results', 'Test / result table', 'Always printed — the report body', true],
+  ['ranges', 'Reference ranges', 'Biological reference interval column', false],
+  ['units', 'Units column', 'Result unit as configured on the parameter', false],
+  ['abnormal', 'Abnormal / critical highlighting', 'H / L flags and critical row shading', false],
+  ['comments', 'Comments & interpretation', 'Free-text pathologist note under the table', false],
+  ['signature', 'Doctor / signature area', 'Pathologist name, degree and registration number', false],
+  ['qr', 'QR verification block', 'Scannable link to the online report verification page', false],
+  ['footer', 'Footer', 'Disclaimer line repeated on every page', false]
+];
+
+const seed = (on) => {
+  const o = {};
+  SECTION_DEFS.forEach(([k]) => { o[k] = on.indexOf(k) > -1; });
+  o.results = true;
+  return o;
+};
+
+const TEMPLATES = [
+  { id: 1, code: 'RPT-BIO-STD', name: 'Biochemistry — Single Page', dept: 'Biochemistry', scope: 'All tests in department', status: 'Active', updated: '24 Aug 2026', updatedBy: 'admin.pune', isDefault: true, page: 'A4', accent: 'var(--color-primary-deep)', footer: 'Not valid for medico-legal purposes. Results relate only to the sample tested.', sections: seed(['header', 'patient', 'sample', 'results', 'ranges', 'units', 'abnormal', 'signature', 'footer']) },
+  { id: 2, code: 'RPT-HAEM-STD', name: 'Haematology — CBC Layout', dept: 'Haematology', scope: 'Routine profiles', status: 'Active', updated: '21 Aug 2026', updatedBy: 'r.kulkarni', isDefault: true, page: 'A4', accent: 'var(--color-primary-deep)', footer: 'Not valid for medico-legal purposes.', sections: seed(['header', 'patient', 'sample', 'results', 'ranges', 'units', 'abnormal', 'signature', 'footer']) },
+  { id: 3, code: 'RPT-MICRO-CS', name: 'Microbiology — Culture & Sensitivity', dept: 'Microbiology', scope: 'Culture & sensitivity', status: 'Active', updated: '18 Aug 2026', updatedBy: 's.iyer', isDefault: true, page: 'A4', accent: 'var(--color-accent-teal)', footer: 'Susceptibility interpreted per CLSI M100 (2026).', sections: seed(['header', 'patient', 'sample', 'results', 'comments', 'signature', 'footer']) },
+  { id: 4, code: 'RPT-PKG-HEALTH', name: 'Health Package — Consolidated', dept: 'Biochemistry', scope: 'Health packages', status: 'Active', updated: '11 Aug 2026', updatedBy: 'admin.pune', isDefault: false, page: 'A4', accent: 'var(--color-primary-deep)', footer: 'Consolidated package report. Retain for your records.', sections: seed(['header', 'patient', 'results', 'ranges', 'units', 'abnormal', 'comments', 'signature', 'qr', 'footer']) },
+  { id: 5, code: 'RPT-SERO-STD', name: 'Serology — Compact', dept: 'Serology', scope: 'All tests in department', status: 'Inactive', updated: '02 Aug 2026', updatedBy: 's.iyer', isDefault: false, page: 'A5', accent: 'var(--color-text-primary)', footer: 'Screening test — confirm reactive results by a supplemental assay.', sections: seed(['header', 'patient', 'results', 'signature', 'footer']) },
+  { id: 6, code: 'RPT-OUT-REF', name: 'Outsourced — Referral Lab Wrapper', dept: 'Clinical Pathology', scope: 'Outsourced tests', status: 'Active', updated: '29 Jul 2026', updatedBy: 'admin.pune', isDefault: false, page: 'A4', accent: 'var(--color-accent-teal)', footer: 'Test performed at a referral laboratory. Performing lab named above.', sections: seed(['header', 'patient', 'sample', 'results', 'comments', 'signature', 'qr', 'footer']) }
+];
+
+const RESULTS = [
+  ['Haemoglobin', '11.2', 'g/dL', '13.0 – 17.0', 'L'],
+  ['Total Leucocyte Count', '7,400', '/µL', '4,000 – 11,000', ''],
+  ['Platelet Count', '2.4', 'lakh/µL', '1.5 – 4.1', ''],
+  ['Fasting Blood Glucose', '118', 'mg/dL', '70 – 100', 'H'],
+  ['HbA1c', '6.4', '%', '< 5.7', 'H']
+];
+
+class Component extends DCLogic {
+  state = {
+    loading: true, q: '', dept: '', status: '', banner: '', bannerKind: 'info',
+    items: TEMPLATES.map(t => ({ ...t, sections: { ...t.sections } })),
+    editing: null, creating: false, saving: false, formMessage: '', formMessageKind: 'error',
+    fName: '', fDept: '', fScope: 'All tests in department', fPage: 'A4', fAccent: 'var(--color-primary-deep)',
+    fFooter: '', fDefault: false, fSections: seed(['header', 'patient', 'results', 'signature', 'footer']),
+    fNameError: '', fDeptError: '', dirty: false,
+    confirm: null
+  };
+
+  componentDidMount() { this._t = setTimeout(() => this.setState({ loading: false }), 480); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  reload = () => {
+    clearTimeout(this._t);
+    this.setState({ loading: true, banner: '' });
+    this._t = setTimeout(() => this.setState({ loading: false }), 480);
+  };
+
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value });
+  clearAll = () => this.setState({ q: '', dept: '', status: '' });
+  stop = (e) => e.stopPropagation();
+
+  openCreate = () => this.setState({
+    creating: true, editing: null, saving: false, formMessage: '', fNameError: '', fDeptError: '', dirty: false,
+    fName: '', fDept: this.state.dept || '', fScope: 'All tests in department', fPage: 'A4',
+    fAccent: 'var(--color-primary-deep)', fFooter: 'Not valid for medico-legal purposes.',
+    fDefault: false, fSections: seed(['header', 'patient', 'results', 'ranges', 'units', 'signature', 'footer'])
+  });
+
+  openEdit = (id) => () => {
+    const t = this.state.items.find(x => x.id === id);
+    if (!t) return;
+    this.setState({
+      editing: id, creating: false, saving: false, formMessage: '', fNameError: '', fDeptError: '', dirty: false,
+      fName: t.name, fDept: t.dept, fScope: t.scope, fPage: t.page, fAccent: t.accent,
+      fFooter: t.footer, fDefault: t.isDefault, fSections: { ...t.sections }
+    });
+  };
+
+  preview = (id) => () => { this.openEdit(id)(); this.setState({ formMessageKind: 'info', formMessage: 'Preview only — no change is saved until you press Save Template.' }); };
+
+  closeEditor = () => { if (!this.state.saving) this.setState({ editing: null, creating: false, formMessage: '', dirty: false }); };
+
+  updateForm = (e) => this.setState({ [e.target.dataset.field]: e.target.value, dirty: true, formMessage: '' });
+  toggleDefault = (e) => this.setState({ fDefault: e.target.checked, dirty: true });
+  toggleSection = (k) => (e) => this.setState({ fSections: { ...this.state.fSections, [k]: e.target.checked }, dirty: true });
+
+  saveTemplate = () => {
+    const s = this.state;
+    const name = String(s.fName).trim();
+    const nameError = name ? '' : 'Template name is required';
+    const deptError = s.fDept ? '' : 'Department is required';
+    if (nameError || deptError) {
+      this.setState({ fNameError: nameError, fDeptError: deptError, formMessageKind: 'error', formMessage: '400 Bad Request — Fix the highlighted fields before saving.' });
+      return;
+    }
+    const clash = s.items.find(t => t.id !== s.editing && t.name.toLowerCase() === name.toLowerCase());
+    if (clash) {
+      this.setState({ fNameError: 'Already used by ' + clash.code, formMessageKind: 'error', formMessage: '409 Conflict — A template with this name already exists for this organization.' });
+      return;
+    }
+
+    this.setState({ saving: true, formMessage: '', fNameError: '', fDeptError: '' });
+    setTimeout(() => {
+      const st = this.state;
+      const patch = {
+        name: String(st.fName).trim(), dept: st.fDept, scope: st.fScope, page: st.fPage,
+        accent: st.fAccent, footer: String(st.fFooter).trim(), isDefault: st.fDefault,
+        sections: { ...st.fSections }, updated: '03 Sep 2026', updatedBy: 'admin.pune'
+      };
+      let items;
+      if (st.creating) {
+        const id = Math.max.apply(null, st.items.map(t => t.id)) + 1;
+        const code = 'RPT-' + st.fDept.slice(0, 4).toUpperCase() + '-' + String(id).padStart(2, '0');
+        items = st.items.concat([{ id, code, status: 'Active', ...patch }]);
+      } else {
+        items = st.items.map(t => t.id === st.editing ? { ...t, ...patch } : t);
+      }
+      if (patch.isDefault) items = items.map(t => (t.dept === patch.dept && t.name !== patch.name) ? { ...t, isDefault: false } : t);
+
+      this.setState({
+        items, saving: false, formMessageKind: 'success',
+        formMessage: (st.creating ? '201 Created' : '200 OK') + ' — Template saved' + (patch.isDefault ? ' and set as the ' + patch.dept + ' default.' : '.'),
+        dirty: false
+      });
+      setTimeout(() => this.setState({
+        editing: null, creating: false, formMessage: '',
+        bannerKind: 'success', banner: 'Template “' + patch.name + '” saved.'
+      }), 900);
+    }, 640);
+  };
+
+  duplicate = (id) => () => {
+    const t = this.state.items.find(x => x.id === id);
+    if (!t) return;
+    const nid = Math.max.apply(null, this.state.items.map(x => x.id)) + 1;
+    const copy = { ...t, id: nid, code: t.code + '-C', name: t.name + ' (copy)', isDefault: false, status: 'Inactive', updated: '03 Sep 2026', updatedBy: 'admin.pune', sections: { ...t.sections } };
+    this.setState({ items: this.state.items.concat([copy]), bannerKind: 'success', banner: '201 Created — “' + copy.name + '” duplicated as inactive. Activate it when the layout is checked.' });
+  };
+
+  toggleStatus = (id) => () => {
+    const t = this.state.items.find(x => x.id === id);
+    if (!t) return;
+    if (t.isDefault && t.status === 'Active') {
+      this.setState({ confirm: { kind: 'deactivate', id } });
+      return;
+    }
+    this.applyToggle(id);
+  };
+
+  applyToggle = (id) => {
+    const items = this.state.items.map(t => t.id === id ? { ...t, status: t.status === 'Active' ? 'Inactive' : 'Active', isDefault: t.status === 'Active' ? false : t.isDefault } : t);
+    const t = items.find(x => x.id === id);
+    this.setState({ items, bannerKind: 'success', banner: '200 OK — “' + t.name + '” is now ' + t.status.toLowerCase() + '.' });
+  };
+
+  askDelete = (id) => () => this.setState({ confirm: { kind: 'delete', id } });
+  closeConfirm = () => this.setState({ confirm: null });
+
+  runConfirm = () => {
+    const c = this.state.confirm;
+    if (!c) return;
+    if (c.kind === 'delete') {
+      const t = this.state.items.find(x => x.id === c.id);
+      this.setState({ items: this.state.items.filter(x => x.id !== c.id), confirm: null, bannerKind: 'success', banner: '200 OK — Template “' + (t ? t.name : '') + '” deleted.' });
+      return;
+    }
+    this.setState({ confirm: null });
+    this.applyToggle(c.id);
+  };
+
+  renderVals() {
+    const s = this.state;
+    const q = String(s.q).trim().toLowerCase();
+    const rows = s.items.filter(t =>
+      (!s.dept || t.dept === s.dept) &&
+      (!s.status || t.status === s.status) &&
+      (!q || (t.name + ' ' + t.scope + ' ' + t.code).toLowerCase().includes(q))
+    );
+
+    const tone = { error: ['#FEF2F2', '#B91C1C', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] };
+    const bt = tone[s.bannerKind] || tone.info;
+    const ft = tone[s.formMessageKind] || tone.error;
+    const sec = s.fSections;
+    const editorOpen = !!(s.editing || s.creating);
+    const cur = s.editing ? s.items.find(t => t.id === s.editing) : null;
+    const c = s.confirm;
+    const cTarget = c ? s.items.find(t => t.id === c.id) : null;
+
+    return {
+      loading: s.loading,
+      skeletons: [1, 2, 3, 4, 5],
+      q: s.q, dept: s.dept, status: s.status,
+      deptOptions: DEPTS,
+      rowCount: rows.length,
+      isEmpty: !s.loading && rows.length === 0,
+      banner: s.banner, bannerBg: bt[0], bannerFg: bt[1], bannerBd: bt[2],
+      reload: this.reload, updateField: this.updateField, clearAll: this.clearAll,
+      openCreate: this.openCreate, stop: this.stop,
+
+      rows: rows.map(t => ({
+        name: t.name, code: t.code, dept: t.dept, scope: t.scope, status: t.status,
+        updated: t.updated, updatedBy: t.updatedBy, isDefault: t.isDefault,
+        statusBg: t.status === 'Active' ? '#DCFCE7' : '#F3F4F6',
+        statusFg: t.status === 'Active' ? '#166534' : '#4B5563',
+        toggleLabel: t.status === 'Active' ? 'Deactivate' : 'Activate',
+        canDelete: !t.isDefault,
+        onEdit: this.openEdit(t.id),
+        onPreview: this.preview(t.id),
+        onDuplicate: this.duplicate(t.id),
+        onToggle: this.toggleStatus(t.id),
+        onDelete: this.askDelete(t.id)
+      })),
+
+      editorOpen,
+      editorKind: s.creating ? 'New report template' : 'Edit report template',
+      editorTitle: s.creating ? 'Create Template' : (cur ? cur.name : ''),
+      formMessage: s.formMessage, formMessageBg: ft[0], formMessageFg: ft[1], formMessageBd: ft[2],
+      fName: s.fName, fDept: s.fDept, fScope: s.fScope, fPage: s.fPage, fAccent: s.fAccent,
+      fFooter: s.fFooter, fDefault: s.fDefault,
+      fNameError: s.fNameError, fDeptError: s.fDeptError,
+      fDeptShown: s.fDept || 'Department not set',
+      fFooterShown: String(s.fFooter).trim() || 'Footer text not set',
+      dirtyNote: s.dirty ? 'Unsaved changes — closing this panel discards them.' : 'No unsaved changes.',
+      saving: s.saving,
+      saveLabel: s.saving ? 'Saving…' : (s.creating ? 'Create Template' : 'Save Template'),
+      saveBg: s.saving ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      saveCursor: s.saving ? 'wait' : 'pointer',
+      updateForm: this.updateForm, toggleDefault: this.toggleDefault,
+      closeEditor: this.closeEditor, saveTemplate: this.saveTemplate,
+
+      sections: SECTION_DEFS.map(([k, label, note, locked]) => ({
+        label, note, locked,
+        on: locked ? true : !!sec[k],
+        cursor: locked ? 'not-allowed' : 'pointer',
+        bg: (locked || sec[k]) ? 'var(--color-interactive-hover)' : '#fff',
+        edge: (locked || sec[k]) ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+        onToggle: this.toggleSection(k)
+      })),
+
+      sHeader: !!sec.header, sPatient: !!sec.patient, sSample: !!sec.sample,
+      sComments: !!sec.comments, sSignature: !!sec.signature, sQr: !!sec.qr, sFooter: !!sec.footer,
+      rangeCol: sec.ranges ? '132px' : '0px',
+      rangeHead: sec.ranges ? 'Reference Range' : '',
+      unitHead: sec.units ? 'Units' : '',
+      verifyCode: 'RPT-' + (cur ? cur.code : 'NEW') + '-11840',
+
+      patientFields: [
+        { k: 'Patient', v: 'Mr Rohan Deshpande' },
+        { k: 'MRN', v: 'PT-193210' },
+        { k: 'Age / Gender', v: '42 y · Male' },
+        { k: 'Referred by', v: 'Dr. S. Kulkarni' },
+        { k: 'Accession', v: 'ACC-2026-11840' },
+        { k: 'Bill', v: 'BL-2026-009114' },
+        { k: 'Branch', v: 'Pune Main' },
+        { k: 'Report No.', v: 'RPT-2026-04471' }
+      ],
+
+      resultRows: RESULTS.map(r => {
+        const flagged = sec.abnormal && r[4];
+        return {
+          name: r[0],
+          value: r[1],
+          unit: sec.units ? r[2] : '',
+          range: sec.ranges ? r[3] : '',
+          flag: flagged ? r[4] : '',
+          fg: flagged ? '#B91C1C' : 'var(--color-text-primary)',
+          bg: flagged ? '#FEF8F8' : 'transparent'
+        };
+      }),
+
+      confirm: !!c,
+      confirmTitle: c ? (c.kind === 'delete' ? 'Delete this template?' : 'Deactivate the department default?') : '',
+      confirmBody: c ? (c.kind === 'delete'
+        ? 'Reports already issued keep their stored layout. “' + (cTarget ? cTarget.name : '') + '” will no longer be available for new reports.'
+        : '“' + (cTarget ? cTarget.name : '') + '” is the ' + (cTarget ? cTarget.dept : '') + ' default. Deactivating it leaves the department without a default until you set another one.') : '',
+      confirmAction: c ? (c.kind === 'delete' ? 'Delete Template' : 'Deactivate') : '',
+      confirmBg: c && c.kind === 'delete' ? '#B91C1C' : 'var(--color-primary-deep)',
+      closeConfirm: this.closeConfirm, runConfirm: this.runConfirm
+    };
+  }
+}
+</script>
+</body>
+</html>

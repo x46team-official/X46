@@ -1,0 +1,59 @@
+{
+  "functionality_id": "API-068",
+  "module": "Payment",
+  "functionality": "Payment Status",
+  "http_method": "PATCH",
+  "endpoint": "/api/payments/{paymentId}/status",
+  "description": "Updates the payment_status of a payment.",
+
+  "request": {
+    "path_parameters": { "paymentId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "paymentStatus": "enum, required - SUCCESS | PENDING | FAILED | PARTIAL" }
+  },
+
+  "required_fields": ["paymentId", "paymentStatus"],
+
+  "validation": [
+    "payment must exist",
+    "paymentStatus must be one of SUCCESS, PENDING, FAILED, PARTIAL (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Payment status updated successfully",
+      "data": { "id": "uuid", "transactionReference": "TXN0001", "paymentStatus": "SUCCESS" }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "paymentStatus missing or not a recognized enum value",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid status" }
+    },
+    {
+      "condition": "payment not found",
+      "status_code": 404,
+      "response": { "success": false, "error": "Payment not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["payment"],
+    "relationships": [],
+    "constraints": ["payment_status NOT NULL DEFAULT 'SUCCESS' CHECK IN (SUCCESS, PENDING, FAILED, PARTIAL)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T127)"],
+
+  "test_ids": ["API-T127"],
+
+  "database_gap": true,
+  "notes": "database/api_contracts_test/015_payment.sql's API-T127 scenario targets rows by transaction_reference = 'TXN0001' rather than paymentId and updated 2 rows in testing (marked DB GAP in docs/API_Contracts_and_Test_Results.xlsx). As with API-059, this is a downstream symptom of the missing UNIQUE constraint on transaction_reference (API-064's gap), not a defect in this endpoint's own contract - this endpoint's path parameter is already the unique primary key (paymentId), which is unaffected by the transaction_reference gap."
+}

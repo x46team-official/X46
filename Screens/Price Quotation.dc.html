@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="Price Quotation" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Finance / Price Quotation</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Price Quotation</h1>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="width: 138px;"><label>From</label><input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" /></div>
+            <div style="width: 138px;"><label>To</label><input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" /></div>
+            <div style="width: 132px;">
+              <label>Status</label>
+              <select value="{{ status }}" onChange="{{ updateField }}" data-field="status">
+                <option value="">All</option>
+                <option value="Draft">Draft</option>
+                <option value="Sent">Sent</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Expired">Expired</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div style="width: 190px;"><label>Patient / Customer</label><input type="text" placeholder="Name or organization" value="{{ qName }}" onChange="{{ updateField }}" data-field="qName" /></div>
+            <div style="width: 150px;"><label>Quotation ID</label><input type="text" placeholder="QT-2026-…" value="{{ qId }}" onChange="{{ updateField }}" data-field="qId" class="mono" /></div>
+            <div style="width: 150px;">
+              <label>Created By</label>
+              <select value="{{ creator }}" onChange="{{ updateField }}" data-field="creator">
+                <option value="">All users</option>
+                <sc-for list="{{ userOptions }}" as="u" hint-placeholder-count="4"><option value="{{ u }}">{{ u }}</option></sc-for>
+              </select>
+            </div>
+            <button onClick="{{ clearAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+          </div>
+          <div style="margin-top: 5px; font-size: 10.5px; color: var(--color-text-tertiary);">A quotation is an estimate only — no bill number, sample or accession is created until it is converted to a bill.</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ openCreate }}" style="padding: 8px 14px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">+ Create Quotation</button>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBd }};"><span style="font-weight: 700;">{{ bannerTitle }}</span>{{ banner }}</div>
+    </sc-if>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px;">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 10px 12px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ k.label }}</div>
+            <div class="num" style="font-size: 19px; font-weight: 700; margin-top: 3px; color: {{ k.color }};">{{ k.value }}</div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ k.hint }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary); margin-bottom: 8px;">{{ rowCountLabel }}</div>
+
+      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto;">
+        <div style="min-width: 1140px;">
+          <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 128px 104px minmax(180px,1.2fr) 124px 68px 104px 96px 118px 176px; gap: 10px; padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+            <div>Quotation ID</div><div>Date</div><div>Patient / Customer</div><div>Contact</div>
+            <div style="text-align: right;">Tests</div><div style="text-align: right;">Total</div>
+            <div>Status</div><div>Created By</div><div>Actions</div>
+          </div>
+
+          <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="5">
+              <div style="display: grid; grid-template-columns: 128px 104px minmax(180px,1.2fr) 124px 68px 104px 96px 118px 176px; gap: 10px; padding: 12px; border-bottom: 1px solid var(--color-border-light);">
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+              </div>
+            </sc-for>
+          </sc-if>
+
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="0">
+            <div style="display: grid; grid-template-columns: 128px 104px minmax(180px,1.2fr) 124px 68px 104px 96px 118px 176px; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center;" style-hover="background: var(--color-gray-50);">
+              <div class="mono" style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);">{{ r.id }}</div>
+              <div class="num" style="font-size: 12px;">{{ r.date }}</div>
+              <div style="min-width: 0;">
+                <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.customer }}</div>
+                <div style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.kind }}</div>
+              </div>
+              <div class="num" style="font-size: 12px;">{{ r.contact }}</div>
+              <div class="num" style="font-size: 12px; text-align: right;">{{ r.lineCount }}</div>
+              <div class="num" style="font-size: 12px; font-weight: 700; text-align: right;">{{ r.total }}</div>
+              <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span></div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ r.createdBy }}</div>
+              <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                <button onClick="{{ r.onPreview }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Preview</button>
+                <sc-if value="{{ r.canSend }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ r.onSend }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-primary-bright); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;" style-hover="background: var(--color-interactive-hover);">Send</button>
+                </sc-if>
+                <sc-if value="{{ r.canConvert }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ r.onConvert }}" style="padding: 5px 10px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;">To Bill</button>
+                </sc-if>
+                <sc-if value="{{ r.canCancel }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ r.onCancel }}" style="padding: 5px 10px; background: #fff; border: 1px solid #FCA5A5; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: #B91C1C; cursor: pointer;" style-hover="background: #FEF2F2;">Cancel</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 56px 20px; text-align: center;">
+              <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">{{ emptyTitle }}</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">{{ emptyHint }}</div>
+              <button onClick="{{ emptyAction }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">{{ emptyActionLabel }}</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 20px;" onClick="{{ closeForm }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 940px; max-width: 100%; max-height: 94vh; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 13px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700;">Create Quotation</div>
+            <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ draftId }} · valid for the period you set below</div>
+          </div>
+          <button onClick="{{ closeForm }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 12px;">
+            <div>
+              <label>Customer Type</label>
+              <select value="{{ fKind }}" onChange="{{ updateForm }}" data-field="kind">
+                <option value="Patient">Patient</option>
+                <option value="Corporate">Corporate</option>
+                <option value="Camp">Camp / Institution</option>
+              </select>
+            </div>
+            <div style="grid-column: span 2;">
+              <label>Patient / Customer *</label>
+              <input type="text" placeholder="e.g. Rohan Deshpande or Ambit Technologies" value="{{ fCustomer }}" onChange="{{ updateForm }}" data-field="customer" style="border-color: {{ customerBorder }};" />
+            </div>
+            <div>
+              <label>Contact *</label>
+              <input type="text" maxlength="10" placeholder="10-digit mobile" value="{{ fContact }}" onChange="{{ updateForm }}" data-field="contact" style="border-color: {{ contactBorder }};" class="num" />
+            </div>
+            <div style="grid-column: span 2;">
+              <label>Email</label>
+              <input type="text" placeholder="Optional — used when sending the quotation" value="{{ fEmail }}" onChange="{{ updateForm }}" data-field="email" />
+            </div>
+            <div>
+              <label>Valid Until *</label>
+              <input type="date" value="{{ fValidUntil }}" onChange="{{ updateForm }}" data-field="validUntil" style="border-color: {{ validBorder }};" />
+            </div>
+            <div>
+              <label>Price List</label>
+              <select value="{{ fPriceList }}" onChange="{{ updateForm }}" data-field="priceList">
+                <option value="Standard 2026">Standard 2026</option>
+                <option value="Corporate 2026">Corporate 2026</option>
+                <option value="Camp 2026">Camp 2026</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="border: 1px solid var(--color-border-light); border-radius: 5px; overflow: hidden;">
+            <div style="padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span style="font-size: 11px; font-weight: 700;">Tests &amp; Services</span>
+              <div style="flex: 1; min-width: 200px; max-width: 340px;">
+                <input type="text" placeholder="Search test code or name…" value="{{ testQuery }}" onChange="{{ setTestQuery }}" />
+              </div>
+              <span style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ pickHint }}</span>
+            </div>
+
+            <sc-if value="{{ hasMatches }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-wrap: wrap; gap: 5px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); background: #fff;">
+                <sc-for list="{{ matches }}" as="m" hint-placeholder-count="6">
+                  <button onClick="{{ m.onAdd }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-primary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); background: var(--color-interactive-hover);">
+                    <span class="mono" style="font-weight: 700; color: var(--color-primary-deep);">{{ m.code }}</span>
+                    <span>{{ m.name }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div style="display: grid; grid-template-columns: 92px minmax(180px,1fr) 62px 96px 96px 104px 40px; gap: 8px; padding: 7px 12px; background: #fff; border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+              <div>Code</div><div>Test / Service</div><div style="text-align: right;">Qty</div><div style="text-align: right;">Rate</div><div style="text-align: right;">Discount</div><div style="text-align: right;">Amount</div><div></div>
+            </div>
+
+            <sc-for list="{{ lines }}" as="l" hint-placeholder-count="0">
+              <div style="display: grid; grid-template-columns: 92px minmax(180px,1fr) 62px 96px 96px 104px 40px; gap: 8px; padding: 7px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center;">
+                <div class="mono" style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);">{{ l.code }}</div>
+                <div style="font-size: 11.5px; font-weight: 600; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.name }}</div>
+                <div><input type="number" min="1" step="1" value="{{ l.qty }}" onChange="{{ l.onQty }}" style="padding: 4px 6px; text-align: right;" class="num" /></div>
+                <div><input type="number" min="0" step="1" value="{{ l.rate }}" onChange="{{ l.onRate }}" style="padding: 4px 6px; text-align: right;" class="num" /></div>
+                <div><input type="number" min="0" step="1" value="{{ l.discount }}" onChange="{{ l.onDiscount }}" style="padding: 4px 6px; text-align: right;" class="num" /></div>
+                <div class="num" style="font-size: 11.5px; font-weight: 700; text-align: right;">{{ l.amount }}</div>
+                <div style="text-align: right;"><button onClick="{{ l.onRemove }}" title="Remove line" style="background: none; border: none; font-size: 14px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;">×</button></div>
+              </div>
+            </sc-for>
+
+            <sc-if value="{{ noLines }}" hint-placeholder-val="{{ true }}">
+              <div style="padding: 26px 12px; text-align: center;">
+                <div style="font-size: 12px; font-weight: 700;">No tests on this quotation yet</div>
+                <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px;">Search above and click a test to add it as a line.</div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.9fr); gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div>
+                <label>Notes / Terms</label>
+                <textarea rows="4" placeholder="e.g. Rates valid for the quoted period. Home collection charged separately." value="{{ fNotes }}" onChange="{{ updateForm }}" data-field="notes"></textarea>
+              </div>
+            </div>
+            <div style="border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50); padding: 11px 12px; display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;"><span style="color: var(--color-text-secondary);">Tests</span><span class="num" style="font-weight: 700;">{{ sumCount }}</span></div>
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;"><span style="color: var(--color-text-secondary);">Subtotal</span><span class="num" style="font-weight: 700;">{{ sumSubtotal }}</span></div>
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;"><span style="color: var(--color-text-secondary);">Line discount</span><span class="num" style="font-weight: 700;">− {{ sumLineDiscount }}</span></div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <label style="margin: 0;">Quotation discount (₹)</label>
+                <input type="number" min="0" step="1" value="{{ fDiscount }}" onChange="{{ updateForm }}" data-field="discount" style="width: 92px; padding: 4px 6px; text-align: right;" class="num" />
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <label style="margin: 0;">Tax (₹, if applicable)</label>
+                <input type="number" min="0" step="1" value="{{ fTax }}" onChange="{{ updateForm }}" data-field="tax" style="width: 92px; padding: 4px 6px; text-align: right;" class="num" />
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 5px; background: var(--color-interactive-hover); border: 1px solid var(--color-primary-bright);">
+                <span style="font-size: 11.5px; font-weight: 700;">Quotation total</span>
+                <span class="num" style="font-size: 18px; font-weight: 700; color: var(--color-primary-deep);">{{ sumTotal }}</span>
+              </div>
+              <div style="font-size: 10px; color: var(--color-text-tertiary);">Tax is taken from the organization billing configuration — leave at zero if your setup does not levy it on diagnostics.</div>
+            </div>
+          </div>
+
+          <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ formError }}</div>
+          </sc-if>
+        </div>
+
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: var(--color-text-tertiary);">Save as draft to keep editing, or send to share it with the customer.</span>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button onClick="{{ closeForm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+            <button onClick="{{ previewForm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Preview</button>
+            <button onClick="{{ saveDraft }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-primary-bright); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;">Save Draft</button>
+            <button onClick="{{ saveAndSend }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Save &amp; Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ previewOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.5); z-index: 70; display: flex; align-items: center; justify-content: center; padding: 20px;" onClick="{{ closePreview }}">
+      <div onClick="{{ stop }}" style="background: #fff; border-radius: 6px; width: 720px; max-width: 100%; max-height: 94vh; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(17,24,39,.26);">
+        <div style="flex: 1; overflow-y: auto; padding: 26px 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding-bottom: 14px; border-bottom: 2px solid var(--color-primary-deep);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 34px; height: 34px; border-radius: 7px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700;">X46</div>
+              <div>
+                <div style="font-size: 15px; font-weight: 700;">X46 Diagnostics</div>
+                <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Pune Main · FC Road, Pune 411004 · +91 20 6600 4600</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-tertiary);">Price Quotation</div>
+              <div class="mono" style="font-size: 13px; font-weight: 700;">{{ pvId }}</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ pvDates }}</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--color-border-light);">
+            <div>
+              <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary);">Quoted to</div>
+              <div style="font-size: 13px; font-weight: 700; margin-top: 2px;">{{ pvCustomer }}</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ pvContact }}</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary);">Price list</div>
+              <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">{{ pvPriceList }}</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ pvKind }}</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 84px 1fr 52px 88px 88px 96px; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--color-border-base); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+            <div>Code</div><div>Test / Service</div><div style="text-align: right;">Qty</div><div style="text-align: right;">Rate</div><div style="text-align: right;">Disc.</div><div style="text-align: right;">Amount</div>
+          </div>
+          <sc-for list="{{ pvLines }}" as="l" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 84px 1fr 52px 88px 88px 96px; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--color-border-light);">
+              <div class="mono" style="font-size: 11.5px; font-weight: 700;">{{ l.code }}</div>
+              <div style="font-size: 11.5px;">{{ l.name }}</div>
+              <div class="num" style="font-size: 11.5px; text-align: right;">{{ l.qty }}</div>
+              <div class="num" style="font-size: 11.5px; text-align: right;">{{ l.rate }}</div>
+              <div class="num" style="font-size: 11.5px; text-align: right;">{{ l.discount }}</div>
+              <div class="num" style="font-size: 11.5px; font-weight: 700; text-align: right;">{{ l.amount }}</div>
+            </div>
+          </sc-for>
+
+          <div style="display: flex; justify-content: flex-end; padding-top: 12px;">
+            <div style="width: 280px; display: flex; flex-direction: column; gap: 5px;">
+              <sc-for list="{{ pvTotals }}" as="t" hint-placeholder-count="4">
+                <div style="display: flex; justify-content: space-between; font-size: 11.5px;">
+                  <span style="color: var(--color-text-secondary);">{{ t.k }}</span>
+                  <span class="num" style="font-weight: 600;">{{ t.v }}</span>
+                </div>
+              </sc-for>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 7px; margin-top: 4px; border-top: 2px solid var(--color-primary-deep);">
+                <span style="font-size: 12px; font-weight: 700;">Total payable</span>
+                <span class="num" style="font-size: 17px; font-weight: 700; color: var(--color-primary-deep);">{{ pvTotal }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 18px; padding: 11px 12px; border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50);">
+            <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 4px;">Notes &amp; terms</div>
+            <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ pvNotes }}</div>
+          </div>
+          <div style="margin-top: 12px; font-size: 10.5px; color: var(--color-text-tertiary);">This is a price estimate, not a bill or a receipt. Rates hold until the validity date shown above.</div>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: var(--color-text-tertiary);">{{ pvStatusLine }}</span>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button onClick="{{ closePreview }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+            <button onClick="{{ printQuote }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Print</button>
+            <button onClick="{{ downloadQuote }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-primary-bright); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;">Download PDF</button>
+            <sc-if value="{{ pvCanSend }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ sendFromPreview }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Send</button>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ confirm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeConfirm }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 430px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 16px 18px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">{{ confirmTitle }}</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">{{ confirmBody }}</div>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeConfirm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Go back</button>
+          <button onClick="{{ applyConfirm }}" style="padding: 8px 16px; background: {{ confirmBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">{{ confirmLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const CATALOG = [
+  ['CBC', 'Complete Blood Count', 350], ['ESR', 'Erythrocyte Sedimentation Rate', 180],
+  ['HBA1C', 'Glycated Haemoglobin (HbA1c)', 620], ['LIPID', 'Lipid Profile', 890],
+  ['LFT', 'Liver Function Test', 950], ['KFT', 'Kidney Function Test', 880],
+  ['GLU-F', 'Glucose Fasting', 140], ['TSH', 'Thyroid Stimulating Hormone', 380],
+  ['T3T4TSH', 'Thyroid Profile (T3, T4, TSH)', 700], ['VITD', 'Vitamin D (25-OH)', 1450],
+  ['VITB12', 'Vitamin B12', 1250], ['CRP', 'C-Reactive Protein', 520],
+  ['URINE-R', 'Urine Routine & Microscopy', 200], ['CUL-URI', 'Urine Culture & Sensitivity', 780],
+  ['HIV-SCR', 'HIV I & II Screening', 640], ['DENGUE', 'Dengue NS1 / IgM / IgG', 900],
+  ['HEALTH-B', 'Basic Health Package (12 tests)', 1850], ['HEALTH-A', 'Advanced Health Package (28 tests)', 3650],
+  ['HOMEVISIT', 'Home Visit Collection Charge', 250]
+];
+
+const USERS = ['A. Bhosale', 'P. Shirke', 'R. Kamat', 'S. Vaidya'];
+
+const SEED = [
+  ['QT-2026-000148', '2026-09-02', 'Ambit Technologies Pvt Ltd', 'Corporate', '9822014577', 42, 154200, 'Sent', 'A. Bhosale', '2026-09-16'],
+  ['QT-2026-000147', '2026-09-02', 'Rohan Deshpande', 'Patient', '9822014577', 4, 2320, 'Accepted', 'P. Shirke', '2026-09-09'],
+  ['QT-2026-000146', '2026-09-01', 'Saniya Shaikh', 'Patient', '9011245566', 2, 1010, 'Draft', 'A. Bhosale', '2026-09-08'],
+  ['QT-2026-000145', '2026-08-31', 'Sahyadri Clinic, Kothrud', 'Corporate', '9890123344', 18, 46800, 'Sent', 'R. Kamat', '2026-09-14'],
+  ['QT-2026-000144', '2026-08-29', 'Nalanda School Health Camp', 'Camp', '9765004411', 120, 96000, 'Accepted', 'S. Vaidya', '2026-09-12'],
+  ['QT-2026-000143', '2026-08-27', 'Harishchandra Shinde', 'Patient', '9822776655', 6, 3890, 'Expired', 'P. Shirke', '2026-08-31'],
+  ['QT-2026-000142', '2026-08-26', 'Pulse Hospital, Nigdi', 'Corporate', '9890443322', 26, 71400, 'Cancelled', 'R. Kamat', '2026-09-09'],
+  ['QT-2026-000141', '2026-08-24', 'Aditi Barve', 'Patient', '9765331120', 3, 1470, 'Accepted', 'A. Bhosale', '2026-09-07'],
+  ['QT-2026-000140', '2026-08-22', 'Ambit Technologies Pvt Ltd', 'Corporate', '9822014577', 38, 138600, 'Expired', 'S. Vaidya', '2026-08-29'],
+  ['QT-2026-000139', '2026-08-20', 'Meera Iyer', 'Patient', '9011778890', 5, 4210, 'Sent', 'P. Shirke', '2026-09-04']
+].map(q => ({
+  id: q[0], date: q[1], customer: q[2], kind: q[3], contact: q[4],
+  lineCount: q[5], total: q[6], status: q[7], createdBy: q[8], validUntil: q[9],
+  priceList: q[3] === 'Corporate' ? 'Corporate 2026' : (q[3] === 'Camp' ? 'Camp 2026' : 'Standard 2026'),
+  notes: 'Rates hold until the validity date. Sample collection at the branch unless a home visit is quoted separately.',
+  lines: null
+}));
+
+const BLANK = { kind: 'Patient', customer: '', contact: '', email: '', validUntil: '2026-09-17', priceList: 'Standard 2026', notes: '', discount: 0, tax: 0 };
+
+class Component extends DCLogic {
+  state = {
+    quotes: SEED.map(q => ({ ...q })),
+    loading: true,
+    from: '2026-08-01', to: '2026-09-03', status: '', qName: '', qId: '', creator: '',
+    formOpen: false, form: { ...BLANK }, lines: [], testQuery: '', formError: '',
+    previewOpen: false, previewId: null, previewDraft: false,
+    confirmKind: '', confirmId: null,
+    banner: '', bannerKind: 'success', bannerTitle: ''
+  };
+
+  componentDidMount() { this._t = setTimeout(() => this.setState({ loading: false }), 480); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  stop = (e) => e.stopPropagation();
+  money = (n) => '₹ ' + Number(n || 0).toLocaleString('en-IN');
+
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value });
+  clearAll = () => this.setState({ status: '', qName: '', qId: '', creator: '', from: '2026-08-01', to: '2026-09-03' });
+
+  nextId = () => 'QT-2026-000' + (149 + this.state.quotes.filter(q => q.id > 'QT-2026-000148').length);
+
+  openCreate = () => this.setState({ formOpen: true, form: { ...BLANK }, lines: [], testQuery: '', formError: '' });
+  closeForm = () => this.setState({ formOpen: false, formError: '' });
+  updateForm = (e) => {
+    const f = e.target.dataset.field;
+    const v = f === 'contact' ? e.target.value.replace(/\D/g, '') : e.target.value;
+    this.setState(s => ({ form: { ...s.form, [f]: v } }));
+  };
+  setTestQuery = (e) => this.setState({ testQuery: e.target.value });
+
+  addLine = (code) => () => this.setState(s => {
+    if (s.lines.some(l => l.code === code)) return { testQuery: '' };
+    const c = CATALOG.find(x => x[0] === code);
+    return { lines: s.lines.concat([{ code: c[0], name: c[1], qty: 1, rate: c[2], discount: 0 }]), testQuery: '' };
+  });
+  removeLine = (code) => () => this.setState(s => ({ lines: s.lines.filter(l => l.code !== code) }));
+  editLine = (code, field) => (e) => {
+    const v = e.target.value;
+    this.setState(s => ({ lines: s.lines.map(l => (l.code === code ? { ...l, [field]: v } : l)) }));
+  };
+
+  totals(s) {
+    const subtotal = s.lines.reduce((a, l) => a + (Number(l.qty) || 0) * (Number(l.rate) || 0), 0);
+    const lineDiscount = s.lines.reduce((a, l) => a + (Number(l.discount) || 0), 0);
+    const discount = Number(s.form.discount) || 0;
+    const tax = Number(s.form.tax) || 0;
+    return { subtotal, lineDiscount, discount, tax, total: Math.max(0, subtotal - lineDiscount - discount + tax) };
+  }
+
+  validate() {
+    const s = this.state;
+    const miss = [];
+    if (!String(s.form.customer).trim()) miss.push('Patient / customer');
+    if (String(s.form.contact).length !== 10) miss.push('Contact (10 digits)');
+    if (!s.form.validUntil) miss.push('Valid until');
+    if (!s.lines.length) miss.push('at least one test');
+    if (miss.length) { this.setState({ formError: '400 Bad Request — required: ' + miss.join(', ') + '.' }); return false; }
+    return true;
+  }
+
+  commit(status) {
+    const s = this.state;
+    const T = this.totals(s);
+    const q = {
+      id: this.nextId(), date: '2026-09-03', customer: String(s.form.customer).trim(), kind: s.form.kind,
+      contact: s.form.contact, lineCount: s.lines.length, total: T.total, status,
+      createdBy: 'A. Bhosale', validUntil: s.form.validUntil, priceList: s.form.priceList,
+      notes: String(s.form.notes).trim() || 'Rates hold until the validity date shown above.',
+      lines: s.lines.map(l => ({ ...l }))
+    };
+    this.setState(st => ({
+      quotes: [q].concat(st.quotes), formOpen: false, formError: '', previewOpen: false,
+      bannerKind: 'success', bannerTitle: '201 Created · ',
+      banner: q.id + ' saved as ' + status.toLowerCase() + ' · ' + q.lineCount + ' test(s) · ' + this.money(q.total) + (status === 'Sent' ? ' and shared with ' + q.contact + '.' : '.')
+    }));
+  }
+
+  saveDraft = () => { if (this.validate()) this.commit('Draft'); };
+  saveAndSend = () => { if (this.validate()) this.commit('Sent'); };
+  previewForm = () => { if (this.validate()) this.setState({ previewOpen: true, previewId: null, previewDraft: true }); };
+
+  openPreview = (id) => () => this.setState({ previewOpen: true, previewId: id, previewDraft: false });
+  closePreview = () => this.setState({ previewOpen: false, previewDraft: false });
+  printQuote = () => { if (window.print) window.print(); };
+  downloadQuote = () => this.setState({
+    bannerKind: 'info', bannerTitle: 'Export · ',
+    banner: 'Quotation PDF queued for download — the rendered document above is what gets exported.'
+  });
+  sendFromPreview = () => {
+    if (this.state.previewDraft) { this.commit('Sent'); return; }
+    this.setState({ confirmKind: 'send', confirmId: this.state.previewId, previewOpen: false });
+  };
+
+  askSend = (id) => () => this.setState({ confirmKind: 'send', confirmId: id });
+  askConvert = (id) => () => this.setState({ confirmKind: 'convert', confirmId: id });
+  askCancel = (id) => () => this.setState({ confirmKind: 'cancel', confirmId: id });
+  closeConfirm = () => this.setState({ confirmKind: '', confirmId: null });
+
+  applyConfirm = () => {
+    const { confirmKind, confirmId } = this.state;
+    const q = this.state.quotes.find(x => x.id === confirmId);
+    if (!q) { this.closeConfirm(); return; }
+    if (confirmKind === 'convert') {
+      this.setState({
+        confirmKind: '', confirmId: null,
+        bannerKind: 'success', bannerTitle: '201 Created · ',
+        banner: q.id + ' converted to a bill for ' + q.customer + ' · ' + this.money(q.total) + '. Open Registration & Billing to collect payment.'
+      });
+      return;
+    }
+    const status = confirmKind === 'send' ? 'Sent' : 'Cancelled';
+    this.setState(s => ({
+      confirmKind: '', confirmId: null,
+      quotes: s.quotes.map(x => (x.id === confirmId ? { ...x, status } : x)),
+      bannerKind: confirmKind === 'send' ? 'success' : 'info', bannerTitle: '200 OK · ',
+      banner: confirmKind === 'send'
+        ? q.id + ' sent to ' + q.contact + '.'
+        : q.id + ' cancelled — it can no longer be converted to a bill.'
+    }));
+  };
+
+  filtered(s) {
+    const name = s.qName.trim().toLowerCase();
+    const id = s.qId.trim().toLowerCase();
+    return s.quotes.filter(q => {
+      if (q.date < s.from || q.date > s.to) return false;
+      if (s.status && q.status !== s.status) return false;
+      if (s.creator && q.createdBy !== s.creator) return false;
+      if (name && q.customer.toLowerCase().indexOf(name) === -1) return false;
+      if (id && q.id.toLowerCase().indexOf(id) === -1) return false;
+      return true;
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const all = this.filtered(s);
+    const rows = s.loading ? [] : all;
+    const filtersOn = !!(s.status || s.creator || s.qName.trim() || s.qId.trim());
+    const T = this.totals(s);
+    const tone = { success: ['#DCFCE7', '#166534', '#A7F3D0'], error: ['#FEF2F2', '#991B1B', '#FECACA'], info: ['#EFF6FF', '#1E40AF', '#BFDBFE'] }[s.bannerKind];
+    const st = {
+      Draft: ['var(--color-gray-100)', 'var(--color-text-secondary)'],
+      Sent: ['#DBEAFE', '#1E40AF'],
+      Accepted: ['#DCFCE7', '#166534'],
+      Expired: ['#FEF3C7', '#92400E'],
+      Cancelled: ['#FEF2F2', '#991B1B']
+    };
+    const q = s.testQuery.trim().toLowerCase();
+    const matches = q
+      ? CATALOG.filter(c => (c[0] + ' ' + c[1]).toLowerCase().indexOf(q) > -1).slice(0, 8)
+      : CATALOG.slice(0, 8);
+
+    const pv = s.previewDraft
+      ? {
+          id: this.nextId(), date: '2026-09-03', customer: s.form.customer, kind: s.form.kind,
+          contact: s.form.contact, validUntil: s.form.validUntil, priceList: s.form.priceList,
+          notes: String(s.form.notes).trim() || 'Rates hold until the validity date shown above.',
+          status: 'Draft', lines: s.lines, totals: T, total: T.total
+        }
+      : (() => {
+          const found = s.quotes.find(x => x.id === s.previewId);
+          if (!found) return null;
+          const lines = found.lines || CATALOG.slice(0, Math.min(5, found.lineCount)).map(c => ({ code: c[0], name: c[1], qty: 1, rate: c[2], discount: 0 }));
+          const subtotal = lines.reduce((a, l) => a + l.qty * l.rate, 0);
+          return {
+            ...found, lines,
+            totals: { subtotal, lineDiscount: 0, discount: Math.max(0, subtotal - found.total), tax: 0, total: found.total }
+          };
+        })();
+
+    return {
+      from: s.from, to: s.to, status: s.status, qName: s.qName, qId: s.qId, creator: s.creator,
+      userOptions: USERS, updateField: this.updateField, clearAll: this.clearAll,
+      openCreate: this.openCreate, stop: this.stop,
+      loading: s.loading, skeletons: [1, 2, 3, 4, 5],
+      banner: s.banner, bannerTitle: s.bannerTitle, bannerBg: tone[0], bannerFg: tone[1], bannerBd: tone[2],
+
+      kpis: [
+        { label: 'Quotations', value: String(all.length), hint: 'In selected range', color: 'var(--color-text-primary)' },
+        { label: 'Quoted Value', value: this.money(all.reduce((a, x) => a + x.total, 0)), hint: 'Sum of totals', color: 'var(--color-primary-deep)' },
+        { label: 'Accepted', value: String(all.filter(x => x.status === 'Accepted').length), hint: 'Ready to convert', color: '#166534' },
+        { label: 'Awaiting Reply', value: String(all.filter(x => x.status === 'Sent').length), hint: 'Sent, not yet accepted', color: '#1E40AF' },
+        { label: 'Expired', value: String(all.filter(x => x.status === 'Expired').length), hint: 'Past validity date', color: '#92400E' }
+      ],
+      rowCountLabel: s.loading ? 'Loading quotations…' : all.length + ' of ' + s.quotes.length + ' quotations',
+      rows: rows.map(x => ({
+        id: x.id, date: x.date, customer: x.customer, kind: x.kind + ' · valid to ' + x.validUntil,
+        contact: x.contact, lineCount: String(x.lineCount), total: this.money(x.total),
+        status: x.status, statusBg: st[x.status][0], statusFg: st[x.status][1],
+        createdBy: x.createdBy,
+        canSend: x.status === 'Draft',
+        canConvert: x.status === 'Accepted',
+        canCancel: x.status === 'Draft' || x.status === 'Sent',
+        onPreview: this.openPreview(x.id), onSend: this.askSend(x.id),
+        onConvert: this.askConvert(x.id), onCancel: this.askCancel(x.id)
+      })),
+      isEmpty: !s.loading && all.length === 0,
+      emptyTitle: filtersOn ? 'No quotations match these filters' : 'No quotations in this date range',
+      emptyHint: filtersOn
+        ? 'Clear the status, customer or created-by filter, or widen the date range.'
+        : 'Prepare an estimate for a patient or corporate customer before billing.',
+      emptyActionLabel: filtersOn ? 'Clear filters' : '+ Create Quotation',
+      emptyAction: filtersOn ? this.clearAll : this.openCreate,
+
+      formOpen: s.formOpen, closeForm: this.closeForm, updateForm: this.updateForm,
+      draftId: this.nextId(),
+      fKind: s.form.kind, fCustomer: s.form.customer, fContact: s.form.contact, fEmail: s.form.email,
+      fValidUntil: s.form.validUntil, fPriceList: s.form.priceList, fNotes: s.form.notes,
+      fDiscount: s.form.discount, fTax: s.form.tax,
+      customerBorder: s.formError && !String(s.form.customer).trim() ? '#F87171' : 'var(--color-border-base)',
+      contactBorder: s.formError && String(s.form.contact).length !== 10 ? '#F87171' : 'var(--color-border-base)',
+      validBorder: s.formError && !s.form.validUntil ? '#F87171' : 'var(--color-border-base)',
+      testQuery: s.testQuery, setTestQuery: this.setTestQuery,
+      pickHint: s.lines.length + ' line(s) added',
+      hasMatches: matches.length > 0,
+      matches: matches.map(c => ({ code: c[0], name: c[1], onAdd: this.addLine(c[0]) })),
+      lines: s.lines.map(l => ({
+        code: l.code, name: l.name, qty: l.qty, rate: l.rate, discount: l.discount,
+        amount: this.money(Math.max(0, (Number(l.qty) || 0) * (Number(l.rate) || 0) - (Number(l.discount) || 0))),
+        onQty: this.editLine(l.code, 'qty'), onRate: this.editLine(l.code, 'rate'),
+        onDiscount: this.editLine(l.code, 'discount'), onRemove: this.removeLine(l.code)
+      })),
+      noLines: s.lines.length === 0,
+      sumCount: String(s.lines.length), sumSubtotal: this.money(T.subtotal),
+      sumLineDiscount: this.money(T.lineDiscount), sumTotal: this.money(T.total),
+      formError: s.formError, saveDraft: this.saveDraft, saveAndSend: this.saveAndSend, previewForm: this.previewForm,
+
+      previewOpen: s.previewOpen && !!pv, closePreview: this.closePreview,
+      printQuote: this.printQuote, downloadQuote: this.downloadQuote, sendFromPreview: this.sendFromPreview,
+      pvId: pv ? pv.id : '', pvCustomer: pv ? pv.customer : '',
+      pvContact: pv ? pv.contact + (s.previewDraft && s.form.email ? ' · ' + s.form.email : '') : '',
+      pvKind: pv ? pv.kind : '', pvPriceList: pv ? pv.priceList : '',
+      pvDates: pv ? 'Dated ' + pv.date + ' · valid until ' + pv.validUntil : '',
+      pvLines: pv ? pv.lines.map(l => ({
+        code: l.code, name: l.name, qty: l.qty, rate: this.money(l.rate), discount: this.money(l.discount),
+        amount: this.money(Math.max(0, (Number(l.qty) || 0) * (Number(l.rate) || 0) - (Number(l.discount) || 0)))
+      })) : [],
+      pvTotals: pv ? [
+        { k: 'Subtotal', v: this.money(pv.totals.subtotal) },
+        { k: 'Line discount', v: '− ' + this.money(pv.totals.lineDiscount) },
+        { k: 'Quotation discount', v: '− ' + this.money(pv.totals.discount) },
+        { k: 'Tax', v: this.money(pv.totals.tax) }
+      ] : [],
+      pvTotal: pv ? this.money(pv.total) : '',
+      pvNotes: pv ? pv.notes : '',
+      pvStatusLine: pv ? (s.previewDraft ? 'Unsaved draft — sending saves it first.' : 'Status: ' + pv.status + ' · created by ' + pv.createdBy) : '',
+      pvCanSend: pv ? (s.previewDraft || pv.status === 'Draft') : false,
+
+      confirm: !!s.confirmKind,
+      closeConfirm: this.closeConfirm, applyConfirm: this.applyConfirm,
+      confirmTitle: { send: 'Send this quotation?', convert: 'Convert to bill?', cancel: 'Cancel this quotation?' }[s.confirmKind] || '',
+      confirmBody: {
+        send: 'The quotation PDF is shared with the customer contact and its status becomes Sent.',
+        convert: 'A bill is raised from the quoted tests and rates. The quotation stays on record as accepted.',
+        cancel: 'The quotation is marked cancelled and can no longer be sent or converted. This is not a delete.'
+      }[s.confirmKind] || '',
+      confirmLabel: { send: 'Send', convert: 'Convert to Bill', cancel: 'Cancel Quotation' }[s.confirmKind] || '',
+      confirmBg: s.confirmKind === 'cancel' ? '#B91C1C' : 'var(--color-primary-deep)'
+    };
+  }
+}
+</script>
+</body>
+</html>

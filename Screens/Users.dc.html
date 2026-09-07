@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="fit-screen.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --nav-bg: #16202b; --nav-bg-hover: #1f2c3a; --nav-text: #c7d1dc;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --line-soft: #eaedf1; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --green: #1f8a4c; --green-soft: #e9f6ee; --grey-pill: #eef0f3;
+      --radius: 3px; --sidebar: 244px;
+      /* Sidebar markup uses the X46 token names — map them onto this screen's palette. */
+      --color-primary-deep: #1668dc; --color-accent-teal: #17a2a2;
+      --color-interactive-hover: #eaf2fd; --color-border-light: #dfe3e9;
+      --color-text-secondary: #5a6675; --color-text-tertiary: #8b95a3;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+    input:focus-visible, button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+    tbody tr:hover { background: #f7f9fc; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh; background: var(--page-bg);">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Users</div>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: var(--page-bg); flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 10px; flex: 1; min-width: 260px; max-width: 460px;">
+        <input type="text" id="searchInput" placeholder="Search by username, name or email" style="flex: 1; min-width: 0; border: none; padding: 7px 0; font-size: 12.5px; background: transparent; font-family: inherit; color: var(--text); outline: none;" />
+        <span style="color: var(--text-3); font-size: 13px;">⌕</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-left: auto;">
+        <select id="branchSelect" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+          <option value="c9b1f2a6-4d38-4f51-8a2e-6b0d3c7e15aa">Pune Main Branch · PUNE-01</option>
+          <option value="d41d8cd9-8f00-4204-a980-0998ecf8427e">Mumbai Lab · MUM-01</option>
+          <option value="a3f5c1e0-77b9-4c62-8d15-2e9a4b6f0c73">Bangalore Center · BNG-01</option>
+        </select>
+        <button id="createBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create User</button>
+      </div>
+    </div>
+
+    <div style="flex: 1; padding: 0 20px 20px;">
+      <div id="pageToast" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 10px; font-weight: 600;"></div>
+
+      <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+        <div style="display: flex; align-items: center; gap: 22px; padding: 0 16px; border-bottom: 1px solid var(--line);">
+          <a href="Branch Management.dc.html" style="padding: 10px 2px; font-size: 12.5px; color: var(--text-2);">Branches</a>
+          <a href="Departments.dc.html" style="padding: 10px 2px; font-size: 12.5px; color: var(--text-2);">Departments</a>
+          <a href="Roles.dc.html" style="padding: 10px 2px; font-size: 12.5px; color: var(--text-2);">Roles</a>
+          <div style="padding: 10px 2px; font-size: 12.5px; font-weight: 600; color: var(--blue); border-bottom: 2px solid var(--blue);">Users</div>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 11.5px; color: var(--text-2);">
+            <span>Organization <b style="color: var(--text);">X46 Diagnostics</b></span>
+          </div>
+        </div>
+
+        <div style="padding: 8px 16px; font-size: 12px; font-weight: 700;">Rows: <span id="resultCount">3</span></div>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 12.5px;">
+            <thead>
+              <tr style="background: var(--head-bg);">
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); width: 150px;">Username</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 160px;">Name</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft);">Email</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 130px;">Role</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 110px;">Status</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 340px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="data-row" data-user-id="6d7e8f90-a1b2-4c34-8567-e5f6a7b8c9d0" data-search="admin.pune anita deshpande anita.d@x46.com administrator" style="border-bottom: 1px solid var(--line-soft);">
+                <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">admin.pune</td>
+                <td style="padding: 9px 16px; font-weight: 600;">Anita Deshpande</td>
+                <td style="padding: 9px 16px; color: var(--text-2);">anita.d@x46.com</td>
+                <td style="padding: 9px 16px;"><span style="display: inline-flex; padding: 1px 7px; background: #eaf2fd; color: var(--blue); border-radius: 2px; font-size: 11px; font-weight: 700; font-family: ui-monospace, monospace;">ADMIN</span></td>
+                <td style="padding: 9px 16px;"><span class="status-cell" style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                  <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--blue); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: #eaf2fd; border-color: var(--blue);">Edit</button>
+                  <button type="button" class="pause-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Pause</button>
+                </div></td>
+              </tr>
+              <tr class="data-row" data-user-id="7e8f90a1-b2c3-4d45-9678-f6a7b8c9d0e1" data-search="r.kulkarni rohit kulkarni rohit.k@x46.com tech lab technician" style="border-bottom: 1px solid var(--line-soft);">
+                <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">r.kulkarni</td>
+                <td style="padding: 9px 16px; font-weight: 600;">Rohit Kulkarni</td>
+                <td style="padding: 9px 16px; color: var(--text-2);">rohit.k@x46.com</td>
+                <td style="padding: 9px 16px;"><span style="display: inline-flex; padding: 1px 7px; background: #eaf2fd; color: var(--blue); border-radius: 2px; font-size: 11px; font-weight: 700; font-family: ui-monospace, monospace;">TECH</span></td>
+                <td style="padding: 9px 16px;"><span class="status-cell" style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                  <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--blue); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: #eaf2fd; border-color: var(--blue);">Edit</button>
+                  <button type="button" class="pause-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Pause</button>
+                </div></td>
+              </tr>
+              <tr class="data-row" data-user-id="8f90a1b2-c3d4-4e56-a789-a7b8c9d0e1f2" data-search="s.iyer sneha iyer patho pathologist" style="border-bottom: 1px solid var(--line-soft);">
+                <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">s.iyer</td>
+                <td style="padding: 9px 16px; font-weight: 600;">Sneha Iyer</td>
+                <td style="padding: 9px 16px; color: var(--text-3);">—</td>
+                <td style="padding: 9px 16px;"><span style="display: inline-flex; padding: 1px 7px; background: #eaf2fd; color: var(--blue); border-radius: 2px; font-size: 11px; font-weight: 700; font-family: ui-monospace, monospace;">PATHO</span></td>
+                <td style="padding: 9px 16px;"><span class="status-cell" style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--grey-pill); color: var(--text-2); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Inactive</span></td>
+                <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                  <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--blue); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: #eaf2fd; border-color: var(--blue);">Edit</button>
+                  <button type="button" class="pause-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Activate</button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="emptyState" style="display: none; padding: 40px 16px; text-align: center;">
+          <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No users found</div>
+          <div style="font-size: 12.5px; color: var(--text-2);">Try a different search term.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="createModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 100; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 540px; width: 100%; max-height: 90vh; overflow-y: auto;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h2 id="modalTitle" style="margin: 0; font-size: 14px; font-weight: 700;">Create User</h2>
+        <div id="modalContext" style="font-size: 11.5px; color: var(--text-3); margin-top: 1px;">X46 Diagnostics · PUNE-01</div>
+      </div>
+      <button id="closeModalBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+    <div style="padding: 20px;">
+      <div id="formMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 16px; font-weight: 600;"></div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label for="firstName" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">First Name <span style="color: var(--red);">*</span></label>
+            <input type="text" id="firstName" placeholder="Rohit" maxlength="100" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+            <div id="firstNameError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+          </div>
+          <div>
+            <label for="lastName" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Last Name</label>
+            <input type="text" id="lastName" placeholder="Kulkarni" maxlength="100" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          </div>
+        </div>
+
+        <div>
+          <label for="username" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Username <span style="color: var(--red);">*</span></label>
+          <input type="text" id="username" placeholder="r.kulkarni" maxlength="100" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text);" />
+          <div id="usernameError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+          <div id="usernameHelp" style="margin-top: 4px; font-size: 11.5px; color: var(--text-3);">Unique within organization + branch</div>
+        </div>
+
+        <div>
+          <label for="email" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Email</label>
+          <input type="email" id="email" placeholder="rohit.k@x46.com" maxlength="255" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+        </div>
+
+        <div>
+          <label for="password" id="passwordLabel" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Password <span style="color: var(--red);">*</span></label>
+          <div style="position: relative;">
+            <input type="password" id="password" placeholder="••••••••" style="width: 100%; padding: 7px 56px 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+            <button type="button" id="togglePw" style="position: absolute; top: 50%; right: 5px; transform: translateY(-50%); background: none; border: none; padding: 3px 6px; font-size: 11px; font-weight: 700; font-family: inherit; color: var(--text-2); cursor: pointer;">Show</button>
+          </div>
+          <div id="passwordError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+
+        <div>
+          <label for="roleSelect" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Role</label>
+          <select id="roleSelect" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+            <option value="">No role assigned</option>
+            <option value="1f2e3d4c-5b6a-4798-8123-a1b2c3d4e5f6">ADMIN · Administrator</option>
+            <option value="2a3b4c5d-6e7f-4801-9234-b2c3d4e5f6a7">TECH · Lab Technician</option>
+            <option value="3b4c5d6e-7f80-4912-a345-c3d4e5f6a7b8">PATHO · Pathologist</option>
+            <option value="4c5d6e7f-8091-4a23-b456-d4e5f6a7b8c9">RECEPT · Front Desk Receptionist</option>
+          </select>
+          <div style="margin-top: 4px; font-size: 11.5px; color: var(--text-3);">Role decides which modules this user can open.</div>
+        </div>
+
+        <div>
+          <div style="font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px;">Branch access <span style="color: var(--red);">*</span></div>
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;"><input type="checkbox" class="access-branch" value="c9b1f2a6-4d38-4f51-8a2e-6b0d3c7e15aa" style="width: 14px; height: 14px; accent-color: var(--blue);" /> Pune Main Branch · PUNE-01</label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;"><input type="checkbox" class="access-branch" value="d41d8cd9-8f00-4204-a980-0998ecf8427e" style="width: 14px; height: 14px; accent-color: var(--blue);" /> Mumbai Lab · MUM-01</label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;"><input type="checkbox" class="access-branch" value="a3f5c1e0-77b9-4c62-8d15-2e9a4b6f0c73" style="width: 14px; height: 14px; accent-color: var(--blue);" /> Bangalore Center · BNG-01</label>
+          </div>
+          <div id="accessBranchError" style="display: none; margin-top: 5px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+
+        <label for="userActive" style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;">
+          <input type="checkbox" id="userActive" defaultChecked="{{ true }}" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+          <span style="font-size: 12.5px; font-weight: 600;">Active</span>
+        </label>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="cancelBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="submitBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 120px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create User</button>
+    </div>
+  </div>
+</div>
+
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+class Component extends DCLogic {
+  state = { usernames: ['admin.pune', 'r.kulkarni', 's.iyer'] };
+
+  componentDidMount() {
+    const $ = (id) => document.getElementById(id);
+    $('createBtn').addEventListener('click', this.openModal);
+    $('closeModalBtn').addEventListener('click', this.closeModal);
+    $('cancelBtn').addEventListener('click', this.closeModal);
+    $('submitBtn').addEventListener('click', this.submit);
+    $('searchInput').addEventListener('input', this.filter);
+    $('togglePw').addEventListener('click', this.togglePw);
+    $('branchSelect').addEventListener('change', (e) => {
+      LIMS.setBranch(e.target.value);
+      $('modalContext').textContent = LIMS.orgLabel(LIMS.session.organizationId) + ' \u00b7 ' + LIMS.branchLabel(LIMS.session.branchId);
+    });
+    $('branchSelect').value = LIMS.session.branchId;
+    $('modalContext').textContent = LIMS.orgLabel(LIMS.session.organizationId) + ' \u00b7 ' + LIMS.branchLabel(LIMS.session.branchId);
+
+    const modal = $('createModal');
+    modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (modal.style.display === 'flex') this.closeModal();
+    });
+
+    ['firstName', 'lastName', 'username', 'email', 'password'].forEach((id) => {
+      const el = $(id);
+      el.addEventListener('focus', () => this.focusStyle(el, true));
+      el.addEventListener('blur', () => this.focusStyle(el, false));
+      el.addEventListener('input', () => this.clearFieldError(id));
+    });
+
+    $('tableBody').addEventListener('click', (e) => {
+      const row = e.target.closest('tr');
+      if (!row) return;
+      if (e.target.classList.contains('edit-btn')) this.openEdit(row);
+      if (e.target.classList.contains('pause-btn')) this.togglePause(row, e.target);
+    });
+  }
+
+  togglePw = () => {
+    const el = document.getElementById('password');
+    const btn = document.getElementById('togglePw');
+    const hidden = el.type === 'password';
+    el.type = hidden ? 'text' : 'password';
+    btn.textContent = hidden ? 'Hide' : 'Show';
+  };
+
+  focusStyle = (el, on) => {
+    if (el.dataset.invalid === 'true') return;
+    el.style.borderColor = on ? 'var(--blue)' : 'var(--line)';
+    el.style.boxShadow = on ? '0 0 0 2px rgba(22, 104, 220, 0.14)' : 'none';
+  };
+
+  setFieldError = (id, msg) => {
+    const el = document.getElementById(id);
+    el.dataset.invalid = 'true';
+    el.style.borderColor = 'var(--red)';
+    el.style.boxShadow = '0 0 0 2px rgba(208, 52, 44, 0.12)';
+    el.setAttribute('aria-invalid', 'true');
+    const err = document.getElementById(id + 'Error');
+    if (err) { err.textContent = msg; err.style.display = 'block'; }
+    if (id === 'username') document.getElementById('usernameHelp').style.display = 'none';
+  };
+
+  clearFieldError = (id) => {
+    const el = document.getElementById(id);
+    if (el.dataset.invalid !== 'true') return;
+    el.dataset.invalid = 'false';
+    el.style.borderColor = 'var(--line)';
+    el.style.boxShadow = 'none';
+    el.removeAttribute('aria-invalid');
+    const err = document.getElementById(id + 'Error');
+    if (err) err.style.display = 'none';
+    if (id === 'username') document.getElementById('usernameHelp').style.display = 'block';
+  };
+
+  gotoError = (code, endpoint) => {
+    const url = 'System Error States.dc.html?state=' + code
+      + '&from=' + encodeURIComponent('Users.dc.html')
+      + '&endpoint=' + encodeURIComponent(endpoint);
+    setTimeout(() => { window.location.href = url; }, 1100);
+  };
+
+  message = (elId, type, text) => {
+    const el = document.getElementById(elId);
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  toast = (text) => { this.message('pageToast', 'success', text); setTimeout(() => { document.getElementById('pageToast').style.display = 'none'; }, 3000); };
+  setMode = (editing, username) => {
+    const $ = (id) => document.getElementById(id);
+    const u = $('username');
+    u.disabled = !!editing;
+    u.style.background = editing ? 'var(--head-bg)' : 'var(--bg)';
+    u.style.color = editing ? 'var(--text-2)' : 'var(--text)';
+    $('usernameHelp').textContent = editing
+      ? 'Username cannot be changed after creation'
+      : 'Unique within organization + branch';
+    $('passwordLabel').innerHTML = editing
+      ? 'New Password <span style="color: var(--text-3); font-weight: 500;">\u2014 leave blank to keep current</span>'
+      : 'Password <span style="color: var(--red);">*</span>';
+    $('password').placeholder = editing ? 'Unchanged' : '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+    $('modalTitle').textContent = editing ? 'Edit User \u00b7 ' + username : 'Create User';
+    $('submitBtn').textContent = editing ? 'Save Changes' : 'Create User';
+  };
+
+  setBranches = (list) => {
+    document.querySelectorAll('.access-branch').forEach((cb) => { cb.checked = list.indexOf(cb.value) > -1; });
+    document.getElementById('accessBranchError').style.display = 'none';
+  };
+
+  openModal = () => {
+    this.editingRow = null;
+    this.setMode(false);
+    this.setBranches([document.getElementById('branchSelect').value]);
+    document.getElementById('createModal').style.display = 'flex';
+  };
+
+  openEdit = (row) => {
+    const $ = (id) => document.getElementById(id);
+    ['firstName', 'username', 'password'].forEach(this.clearFieldError);
+    $('formMessage').style.display = 'none';
+    this.editingRow = row;
+    const c = row.cells;
+    const username = c[0].textContent.trim();
+    const parts = c[1].textContent.trim().split(/\s+/);
+    $('firstName').value = parts.shift() || '';
+    $('lastName').value = parts.join(' ');
+    $('username').value = username;
+    const email = c[2].textContent.trim();
+    $('email').value = email === '\u2014' ? '' : email;
+    $('password').value = '';
+    const roleTxt = c[3].textContent.trim();
+    const roleCode = roleTxt && roleTxt !== '\u2014' ? roleTxt.split(/[\s\u00b7]/)[0] : '';
+    $('roleSelect').value = LIMS.roleIdFromCode(roleCode) || '';
+    $('userActive').checked = c[4].textContent.trim().indexOf('Inactive') === -1;
+    this.setBranches((row.dataset.branches || $('branchSelect').value).split(',').filter(Boolean));
+    this.setMode(true, username);
+    $('createModal').style.display = 'flex';
+  };
+
+  closeModal = () => {
+    document.getElementById('createModal').style.display = 'none';
+    this.editingRow = null;
+    this.setMode(false);
+    ['firstName', 'lastName', 'username', 'email', 'password'].forEach((id) => { document.getElementById(id).value = ''; this.clearFieldError(id); });
+    document.getElementById('roleSelect').value = '';
+    document.getElementById('userActive').checked = true;
+    this.setBranches([]);
+    document.getElementById('formMessage').style.display = 'none';
+  };
+
+  submit = () => {
+    const first = document.getElementById('firstName').value.trim();
+    const last = document.getElementById('lastName').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const role = document.getElementById('roleSelect').value;
+    const active = document.getElementById('userActive').checked;
+    const btn = document.getElementById('submitBtn');
+
+    ['firstName', 'username', 'password'].forEach(this.clearFieldError);
+    document.getElementById('formMessage').style.display = 'none';
+
+    let bad = false;
+    if (!username) { this.setFieldError('username', 'username is required'); bad = true; }
+    if (!password && !this.editingRow) { this.setFieldError('password', 'password is required'); bad = true; }
+    if (!first) { this.setFieldError('firstName', 'firstName is required'); bad = true; }
+
+    const branches = [...document.querySelectorAll('.access-branch')].filter((cb) => cb.checked).map((cb) => cb.value);
+    const bErr = document.getElementById('accessBranchError');
+    if (!branches.length) {
+      bErr.textContent = 'Select at least one branch \u2014 a user needs access to one branch.';
+      bErr.style.display = 'block';
+      bad = true;
+    } else {
+      bErr.style.display = 'none';
+    }
+    if (bad) return this.message('formMessage', 'error', '400 Bad Request \u2014 Required fields are missing');
+
+    if (this.editingRow) {
+      const row = this.editingRow;
+      btn.disabled = true; btn.style.opacity = '0.65'; btn.style.cursor = 'wait'; btn.textContent = 'Saving\u2026';
+      /* API-128 PUT …/users/{userId} — the row's userId is minted on create and
+         kept on the element so the path param is a real UUID. */
+      const rowUserId = row.dataset.userId || LIMS.userIdFor(username);
+      if (!rowUserId) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'Save Changes'; return this.message('formMessage', 'error', 'Cannot update \u2014 no userId for this row.'); }
+      row.dataset.userId = rowUserId;
+      const roleCode = LIMS.roleCode(role);
+      LIMS.request('updateUser', {
+        contract: 'API-128',
+        params: { userId: row.dataset.userId },
+        body: {
+          firstName: first, lastName: last || null, email: email || null,
+          roleId: role || null, branchIds: branches, isActive: active,
+          password: password || undefined
+        },
+        resolve: () => ({ status: 200, message: 'User updated successfully', data: { id: row.dataset.userId } })
+      }).catch(() => {});
+      setTimeout(() => {
+        btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'Save Changes';
+        const name = (first + ' ' + last).trim();
+        const c = row.cells;
+        c[1].textContent = name;
+        c[2].textContent = email || '\u2014';
+        c[3].innerHTML = roleCode
+          ? '<span style="display:inline-flex;padding:1px 7px;background:#eaf2fd;color:var(--blue);border-radius:2px;font-size:11px;font-weight:700;font-family:ui-monospace,monospace;">' + roleCode + '</span>'
+          : '\u2014';
+        c[4].innerHTML = '<span class="status-cell" style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;background:' + (active ? 'var(--green-soft)' : 'var(--grey-pill)') + ';color:' + (active ? 'var(--green)' : 'var(--text-2)') + ';border-radius:2px;font-size:11px;font-weight:700;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>' + (active ? 'Active' : 'Inactive') + '</span>';
+        const pauseBtn = row.querySelector('.pause-btn');
+        if (pauseBtn) pauseBtn.textContent = active ? 'Pause' : 'Activate';
+        row.dataset.branches = branches.join(',');
+        row.setAttribute('data-search', (username + ' ' + name + ' ' + email + ' ' + roleCode).toLowerCase());
+        this.message('formMessage', 'success', '200 OK \u2014 User updated \u00b7 ' + branches.length + ' branch' + (branches.length > 1 ? 'es' : '') + (password ? ' \u00b7 password reset' : ''));
+        setTimeout(() => { this.closeModal(); this.filter(); this.toast('User ' + username + ' updated'); }, 1100);
+      }, 800);
+      return;
+    }
+
+    if (this.state.usernames.includes(username.toLowerCase())) {
+      this.setFieldError('username', 'Duplicate username');
+      return this.message('formMessage', 'error', '409 Conflict \u2014 Duplicate username');
+    }
+
+    btn.disabled = true; btn.style.opacity = '0.65'; btn.style.cursor = 'wait'; btn.textContent = 'Creating\u2026';
+    this.createThenAssign({ username, first, last, email, password, role, active, branches, btn });
+  };
+
+  /* API-004 POST …/users, then API-005 POST …/users/{userId}/roles.
+     Two distinct contracts: the role call only fires when a role was chosen,
+     and a failure there must not be reported as a successful role assignment. */
+  /* Contract failures carry a status; anything else is a client-side fault and
+     must not be dressed up as an API response. */
+  errText = (err) => (err && err.status
+    ? err.status + ' \u2014 ' + err.message
+    : 'Request could not be built \u2014 ' + (err && err.message ? err.message : 'unknown client error'));
+
+  createThenAssign = async ({ username, first, last, email, password, role, active, branches, btn }) => {
+    const restore = () => { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'Create User'; };
+    let created;
+    try {
+      created = await LIMS.request('createUser', {
+        contract: 'API-004',
+        body: {
+          username,
+          firstName: first,
+          lastName: last || null,
+          email: email || null,
+          password,
+          isActive: active
+        },
+        resolve: () => {
+          if (username === 'fail500') return { status: 500, error: 'Internal server error' };
+          if (username === 'fail404') return { status: 404, error: 'Organization or branch not found' };
+          return {
+            status: 201,
+            message: 'User created successfully',
+            data: { id: LIMS.newId(), username, isActive: active }
+          };
+        }
+      });
+    } catch (err) {
+      restore();
+      this.message('formMessage', 'error', this.errText(err));
+      if (err.status === 500 || err.status === 404) this.gotoError(String(err.status), LIMS.describe('createUser'));
+      return;
+    }
+
+    const userId = created.data.id;
+    let assigned = null;
+    let assignError = null;
+    if (role) {
+      try {
+        assigned = await LIMS.request('assignRole', {
+          contract: 'API-005',
+          params: { userId },
+          body: { roleId: role, branchIds: branches },
+          resolve: () => (LIMS.roleById(role)
+            ? { status: 201, message: 'Role assigned successfully', data: { userId, roleId: role } }
+            : { status: 404, error: 'Role not found' })
+        });
+      } catch (err) {
+        assignError = err;
+      }
+    }
+
+    restore();
+    this.setState({ usernames: [...this.state.usernames, username.toLowerCase()] });
+    this.addRow(username, (first + ' ' + last).trim(), email, assignError ? '' : LIMS.roleCode(role), active, branches, userId);
+
+    if (assignError) {
+      this.message('formMessage', 'error',
+        '201 Created \u2014 user ' + username + ' saved, but role assignment failed: ' +
+        this.errText(assignError) + '. Assign the role from Update.');
+      return;
+    }
+    this.message('formMessage', 'success', assigned
+      ? '201 Created \u2014 User created and role ' + LIMS.roleCode(role) + ' assigned'
+      : '201 Created \u2014 User created successfully');
+    setTimeout(() => { this.closeModal(); this.toast('User ' + username + ' created successfully'); }, 1200);
+  };
+
+  addRow = (username, name, email, role, active, branches, userId) => {
+    const tbody = document.getElementById('tableBody');
+    const row = document.createElement('tr');
+    row.className = 'data-row';
+    row.setAttribute('data-search', (username + ' ' + name + ' ' + email + ' ' + role).toLowerCase());
+    row.dataset.branches = (branches || []).join(',');
+    if (userId) row.dataset.userId = userId;
+    row.style.cssText = 'border-bottom: 1px solid var(--line-soft); background: #eaf2fd;';
+    const badge = active
+      ? '<span class="status-cell" style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;background:var(--green-soft);color:var(--green);border-radius:2px;font-size:11px;font-weight:700;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Active</span>'
+      : '<span class="status-cell" style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;background:var(--grey-pill);color:var(--text-2);border-radius:2px;font-size:11px;font-weight:700;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Inactive</span>';
+    const rolePill = role
+      ? '<span style="display:inline-flex;padding:1px 7px;background:#eaf2fd;color:var(--blue);border-radius:2px;font-size:11px;font-weight:700;font-family:ui-monospace,monospace;">' + role + '</span>'
+      : '<span style="color:var(--text-3);">\u2014</span>';
+    row.innerHTML =
+      '<td style="padding:9px 16px;font-family:ui-monospace,monospace;font-weight:600;">' + username + '</td>' +
+      '<td style="padding:9px 16px;font-weight:600;">' + name + '</td>' +
+      '<td style="padding:9px 16px;color:' + (email ? 'var(--text-2)' : 'var(--text-3)') + ';">' + (email || '\u2014') + '</td>' +
+      '<td style="padding:9px 16px;">' + rolePill + '</td>' +
+      '<td style="padding:9px 16px;">' + badge + '</td>' +
+      '<td style="padding:9px 16px;"><div style="display:flex;gap:6px;">' +
+        '<button type="button" class="edit-btn" style="padding:3px 10px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--blue);font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;">Edit</button>' +
+        '<button type="button" class="pause-btn" style="padding:3px 10px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--text-2);font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;">' + (active ? 'Pause' : 'Activate') + '</button>' +
+      '</div></td>';
+    tbody.insertBefore(row, tbody.firstChild);
+    setTimeout(() => { row.style.background = ''; }, 1800);
+    this.updateCount();
+  };
+
+  /* API-128 PATCH …/users/{userId}/status — the contracted alternative to the
+     delete action this screen used to offer. */
+  togglePause = (row, btn) => {
+    const badge = row.querySelector('.status-cell');
+    const active = btn.textContent.trim() === 'Pause';
+    const dot = '<span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>';
+    const uid = row.dataset.userId || LIMS.userIdFor(row.cells[0].textContent.trim());
+    if (!uid) return this.toast('Cannot change status \u2014 no userId for this row.');
+    row.dataset.userId = uid;
+    LIMS.request('userStatus', {
+      contract: 'API-128',
+      params: { userId: uid },
+      body: { isActive: !active },
+      resolve: () => ({ status: 200, message: 'User status updated successfully', data: { id: uid, isActive: !active } })
+    }).catch(() => {});
+    badge.style.background = active ? 'var(--grey-pill)' : 'var(--green-soft)';
+    badge.style.color = active ? 'var(--text-2)' : 'var(--green)';
+    badge.innerHTML = dot + (active ? 'Inactive' : 'Active');
+    btn.textContent = active ? 'Activate' : 'Pause';
+    this.toast('User ' + row.cells[0].textContent.trim() + (active ? ' paused' : ' activated'));
+  };
+
+  filter = () => {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    let visible = 0;
+    document.querySelectorAll('.data-row').forEach((row) => {
+      const match = row.getAttribute('data-search').includes(q);
+      row.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('resultCount').textContent = visible;
+  };
+
+  updateCount = () => { document.getElementById('resultCount').textContent = document.querySelectorAll('.data-row').length; };
+
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

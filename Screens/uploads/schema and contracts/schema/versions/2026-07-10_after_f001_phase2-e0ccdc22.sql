@@ -1,0 +1,1112 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict bElQEoVjDjZTem8ZQuweCaSVEhfbbvlzs89f9gnFnU0uWIRfLHi9pw4orCzcZgO
+
+-- Dumped from database version 18.4
+-- Dumped by pg_dump version 18.4
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: audit_logs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.audit_logs (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    branch_id uuid,
+    user_id uuid,
+    action_type character varying(50) NOT NULL,
+    entity_type character varying(100) NOT NULL,
+    entity_id uuid,
+    old_values jsonb,
+    new_values jsonb,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.audit_logs OWNER TO postgres;
+
+--
+-- Name: branches; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.branches (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    branch_code character varying(50) NOT NULL,
+    branch_name character varying(200) NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.branches OWNER TO postgres;
+
+--
+-- Name: disease_master; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.disease_master (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    disease_code character varying(50),
+    disease_name character varying(200) NOT NULL,
+    description text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.disease_master OWNER TO postgres;
+
+--
+-- Name: medical_condition_master; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.medical_condition_master (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    condition_code character varying(50),
+    condition_name character varying(200) NOT NULL,
+    description text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.medical_condition_master OWNER TO postgres;
+
+--
+-- Name: organizations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.organizations (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_code character varying(50) NOT NULL,
+    organization_name character varying(200) NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.organizations OWNER TO postgres;
+
+--
+-- Name: patient_addresses; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patient_addresses (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    patient_id uuid NOT NULL,
+    address_type character varying(50),
+    address_line1 character varying(255),
+    address_line2 character varying(255),
+    city character varying(100),
+    district character varying(100),
+    state character varying(100),
+    country character varying(100),
+    pincode character varying(20),
+    is_primary boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.patient_addresses OWNER TO postgres;
+
+--
+-- Name: patient_contacts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patient_contacts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    patient_id uuid NOT NULL,
+    contact_type character varying(30) NOT NULL,
+    contact_value character varying(255) NOT NULL,
+    belongs_to character varying(100),
+    whatsapp_consent boolean DEFAULT false NOT NULL,
+    is_primary boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.patient_contacts OWNER TO postgres;
+
+--
+-- Name: patient_diseases; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patient_diseases (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    patient_id uuid NOT NULL,
+    disease_id uuid NOT NULL,
+    diagnosed_date date,
+    disease_status character varying(50) DEFAULT 'ACTIVE'::character varying NOT NULL,
+    notes text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.patient_diseases OWNER TO postgres;
+
+--
+-- Name: patient_identifiers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patient_identifiers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    patient_id uuid NOT NULL,
+    identifier_type character varying(50) NOT NULL,
+    identifier_value character varying(200) NOT NULL,
+    is_primary boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.patient_identifiers OWNER TO postgres;
+
+--
+-- Name: patient_medical_conditions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patient_medical_conditions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    patient_id uuid NOT NULL,
+    condition_id uuid NOT NULL,
+    diagnosed_date date,
+    condition_status character varying(50) DEFAULT 'ACTIVE'::character varying NOT NULL,
+    notes text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.patient_medical_conditions OWNER TO postgres;
+
+--
+-- Name: patient_registrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patient_registrations (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    branch_id uuid NOT NULL,
+    patient_id uuid NOT NULL,
+    registration_number character varying(100) NOT NULL,
+    registration_status character varying(50) DEFAULT 'REGISTERED'::character varying NOT NULL,
+    registered_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.patient_registrations OWNER TO postgres;
+
+--
+-- Name: patients; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patients (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    patient_type character varying(50),
+    first_name character varying(100) NOT NULL,
+    middle_name character varying(100),
+    last_name character varying(100),
+    gender character varying(30),
+    date_of_birth date,
+    patient_category character varying(100),
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.patients OWNER TO postgres;
+
+--
+-- Name: registration_clinical_history; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.registration_clinical_history (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    registration_id uuid NOT NULL,
+    clinical_history text NOT NULL,
+    recorded_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.registration_clinical_history OWNER TO postgres;
+
+--
+-- Name: registration_symptoms; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.registration_symptoms (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    registration_id uuid NOT NULL,
+    symptom_id uuid NOT NULL,
+    severity character varying(30),
+    duration_value integer,
+    duration_unit character varying(30),
+    notes text,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.registration_symptoms OWNER TO postgres;
+
+--
+-- Name: roles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.roles (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    role_code character varying(50) NOT NULL,
+    role_name character varying(100) NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.roles OWNER TO postgres;
+
+--
+-- Name: symptom_master; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.symptom_master (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    symptom_code character varying(50),
+    symptom_name character varying(200) NOT NULL,
+    description text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by uuid,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by uuid
+);
+
+
+ALTER TABLE public.symptom_master OWNER TO postgres;
+
+--
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_roles (
+    user_id uuid NOT NULL,
+    role_id uuid NOT NULL,
+    assigned_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.user_roles OWNER TO postgres;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    organization_id uuid NOT NULL,
+    branch_id uuid,
+    username character varying(100) NOT NULL,
+    email character varying(255),
+    password_hash text NOT NULL,
+    first_name character varying(100) NOT NULL,
+    last_name character varying(100),
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: audit_logs audit_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.audit_logs
+    ADD CONSTRAINT audit_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: branches branches_organization_id_branch_code_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_organization_id_branch_code_key UNIQUE (organization_id, branch_code);
+
+
+--
+-- Name: branches branches_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: disease_master disease_master_organization_id_disease_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disease_master
+    ADD CONSTRAINT disease_master_organization_id_disease_name_key UNIQUE (organization_id, disease_name);
+
+
+--
+-- Name: disease_master disease_master_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disease_master
+    ADD CONSTRAINT disease_master_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: medical_condition_master medical_condition_master_organization_id_condition_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.medical_condition_master
+    ADD CONSTRAINT medical_condition_master_organization_id_condition_name_key UNIQUE (organization_id, condition_name);
+
+
+--
+-- Name: medical_condition_master medical_condition_master_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.medical_condition_master
+    ADD CONSTRAINT medical_condition_master_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: organizations organizations_organization_code_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.organizations
+    ADD CONSTRAINT organizations_organization_code_key UNIQUE (organization_code);
+
+
+--
+-- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.organizations
+    ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patient_addresses patient_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_addresses
+    ADD CONSTRAINT patient_addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patient_contacts patient_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_contacts
+    ADD CONSTRAINT patient_contacts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patient_diseases patient_diseases_patient_id_disease_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_diseases
+    ADD CONSTRAINT patient_diseases_patient_id_disease_id_key UNIQUE (patient_id, disease_id);
+
+
+--
+-- Name: patient_diseases patient_diseases_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_diseases
+    ADD CONSTRAINT patient_diseases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patient_identifiers patient_identifiers_identifier_type_identifier_value_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_identifiers
+    ADD CONSTRAINT patient_identifiers_identifier_type_identifier_value_key UNIQUE (identifier_type, identifier_value);
+
+
+--
+-- Name: patient_identifiers patient_identifiers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_identifiers
+    ADD CONSTRAINT patient_identifiers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patient_medical_conditions patient_medical_conditions_patient_id_condition_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_medical_conditions
+    ADD CONSTRAINT patient_medical_conditions_patient_id_condition_id_key UNIQUE (patient_id, condition_id);
+
+
+--
+-- Name: patient_medical_conditions patient_medical_conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_medical_conditions
+    ADD CONSTRAINT patient_medical_conditions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patient_registrations patient_registrations_organization_id_registration_number_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_registrations
+    ADD CONSTRAINT patient_registrations_organization_id_registration_number_key UNIQUE (organization_id, registration_number);
+
+
+--
+-- Name: patient_registrations patient_registrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_registrations
+    ADD CONSTRAINT patient_registrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patients patients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patients
+    ADD CONSTRAINT patients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: registration_clinical_history registration_clinical_history_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_clinical_history
+    ADD CONSTRAINT registration_clinical_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: registration_symptoms registration_symptoms_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_symptoms
+    ADD CONSTRAINT registration_symptoms_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: registration_symptoms registration_symptoms_registration_id_symptom_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_symptoms
+    ADD CONSTRAINT registration_symptoms_registration_id_symptom_id_key UNIQUE (registration_id, symptom_id);
+
+
+--
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roles roles_role_code_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT roles_role_code_key UNIQUE (role_code);
+
+
+--
+-- Name: symptom_master symptom_master_organization_id_symptom_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.symptom_master
+    ADD CONSTRAINT symptom_master_organization_id_symptom_name_key UNIQUE (organization_id, symptom_name);
+
+
+--
+-- Name: symptom_master symptom_master_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.symptom_master
+    ADD CONSTRAINT symptom_master_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_roles user_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT user_roles_pkey PRIMARY KEY (user_id, role_id);
+
+
+--
+-- Name: users users_organization_id_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_organization_id_username_key UNIQUE (organization_id, username);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_clinical_history_registration; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_clinical_history_registration ON public.registration_clinical_history USING btree (registration_id);
+
+
+--
+-- Name: idx_disease_master_org; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_disease_master_org ON public.disease_master USING btree (organization_id);
+
+
+--
+-- Name: idx_medical_condition_master_org; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_medical_condition_master_org ON public.medical_condition_master USING btree (organization_id);
+
+
+--
+-- Name: idx_patient_contact_value; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patient_contact_value ON public.patient_contacts USING btree (contact_value);
+
+
+--
+-- Name: idx_patient_diseases_disease; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patient_diseases_disease ON public.patient_diseases USING btree (disease_id);
+
+
+--
+-- Name: idx_patient_diseases_patient; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patient_diseases_patient ON public.patient_diseases USING btree (patient_id);
+
+
+--
+-- Name: idx_patient_identifier_value; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patient_identifier_value ON public.patient_identifiers USING btree (identifier_value);
+
+
+--
+-- Name: idx_patient_medical_conditions_condition; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patient_medical_conditions_condition ON public.patient_medical_conditions USING btree (condition_id);
+
+
+--
+-- Name: idx_patient_medical_conditions_patient; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patient_medical_conditions_patient ON public.patient_medical_conditions USING btree (patient_id);
+
+
+--
+-- Name: idx_patient_registration_patient; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patient_registration_patient ON public.patient_registrations USING btree (patient_id);
+
+
+--
+-- Name: idx_patients_dob; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patients_dob ON public.patients USING btree (date_of_birth);
+
+
+--
+-- Name: idx_patients_name; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patients_name ON public.patients USING btree (first_name, last_name);
+
+
+--
+-- Name: idx_patients_org; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_patients_org ON public.patients USING btree (organization_id);
+
+
+--
+-- Name: idx_registration_symptoms_registration; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_registration_symptoms_registration ON public.registration_symptoms USING btree (registration_id);
+
+
+--
+-- Name: idx_registration_symptoms_symptom; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_registration_symptoms_symptom ON public.registration_symptoms USING btree (symptom_id);
+
+
+--
+-- Name: idx_symptom_master_org; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_symptom_master_org ON public.symptom_master USING btree (organization_id);
+
+
+--
+-- Name: audit_logs audit_logs_branch_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.audit_logs
+    ADD CONSTRAINT audit_logs_branch_id_fkey FOREIGN KEY (branch_id) REFERENCES public.branches(id);
+
+
+--
+-- Name: audit_logs audit_logs_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.audit_logs
+    ADD CONSTRAINT audit_logs_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- Name: audit_logs audit_logs_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.audit_logs
+    ADD CONSTRAINT audit_logs_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: branches branches_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- Name: disease_master disease_master_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disease_master
+    ADD CONSTRAINT disease_master_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: disease_master disease_master_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disease_master
+    ADD CONSTRAINT disease_master_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- Name: disease_master disease_master_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disease_master
+    ADD CONSTRAINT disease_master_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: medical_condition_master medical_condition_master_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.medical_condition_master
+    ADD CONSTRAINT medical_condition_master_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: medical_condition_master medical_condition_master_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.medical_condition_master
+    ADD CONSTRAINT medical_condition_master_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- Name: medical_condition_master medical_condition_master_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.medical_condition_master
+    ADD CONSTRAINT medical_condition_master_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_addresses patient_addresses_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_addresses
+    ADD CONSTRAINT patient_addresses_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_addresses patient_addresses_patient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_addresses
+    ADD CONSTRAINT patient_addresses_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.patients(id);
+
+
+--
+-- Name: patient_addresses patient_addresses_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_addresses
+    ADD CONSTRAINT patient_addresses_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_contacts patient_contacts_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_contacts
+    ADD CONSTRAINT patient_contacts_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_contacts patient_contacts_patient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_contacts
+    ADD CONSTRAINT patient_contacts_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.patients(id);
+
+
+--
+-- Name: patient_contacts patient_contacts_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_contacts
+    ADD CONSTRAINT patient_contacts_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_diseases patient_diseases_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_diseases
+    ADD CONSTRAINT patient_diseases_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_diseases patient_diseases_disease_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_diseases
+    ADD CONSTRAINT patient_diseases_disease_id_fkey FOREIGN KEY (disease_id) REFERENCES public.disease_master(id);
+
+
+--
+-- Name: patient_diseases patient_diseases_patient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_diseases
+    ADD CONSTRAINT patient_diseases_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.patients(id);
+
+
+--
+-- Name: patient_diseases patient_diseases_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_diseases
+    ADD CONSTRAINT patient_diseases_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_identifiers patient_identifiers_patient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_identifiers
+    ADD CONSTRAINT patient_identifiers_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.patients(id);
+
+
+--
+-- Name: patient_medical_conditions patient_medical_conditions_condition_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_medical_conditions
+    ADD CONSTRAINT patient_medical_conditions_condition_id_fkey FOREIGN KEY (condition_id) REFERENCES public.medical_condition_master(id);
+
+
+--
+-- Name: patient_medical_conditions patient_medical_conditions_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_medical_conditions
+    ADD CONSTRAINT patient_medical_conditions_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_medical_conditions patient_medical_conditions_patient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_medical_conditions
+    ADD CONSTRAINT patient_medical_conditions_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.patients(id);
+
+
+--
+-- Name: patient_medical_conditions patient_medical_conditions_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_medical_conditions
+    ADD CONSTRAINT patient_medical_conditions_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_registrations patient_registrations_branch_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_registrations
+    ADD CONSTRAINT patient_registrations_branch_id_fkey FOREIGN KEY (branch_id) REFERENCES public.branches(id);
+
+
+--
+-- Name: patient_registrations patient_registrations_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_registrations
+    ADD CONSTRAINT patient_registrations_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patient_registrations patient_registrations_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_registrations
+    ADD CONSTRAINT patient_registrations_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- Name: patient_registrations patient_registrations_patient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient_registrations
+    ADD CONSTRAINT patient_registrations_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.patients(id);
+
+
+--
+-- Name: patients patients_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patients
+    ADD CONSTRAINT patients_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: patients patients_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patients
+    ADD CONSTRAINT patients_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- Name: patients patients_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patients
+    ADD CONSTRAINT patients_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: registration_clinical_history registration_clinical_history_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_clinical_history
+    ADD CONSTRAINT registration_clinical_history_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: registration_clinical_history registration_clinical_history_registration_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_clinical_history
+    ADD CONSTRAINT registration_clinical_history_registration_id_fkey FOREIGN KEY (registration_id) REFERENCES public.patient_registrations(id);
+
+
+--
+-- Name: registration_clinical_history registration_clinical_history_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_clinical_history
+    ADD CONSTRAINT registration_clinical_history_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: registration_symptoms registration_symptoms_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_symptoms
+    ADD CONSTRAINT registration_symptoms_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: registration_symptoms registration_symptoms_registration_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_symptoms
+    ADD CONSTRAINT registration_symptoms_registration_id_fkey FOREIGN KEY (registration_id) REFERENCES public.patient_registrations(id);
+
+
+--
+-- Name: registration_symptoms registration_symptoms_symptom_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_symptoms
+    ADD CONSTRAINT registration_symptoms_symptom_id_fkey FOREIGN KEY (symptom_id) REFERENCES public.symptom_master(id);
+
+
+--
+-- Name: registration_symptoms registration_symptoms_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registration_symptoms
+    ADD CONSTRAINT registration_symptoms_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: symptom_master symptom_master_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.symptom_master
+    ADD CONSTRAINT symptom_master_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: symptom_master symptom_master_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.symptom_master
+    ADD CONSTRAINT symptom_master_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- Name: symptom_master symptom_master_updated_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.symptom_master
+    ADD CONSTRAINT symptom_master_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: user_roles user_roles_role_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
+
+
+--
+-- Name: user_roles user_roles_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: users users_branch_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_branch_id_fkey FOREIGN KEY (branch_id) REFERENCES public.branches(id);
+
+
+--
+-- Name: users users_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict bElQEoVjDjZTem8ZQuweCaSVEhfbbvlzs89f9gnFnU0uWIRfLHi9pw4orCzcZgO
+

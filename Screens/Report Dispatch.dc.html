@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 9px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Report Dispatch</div>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main data-fit="screens" style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+
+    <!-- ============ SCREEN 1 — DISPATCH QUEUE ============ -->
+    <sc-if value="{{ isQueue }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; min-height: 100vh;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Ops / Report Dispatch</div>
+          <h1 style="margin: 0 0 10px; font-size: 17px; font-weight: 700;">Report Dispatch</h1>
+
+          <div style="display: flex; gap: 8px; align-items: center; max-width: 760px;">
+            <input type="text" placeholder="Search Patient / MRN / Registration No / Accession No / Barcode / Bill No / Report No / Test" value="{{ query }}" onChange="{{ onQuery }}" style="padding: 9px 12px; font-size: 13px;" />
+            <button onClick="{{ search }}" style="padding: 9px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Search</button>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: flex-end; margin-top: 10px; flex-wrap: wrap;">
+            <div style="min-width: 132px;"><label>Date</label><input type="date" value="{{ date }}" onChange="{{ updateField }}" data-field="date" /></div>
+            <div style="min-width: 142px;"><label>Department</label><select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept"><option value="">All departments</option><option value="Hematology">Hematology</option><option value="Biochemistry">Biochemistry</option><option value="Immunoassay">Immunoassay</option><option value="Microbiology">Microbiology</option></select></div>
+            <div style="min-width: 132px;"><label>Report Status</label><select value="{{ reportFilter }}" onChange="{{ updateField }}" data-field="reportFilter"><option value="">All</option><option value="GENERATED">Generated</option><option value="PENDING">Pending</option></select></div>
+            <div style="min-width: 152px;"><label>Dispatch Status</label><select value="{{ dispatchFilter }}" onChange="{{ updateField }}" data-field="dispatchFilter"><option value="">All</option><option value="READY TO DISPATCH">Ready to Dispatch</option><option value="DISPATCHED">Dispatched</option><option value="FAILED">Failed</option><option value="PENDING">Pending</option></select></div>
+            <div style="min-width: 106px;"><label>Priority</label><select value="{{ priority }}" onChange="{{ updateField }}" data-field="priority"><option value="">All</option><option value="NORMAL">Normal</option><option value="URGENT">Urgent</option><option value="STAT">STAT</option></select></div>
+            <div style="min-width: 156px;"><label>Referring Doctor</label><select value="{{ doctorFilter }}" onChange="{{ updateField }}" data-field="doctorFilter"><option value="">All doctors</option><option value="Dr. Sharma">Dr. Sharma</option><option value="Dr. S. Kulkarni">Dr. S. Kulkarni</option><option value="Dr. A. Mehta">Dr. A. Mehta</option><option value="Self">Self</option></select></div>
+            <button onClick="{{ clearFilters }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear Filters</button>
+          </div>
+        </div>
+
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 0 20px; display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onPick }}" style="padding: 10px 14px; background: none; border: none; border-bottom: 2px solid {{ t.border }}; color: {{ t.color }}; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">{{ t.label }} <span class="num" style="color: var(--color-text-tertiary); font-weight: 500;">{{ t.count }}</span></button>
+          </sc-for>
+          <div style="flex: 1;"></div>
+          <div style="display: flex; gap: 8px; align-items: center; padding: 7px 0;">
+            <span class="num" style="font-size: 11.5px; color: var(--color-text-secondary);">{{ selectionLabel }}</span>
+            <button onClick="{{ printSelected }}" disabled="{{ noSelection }}" style="padding: 7px 12px; background: #fff; border: 1px solid {{ bulkBorder }}; border-radius: 4px; font-size: 11.5px; font-weight: 600; color: {{ bulkOutlineFg }}; cursor: {{ bulkCursor }};">Print Selected</button>
+            <button onClick="{{ sendSelected }}" disabled="{{ noSelection }}" style="padding: 7px 12px; background: {{ bulkBg }}; border: 1px solid {{ bulkBorder }}; border-radius: 4px; font-size: 11.5px; font-weight: 700; color: {{ bulkFg }}; cursor: {{ bulkCursor }};">Send Selected</button>
+          </div>
+        </div>
+
+        <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBorder }};">{{ banner }}</div>
+        </sc-if>
+
+        <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">Reports: {{ rowCount }}</div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Only generated reports can be dispatched</div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto; max-height: calc(100vh - 320px);">
+            <div style="min-width: 1210px;">
+              <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 32px 108px minmax(140px,1fr) 96px 106px 124px 132px 124px 130px 112px; gap: 9px; padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <div><input type="checkbox" checked="{{ allSelected }}" onChange="{{ toggleAll }}" /></div>
+                <div>Report No</div>
+                <div>Patient</div>
+                <div>Test</div>
+                <div>Report Date</div>
+                <div>Report Status</div>
+                <div>Dispatch Status</div>
+                <div>Recipient</div>
+                <div>Payment</div>
+                <div>Actions</div>
+              </div>
+
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+                <div style="display: grid; grid-template-columns: 32px 108px minmax(140px,1fr) 96px 106px 124px 132px 124px 130px 112px; gap: 9px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ r.rowBg }}; box-shadow: inset 3px 0 0 0 {{ r.priorityEdge }};" style-hover="background: var(--color-gray-50);">
+                  <div><input type="checkbox" checked="{{ r.selected }}" onChange="{{ r.onSelect }}" disabled="{{ r.selectDisabled }}" /></div>
+                  <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.reportNumber }}</div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patientName }}</div>
+                    <div class="mono" style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.mrn }}</div>
+                  </div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.testName }}">{{ r.short }}</div>
+                    <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.dept }}</div>
+                  </div>
+                  <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.reportDate }}</div>
+                  <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.reportBg }}; color: {{ r.reportFg }};">{{ r.reportStatus }}</span></div>
+                  <div>
+                    <span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.dispatchBg }}; color: {{ r.dispatchFg }};">{{ r.dispatchStatus }}</span>
+                    <sc-if value="{{ r.hasDispatchNote }}" hint-placeholder-val="{{ false }}">
+                      <div class="num" style="font-size: 9.5px; color: var(--color-text-tertiary); margin-top: 2px;">{{ r.dispatchNote }}</div>
+                    </sc-if>
+                  </div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 11.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.recipient }}</div>
+                    <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.recipientVia }}</div>
+                  </div>
+                  <div style="min-width: 0;">
+                    <span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.payBg }}; color: {{ r.payFg }};">{{ r.payStatus }}</span>
+                    <div class="num" style="font-size: 9.5px; color: var(--color-text-tertiary); margin-top: 2px;">{{ r.payNote }}</div>
+                    <sc-if value="{{ r.payDue }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ r.onCollect }}" style="margin-top: 3px; padding: 2px 8px; background: #fff; border: 1px solid #FCD34D; border-radius: 4px; font-family: inherit; font-size: 10px; font-weight: 700; color: #92400E; cursor: pointer;" style-hover="background: #FFFBEB;">Collect</button>
+                    </sc-if>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <button onClick="{{ r.onOpen }}" style="padding: 5px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">View Details</button>
+                    <div style="display: flex; gap: 4px;">
+                      <button onClick="{{ r.onPrint }}" style="flex: 1; padding: 5px 6px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Print</button>
+                      <sc-if value="{{ r.canSend }}" hint-placeholder-val="{{ true }}">
+                        <button onClick="{{ r.onSend }}" style="flex: 1; padding: 5px 6px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; cursor: pointer;" style-hover="background: var(--color-primary-bright);">{{ r.sendLabel }}</button>
+                      </sc-if>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 56px 20px; text-align: center;">
+                  <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No reports in this view</div>
+                  <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Adjust the filters, or generate reports in the Reports queue.</div>
+                  <button onClick="{{ clearFilters }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Clear Filters</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ SCREEN 2 — DISPATCH / DELIVERY ============ -->
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; min-height: 100vh;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 10px 20px; position: sticky; top: 0; z-index: 10;">
+          <button onClick="{{ backToQueue }}" style="background: none; border: none; padding: 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;">‹ Back to Report Dispatch</button>
+          <div style="display: flex; align-items: center; gap: 16px; margin-top: 6px; flex-wrap: wrap;">
+            <div>
+              <div style="font-size: 15px; font-weight: 700;">Report Dispatch</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ dPatient }} · <span class="mono">{{ dMrn }}</span> · <span class="mono">{{ dAccession }}</span> · <span class="mono">{{ dReportNumber }}</span></div>
+            </div>
+            <span style="padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dReportBg }}; color: {{ dReportFg }};">{{ dReportStatus }}</span>
+            <span style="padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dDispatchBg }}; color: {{ dDispatchFg }};">{{ dDispatchStatus }}</span>
+            <div style="flex: 1;"></div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <a href="Reports.dc.html" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary);">Preview Report</a>
+              <button onClick="{{ printReport }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;" style-hover="background: var(--color-interactive-hover);">Print</button>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 10px 20px; font-size: 12px; font-weight: 600; background: {{ toastBg }}; color: {{ toastFg }}; border-bottom: 1px solid {{ toastBorder }};">{{ toast }}</div>
+        </sc-if>
+
+        <div style="flex: 1; padding: 16px 20px 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 340px); gap: 16px; align-items: start;">
+
+          <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+              <div style="padding: 10px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Report Summary — read only</div>
+              <div style="padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px 18px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Patient Name</div><div style="font-size: 13px; font-weight: 700;">{{ dPatient }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Age / Gender</div><div style="font-size: 12.5px; font-weight: 600;">{{ dAge }} · {{ dGender }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">MRN</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dMrn }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Registration Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dRegistration }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Accession Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dAccession }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Sample ID / Barcode</div><div class="mono" style="font-size: 12.5px; font-weight: 600; word-break: break-all;">{{ dBarcode }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Test Name</div><div style="font-size: 12.5px; font-weight: 600;">{{ dTestName }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Department</div><div style="font-size: 12.5px; font-weight: 600;">{{ dDept }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Report Date</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dReportDate }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Authorized By</div><div style="font-size: 12.5px; font-weight: 600;">{{ dAuthorizedBy }}</div></div>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+              <div style="padding: 10px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Delivery Method</div>
+              <div style="padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px;">
+                <sc-for list="{{ methods }}" as="m" hint-placeholder-count="4">
+                  <button onClick="{{ m.onPick }}" style="display: flex; align-items: flex-start; gap: 9px; text-align: left; padding: 11px 12px; border-radius: 5px; border: 1px solid {{ m.border }}; background: {{ m.bg }}; font-family: inherit; cursor: pointer;">
+                    <span style="width: 15px; height: 15px; border-radius: 3px; border: 1.5px solid {{ m.boxBorder }}; background: {{ m.boxBg }}; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">{{ m.mark }}</span>
+                    <span>
+                      <span style="display: block; font-size: 12.5px; font-weight: 700; color: {{ m.color }};">{{ m.label }}</span>
+                      <span style="display: block; font-size: 11px; color: var(--color-text-tertiary);">{{ m.note }}</span>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+
+              <div style="padding: 0 14px 14px;">
+                <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Recipient Details</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px;">
+                  <sc-if value="{{ showEmail }}" hint-placeholder-val="{{ false }}">
+                    <div><label>Email Address</label><input type="text" value="{{ email }}" onChange="{{ updateField }}" data-field="email" placeholder="name@example.com" /></div>
+                  </sc-if>
+                  <sc-if value="{{ showSms }}" hint-placeholder-val="{{ false }}">
+                    <div><label>Mobile Number</label><input type="text" value="{{ mobile }}" onChange="{{ updateField }}" data-field="mobile" placeholder="+91" class="num" /></div>
+                  </sc-if>
+                  <sc-if value="{{ showPortal }}" hint-placeholder-val="{{ false }}">
+                    <div><label>Patient Portal Account</label><select value="{{ portalAccount }}" onChange="{{ updateField }}" data-field="portalAccount"><option value="">Select account</option><option value="Patient account">Patient account</option><option value="Referring doctor account">Referring doctor account</option></select></div>
+                  </sc-if>
+                  <sc-if value="{{ showPrint }}" hint-placeholder-val="{{ true }}">
+                    <div><label>Printer</label><select value="{{ printer }}" onChange="{{ updateField }}" data-field="printer"><option value="Lab Counter">Lab Counter</option><option value="Reception A4">Reception A4</option><option value="Pathology Desk">Pathology Desk</option></select></div>
+                  </sc-if>
+                  <div><label>Recipient Name</label><input type="text" value="{{ recipientName }}" onChange="{{ updateField }}" data-field="recipientName" /></div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 12px;">
+                  <div><label>Message</label><textarea rows="2" placeholder="Optional message to the recipient" value="{{ message }}" onChange="{{ updateField }}" data-field="message" style="resize: vertical;"></textarea></div>
+                  <div><label>Remarks</label><textarea rows="2" placeholder="Internal remarks (optional)" value="{{ remarks }}" onChange="{{ updateField }}" data-field="remarks" style="resize: vertical;"></textarea></div>
+                </div>
+
+                <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top: 10px; font-size: 11.5px; font-weight: 600; color: var(--color-error);">{{ formError }}</div>
+                </sc-if>
+              </div>
+
+              <div style="padding: 12px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1; font-size: 11.5px; color: var(--color-text-tertiary);">{{ actionHint }}</div>
+                <button onClick="{{ backToQueue }}" style="padding: 9px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+                <button onClick="{{ printReport }}" style="padding: 9px 14px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-size: 12px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;" style-hover="background: var(--color-interactive-hover);">Print Report</button>
+                <button onClick="{{ askSend }}" disabled="{{ sendDisabled }}" style="padding: 9px 18px; background: {{ sendBg }}; border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: {{ sendFg }}; cursor: {{ sendCursor }};">{{ sendLabel }}</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Payment</div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px;">
+                <span class="mono" style="font-size: 12px; font-weight: 700;">{{ dBillNumber }}</span>
+                <span style="display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dPayBg }}; color: {{ dPayFg }};">{{ dPayStatus }}</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Payable</div><div class="num" style="font-size: 12.5px; font-weight: 700;">{{ dPayable }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Paid</div><div class="num" style="font-size: 12.5px; font-weight: 700;">{{ dPaidAmount }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Balance</div><div class="num" style="font-size: 12.5px; font-weight: 700; color: {{ dPayFg }};">{{ dBalance }}</div></div>
+              </div>
+              <sc-if value="{{ dPaid }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-top: 9px; font-size: 11px; font-weight: 600; color: #166534;">Payment complete — this report can be dispatched.</div>
+              </sc-if>
+              <sc-if value="{{ dPayDue }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 9px; padding: 8px 10px; border: 1px solid #FCD34D; border-radius: 4px; background: #FFFBEB;">
+                  <div style="font-size: 11px; font-weight: 700; color: #92400E;">Dispatch blocked — payment incomplete</div>
+                  <div style="font-size: 11px; color: #92400E; margin-top: 2px;">Record the outstanding {{ dBalance }} to release this report.</div>
+                  <button onClick="{{ onCollectDetail }}" style="margin-top: 8px; padding: 6px 12px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #fff; cursor: pointer;" style-hover="background: var(--color-primary-bright);">Record Payment</button>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Current Dispatch Status</div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Status</div><div><span style="display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dDispatchBg }}; color: {{ dDispatchFg }};">{{ dDispatchStatus }}</span></div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Dispatch Date / Time</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dDispatchedAt }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Dispatched By</div><div style="font-size: 12.5px; font-weight: 600;">{{ dDispatchedBy }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Delivery Method</div><div style="font-size: 12.5px; font-weight: 600;">{{ dLastMethod }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Referring Doctor</div><div style="font-size: 12.5px; font-weight: 600;">{{ dDoctor }}</div></div>
+              </div>
+              <sc-if value="{{ isFailed }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 12px; padding: 10px 11px; border: 1px solid #FCA5A5; background: #FEF2F2; border-radius: 4px;">
+                  <div style="font-size: 11px; font-weight: 700; color: #991B1B;">Last delivery failed</div>
+                  <div style="font-size: 11px; color: #991B1B; margin-top: 2px;">{{ dFailureReason }}</div>
+                  <button onClick="{{ askSend }}" style="margin-top: 8px; padding: 6px 12px; background: #B91C1C; border: none; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #fff; cursor: pointer;">Retry Dispatch</button>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Delivery History</div>
+              <sc-for list="{{ history }}" as="h" hint-placeholder-count="2">
+                <div style="padding: 8px 0; border-bottom: 1px solid var(--color-border-light);">
+                  <div style="display: flex; justify-content: space-between; gap: 10px; align-items: center;">
+                    <span style="font-size: 12px; font-weight: 700;">{{ h.method }}</span>
+                    <span style="padding: 2px 7px; border-radius: 999px; font-size: 9.5px; font-weight: 700; background: {{ h.bg }}; color: {{ h.fg }};">{{ h.status }}</span>
+                  </div>
+                  <div style="font-size: 11px; color: var(--color-text-secondary); word-break: break-all;">{{ h.recipient }}</div>
+                  <div class="num" style="font-size: 10px; color: var(--color-text-tertiary);">{{ h.when }} · {{ h.by }}</div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ historyEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size: 11.5px; color: var(--color-text-tertiary); padding: 8px 0;">No dispatch attempts recorded yet.</div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- Send confirmation modal -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.4); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeModal }}">
+      <div onClick="{{ stop }}" style="width: 440px; background: #fff; border-radius: 6px; box-shadow: 0 20px 40px rgba(17,24,39,.22); overflow: hidden;">
+        <div style="padding: 14px 18px; border-bottom: 1px solid var(--color-border-light);">
+          <div style="font-size: 14px; font-weight: 700;">Send report</div>
+          <div style="font-size: 12px; color: var(--color-text-tertiary); margin-top: 2px;">{{ modalSubtitle }}</div>
+        </div>
+        <div style="padding: 16px 18px;">
+          <div style="border: 1px solid var(--color-border-light); border-radius: 4px; overflow: hidden;">
+            <sc-for list="{{ modalFacts }}" as="f" hint-placeholder-count="5">
+              <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--color-border-light); font-size: 12px;">
+                <span style="color: var(--color-text-tertiary); font-weight: 600;">{{ f.k }}</span>
+                <span style="font-weight: 600; text-align: right; word-break: break-all;">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 12px 18px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px; justify-content: flex-end;">
+          <button onClick="{{ closeModal }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+          <button onClick="{{ confirmSend }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Confirm &amp; Send</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ collectOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 90; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeCollect }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 440px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 13px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700;">Record Payment</div>
+            <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ collectBillNumber }} · POST /api/payments</div>
+          </div>
+          <button onClick="{{ closeCollect }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="padding: 14px 18px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 11px; border: 1px solid var(--color-border-light); border-radius: 4px; background: var(--color-gray-50);">
+            <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary);">Outstanding balance</span>
+            <span class="num" style="font-size: 13px; font-weight: 700;">{{ collectDue }}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label>Amount (₹)</label>
+              <input type="number" min="0" step="0.01" value="{{ collectAmount }}" onChange="{{ updateCollect }}" data-field="collectAmount" class="num" />
+            </div>
+            <div>
+              <label>Payment Mode</label>
+              <select value="{{ collectMode }}" onChange="{{ updateCollect }}" data-field="collectMode">
+                <option value="CASH">Cash</option>
+                <option value="CARD">Card</option>
+                <option value="UPI">UPI</option>
+                <option value="NEFT">NEFT</option>
+                <option value="CHEQUE">Cheque</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label>Transaction Reference</label>
+            <input type="text" placeholder="UPI / card / receipt ref (optional)" value="{{ collectRef }}" onChange="{{ updateCollect }}" data-field="collectRef" />
+          </div>
+          <sc-if value="{{ collectError }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ collectError }}</div>
+          </sc-if>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeCollect }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+          <button onClick="{{ confirmCollect }}" disabled="{{ collectBusy }}" style="padding: 8px 16px; background: {{ collectBtnBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ collectCursor }}; min-width: 140px;">{{ collectLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; right: 18px; bottom: 18px; z-index: 95; max-width: 360px; padding: 10px 14px; border-radius: 5px; border-left: 3px solid {{ toastFg }}; background: {{ toastBg }}; color: {{ toastFg }}; font-size: 12px; font-weight: 600; box-shadow: 0 8px 22px rgba(17,24,39,.16);">{{ toast }}</div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const SEED = [
+  { id: 1, reportNumber: 'REP000001', accessionNo: 'ACC0001', billNumber: 'BL-2026-009114', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, email: 'manas.gaikwad@example.com', mobile: '+91 98220 14577', doctor: 'Dr. Sharma', testCode: 'CBC001', short: 'CBC', testName: 'Complete Blood Count', dept: 'Hematology', barcode: 'BC20260801160902496', priority: 'NORMAL', reportDate: '18 Aug 2026', authorizedBy: 'Dr. A. Mehta', reportStatus: 'GENERATED', dispatchStatus: 'READY TO DISPATCH', recipient: 'Dr. Sharma', recipientVia: 'Not dispatched', history: [] },
+  { id: 2, reportNumber: 'REP000002', accessionNo: 'ACC0002', billNumber: 'BL-2026-009114', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, email: 'manas.gaikwad@example.com', mobile: '+91 98220 14577', doctor: 'Dr. Sharma', testCode: 'LFT001', short: 'LFT', testName: 'Liver Function Test', dept: 'Biochemistry', barcode: 'BC20260801160902497', priority: 'NORMAL', reportDate: '18 Aug 2026', authorizedBy: 'Dr. A. Mehta', reportStatus: 'GENERATED', dispatchStatus: 'READY TO DISPATCH', recipient: 'Dr. Sharma', recipientVia: 'Not dispatched', history: [] },
+  { id: 3, reportNumber: 'REP000003', accessionNo: 'ACC0007', billNumber: 'BL-2026-009076', registrationNumber: 'REG-2026-004147', patientName: 'Meera Kulkarni', mrn: 'MRN-TEST-052', sex: 'Female', age: 36, email: 'meera.k@example.com', mobile: '+91 88880 11902', doctor: 'Self', testCode: 'TSH001', short: 'TSH', testName: 'Thyroid Stimulating Hormone', dept: 'Immunoassay', barcode: 'BC20260801160902577', priority: 'NORMAL', reportDate: '17 Aug 2026', authorizedBy: 'Dr. R. Bhosale', reportStatus: 'GENERATED', dispatchStatus: 'DISPATCHED', recipient: 'meera.k@example.com', recipientVia: 'Email · 17 Aug, 18:20', dispatchedAt: '17 Aug 2026, 18:20', dispatchedBy: 'Admin', lastMethod: 'Email', history: [{ when: '17 Aug 2026, 18:20', method: 'Email', recipient: 'meera.k@example.com', status: 'SENT', by: 'Admin' }, { when: '17 Aug 2026, 18:22', method: 'Print', recipient: 'Lab Counter', status: 'PRINTED', by: 'Admin' }] },
+  { id: 4, reportNumber: 'REP000004', accessionNo: 'ACC0005', billNumber: 'BL-2026-009090', registrationNumber: 'REG-2026-004160', patientName: 'Zubeda Ismail Shaikh', mrn: 'MRN-TEST-030', sex: 'Female', age: 74, email: '', mobile: '+91 91300 77415', doctor: 'Dr. S. Kulkarni', testCode: 'GLUPP', short: 'GLU-PP', testName: 'Blood Glucose (Post Prandial)', dept: 'Biochemistry', barcode: 'BC20260801160902548', priority: 'STAT', reportDate: '18 Aug 2026', authorizedBy: 'Dr. A. Mehta', reportStatus: 'GENERATED', dispatchStatus: 'FAILED', recipient: '+91 91300 77415', recipientVia: 'SMS · failed 18 Aug, 10:40', dispatchedAt: '18 Aug 2026, 10:40', dispatchedBy: 'Admin', lastMethod: 'SMS', failureReason: 'SMS gateway rejected the number.', history: [{ when: '18 Aug 2026, 10:40', method: 'SMS', recipient: '+91 91300 77415', status: 'FAILED', by: 'Admin' }] },
+  { id: 5, reportNumber: 'REP000005', accessionNo: 'ACC0003', billNumber: 'BL-2026-009114', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, email: 'manas.gaikwad@example.com', mobile: '+91 98220 14577', doctor: 'Dr. Sharma', testCode: 'HBA1C', short: 'HbA1c', testName: 'Glycated Haemoglobin', dept: 'Biochemistry', barcode: 'BC20260801160902498', priority: 'NORMAL', reportDate: '—', authorizedBy: '—', reportStatus: 'PENDING', dispatchStatus: 'PENDING', recipient: '—', recipientVia: 'Report not generated', history: [] },
+  { id: 6, reportNumber: 'REP000006', accessionNo: 'ACC0006', billNumber: 'BL-2026-009081', registrationNumber: 'REG-2026-004152', patientName: 'Ibrahim Ahsan Qureshi', mrn: 'MRN-TEST-044', sex: 'Male', age: 70, email: '', mobile: '+91 99604 22318', doctor: 'Dr. A. Mehta', testCode: 'LFT001', short: 'LFT', testName: 'Liver Function Test', dept: 'Biochemistry', barcode: 'BC20260801160902561', priority: 'NORMAL', reportDate: '18 Aug 2026', authorizedBy: 'Dr. R. Bhosale', reportStatus: 'GENERATED', dispatchStatus: 'READY TO DISPATCH', recipient: 'Dr. A. Mehta', recipientVia: 'Not dispatched', history: [] }
+];
+
+/* Payment gate: a report is only dispatchable once its bill is fully paid.
+   Bills live in the shared billing store so Collect here and Bill Details
+   agree on the same record. */
+const BILL_SEED = {
+  'BL-2026-009114': 1850,
+  'BL-2026-009076': 400,
+  'BL-2026-009090': 180,
+  'BL-2026-009081': 900
+};
+const PAID_SEED = {
+  'BL-2026-009114': 1850,
+  'BL-2026-009076': 400,
+  'BL-2026-009090': 0,
+  'BL-2026-009081': 400
+};
+
+function ensureBill(billNumber) {
+  let bill = LIMS.BILLS.find(b => b.billNumber === billNumber);
+  if (bill) return bill;
+  bill = LIMS.recalcBill({
+    id: LIMS.newId(), organizationId: LIMS.session.organizationId, branchId: LIMS.session.branchId,
+    patientRegistrationId: LIMS.newId(), billNumber, billDate: new Date().toISOString(),
+    totalAmount: BILL_SEED[billNumber] || 0, discountAmount: 0, concessionAmount: 0, additionalAmount: 0,
+    paidAmount: PAID_SEED[billNumber] || 0, paymentMode: null, remarks: null, isCancelled: false
+  });
+  LIMS.BILLS.push(bill);
+  return bill;
+}
+
+const MONEY = (n) => '\u20b9 ' + Number(n || 0).toLocaleString('en-IN');
+
+const NOW = '18 Aug 2026, 14:32';
+const METHODS = [
+  ['PRINT', 'Print', 'Hand over or counter collection'],
+  ['EMAIL', 'Email', 'Send the PDF report by email'],
+  ['SMS', 'SMS', 'Send a download link by SMS'],
+  ['PORTAL', 'Patient Portal', 'Publish to the patient account']
+];
+
+class Component extends DCLogic {
+  state = {
+    rows: SEED.map(r => ({ ...r, selected: false })),
+    collectBill: null, collectAmount: 0, collectMode: 'CASH', collectRef: '', collectError: '', collectBusy: false,
+    toast: '', toastKind: 'info',
+    screen: 'queue', selectedId: null,
+    query: '', date: '2026-08-18', dept: '', reportFilter: '', dispatchFilter: '', priority: '', doctorFilter: '',
+    tab: 'Ready to Dispatch', banner: '', bannerKind: 'info',
+    method: 'PRINT', email: '', mobile: '', portalAccount: '', printer: 'Lab Counter', recipientName: '',
+    message: '', remarks: '', formError: '',
+    modalOpen: false, modalIds: [],
+    toast: '', toastKind: 'success'
+  };
+
+  onQuery = (e) => this.setState({ query: e.target.value });
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, formError: '' });
+  clearFilters = () => this.setState({ query: '', dept: '', reportFilter: '', dispatchFilter: '', priority: '', doctorFilter: '', banner: '' });
+  search = () => this.setState({ banner: this.state.query.trim() ? 'Showing matches for “' + this.state.query.trim() + '”.' : 'Showing all generated reports.', bannerKind: 'info' });
+  setTab = (t) => () => this.setState({ tab: t });
+  stop = (e) => e.stopPropagation();
+  setMethod = (m) => () => this.setState({ method: m, formError: '' });
+
+  inTab(r, tab) {
+    if (tab === 'Ready to Dispatch') return r.dispatchStatus === 'READY TO DISPATCH';
+    if (tab === 'Dispatched') return r.dispatchStatus === 'DISPATCHED';
+    if (tab === 'Failed') return r.dispatchStatus === 'FAILED';
+    if (tab === 'Pending') return r.dispatchStatus === 'PENDING';
+    return true;
+  }
+
+  visible(s) {
+    const q = s.query.trim().toLowerCase();
+    return s.rows.filter(r =>
+      this.inTab(r, s.tab) &&
+      (!s.dept || r.dept === s.dept) &&
+      (!s.reportFilter || r.reportStatus === s.reportFilter) &&
+      (!s.dispatchFilter || r.dispatchStatus === s.dispatchFilter) &&
+      (!s.priority || r.priority === s.priority) &&
+      (!s.doctorFilter || r.doctor === s.doctorFilter) &&
+      (!q || [r.patientName, r.mrn, r.registrationNumber, r.accessionNo, r.barcode, r.billNumber, r.reportNumber, r.testName].join(' ').toLowerCase().includes(q))
+    );
+  }
+
+  isPaid = (billNumber) => {
+    const b = ensureBill(billNumber);
+    return !b.isCancelled && Number(b.balanceAmount) <= 0;
+  };
+
+  payCell = (billNumber) => {
+    const b = ensureBill(billNumber);
+    const paid = this.isPaid(billNumber);
+    return {
+      payStatus: b.isCancelled ? 'Cancelled' : (paid ? 'Paid' : (Number(b.paidAmount) > 0 ? 'Partial' : 'Unpaid')),
+      payBg: b.isCancelled ? '#FEE2E2' : paid ? '#DCFCE7' : '#FEF3C7',
+      payFg: b.isCancelled ? '#991B1B' : paid ? '#166534' : '#92400E',
+      payNote: paid ? MONEY(b.payableAmount) + ' settled' : 'Due ' + MONEY(b.balanceAmount),
+      payDue: !paid && !b.isCancelled
+    };
+  };
+
+  askCollect = (billNumber) => () => {
+    const b = ensureBill(billNumber);
+    this.setState({ collectBill: billNumber, collectAmount: b.balanceAmount, collectMode: 'CASH', collectRef: '', collectError: '', collectBusy: false });
+  };
+  closeCollect = () => { if (!this.state.collectBusy) this.setState({ collectBill: null, collectError: '' }); };
+  updateCollect = (e) => this.setState({ [e.target.dataset.field]: e.target.value, collectError: '' });
+
+  /* API-057 POST /api/payments — dispatch stays blocked until this settles. */
+  confirmCollect = async () => {
+    const s = this.state;
+    if (s.collectBusy) return;
+    const bill = ensureBill(s.collectBill);
+    const amount = Number(s.collectAmount);
+    if (!amount || isNaN(amount) || amount <= 0) {
+      return this.setState({ collectError: '400 Bad Request — Invalid payment amount' });
+    }
+    if (amount > Number(bill.balanceAmount)) {
+      return this.setState({ collectError: '400 Bad Request — Amount exceeds the outstanding balance of ' + MONEY(bill.balanceAmount) });
+    }
+    if (['CASH', 'CARD', 'UPI', 'NEFT', 'CHEQUE'].indexOf(s.collectMode) === -1) {
+      return this.setState({ collectError: '400 Bad Request — Invalid payment mode' });
+    }
+    this.setState({ collectBusy: true, collectError: '' });
+    try {
+      await LIMS.request('createPayment', {
+        contract: 'API-057',
+        body: { billingId: bill.id, paymentAmount: amount, paymentMode: s.collectMode, transactionReference: String(s.collectRef).trim() || null },
+        resolve: () => {
+          bill.paidAmount = Number(bill.paidAmount) + amount;
+          bill.paymentMode = s.collectMode;
+          LIMS.recalcBill(bill);
+          return { status: 201, message: 'Payment recorded successfully', data: { id: LIMS.newId(), billingId: bill.id, paymentAmount: amount } };
+        }
+      });
+      this.setState({
+        collectBusy: false, collectBill: null,
+        toast: '201 Created — ' + MONEY(amount) + ' recorded against ' + bill.billNumber +
+          (Number(bill.balanceAmount) <= 0 ? '. Bill settled — reports can now be dispatched.' : '. Due ' + MONEY(bill.balanceAmount) + ' — dispatch stays blocked.'),
+        toastKind: Number(bill.balanceAmount) <= 0 ? 'success' : 'info'
+      });
+    } catch (err) {
+      this.setState({ collectBusy: false, collectError: err.status ? err.status + ' — ' + err.message : 'Request could not be built — ' + err.message });
+    }
+  };
+
+  toggleRow = (id) => () => this.setState(s => ({ rows: s.rows.map(r => r.id === id ? { ...r, selected: !r.selected } : r) }));
+
+  toggleAll = () => {
+    const vis = this.visible(this.state).filter(r => r.reportStatus === 'GENERATED').map(r => r.id);
+    const all = vis.length > 0 && vis.every(id => this.state.rows.find(r => r.id === id).selected);
+    this.setState(s => ({ rows: s.rows.map(r => vis.includes(r.id) ? { ...r, selected: !all } : r) }));
+  };
+
+  open = (id) => () => {
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState({
+      screen: 'detail', selectedId: id, toast: '', formError: '',
+      method: r.lastMethod ? r.lastMethod.toUpperCase() : 'PRINT',
+      email: r.email, mobile: r.mobile, portalAccount: '', printer: 'Lab Counter',
+      recipientName: r.doctor === 'Self' ? r.patientName : r.doctor,
+      message: '', remarks: ''
+    });
+  };
+
+  backToQueue = () => this.setState({ screen: 'queue', toast: '' });
+
+  printReport = () => {
+    const id = this.state.selectedId;
+    this.setState(s => ({
+      rows: s.rows.map(r => r.id === id ? {
+        ...r, lastMethod: 'Print', dispatchedAt: NOW, dispatchedBy: 'Admin',
+        history: [...(r.history || []), { when: NOW, method: 'Print', recipient: s.printer, status: 'PRINTED', by: 'Admin' }]
+      } : r),
+      toast: 'Report sent to ' + s.printer + ' and recorded in the delivery history.', toastKind: 'info'
+    }));
+  };
+
+  askSend = () => {
+    const s = this.state;
+    const row = s.rows.find(r => r.id === s.selectedId);
+    if (row && !this.isPaid(row.billNumber)) {
+      this.setState({ formError: 'Payment incomplete on ' + row.billNumber + ' — record the outstanding balance before dispatch.' });
+      return;
+    }
+    if (s.method === 'EMAIL' && !s.email.trim()) { this.setState({ formError: 'Enter an email address to send this report.' }); return; }
+    if (s.method === 'SMS' && !s.mobile.trim()) { this.setState({ formError: 'Enter a mobile number to send this report.' }); return; }
+    if (s.method === 'PORTAL' && !s.portalAccount) { this.setState({ formError: 'Select the portal account to publish to.' }); return; }
+    this.setState({ modalOpen: true, modalIds: [s.selectedId], formError: '' });
+  };
+
+  printSelected = () => {
+    const ids = this.state.rows.filter(r => r.selected && r.reportStatus === 'GENERATED').map(r => r.id);
+    if (!ids.length) return;
+    this.setState(s => ({
+      rows: s.rows.map(r => ids.includes(r.id) ? {
+        ...r, selected: false, lastMethod: 'Print', dispatchedAt: NOW, dispatchedBy: 'Admin',
+        history: [...(r.history || []), { when: NOW, method: 'Print', recipient: 'Lab Counter', status: 'PRINTED', by: 'Admin' }]
+      } : r),
+      banner: ids.length + ' report(s) sent to the Lab Counter printer.', bannerKind: 'info'
+    }));
+  };
+
+  sendSelected = () => {
+    const ids = this.state.rows.filter(r => r.selected && r.reportStatus === 'GENERATED' && this.isPaid(r.billNumber)).map(r => r.id);
+    if (!ids.length) {
+      this.setState({ toast: 'Nothing to dispatch — selected reports are either not generated or their bills are unpaid.', toastKind: 'error' });
+      return;
+    }
+    this.setState({ modalOpen: true, modalIds: ids });
+  };
+
+  sendOne = (id) => () => {
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState({
+      selectedId: id, modalOpen: true, modalIds: [id],
+      method: r.email ? 'EMAIL' : 'SMS', email: r.email, mobile: r.mobile,
+      recipientName: r.doctor === 'Self' ? r.patientName : r.doctor
+    });
+  };
+
+  printOne = (id) => () => this.setState(s => ({
+    rows: s.rows.map(r => r.id === id ? {
+      ...r, lastMethod: 'Print', dispatchedAt: NOW, dispatchedBy: 'Admin',
+      history: [...(r.history || []), { when: NOW, method: 'Print', recipient: 'Lab Counter', status: 'PRINTED', by: 'Admin' }]
+    } : r),
+    banner: 'Report ' + s.rows.find(r => r.id === id).reportNumber + ' sent to the Lab Counter printer.', bannerKind: 'info'
+  }));
+
+  closeModal = () => this.setState({ modalOpen: false });
+
+  confirmSend = () => {
+    const s = this.state;
+    const ids = s.modalIds;
+    const methodLabel = (METHODS.find(m => m[0] === s.method) || METHODS[0])[1];
+    const recipientOf = (r) => s.method === 'EMAIL' ? (s.email || r.email) : (s.method === 'SMS' ? (s.mobile || r.mobile) : (s.method === 'PORTAL' ? s.portalAccount : s.printer));
+    this.setState(st => ({
+      rows: st.rows.map(r => ids.includes(r.id) ? {
+        ...r, selected: false, dispatchStatus: 'DISPATCHED', dispatchedAt: NOW, dispatchedBy: 'Admin',
+        lastMethod: methodLabel, recipient: recipientOf(r), recipientVia: methodLabel + ' · ' + NOW.split(', ')[1], failureReason: '',
+        history: [...(r.history || []), { when: NOW, method: methodLabel, recipient: recipientOf(r), status: 'SENT', by: 'Admin' }]
+      } : r),
+      modalOpen: false,
+      toast: 'Report dispatched successfully.', toastKind: 'success',
+      banner: ids.length === 1 ? 'Report dispatched successfully.' : ids.length + ' reports dispatched successfully.', bannerKind: 'success'
+    }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const tone = { warning: ['#FFFBEB', '#92400E', '#FCD34D'], error: ['#FEF2F2', '#991B1B', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] };
+    const prio = { NORMAL: 'transparent', URGENT: 'var(--color-warning)', STAT: 'var(--color-error)' };
+    const rep = { GENERATED: ['#DCFCE7', '#166534'], PENDING: ['#F3F4F6', '#4B5563'] };
+    const disp = {
+      'READY TO DISPATCH': ['#DBEAFE', '#1E40AF'], DISPATCHED: ['#DCFCE7', '#166534'],
+      FAILED: ['#FEE2E2', '#991B1B'], PENDING: ['#F3F4F6', '#4B5563']
+    };
+    const histTone = { SENT: ['#DCFCE7', '#166534'], PRINTED: ['#DBEAFE', '#1E40AF'], FAILED: ['#FEE2E2', '#991B1B'] };
+
+    const vis = this.visible(s);
+    const rows = vis.map(r => {
+      const rt = rep[r.reportStatus] || rep.PENDING;
+      const dt = disp[r.dispatchStatus] || disp.PENDING;
+      const generated = r.reportStatus === 'GENERATED';
+      return {
+        ...r,
+        priorityEdge: prio[r.priority],
+        reportBg: rt[0], reportFg: rt[1],
+        dispatchBg: dt[0], dispatchFg: dt[1],
+        hasDispatchNote: !!r.dispatchedAt,
+        dispatchNote: r.dispatchedAt ? r.dispatchedAt.split(', ')[1] + ' · ' + r.dispatchedBy : '',
+        rowBg: r.selected ? 'var(--color-interactive-hover)' : (r.dispatchStatus === 'FAILED' ? '#FFFBFB' : '#fff'),
+        canSend: generated && this.isPaid(r.billNumber),
+        sendLabel: r.dispatchStatus === 'FAILED' ? 'Retry' : (r.dispatchStatus === 'DISPATCHED' ? 'Resend' : 'Send'),
+        selectDisabled: !generated || !this.isPaid(r.billNumber),
+        ...this.payCell(r.billNumber),
+        onCollect: this.askCollect(r.billNumber),
+        onSelect: this.toggleRow(r.id),
+        onOpen: this.open(r.id),
+        onPrint: this.printOne(r.id),
+        onSend: this.sendOne(r.id)
+      };
+    });
+
+    const tabs = ['Ready to Dispatch', 'Dispatched', 'Failed', 'Pending'].map(label => ({
+      label, onPick: this.setTab(label),
+      count: s.rows.filter(r => this.inTab(r, label)).length,
+      border: s.tab === label ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.tab === label ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    const sel = s.rows.filter(r => r.selected && r.reportStatus === 'GENERATED');
+    const readyVis = vis.filter(r => r.reportStatus === 'GENERATED');
+
+    const d = s.selectedId ? s.rows.find(r => r.id === s.selectedId) : null;
+    const dRep = d ? (rep[d.reportStatus] || rep.PENDING) : rep.GENERATED;
+    const dDisp = d ? (disp[d.dispatchStatus] || disp.PENDING) : disp['READY TO DISPATCH'];
+
+    const methods = METHODS.map(([key, label, note]) => {
+      const on = s.method === key;
+      return {
+        label, note, onPick: this.setMethod(key),
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+        boxBg: on ? 'var(--color-primary-deep)' : '#fff',
+        boxBorder: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+        mark: on ? '✓' : '',
+        color: on ? 'var(--color-primary-deep)' : 'var(--color-text-primary)'
+      };
+    });
+
+    const history = (d ? (d.history || []) : []).map(h => {
+      const t = histTone[h.status] || histTone.SENT;
+      return { ...h, bg: t[0], fg: t[1] };
+    });
+
+    const methodLabel = (METHODS.find(m => m[0] === s.method) || METHODS[0])[1];
+    const recipientValue = s.method === 'EMAIL' ? s.email : (s.method === 'SMS' ? s.mobile : (s.method === 'PORTAL' ? s.portalAccount : s.printer));
+    const dPaid = d ? this.isPaid(d.billNumber) : false;
+    const dBill = d ? ensureBill(d.billNumber) : null;
+    const canSend = !!(d && d.reportStatus === 'GENERATED' && s.method !== 'PRINT' && dPaid);
+    const collectBill = s.collectBill ? ensureBill(s.collectBill) : null;
+
+    const modalRows = s.modalIds.map(id => s.rows.find(r => r.id === id)).filter(Boolean);
+    const first = modalRows[0];
+    const many = modalRows.length > 1;
+
+    const tToast = tone[s.toastKind], tBanner = tone[s.bannerKind];
+
+    return {
+      ...s,
+      isQueue: s.screen === 'queue',
+      isDetail: s.screen === 'detail',
+      rows, tabs, methods, history,
+      rowCount: rows.length,
+      isEmpty: rows.length === 0,
+      historyEmpty: history.length === 0,
+      allSelected: readyVis.length > 0 && readyVis.every(r => r.selected),
+      noSelection: sel.length === 0,
+      selectionLabel: sel.length ? sel.length + ' selected' : '',
+      bulkBg: sel.length ? 'var(--color-primary-deep)' : 'var(--color-gray-100)',
+      bulkFg: sel.length ? '#fff' : 'var(--color-text-tertiary)',
+      bulkOutlineFg: sel.length ? 'var(--color-text-secondary)' : 'var(--color-text-tertiary)',
+      bulkBorder: sel.length ? 'var(--color-border-base)' : 'var(--color-border-light)',
+      bulkCursor: sel.length ? 'pointer' : 'not-allowed',
+      bannerBg: tBanner[0], bannerFg: tBanner[1], bannerBorder: tBanner[2],
+      toastBg: tToast[0], toastFg: tToast[1], toastBorder: tToast[2],
+      showPrint: s.method === 'PRINT',
+      showEmail: s.method === 'EMAIL',
+      showSms: s.method === 'SMS',
+      showPortal: s.method === 'PORTAL',
+      dPatient: d ? d.patientName : '',
+      dMrn: d ? d.mrn : '',
+      dRegistration: d ? d.registrationNumber : '',
+      dAccession: d ? d.accessionNo : '',
+      dReportNumber: d ? d.reportNumber : '',
+      dAge: d ? d.age + ' years' : '',
+      dGender: d ? d.sex : '',
+      dBarcode: d ? d.barcode : '',
+      dTestName: d ? d.testCode + ' — ' + d.testName : '',
+      dDept: d ? d.dept : '',
+      dReportDate: d ? d.reportDate : '',
+      dAuthorizedBy: d ? d.authorizedBy : '',
+      dDoctor: d ? d.doctor : '',
+      dReportStatus: d ? d.reportStatus : '',
+      dReportBg: dRep[0], dReportFg: dRep[1],
+      dDispatchStatus: d ? d.dispatchStatus : '',
+      dDispatchBg: dDisp[0], dDispatchFg: dDisp[1],
+      dDispatchedAt: d ? (d.dispatchedAt || 'Not dispatched') : '',
+      dDispatchedBy: d ? (d.dispatchedBy || '—') : '',
+      dLastMethod: d ? (d.lastMethod || '—') : '',
+      isFailed: !!(d && d.dispatchStatus === 'FAILED'),
+      dFailureReason: d ? (d.failureReason || '') : '',
+      sendLabel: d && d.dispatchStatus === 'FAILED' ? 'Retry Send' : 'Send Report',
+      sendDisabled: !canSend,
+      sendBg: canSend ? 'var(--color-primary-deep)' : 'var(--color-gray-100)',
+      sendFg: canSend ? '#fff' : 'var(--color-text-tertiary)',
+      sendCursor: canSend ? 'pointer' : 'not-allowed',
+      dPaid: dPaid,
+      dPayDue: !!(d && !dPaid),
+      dPayStatus: dBill ? (dBill.isCancelled ? 'Cancelled' : dPaid ? 'Paid' : (Number(dBill.paidAmount) > 0 ? 'Partial' : 'Unpaid')) : '',
+      dPayBg: dBill ? (dBill.isCancelled ? '#FEE2E2' : dPaid ? '#DCFCE7' : '#FEF3C7') : '#fff',
+      dPayFg: dBill ? (dBill.isCancelled ? '#991B1B' : dPaid ? '#166534' : '#92400E') : '#000',
+      dPayable: dBill ? MONEY(dBill.payableAmount) : '',
+      dPaidAmount: dBill ? MONEY(dBill.paidAmount) : '',
+      dBalance: dBill ? MONEY(dBill.balanceAmount) : '',
+      dBillNumber: d ? d.billNumber : '',
+      onCollectDetail: d ? this.askCollect(d.billNumber) : null,
+      collectOpen: !!s.collectBill,
+      collectBillNumber: collectBill ? collectBill.billNumber : '',
+      collectDue: collectBill ? MONEY(collectBill.balanceAmount) : '',
+      collectAmount: s.collectAmount,
+      collectMode: s.collectMode,
+      collectRef: s.collectRef,
+      collectError: s.collectError,
+      collectBusy: s.collectBusy,
+      collectLabel: s.collectBusy ? 'Recording…' : 'Record Payment',
+      collectBtnBg: s.collectBusy ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      collectCursor: s.collectBusy ? 'wait' : 'pointer',
+      closeCollect: this.closeCollect, updateCollect: this.updateCollect, confirmCollect: this.confirmCollect,
+      toast: s.toast,
+      toastBg: s.toastKind === 'success' ? '#F0FDF4' : s.toastKind === 'error' ? '#FEF2F2' : '#EFF6FF',
+      toastFg: s.toastKind === 'success' ? '#166534' : s.toastKind === 'error' ? '#B91C1C' : '#1E40AF',
+      actionHint: !d ? '' : (d.reportStatus !== 'GENERATED' ? 'Only generated reports can be dispatched.' : (!dPaid ? 'Payment incomplete — settle ' + (dBill ? MONEY(dBill.balanceAmount) : '') + ' on ' + d.billNumber + ' before dispatch.' : (s.method === 'PRINT' ? 'Print delivery is recorded in the history — use Print Report.' : 'Sending to ' + (recipientValue || 'the selected recipient') + ' by ' + methodLabel + '.'))),
+      modalSubtitle: many ? 'Send ' + modalRows.length + ' reports to the selected recipients?' : 'Send this report to the selected recipient?',
+      modalFacts: !first ? [] : (many ? [
+        { k: 'Reports', v: String(modalRows.length) },
+        { k: 'Patients', v: String(new Set(modalRows.map(r => r.mrn)).size) },
+        { k: 'Delivery Method', v: methodLabel },
+        { k: 'Dispatch Status', v: 'READY TO DISPATCH → DISPATCHED' }
+      ] : [
+        { k: 'Patient', v: first.patientName + ' · ' + first.mrn },
+        { k: 'Report Number', v: first.reportNumber },
+        { k: 'Accession Number', v: first.accessionNo },
+        { k: 'Delivery Method', v: methodLabel },
+        { k: 'Recipient', v: recipientValue || (s.recipientName || '—') }
+      ]),
+      onQuery: this.onQuery, updateField: this.updateField, clearFilters: this.clearFilters, search: this.search,
+      toggleAll: this.toggleAll, printSelected: this.printSelected, sendSelected: this.sendSelected,
+      backToQueue: this.backToQueue, printReport: this.printReport, askSend: this.askSend,
+      closeModal: this.closeModal, confirmSend: this.confirmSend, stop: this.stop
+    };
+  }
+}
+</script>
+</body>
+</html>

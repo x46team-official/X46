@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12.5px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.4; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 8px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 3px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .card { background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; }
+    .chd { padding: 9px 13px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 190px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700;">X46</div>
+      <div style="font-size: 12.5px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 8px 14px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 11.5px; font-weight: 600; margin-top: 1px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 6px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <a href="Accession.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Accession</a>
+      <a href="Worklist.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist</a>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <div style="display: block; padding: 6px 14px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Payment Mode Collection</div>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; position: sticky; top: 0; z-index: 6;">
+      <div>
+        <div style="font-size: 10.5px; color: var(--color-text-tertiary);"><a href="Finance.dc.html">Finance</a> / Payment Mode-wise Collection</div>
+        <h1 style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.01em;">Payment Mode-wise Collection</h1>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px; border-right: 1px solid var(--color-border-light);">
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Prototype state</span>
+          <sc-for list="{{ stateTabs }}" as="st" hint-placeholder-count="4">
+            <button onClick="{{ st.onPick }}" style="padding: 4px 9px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid {{ st.border }}; background: {{ st.bg }}; color: {{ st.fg }};">{{ st.label }}</button>
+          </sc-for>
+        </div>
+        <a href="Finance.dc.html" style="padding: 7px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary);">Back to Finance</a>
+      </div>
+    </div>
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 10px 18px 11px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(136px, 1fr)); gap: 9px 10px; align-items: end;">
+        <div><label>Payment date from</label><input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" /></div>
+        <div><label>Payment date to</label><input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" /></div>
+        <div><label>Organization</label><select value="{{ org }}" onChange="{{ updateField }}" data-field="org"><sc-for list="{{ orgOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></div>
+        <div><label>Branch</label><select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch"><sc-for list="{{ branchOptions }}" as="b" hint-placeholder-count="4"><option value="{{ b.value }}">{{ b.label }}</option></sc-for></select></div>
+        <div><label>Payment mode</label><select value="{{ mode }}" onChange="{{ updateField }}" data-field="mode"><sc-for list="{{ modeOptions }}" as="m" hint-placeholder-count="6"><option value="{{ m.value }}">{{ m.label }}</option></sc-for></select></div>
+        <div><label>Payment status</label><select value="{{ status }}" onChange="{{ updateField }}" data-field="status"><sc-for list="{{ statusOptions }}" as="s" hint-placeholder-count="4"><option value="{{ s.value }}">{{ s.label }}</option></sc-for></select></div>
+        <div style="display: flex; gap: 7px;">
+          <button onClick="{{ applyFilters }}" style="flex: 1; padding: 6px 10px; background: var(--color-primary-deep); border: 1px solid var(--color-primary-deep); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #fff; cursor: pointer;">Apply</button>
+          <button onClick="{{ resetFilters }}" style="padding: 6px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Clear</button>
+        </div>
+      </div>
+      <sc-if value="{{ hasActiveFilters }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top: 8px; font-size: 11px; color: var(--color-text-tertiary);">{{ activeFilterLabel }}</div>
+      </sc-if>
+    </div>
+
+    <div style="flex: 1; padding: 14px 18px 28px; display: flex; flex-direction: column; gap: 12px;">
+
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="border-color: #FCA5A5; background: #FEF2F2; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #991B1B;">Collection data could not be loaded</div>
+            <div style="font-size: 11.5px; color: #991B1B;">The request failed. Mode totals are hidden so partial figures aren't mistaken for the day's collection.</div>
+          </div>
+          <button onClick="{{ retry }}" style="padding: 7px 14px; background: #fff; border: 1px solid #FCA5A5; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #991B1B; cursor: pointer;">Retry</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ badRange }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="border-color: #FDE68A; background: #FFFBEB; padding: 11px 14px; font-size: 11.5px; color: #92400E; font-weight: 600;">Payment date from is after payment date to — correct the range to run this report.</div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+        <sc-for list="{{ totals }}" as="t" hint-placeholder-count="4">
+          <div class="card" style="padding: 10px 13px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ t.label }}</div>
+            <div style="font-size: 19px; font-weight: 700; margin-top: 4px; color: {{ t.color }};" class="num">{{ t.value }}</div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ t.hint }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div class="card">
+        <div class="chd">
+          <span>Collection by payment mode</span>
+          <span style="font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);">{{ modeCountLabel }}</span>
+        </div>
+        <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 14px 13px; display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{ skeletonsShort }}" as="sk" hint-placeholder-count="4">
+              <div style="height: 15px; border-radius: 3px; background: linear-gradient(90deg, var(--color-gray-100), var(--color-gray-50), var(--color-gray-100)); width: {{ sk.w }};"></div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showModes }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="display: grid; grid-template-columns: minmax(120px,1fr) 92px 112px 108px 130px; gap: 8px; padding: 7px 13px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+              <div>Payment mode</div><div style="text-align: right;">Transactions</div><div style="text-align: right;">Amount collected</div><div style="text-align: right;">Avg / txn</div><div style="text-align: right;">Share of collection</div>
+            </div>
+            <sc-for list="{{ modeRows }}" as="m" hint-placeholder-count="5">
+              <div onClick="{{ m.onFilter }}" style="display: grid; grid-template-columns: minmax(120px,1fr) 92px 112px 108px 130px; gap: 8px; padding: 8px 13px; border-bottom: 1px solid var(--color-border-light); align-items: center; cursor: pointer; background: {{ m.bg }};" style-hover="background: var(--color-interactive-hover);">
+                <div style="font-size: 11.5px; font-weight: 600;">{{ m.label }}</div>
+                <div style="font-size: 11.5px; text-align: right;" class="num">{{ m.count }}</div>
+                <div style="font-size: 12px; font-weight: 700; text-align: right;" class="num">{{ m.amount }}</div>
+                <div style="font-size: 11.5px; text-align: right; color: var(--color-text-secondary);" class="num">{{ m.avg }}</div>
+                <div style="display: flex; align-items: center; gap: 7px; justify-content: flex-end;">
+                  <div style="flex: 1; max-width: 72px; height: 6px; border-radius: 3px; background: var(--color-gray-100); overflow: hidden;"><div style="height: 100%; width: {{ m.barPct }}; background: var(--color-primary-deep);"></div></div>
+                  <span style="font-size: 11px; color: var(--color-text-secondary); width: 36px; text-align: right;" class="num">{{ m.share }}%</span>
+                </div>
+              </div>
+            </sc-for>
+            <div style="display: grid; grid-template-columns: minmax(120px,1fr) 92px 112px 108px 130px; gap: 8px; padding: 9px 13px; background: var(--color-gray-50); align-items: center; font-weight: 700; font-size: 12px;">
+              <div>Total</div>
+              <div style="text-align: right;" class="num">{{ totalTxns }}</div>
+              <div style="text-align: right;" class="num">{{ totalCollected }}</div>
+              <div></div><div></div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 32px 16px; text-align: center;">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No payments in this period</div>
+            <div style="font-size: 11.5px; color: var(--color-text-tertiary);">{{ emptyHint }}</div>
+            <button onClick="{{ resetFilters }}" style="margin-top: 10px; padding: 6px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Clear filters</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <div class="card">
+        <div class="chd">
+          <span>Payment transactions</span>
+          <span style="font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);">{{ rowCountLabel }}</span>
+        </div>
+
+        <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 14px 13px; display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{ skeletons }}" as="sk" hint-placeholder-count="7">
+              <div style="height: 15px; border-radius: 3px; background: linear-gradient(90deg, var(--color-gray-100), var(--color-gray-50), var(--color-gray-100)); width: {{ sk.w }};"></div>
+            </sc-for>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Loading payments…</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showRows }}" hint-placeholder-val="{{ true }}">
+          <div style="overflow-x: auto;">
+            <div style="min-width: 1000px;">
+              <div style="display: grid; grid-template-columns: 96px 88px minmax(126px,1.2fr) 96px 112px 104px 96px 104px; gap: 8px; padding: 7px 13px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+                <sc-for list="{{ headers }}" as="h" hint-placeholder-count="8">
+                  <div onClick="{{ h.onSort }}" style="cursor: pointer; text-align: {{ h.align }}; color: {{ h.color }};" style-hover="color: var(--color-primary-deep);">{{ h.label }}{{ h.arrow }}</div>
+                </sc-for>
+              </div>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="10">
+                <div onClick="{{ r.onOpen }}" style="display: grid; grid-template-columns: 96px 88px minmax(126px,1.2fr) 96px 112px 104px 96px 104px; gap: 8px; padding: 7px 13px; border-bottom: 1px solid var(--color-border-light); align-items: center; cursor: pointer; background: {{ r.rowBg }};" style-hover="background: var(--color-interactive-hover);">
+                  <div style="font-size: 11px; color: var(--color-text-secondary);" class="num">{{ r.date }}</div>
+                  <div style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);" class="num">{{ r.billNumber }}</div>
+                  <div style="font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patient }}</div>
+                  <div style="font-size: 11px; color: var(--color-text-secondary);" class="num">{{ r.mrn }}</div>
+                  <div style="font-size: 11px; color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="num">{{ r.reg }}</div>
+                  <div style="font-size: 11px;">{{ r.mode }}</div>
+                  <div style="font-size: 12px; font-weight: 700; text-align: right;" class="num">{{ r.amount }}</div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding: 8px 13px; border-top: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <span style="font-size: 11px; color: var(--color-text-secondary);">{{ pageLabel }}</span>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <button onClick="{{ prevPage }}" style="padding: 5px 11px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Previous</button>
+              <button onClick="{{ nextPage }}" style="padding: 5px 11px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Next</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 32px 16px; text-align: center; font-size: 11.5px; color: var(--color-text-tertiary);">No payment rows to list for this filter set.</div>
+        </sc-if>
+      </div>
+
+    </div>
+  </main>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 20; display: flex; justify-content: flex-end;">
+      <div style="width: 400px; max-width: 94vw; background: #fff; height: 100%; display: flex; flex-direction: column; box-shadow: -8px 0 24px rgba(17,24,39,.18);">
+        <div style="padding: 12px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Payment</div>
+            <div style="font-size: 15px; font-weight: 700;" class="num">{{ detailTitle }}</div>
+            <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ detailSubtitle }}</div>
+          </div>
+          <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 16px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;" style-hover="color: var(--color-error);">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 12px 16px;">
+          <div style="padding: 11px 13px; border-radius: 6px; background: var(--color-gray-50); margin-bottom: 12px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Amount paid</div>
+            <div style="font-size: 22px; font-weight: 700;" class="num">{{ detailAmount }}</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <sc-for list="{{ detailFields }}" as="f" hint-placeholder-count="8">
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-light);">
+                <span style="color: var(--color-text-secondary);">{{ f.k }}</span>
+                <span style="font-weight: 600; text-align: right;" class="num">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 14px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary); margin-bottom: 6px;">Bill position after this payment</div>
+            <sc-for list="{{ detailBill }}" as="f" hint-placeholder-count="3">
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px; padding: 6px 0; border-bottom: 1px solid var(--color-border-light);">
+                <span style="color: var(--color-text-secondary);">{{ f.k }}</span>
+                <span style="font-weight: 700; color: {{ f.color }};" class="num">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 11px 16px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px;">
+          <a href="Bill Details.dc.html" style="flex: 1; text-align: center; padding: 8px 12px; background: var(--color-primary-deep); color: #fff; border-radius: 4px; font-size: 11.5px; font-weight: 700;">Open bill</a>
+          <button onClick="{{ closeDetail }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+/* Payment Mode Collection — contract mapping
+   API-065 GET /api/payments                → collection rows (mode/status/date filters)
+   API-058 GET /api/payments/{paymentId}     → payment detail drawer
+   API-034 GET …/billing/{billingId}         → bill context for a payment row
+   No aggregate-by-mode contract exists, so the mode summary is computed from
+   the API-065 collection rather than read from an invented endpoint. */
+
+const MONEY = (n) => '\u20b9 ' + Number(n || 0).toLocaleString('en-IN');
+const DAY = (iso) => (iso ? String(iso).slice(0, 10) : '\u2014');
+const MODES = ['CASH', 'CARD', 'UPI', 'NET_BANKING', 'CHEQUE'];
+const PAGE_SIZE = 10;
+const DEFAULTS = { from: '2026-08-01', to: '2026-08-31', mode: 'ALL', status: 'ALL' };
+
+class Component extends DCLogic {
+  state = {
+    ...DEFAULTS, ready: false, view: 'DATA', page: 0, sort: 'date', dir: 'desc',
+    org: '', branch: '', rows: [], loading: true, loadError: '',
+    detail: null, detailRow: null
+  };
+
+  componentDidMount() { this.waitForApi(); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  waitForApi = () => {
+    if (typeof LIMS === 'undefined') { this._t = setTimeout(this.waitForApi, 60); return; }
+    this.setState({ ready: true, org: LIMS.session.organizationId, branch: LIMS.session.branchId });
+    this.load();
+  };
+
+  errText = (err, fallback) => (err && err.message ? (err.status ? err.status + ' \u2014 ' : '') + err.message : fallback);
+
+  patientForBill = (b) => {
+    if (!b) return null;
+    const acc = LIMS.ACCESSIONS.filter((a) => a.patientRegistrationId === b.patientRegistrationId)[0];
+    return acc ? LIMS.patientById(acc.patientId) : null;
+  };
+
+  /* ------------------------------------------------------------- API-065 */
+  load = async () => {
+    const s = this.state;
+    this.setState({ loading: true, loadError: '' });
+    try {
+      const res = await LIMS.request('searchPayments', {
+        contract: 'API-065',
+        query: { paymentMode: s.mode === 'ALL' ? '' : s.mode, paymentStatus: s.status === 'ALL' ? '' : s.status, fromDate: s.from, toDate: s.to },
+        resolve: () => {
+          const rows = LIMS.PAYMENTS.filter((p) => {
+            const bill = LIMS.billById(p.billingId);
+            if (!bill || bill.organizationId !== LIMS.session.organizationId || bill.branchId !== LIMS.session.branchId) return false;
+            if (s.mode !== 'ALL' && p.paymentMode !== s.mode) return false;
+            if (s.status !== 'ALL' && p.paymentStatus !== s.status) return false;
+            const d = DAY(p.paymentDate);
+            return d >= s.from && d <= s.to;
+          }).map((p) => Object.assign({}, p));
+          return { status: 200, message: 'Payments fetched successfully', data: rows };
+        }
+      });
+      this.setState({ loading: false, rows: res.data, page: 0 });
+    } catch (err) {
+      this.setState({ loading: false, rows: [], loadError: this.errText(err, 'Unable to load payments.') });
+    }
+  };
+
+  /* ------------------------------------------------------------- API-058 */
+  openPay = (id) => async () => {
+    this.setState({ detail: id, detailRow: null });
+    try {
+      const res = await LIMS.request('viewPayment', {
+        contract: 'API-058',
+        params: { paymentId: id },
+        resolve: () => {
+          const p = LIMS.paymentById(id);
+          if (!p) return { status: 404, error: 'Payment not found' };
+          return { status: 200, message: 'Payment fetched successfully', data: Object.assign({}, p) };
+        }
+      });
+      this.setState({ detailRow: res.data });
+    } catch (err) {
+      this.setState({ detail: null });
+    }
+  };
+  closeDetail = () => this.setState({ detail: null, detailRow: null });
+
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    const v = e.target.value;
+    if (f === 'branch') { LIMS.setBranch(v); this.setState({ branch: v, page: 0 }, this.load); return; }
+    this.setState({ [f]: v, page: 0 });
+  };
+  applyFilters = () => { this.setState({ page: 0, view: this.state.view === 'ERROR' ? 'DATA' : this.state.view }); this.load(); };
+  resetFilters = () => this.setState({ ...DEFAULTS, page: 0, view: 'DATA', detail: null }, this.load);
+  setView = (v) => () => this.setState({ view: v, page: 0, detail: null });
+  retry = () => { this.setState({ view: 'DATA' }); this.load(); };
+  filterMode = (m) => () => this.setState({ mode: this.state.mode === m ? 'ALL' : m, page: 0 }, this.load);
+  sortBy = (key) => () => this.setState({ sort: key, dir: this.state.sort === key && this.state.dir === 'desc' ? 'asc' : 'desc', page: 0 });
+  prevPage = () => this.setState({ page: Math.max(0, this.state.page - 1) });
+  nextPage = () => this.setState({ page: this.state.page + 1 });
+
+  money(n) { return MONEY(n); }
+  label(m) { return String(m || '\u2014').replace('_', ' '); }
+  tone(v) { return ({ SUCCESS: ['#DCFCE7', '#166534'], PENDING: ['#FEF3C7', '#92400E'], FAILED: ['#FEE2E2', '#991B1B'] }[v] || ['var(--color-gray-100)', 'var(--color-text-secondary)']); }
+  cap(v) { return String(v || '').charAt(0) + String(v || '').slice(1).toLowerCase(); }
+
+  renderVals() {
+    const s = this.state;
+    if (!s.ready) return {};
+    const badRange = s.from > s.to;
+    const isLoading = s.view === 'LOADING' || s.loading;
+    const isError = s.view === 'ERROR' || !!s.loadError;
+    const forcedEmpty = s.view === 'EMPTY';
+    const all = badRange || forcedEmpty || isError ? [] : s.rows;
+    const isEmpty = !isLoading && !isError && !badRange && all.length === 0;
+    const hasData = !isLoading && !isError && !badRange && !isEmpty;
+
+    const billOf = (p) => LIMS.billById(p.billingId) || {};
+    const sortVal = {
+      date: (p) => DAY(p.paymentDate) + p.id,
+      bill: (p) => billOf(p).billNumber || '',
+      patient: (p) => { const pt = this.patientForBill(billOf(p)); return pt ? (pt.firstName + ' ' + pt.lastName).toLowerCase() : ''; },
+      mrn: (p) => { const pt = this.patientForBill(billOf(p)); return pt ? pt.mrn : ''; },
+      reg: (p) => billOf(p).patientRegistrationId || '',
+      mode: (p) => p.paymentMode,
+      amount: (p) => Number(p.paymentAmount),
+      status: (p) => p.paymentStatus
+    }[s.sort] || ((p) => DAY(p.paymentDate));
+    const sorted = all.slice().sort((a, b) => {
+      const va = sortVal(a), vb = sortVal(b);
+      const c = va > vb ? 1 : va < vb ? -1 : 0;
+      return s.dir === 'asc' ? c : -c;
+    });
+
+    const pageCount = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+    const page = Math.min(s.page, pageCount - 1);
+    const pageRows = sorted.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+
+    const succeeded = all.filter((p) => p.paymentStatus === 'SUCCESS');
+    const openPays = all.filter((p) => p.paymentStatus === 'PENDING');
+    const failed = all.filter((p) => p.paymentStatus === 'FAILED');
+    const collected = succeeded.reduce((a, p) => a + Number(p.paymentAmount || 0), 0);
+
+    const map = new Map();
+    succeeded.forEach((p) => {
+      const g = map.get(p.paymentMode) || { mode: p.paymentMode, count: 0, amount: 0 };
+      g.count += 1; g.amount += Number(p.paymentAmount || 0); map.set(p.paymentMode, g);
+    });
+    const modes = [...map.values()].sort((a, b) => b.amount - a.amount);
+    const maxAmt = Math.max(1, ...modes.map((m) => m.amount));
+
+    const activeCount = ['mode', 'status'].filter((k) => s[k] !== 'ALL').length;
+    const d = s.detail ? (s.detailRow || LIMS.paymentById(s.detail)) : null;
+    const db = d ? billOf(d) : null;
+    const dPatient = db ? this.patientForBill(db) : null;
+
+    const headerDefs = [
+      ['date', 'Date', 'left'], ['bill', 'Bill no.', 'left'], ['patient', 'Patient', 'left'], ['mrn', 'MRN', 'left'],
+      ['reg', 'Registration', 'left'], ['mode', 'Mode', 'left'], ['amount', 'Amount', 'right'], ['status', 'Status', 'left']
+    ];
+
+    return {
+      q: '', from: s.from, to: s.to, mode: s.mode, status: s.status, org: s.org, branch: s.branch,
+      orgOptions: LIMS.ORGANIZATIONS.map((o) => ({ value: o.id, label: o.name })),
+      branchOptions: LIMS.branchOptions(),
+      modeOptions: [{ value: 'ALL', label: 'All payment modes' }].concat(MODES.map((m) => ({ value: m, label: this.label(m) }))),
+      statusOptions: [{ value: 'ALL', label: 'All statuses' }, { value: 'SUCCESS', label: 'Success' }, { value: 'PENDING', label: 'Pending' }, { value: 'FAILED', label: 'Failed' }],
+      updateField: this.updateField, applyFilters: this.applyFilters, resetFilters: this.resetFilters, retry: this.retry,
+      prevPage: this.prevPage, nextPage: this.nextPage, closeDetail: this.closeDetail,
+      hasActiveFilters: activeCount > 0,
+      activeFilterLabel: activeCount + (activeCount === 1 ? ' filter applied' : ' filters applied') + ' \u00b7 click a payment mode row to filter the transactions below',
+      stateTabs: [['DATA', 'Data'], ['LOADING', 'Loading'], ['EMPTY', 'Empty'], ['ERROR', 'Error']].map(([k, label]) => {
+        const on = s.view === k;
+        return { label, onPick: this.setView(k), bg: on ? 'var(--color-primary-deep)' : '#fff', fg: on ? '#fff' : 'var(--color-text-secondary)', border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)' };
+      }),
+      isLoading, isError, isEmpty, badRange,
+      showModes: hasData, showRows: hasData,
+      skeletons: [{ w: '97%' }, { w: '90%' }, { w: '94%' }, { w: '78%' }, { w: '86%' }, { w: '92%' }, { w: '70%' }],
+      skeletonsShort: [{ w: '92%' }, { w: '84%' }, { w: '76%' }, { w: '64%' }],
+      totals: [
+        { label: 'Total collected', value: MONEY(collected), hint: 'Successful payments only', color: 'var(--color-secondary-green)' },
+        { label: 'Payments', value: String(all.length), hint: 'Transactions in range', color: 'var(--color-text-primary)' },
+        { label: 'Successful', value: String(succeeded.length), hint: 'Counted in collection', color: 'var(--color-text-primary)' },
+        { label: 'Pending / failed', value: openPays.length + ' / ' + failed.length, hint: 'Excluded from collection', color: (openPays.length + failed.length) > 0 ? 'var(--color-error)' : 'var(--color-text-primary)' }
+      ],
+      modeCountLabel: modes.length + ' modes used',
+      modeRows: modes.map((m) => ({
+        label: this.label(m.mode), count: m.count, amount: MONEY(m.amount),
+        avg: MONEY(Math.round(m.amount / m.count)),
+        share: Math.round((m.amount / (collected || 1)) * 100),
+        barPct: Math.round((m.amount / maxAmt) * 100) + '%',
+        bg: s.mode === m.mode ? 'var(--color-interactive-hover)' : '#fff',
+        onFilter: this.filterMode(m.mode)
+      })),
+      totalTxns: succeeded.length,
+      totalCollected: MONEY(collected),
+      headers: headerDefs.map(([key, label, align]) => ({
+        label, align, onSort: this.sortBy(key),
+        color: s.sort === key ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)',
+        arrow: s.sort === key ? (s.dir === 'asc' ? ' \u2191' : ' \u2193') : ''
+      })),
+      rowCountLabel: badRange ? '\u2014' : sorted.length + ' payments',
+      rows: pageRows.map((p) => {
+        const bill = billOf(p);
+        const pt = this.patientForBill(bill);
+        const tn = this.tone(p.paymentStatus);
+        return {
+          date: DAY(p.paymentDate).slice(5), billNumber: bill.billNumber || '\u2014',
+          patient: pt ? pt.firstName + ' ' + pt.lastName : '\u2014', mrn: pt ? pt.mrn : '\u2014',
+          reg: bill.patientRegistrationId ? String(bill.patientRegistrationId).slice(0, 8) : '\u2014',
+          mode: this.label(p.paymentMode), amount: MONEY(p.paymentAmount),
+          status: this.cap(p.paymentStatus), statusBg: tn[0], statusFg: tn[1],
+          rowBg: s.detail === p.id ? 'var(--color-interactive-hover)' : '#fff',
+          onOpen: this.openPay(p.id)
+        };
+      }),
+      pageLabel: sorted.length === 0 ? 'No payments' : 'Showing ' + (page * PAGE_SIZE + 1) + '\u2013' + (page * PAGE_SIZE + pageRows.length) + ' of ' + sorted.length + ' \u00b7 page ' + (page + 1) + ' of ' + pageCount,
+      emptyHint: badRange ? 'Fix the date range first.' : 'No payments were recorded for this branch, mode and status combination.',
+      detail: !!d,
+      detailTitle: d ? (d.transactionReference || String(d.id).slice(0, 8)) : '',
+      detailSubtitle: dPatient ? dPatient.firstName + ' ' + dPatient.lastName + ' \u00b7 ' + dPatient.mrn : '',
+      detailAmount: d ? MONEY(d.paymentAmount) : '',
+      detailFields: d ? [
+        ['Payment ID', d.id],
+        ['Payment date', DAY(d.paymentDate)],
+        ['Payment mode', this.label(d.paymentMode)],
+        ['Payment status', this.cap(d.paymentStatus)],
+        ['Transaction reference', d.transactionReference || '\u2014'],
+        ['Remarks', d.remarks || '\u2014'],
+        ['Bill number', db && db.billNumber ? db.billNumber : '\u2014'],
+        ['Billing ID', d.billingId],
+        ['Organization', LIMS.orgLabel(LIMS.session.organizationId)],
+        ['Branch', LIMS.branchLabel(LIMS.session.branchId)]
+      ].map(([k, v]) => ({ k, v })) : [],
+      detailBill: d && db ? [
+        ['Bill payable', MONEY(db.payableAmount), 'var(--color-text-primary)'],
+        ['Paid till date', MONEY(db.paidAmount), 'var(--color-secondary-green)'],
+        ['Balance', MONEY(Math.max(0, Number(db.balanceAmount))), Number(db.balanceAmount) > 0 ? 'var(--color-error)' : 'var(--color-text-primary)']
+      ].map(([k, v, color]) => ({ k, v, color })) : []
+    };
+  }
+}
+</script>
+</body>
+</html>

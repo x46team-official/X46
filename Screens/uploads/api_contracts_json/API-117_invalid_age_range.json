@@ -1,0 +1,59 @@
+{
+  "functionality_id": "API-117",
+  "module": "Reference Range Master",
+  "functionality": "Invalid Age Range",
+  "http_method": "POST",
+  "endpoint": "/api/reference-ranges",
+  "description": "Documents the specific error scenario of API-112 where the request fails this validation. Same endpoint as API-112, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "ageMin": 50,
+      "ageMax": "10 - less than ageMin in this scenario"
+    }
+  },
+  "required_fields": [
+    "ageMin",
+    "ageMax"
+  ],
+  "validation": [
+    "ageMax must be >= ageMin (CHECK chk_reference_range_master_age)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "ageMax must be >= ageMin (CHECK chk_reference_range_master_age)",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid age range"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T176)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "reference_range_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "chk_reference_range_master_age CHECK (age_max >= age_min)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/022_reference_range_master.sql (API-T176)"
+  ],
+  "test_ids": [
+    "API-T176"
+  ]
+}

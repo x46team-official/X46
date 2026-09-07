@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="Test Count" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);"><a href="Analytics.dc.html">Analytics</a> / Test Count</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Test Count</h1>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="width: 148px;">
+              <label>From</label>
+              <input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" />
+            </div>
+            <div style="width: 148px;">
+              <label>To</label>
+              <input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" />
+            </div>
+            <div style="width: 168px;">
+              <label>Branch</label>
+              <select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch">
+                <option value="">All branches</option>
+                <sc-for list="{{ branchOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 158px;">
+              <label>Department</label>
+              <select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept">
+                <option value="">All departments</option>
+                <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 150px;">
+              <label>Group volume by</label>
+              <select value="{{ grain }}" onChange="{{ updateField }}" data-field="grain">
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+              </select>
+            </div>
+            <button onClick="{{ clearAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+          </div>
+          <div style="margin-top: 5px; font-size: 10.5px; color: var(--color-text-tertiary);">{{ scopeNote }}</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ reload }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reload</button>
+          <a href="MIS Data Export.dc.html" style="padding: 8px 14px; background: var(--color-primary-deep); border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap;">Export</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 12px 14px;">
+              <div style="height: 8px; width: 58%; border-radius: 3px; background: var(--color-gray-100);"></div>
+              <div style="height: 18px; width: 40%; border-radius: 3px; background: var(--color-gray-100); margin-top: 10px;"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; height: 220px; margin-top: 12px;"></div>
+      </sc-if>
+
+      <sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 11px 13px; display: flex; flex-direction: column; gap: 6px; border-top: 3px solid {{ k.edge }};">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ k.label }}</span>
+              <div class="num" style="font-size: 21px; font-weight: 700; line-height: 1.1;">{{ k.value }}</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ k.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; margin-top: 12px;">
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="font-size: 12.5px; font-weight: 700;">Test volume by {{ grainLabel }}</div>
+            <span class="num" style="font-size: 11px; color: var(--color-text-tertiary);">Peak {{ peakLabel }}</span>
+          </div>
+          <div style="padding: 14px; display: flex; align-items: flex-end; gap: 8px; height: 200px;">
+            <sc-for list="{{ volume }}" as="d" hint-placeholder-count="7">
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 100%;">
+                <div class="num" style="font-size: 10px; font-weight: 700; text-align: center; color: var(--color-text-secondary);">{{ d.value }}</div>
+                <div style="height: {{ d.pct }}; min-height: 3px; border-radius: 3px 3px 0 0; background: {{ d.color }};" title="{{ d.tip }}"></div>
+                <div style="font-size: 10px; color: var(--color-text-tertiary); text-align: center; white-space: nowrap;">{{ d.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700;">By department</div>
+            <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
+              <sc-for list="{{ byDept }}" as="d" hint-placeholder-count="5">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                    <span style="font-size: 11.5px; font-weight: 600;">{{ d.name }}</span>
+                    <span class="num" style="font-size: 11.5px; font-weight: 700; color: var(--color-text-secondary);">{{ d.value }} · {{ d.share }}</span>
+                  </div>
+                  <div style="height: 7px; border-radius: 999px; background: var(--color-gray-100); overflow: hidden;">
+                    <div style="height: 100%; width: {{ d.share }}; background: {{ d.color }};"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700;">By branch</div>
+            <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
+              <sc-for list="{{ byBranch }}" as="d" hint-placeholder-count="4">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                    <span style="font-size: 11.5px; font-weight: 600;">{{ d.name }}</span>
+                    <span class="num" style="font-size: 11.5px; font-weight: 700; color: var(--color-text-secondary);">{{ d.value }} · {{ d.share }}</span>
+                  </div>
+                  <div style="height: 7px; border-radius: 999px; background: var(--color-gray-100); overflow: hidden;">
+                    <div style="height: 100%; width: {{ d.share }}; background: var(--color-primary-deep);"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; margin-top: 12px; overflow: auto;">
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div style="font-size: 12.5px; font-weight: 700;">Test-wise count <span class="num" style="font-weight: 600; color: var(--color-text-tertiary);">· {{ rowCount }} tests</span></div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" placeholder="Search test or code" value="{{ q }}" onChange="{{ updateField }}" data-field="q" style="width: 210px;" />
+              <select value="{{ sort }}" onChange="{{ updateField }}" data-field="sort" style="width: 168px;">
+                <option value="total">Total (high first)</option>
+                <option value="pending">Pending (high first)</option>
+                <option value="cancelled">Cancelled (high first)</option>
+                <option value="name">Test name</option>
+              </select>
+            </div>
+          </div>
+          <div style="min-width: 900px;">
+            <div style="display: grid; grid-template-columns: 92px minmax(200px,1.3fr) 140px 92px 104px 96px 104px; gap: 10px; padding: 8px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+              <div>Code</div><div>Test Name</div><div>Department</div>
+              <div style="text-align: right;">Total</div>
+              <div style="text-align: right;">Completed</div>
+              <div style="text-align: right;">Pending</div>
+              <div style="text-align: right;">Cancelled</div>
+            </div>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7">
+              <div style="display: grid; grid-template-columns: 92px minmax(200px,1.3fr) 140px 92px 104px 96px 104px; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--color-border-light); align-items: center;" style-hover="background: var(--color-gray-50);">
+                <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.code }}</div>
+                <div style="font-size: 12px; font-weight: 600; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.name }}</div>
+                <div style="font-size: 12px;">{{ r.dept }}</div>
+                <div class="num" style="font-size: 12px; font-weight: 700; text-align: right;">{{ r.total }}</div>
+                <div class="num" style="font-size: 12px; text-align: right; color: #166534;">{{ r.completed }}</div>
+                <div class="num" style="font-size: 12px; text-align: right; color: #92400E;">{{ r.pending }}</div>
+                <div class="num" style="font-size: 12px; text-align: right; color: {{ r.cancelFg }};">{{ r.cancelled }}</div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 48px 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No tests match this search</div>
+                <div style="font-size: 12px; color: var(--color-text-tertiary);">Clear the search box or widen the branch and department filters.</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const BRANCHES = [['Pune Main', 0.49], ['Pune — Baner', 0.21], ['Pimpri Collection Centre', 0.12], ['Nashik Branch', 0.18]];
+
+const DEPTS = [
+  ['Biochemistry', 'var(--color-primary-deep)'],
+  ['Haematology', 'var(--color-primary-bright)'],
+  ['Microbiology', 'var(--color-accent-teal)'],
+  ['Serology', 'var(--color-secondary-green)'],
+  ['Clinical Pathology', 'var(--color-secondary-lime)']
+];
+
+/* code, name, department, ordered, completed share, cancelled */
+const TESTS = [
+  ['CBC001', 'Complete Blood Count', 'Haematology', 1840, 0.91, 12],
+  ['LIPID1', 'Lipid Profile', 'Biochemistry', 1120, 0.88, 9],
+  ['HBA1C', 'Glycated Haemoglobin (HbA1c)', 'Biochemistry', 960, 0.9, 6],
+  ['TSH001', 'Thyroid Stimulating Hormone', 'Biochemistry', 880, 0.87, 7],
+  ['UR1', 'Urine Routine', 'Clinical Pathology', 760, 0.93, 4],
+  ['LFT01', 'Liver Function Panel', 'Biochemistry', 640, 0.85, 11],
+  ['KFT01', 'Kidney Function Panel', 'Biochemistry', 580, 0.86, 8],
+  ['CULT1', 'Culture & Sensitivity', 'Microbiology', 420, 0.72, 14],
+  ['HBSAG', 'HBsAg (ELISA)', 'Serology', 360, 0.9, 3],
+  ['VITD3', 'Vitamin D3 (25-OH)', 'Biochemistry', 300, 0.89, 5],
+  ['DENGUE', 'Dengue NS1 / IgM / IgG', 'Serology', 260, 0.84, 6],
+  ['PT-INR', 'Prothrombin Time / INR', 'Haematology', 240, 0.92, 2]
+];
+
+const DAYS = ['Mon 24', 'Tue 25', 'Wed 26', 'Thu 27', 'Fri 28', 'Sat 29', 'Sun 30'];
+const WEEKS = ['W31', 'W32', 'W33', 'W34', 'W35'];
+const MONTHS = ['Apr', 'May', 'Jun', 'Jul', 'Aug'];
+const SHAPE = { day: [0.15, 0.17, 0.14, 0.17, 0.18, 0.12, 0.07], week: [0.19, 0.2, 0.2, 0.21, 0.2], month: [0.18, 0.19, 0.2, 0.21, 0.22] };
+
+class Component extends DCLogic {
+  state = { loading: true, from: '2026-08-24', to: '2026-08-30', branch: '', dept: '', grain: 'day', q: '', sort: 'total' };
+
+  componentDidMount() { this.load(); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  load = () => {
+    clearTimeout(this._t);
+    this.setState({ loading: true });
+    this._t = setTimeout(() => this.setState({ loading: false }), 480);
+  };
+
+  reload = () => this.load();
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    this.setState({ [f]: e.target.value });
+    if (f !== 'q' && f !== 'sort') this.load();
+  };
+  clearAll = () => { this.setState({ branch: '', dept: '', q: '', grain: 'day', from: '2026-08-24', to: '2026-08-30' }); this.load(); };
+
+  scoped() {
+    const s = this.state;
+    const bf = s.branch ? (BRANCHES.find(b => b[0] === s.branch) || [0, 1])[1] : 1;
+    return TESTS
+      .filter(t => !s.dept || t[2] === s.dept)
+      .map(t => {
+        const total = Math.round(t[3] * bf);
+        const cancelled = Math.round(t[5] * bf);
+        const completed = Math.round(total * t[4]);
+        return { code: t[0], name: t[1], dept: t[2], total, completed, cancelled, pending: Math.max(0, total - completed - cancelled) };
+      });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const all = this.scoped();
+    const q = String(s.q).trim().toLowerCase();
+    let rows = all.filter(r => !q || (r.code + ' ' + r.name).toLowerCase().includes(q));
+
+    const sorters = {
+      total: (a, b) => b.total - a.total,
+      pending: (a, b) => b.pending - a.pending,
+      cancelled: (a, b) => b.cancelled - a.cancelled,
+      name: (a, b) => a.name.localeCompare(b.name)
+    };
+    rows = rows.slice().sort(sorters[s.sort] || sorters.total);
+
+    const sum = (k) => all.reduce((a, r) => a + r[k], 0);
+    const total = sum('total');
+
+    const labels = s.grain === 'week' ? WEEKS : s.grain === 'month' ? MONTHS : DAYS;
+    const shape = SHAPE[s.grain] || SHAPE.day;
+    const volume = labels.map((l, i) => ({ label: l, raw: Math.round(total * shape[i]) }));
+    const maxVol = Math.max.apply(null, volume.map(v => v.raw)) || 1;
+    const peak = volume.slice().sort((a, b) => b.raw - a.raw)[0] || { label: '\u2014', raw: 0 };
+
+    const deptTotals = DEPTS.map(([name, color]) => {
+      const v = all.filter(r => r.dept === name).reduce((a, r) => a + r.total, 0);
+      return { name, color, raw: v };
+    }).filter(d => d.raw > 0);
+
+    return {
+      loading: s.loading,
+      ready: !s.loading,
+      skeletons: [1, 2, 3, 4],
+      from: s.from, to: s.to, branch: s.branch, dept: s.dept, grain: s.grain, q: s.q, sort: s.sort,
+      branchOptions: BRANCHES.map(b => b[0]),
+      deptOptions: DEPTS.map(d => d[0]),
+      grainLabel: s.grain,
+      scopeNote: 'Counts ordered tests (billing_tests) between ' + s.from + ' and ' + s.to + ' \u00b7 ' + (s.branch || 'all branches') + ' \u00b7 ' + (s.dept || 'all departments') + '. Cancelled tests are excluded from Completed and Pending.',
+      reload: this.reload, updateField: this.updateField, clearAll: this.clearAll,
+
+      kpis: [
+        { label: 'Total Tests', value: total.toLocaleString('en-IN'), note: 'Ordered in this period', edge: 'var(--color-primary-deep)' },
+        { label: 'Completed', value: sum('completed').toLocaleString('en-IN'), note: 'Validated and reported', edge: 'var(--color-secondary-green)' },
+        { label: 'Pending', value: sum('pending').toLocaleString('en-IN'), note: 'In progress or awaiting validation', edge: '#F59E0B' },
+        { label: 'Cancelled', value: sum('cancelled').toLocaleString('en-IN'), note: 'Cancelled after order', edge: '#DC2626' }
+      ],
+
+      volume: volume.map(v => ({
+        label: v.label,
+        value: v.raw.toLocaleString('en-IN'),
+        pct: Math.round(v.raw / maxVol * 100) + '%',
+        color: v.raw === peak.raw ? 'var(--color-primary-deep)' : 'var(--color-primary-bright)',
+        tip: v.label + ' \u00b7 ' + v.raw + ' tests'
+      })),
+      peakLabel: peak.label + ' \u00b7 ' + peak.raw.toLocaleString('en-IN'),
+
+      byDept: deptTotals.map(d => ({
+        name: d.name, color: d.color,
+        value: d.raw.toLocaleString('en-IN'),
+        share: Math.round(d.raw / Math.max(1, total) * 100) + '%'
+      })),
+
+      byBranch: BRANCHES.map(([name, share]) => {
+        const v = s.branch ? (s.branch === name ? total : 0) : Math.round(total * share);
+        return { name, value: v.toLocaleString('en-IN'), share: Math.round(v / Math.max(1, total) * 100) + '%' };
+      }).filter(b => b.value !== '0'),
+
+      rows: rows.map(r => ({
+        code: r.code, name: r.name, dept: r.dept,
+        total: r.total.toLocaleString('en-IN'),
+        completed: r.completed.toLocaleString('en-IN'),
+        pending: r.pending.toLocaleString('en-IN'),
+        cancelled: r.cancelled.toLocaleString('en-IN'),
+        cancelFg: r.cancelled > 9 ? '#B91C1C' : 'var(--color-text-secondary)'
+      })),
+      rowCount: rows.length,
+      isEmpty: rows.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

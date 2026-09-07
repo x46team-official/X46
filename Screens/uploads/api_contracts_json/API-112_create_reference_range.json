@@ -1,0 +1,150 @@
+{
+  "functionality_id": "API-112",
+  "module": "Reference Range Master",
+  "functionality": "Create Reference Range",
+  "http_method": "POST",
+  "endpoint": "/api/reference-ranges",
+  "description": "Creates a demographic-banded reference range (gender + age band + pregnancy flag + effective date range) for a parameter.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "parameterId": "uuid, required - references parameter_master.id",
+      "gender": "enum, optional, default ANY - MALE | FEMALE | ANY",
+      "ageMin": "numeric(6,2), optional, default 0",
+      "ageMax": "numeric(6,2), optional, default 150",
+      "ageUnit": "enum, optional, default YEARS - DAYS | MONTHS | YEARS",
+      "pregnancyFlag": "boolean, optional, default false",
+      "referenceMin": "numeric(18,4), optional",
+      "referenceMax": "numeric(18,4), optional",
+      "referenceRange": "string(255), optional",
+      "criticalLow": "numeric(18,4), optional",
+      "criticalHigh": "numeric(18,4), optional",
+      "effectiveFrom": "date, optional, default CURRENT_DATE",
+      "effectiveTo": "date, optional"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "parameterId"
+  ],
+  "validation": [
+    "parameterId must reference an existing parameter_master row (NOT NULL FK)",
+    "ageMax must be >= ageMin (CHECK chk_reference_range_master_age)",
+    "effectiveTo, if provided, must be >= effectiveFrom (CHECK chk_reference_range_master_effective)",
+    "referenceMax, if provided along with referenceMin, must be >= referenceMin (CHECK chk_reference_range_master_bounds)",
+    "must not overlap an existing active band for the same parameterId + gender + ageUnit + pregnancyFlag across age range and effective-date range (DB trigger trg_prevent_reference_range_overlap)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Reference range created successfully",
+      "data": {
+        "id": "uuid",
+        "parameterId": "uuid",
+        "gender": "MALE",
+        "ageMin": 18,
+        "ageMax": 120,
+        "ageUnit": "YEARS",
+        "pregnancyFlag": false,
+        "referenceMin": 13.0,
+        "referenceMax": 17.0,
+        "effectiveFrom": "2020-01-01"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "parameterId does not reference an existing parameter",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Parameter not found"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T173)",
+      "related_functionality_id": "API-114"
+    },
+    {
+      "condition": "a new/updated band overlaps an existing active band for the same demographic scope and effective-date range",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Overlapping demographic band"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T175) and database/e2e-validation/015_reference_range_master.sql (MD021)",
+      "related_functionality_id": "API-116"
+    },
+    {
+      "condition": "ageMax is less than ageMin",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid age range"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T176)",
+      "related_functionality_id": "API-117"
+    },
+    {
+      "condition": "effectiveTo is earlier than effectiveFrom",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid effective date range"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T177)",
+      "related_functionality_id": "API-118"
+    },
+    {
+      "condition": "referenceMax is less than referenceMin",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid reference bounds"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T178)",
+      "related_functionality_id": "API-119"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "reference_range_master",
+      "parameter_master"
+    ],
+    "relationships": [
+      "reference_range_master.parameter_id -> parameter_master.id (ON DELETE CASCADE)"
+    ],
+    "constraints": [
+      "parameter_id NOT NULL",
+      "chk_reference_range_master_age CHECK (age_max >= age_min)",
+      "chk_reference_range_master_effective CHECK (effective_to IS NULL OR effective_to >= effective_from)",
+      "chk_reference_range_master_bounds CHECK (reference_max IS NULL OR reference_min IS NULL OR reference_max >= reference_min)",
+      "uq_reference_range_master UNIQUE (organization_id, branch_id, parameter_id, gender, age_min, age_max, pregnancy_flag, effective_from)",
+      "trg_prevent_reference_range_overlap BEFORE INSERT OR UPDATE trigger rejects overlapping active bands"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/015_reference_range_master.sql",
+    "database/api_contracts_test/022_reference_range_master.sql"
+  ],
+  "test_ids": [
+    "API-T171"
+  ],
+  "notes": "Unlike the quantity/transaction-reference DB gaps found in other modules, the overlap-protection error here (API-116) is a genuinely DB-enforced rule: database/schema/031_reference_range_master.sql defines a BEFORE INSERT OR UPDATE trigger (trg_prevent_reference_range_overlap / prevent_reference_range_overlap()) that raises an exception containing 'overlapping demographic band' when a new active band's age range and effective-date range intersect an existing active band for the same parameter_id + gender + age_unit + pregnancy_flag. database/e2e-validation/015_reference_range_master.sql's MD021 DO block confirms this by asserting the INSERT fails with that exact message. The age/effective/bounds CHECK constraints (API-117/118/119) are also genuinely DB-enforced, not gaps."
+}

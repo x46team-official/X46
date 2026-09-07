@@ -1,0 +1,55 @@
+{
+  "functionality_id": "API-019",
+  "module": "Patient Management",
+  "functionality": "Search Patient",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/search",
+  "description": "Searches patients within an organization/branch by name (patient_identifiers/MRN search is not covered by this contract - see notes).",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": { "query": "string, required - matched against first_name / last_name" },
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "query"],
+
+  "validation": [
+    "organization and branch must exist",
+    "query must not be empty",
+    "search is organization + branch scoped; matches first_name or last_name (ILIKE)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Patients searched successfully",
+      "data": [
+        { "id": "uuid", "firstName": "Rahul", "lastName": "Sharma", "gender": "MALE" }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "query is missing or empty",
+      "status_code": 400,
+      "response": { "success": false, "error": "Search query is required" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patients"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/010_patient_management.sql (API-T067)"],
+
+  "test_ids": ["API-T067"],
+  "notes": "database/api_contracts_test/010_patient_management.sql also searches by patient_code ILIKE, but as noted in API-016's contract, patient_code does not exist as a column on patients in the current schema. This contract limits the searchable field set to first_name and last_name, which do exist. Searching by an MRN/identifier value would need to query patient_identifiers instead, which is not yet part of a contracted endpoint."
+}

@@ -1,0 +1,13 @@
+/* X46 Motion & Timing Tokens */
+
+:root {
+  --motion-duration-fast: 150ms; /* @kind other */
+  --motion-duration-base: 200ms; /* @kind other */
+  --motion-duration-slow: 300ms; /* @kind other */
+  --motion-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --motion-ease-out: cubic-bezier(0, 0, 0.2, 1); /* @kind other */
+  --motion-ease-in: cubic-bezier(0.4, 0, 1, 1); /* @kind other */
+  --transition-fast: var(--motion-duration-fast) var(--motion-ease-in-out); /* @kind other */
+  --transition-base: var(--motion-duration-base) var(--motion-ease-in-out); /* @kind other */
+  --transition-slow: var(--motion-duration-slow) var(--motion-ease-in-out); /* @kind other */
+}

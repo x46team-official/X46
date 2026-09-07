@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-115",
+  "module": "Reference Range Master",
+  "functionality": "Duplicate Parameter Code",
+  "http_method": "POST",
+  "endpoint": "/api/parameters",
+  "description": "Documents the specific error scenario of API-111 where the request fails this validation. Same endpoint as API-111, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "parameterCode": "'HGB' - duplicate of an existing parameter_code in this scenario"
+    }
+  },
+  "required_fields": [
+    "parameterCode"
+  ],
+  "validation": [
+    "parameterCode must be unique within organization + branch"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "parameterCode must be unique within organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate parameter code"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T174)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "parameter_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_parameter_master_code UNIQUE (organization_id, branch_id, parameter_code)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/022_reference_range_master.sql (API-T174)"
+  ],
+  "test_ids": [
+    "API-T174"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "functionality_id": "API-034",
+  "module": "Billing",
+  "functionality": "View Bill",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing/{billingId}",
+  "description": "Retrieves a single bill record scoped to organization and branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "billingId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "billingId"],
+
+  "validation": [
+    "billingId must be a valid UUID",
+    "bill must exist and belong to organization + branch"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Bill fetched successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "patientRegistrationId": "uuid",
+        "billNumber": "BILL0001",
+        "billDate": "timestamp with time zone",
+        "totalAmount": 350,
+        "discountAmount": 0,
+        "concessionAmount": 0,
+        "additionalAmount": 0,
+        "payableAmount": 350,
+        "paidAmount": 0,
+        "balanceAmount": 350,
+        "paymentMode": null,
+        "paymentStatus": "Pending",
+        "remarks": null,
+        "isCancelled": false
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "billingId is not a valid UUID",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid request" }
+    },
+    {
+      "condition": "bill does not exist / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Bill not found" },
+      "source": "database/api_contracts_test/013_billing.sql",
+      "related_functionality_id": "API-042"
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql"],
+
+  "test_ids": ["API-T092"]
+}

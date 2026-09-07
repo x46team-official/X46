@@ -1,0 +1,99 @@
+{
+  "functionality_id": "API-088",
+  "module": "Result Entry",
+  "functionality": "Create Result Entry",
+  "http_method": "POST",
+  "endpoint": "/api/result-entries",
+  "description": "Creates a result_entry header record for an accession test line item once processing begins.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionTestId": "uuid, required - references accession_tests.id",
+      "resultStatus": "enum, optional, default PENDING - PENDING | IN_PROGRESS | COMPLETED | AUTHORIZED | REJECTED",
+      "remarks": "text, optional"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "accessionTestId"
+  ],
+  "validation": [
+    "organization and branch must exist",
+    "accessionTestId must reference an existing accession test (NOT NULL FK)",
+    "accessionTestId must not already have a result_entry record (UNIQUE constraint uq_result_entry)",
+    "resultStatus, if provided, must be one of PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED (CHECK)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Result entry created successfully",
+      "data": {
+        "id": "uuid",
+        "accessionTestId": "uuid",
+        "resultStatus": "COMPLETED",
+        "enteredAt": "2026-08-17T10:00:00Z"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "accessionTestId does not reference an existing accession test",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Accession test not found"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T150)",
+      "related_functionality_id": "API-091"
+    },
+    {
+      "condition": "accessionTestId already has a result_entry record",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Result entry already exists for this accession test"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T151)",
+      "related_functionality_id": "API-092"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry",
+      "accession_tests"
+    ],
+    "relationships": [
+      "result_entry.accession_test_id -> accession_tests.id (ON DELETE CASCADE)"
+    ],
+    "constraints": [
+      "accession_test_id NOT NULL",
+      "uq_result_entry UNIQUE (organization_id, branch_id, accession_test_id)",
+      "result_status NOT NULL DEFAULT 'PENDING' CHECK IN (PENDING, IN_PROGRESS, COMPLETED, AUTHORIZED, REJECTED)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/010_result_entry.sql",
+    "database/api_contracts_test/018_result_entry.sql"
+  ],
+  "test_ids": [
+    "API-T147"
+  ]
+}

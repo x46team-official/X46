@@ -1,0 +1,113 @@
+{
+  "functionality_id": "API-100",
+  "module": "Report Generation",
+  "functionality": "Generate Report",
+  "http_method": "POST",
+  "endpoint": "/api/reports",
+  "description": "Generates a report_master record for an accession once all its tests are ready for reporting; cascades accession_tests.report_status to READY.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionId": "uuid, required - references accession_master.id",
+      "reportNumber": "string(50), required"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "accessionId",
+    "reportNumber"
+  ],
+  "validation": [
+    "organization and branch must exist",
+    "accessionId must reference an existing accession (NOT NULL FK)",
+    "reportNumber must be unique within organization + branch (uq_report_number)",
+    "accessionId must not already have a report (uq_report_accession)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Report generated successfully",
+      "data": {
+        "id": "uuid",
+        "accessionId": "uuid",
+        "reportNumber": "RPT-ACC0001",
+        "reportStatus": "GENERATED",
+        "versionNo": 1,
+        "generatedAt": "2026-08-17T10:00:00Z"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "accessionId does not reference an existing accession",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Accession not found"
+      },
+      "source": "database/api_contracts_test/020_report_generation.sql (API-T160)",
+      "related_functionality_id": "API-101"
+    },
+    {
+      "condition": "reportNumber already exists for the organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate report number"
+      },
+      "source": "database/api_contracts_test/020_report_generation.sql (API-T161)",
+      "related_functionality_id": "API-102"
+    },
+    {
+      "condition": "accessionId already has a report",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Report already exists for this accession"
+      },
+      "source": "database/api_contracts_test/020_report_generation.sql (API-T162)",
+      "related_functionality_id": "API-103"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_master",
+      "accession_master",
+      "accession_tests"
+    ],
+    "relationships": [
+      "report_master.accession_id -> accession_master.id (ON DELETE CASCADE)"
+    ],
+    "constraints": [
+      "accession_id NOT NULL",
+      "uq_report_number UNIQUE (organization_id, branch_id, report_number)",
+      "uq_report_accession UNIQUE (organization_id, branch_id, accession_id)",
+      "report_status NOT NULL DEFAULT 'DRAFT' CHECK IN (DRAFT, GENERATED, AUTHORIZED, RELEASED, CANCELLED)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/012_report_generation.sql",
+    "database/api_contracts_test/020_report_generation.sql"
+  ],
+  "test_ids": [
+    "API-T159"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "functionality_id": "API-118",
+  "module": "Reference Range Master",
+  "functionality": "Invalid Effective Date Range",
+  "http_method": "POST",
+  "endpoint": "/api/reference-ranges",
+  "description": "Documents the specific error scenario of API-112 where the request fails this validation. Same endpoint as API-112, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "effectiveFrom": "'2024-01-01'",
+      "effectiveTo": "'2023-01-01' - earlier than effectiveFrom in this scenario"
+    }
+  },
+  "required_fields": [
+    "effectiveFrom",
+    "effectiveTo"
+  ],
+  "validation": [
+    "effectiveTo, if provided, must be >= effectiveFrom (CHECK chk_reference_range_master_effective)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "effectiveTo, if provided, must be >= effectiveFrom (CHECK chk_reference_range_master_effective)",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid effective date range"
+      },
+      "source": "database/api_contracts_test/022_reference_range_master.sql (API-T177)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "reference_range_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "chk_reference_range_master_effective CHECK (effective_to IS NULL OR effective_to >= effective_from)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/022_reference_range_master.sql (API-T177)"
+  ],
+  "test_ids": [
+    "API-T177"
+  ]
+}

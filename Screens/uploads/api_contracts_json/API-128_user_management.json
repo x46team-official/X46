@@ -1,0 +1,126 @@
+{
+  "functionality_id": "API-128",
+  "module": "User Management",
+  "functionality": "List / View / Update / Activate-Deactivate User",
+  "description": "Covers the User Management operations not already provided by API-004 (Create User) and API-005 (Assign Role to User): listing, viewing, updating, and toggling is_active on `users`.",
+
+  "reused_apis": [
+    { "functionality_id": "API-004", "functionality": "Create User", "note": "User creation is already covered - not duplicated here." },
+    { "functionality_id": "API-005", "functionality": "Assign Role to User", "note": "Role assignment is already covered - View User below only reads the existing assignments via user_roles/roles." }
+  ],
+
+  "operations": [
+    {
+      "operation": "List Users",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/users",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": {
+          "isActive": "boolean, optional - filters on users.is_active",
+          "search": "string, optional - matched against username, first_name, last_name"
+        },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId"],
+      "validation": ["organization and branch must exist", "results are scoped to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Users fetched successfully",
+          "data": [
+            { "id": "uuid", "username": "test_user_001", "email": "testuser001@x46.com", "firstName": "Test", "lastName": "User", "isActive": true }
+          ]
+        }
+      },
+      "errors": [
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    },
+    {
+      "operation": "View User",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/users/{userId}",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "userId": "uuid, required" },
+        "query_parameters": {},
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "userId"],
+      "validation": ["user must exist and belong to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "User fetched successfully",
+          "data": {
+            "id": "uuid", "username": "test_user_001", "email": "testuser001@x46.com",
+            "firstName": "Test", "lastName": "User", "isActive": true,
+            "roles": [ { "roleId": "uuid", "roleCode": "ADMIN", "roleName": "Administrator", "assignedAt": "timestamp with time zone" } ]
+          }
+        }
+      },
+      "errors": [
+        { "condition": "userId not found / not in organization+branch scope", "status_code": 404, "response": { "success": false, "error": "User not found" } }
+      ]
+    },
+    {
+      "operation": "Update User",
+      "http_method": "PUT",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/users/{userId}",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "userId": "uuid, required" },
+        "query_parameters": {},
+        "body": {
+          "email": "string(255), optional",
+          "firstName": "string(100), required",
+          "lastName": "string(100), optional"
+        }
+      },
+      "required_fields": ["organizationId", "branchId", "userId", "firstName"],
+      "validation": ["user must exist and belong to organization + branch", "firstName must not be null (NOT NULL)"],
+      "success": {
+        "status_code": 200,
+        "response": { "success": true, "message": "User updated successfully", "data": { "id": "uuid", "firstName": "Test", "lastName": "User Updated", "email": "testuser001@x46.com" } }
+      },
+      "errors": [
+        { "condition": "firstName missing", "status_code": 400, "response": { "success": false, "error": "firstName is required" } },
+        { "condition": "userId not found / not in scope", "status_code": 404, "response": { "success": false, "error": "User not found" } },
+        { "condition": "Unexpected server/database failure", "status_code": 500, "response": { "success": false, "error": "Internal server error" } }
+      ]
+    },
+    {
+      "operation": "Activate/Deactivate User",
+      "http_method": "PATCH",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/users/{userId}/status",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "userId": "uuid, required" },
+        "query_parameters": {},
+        "body": { "isActive": "boolean, required" }
+      },
+      "required_fields": ["organizationId", "branchId", "userId", "isActive"],
+      "validation": ["user must exist and belong to organization + branch", "isActive must be a boolean value"],
+      "success": {
+        "status_code": 200,
+        "response": { "success": true, "message": "User status updated successfully", "data": { "id": "uuid", "isActive": false } }
+      },
+      "errors": [
+        { "condition": "isActive missing or not boolean", "status_code": 400, "response": { "success": false, "error": "Invalid status value" } },
+        { "condition": "userId not found / not in scope", "status_code": 404, "response": { "success": false, "error": "User not found" } },
+        { "condition": "Unexpected server/database failure", "status_code": 500, "response": { "success": false, "error": "Internal server error" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["users", "user_roles", "roles"],
+    "relationships": ["users.organization_id -> organizations.id", "users.branch_id -> branches.id", "user_roles.user_id -> users.id"],
+    "constraints": ["is_active BOOLEAN NOT NULL DEFAULT TRUE", "UNIQUE (organization_id, branch_id, username)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet for these four operations."
+}

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"], input[type="radio"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="MIS / Data Export" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Reports &amp; MIS / MIS / Data Export</div>
+          <h1 style="margin: 0 0 3px; font-size: 17px; font-weight: 700;">MIS / Data Export</h1>
+          <div style="font-size: 12px; color: var(--color-text-secondary);">Export operational data from the laboratory system.</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ reload }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reload</button>
+          <button onClick="{{ generate }}" disabled="{{ busy }}" style="padding: 8px 14px; background: {{ ctaBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ ctaCursor }}; white-space: nowrap; min-width: 138px;">{{ ctaLabel }}</button>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBd }}; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+        <span>{{ banner }}</span>
+        <sc-if value="{{ downloadBlocked }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size: 11px; font-weight: 600; color: var(--color-text-tertiary);">Download unavailable — no export delivery endpoint is contracted yet.</span>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px; display: flex; flex-direction: column; gap: 12px;">
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 12px 14px;">
+              <div style="height: 8px; width: 58%; border-radius: 3px; background: var(--color-gray-100);"></div>
+              <div style="height: 18px; width: 40%; border-radius: 3px; background: var(--color-gray-100); margin-top: 10px;"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; height: 300px;"></div>
+      </sc-if>
+
+      <sc-if value="{{ loadError }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid #FCA5A5; border-radius: 6px; padding: 44px 20px; text-align: center;">
+          <div style="font-size: 14px; font-weight: 700; color: #B91C1C; margin-bottom: 4px;">Unable to load MIS data.</div>
+          <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">{{ loadError }}</div>
+          <button onClick="{{ reload }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Retry</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 11px 13px; display: flex; flex-direction: column; gap: 5px;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ k.label }}</span>
+              <div class="num" style="font-size: 20px; font-weight: 700; line-height: 1.1;">{{ k.value }}</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ k.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700;">Select Data</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Pick one or more datasets. Record counts come from the branch-scoped stores; datasets without a read contract show as available.</div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="num" style="font-size: 11px; font-weight: 700; color: var(--color-text-secondary);">{{ selectedCount }} selected</span>
+              <button onClick="{{ selectAll }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Select all</button>
+              <button onClick="{{ clearSelection }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+            </div>
+          </div>
+          <div style="padding: 12px 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px;">
+            <sc-for list="{{ datasets }}" as="d" hint-placeholder-count="10">
+              <label style="display: flex; align-items: flex-start; gap: 10px; margin: 0; padding: 10px 12px; border: 1px solid {{ d.edge }}; border-radius: 5px; background: {{ d.bg }}; cursor: pointer;">
+                <input type="checkbox" checked="{{ d.on }}" onChange="{{ d.onToggle }}" style="width: 14px; height: 14px; margin-top: 2px;" />
+                <span style="min-width: 0; flex: 1;">
+                  <span style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                    <span style="font-size: 12px; font-weight: 600; color: var(--color-text-primary);">{{ d.name }}</span>
+                    <span class="num" style="font-size: 11px; font-weight: 700; color: {{ d.countFg }}; white-space: nowrap;">{{ d.count }}</span>
+                  </span>
+                  <span style="display: block; font-size: 10.5px; color: var(--color-text-tertiary); margin-top: 1px;">{{ d.note }}</span>
+                  <sc-if value="{{ d.restricted }}" hint-placeholder-val="{{ false }}">
+                    <span style="display: inline-block; margin-top: 5px; padding: 1px 6px; border-radius: 999px; font-size: 9.5px; font-weight: 700; background: #FEF3C7; color: #92400E;">Restricted · patient identifiers</span>
+                  </sc-if>
+                </span>
+              </label>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 12px;">
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700;">Filters</div>
+            <div style="padding: 12px 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 10px;">
+              <div>
+                <label>Date Range — From</label>
+                <input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" />
+              </div>
+              <div>
+                <label>Date Range — To</label>
+                <input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" />
+              </div>
+              <div>
+                <label>Branch</label>
+                <select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch">
+                  <option value="">All Branches</option>
+                  <sc-for list="{{ branchOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </div>
+              <div>
+                <label>Department</label>
+                <select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept">
+                  <option value="">All Departments</option>
+                  <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </div>
+              <div>
+                <label>Test</label>
+                <select value="{{ test }}" onChange="{{ updateField }}" data-field="test">
+                  <option value="">All Tests</option>
+                  <sc-for list="{{ testOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </div>
+              <div>
+                <label>Doctor</label>
+                <select value="{{ doctor }}" onChange="{{ updateField }}" data-field="doctor">
+                  <option value="">All Doctors</option>
+                  <sc-for list="{{ doctorOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </div>
+              <div>
+                <label>Status</label>
+                <select value="{{ status }}" onChange="{{ updateField }}" data-field="status">
+                  <option value="">All Statuses</option>
+                  <option value="Registered">Registered</option>
+                  <option value="Collected">Collected</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+            <sc-if value="{{ dateError }}" hint-placeholder-val="{{ false }}">
+              <div style="margin: 0 14px 12px; padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ dateError }}</div>
+            </sc-if>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; display: flex; flex-direction: column;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700;">Export Format</div>
+            <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
+              <sc-for list="{{ formats }}" as="f" hint-placeholder-count="3">
+                <label style="display: flex; align-items: center; gap: 9px; margin: 0; padding: 9px 11px; border: 1px solid {{ f.edge }}; border-radius: 5px; background: {{ f.bg }}; cursor: pointer;">
+                  <input type="radio" checked="{{ f.on }}" onChange="{{ f.onPick }}" name="mis-format" style="width: 14px; height: 14px;" />
+                  <span>
+                    <span style="display: block; font-size: 12px; font-weight: 600; color: var(--color-text-primary);">{{ f.label }}</span>
+                    <span style="display: block; font-size: 10.5px; color: var(--color-text-tertiary);">{{ f.note }}</span>
+                  </span>
+                </label>
+              </sc-for>
+            </div>
+            <div style="margin-top: auto; padding: 12px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ summaryNote }}</div>
+              <button onClick="{{ generate }}" disabled="{{ busy }}" style="padding: 9px 14px; background: {{ ctaBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ ctaCursor }};">{{ ctaLabel }}</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto;">
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700;">Export History <span class="num" style="font-weight: 600; color: var(--color-text-tertiary);">· {{ historyCount }}</span></div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">This session only — no export-history read contract is issued yet, so history is not persisted server-side.</div>
+            </div>
+          </div>
+          <div style="min-width: 1120px;">
+            <div style="display: grid; grid-template-columns: 118px 168px 132px 168px minmax(180px,1fr) 92px 116px 112px; gap: 10px; padding: 8px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+              <div>Export ID</div><div>Dataset</div><div>Requested By</div><div>Date &amp; Time</div><div>Filters</div><div>Format</div><div>Status</div><div>Action</div>
+            </div>
+            <sc-for list="{{ history }}" as="h" hint-placeholder-count="0">
+              <div style="display: grid; grid-template-columns: 118px 168px 132px 168px minmax(180px,1fr) 92px 116px 112px; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--color-border-light); align-items: center;" style-hover="background: var(--color-gray-50);">
+                <div class="mono" style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);">{{ h.id }}</div>
+                <div style="font-size: 11.5px; font-weight: 600; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ h.dataset }}</div>
+                <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ h.by }}</div>
+                <div class="num" style="font-size: 11.5px;">{{ h.at }}</div>
+                <div style="font-size: 11px; color: var(--color-text-secondary); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ h.filters }}</div>
+                <div style="font-size: 11.5px; font-weight: 600;">{{ h.format }}</div>
+                <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ h.badgeBg }}; color: {{ h.badgeFg }};">{{ h.status }}</span></div>
+                <div>
+                  <sc-if value="{{ h.done }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ h.onDownload }}" title="No export delivery endpoint is contracted yet" style="padding: 5px 10px; background: #fff; border: 1px dashed var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-tertiary); cursor: not-allowed;">Download</button>
+                  </sc-if>
+                  <sc-if value="{{ h.pending }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size: 11.5px; color: var(--color-text-tertiary);">—</span>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ historyEmpty }}" hint-placeholder-val="{{ true }}">
+              <div style="padding: 48px 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No exports yet</div>
+                <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Generated exports will appear here.</div>
+                <button onClick="{{ generate }}" disabled="{{ busy }}" style="padding: 8px 16px; background: {{ ctaBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ ctaCursor }};">{{ ctaLabel }}</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;1000px&quot;}}">
+/* Counts are read from the existing branch-scoped LIMS stores only. Datasets
+   whose read contract is not issued yet report "Available" rather than a
+   fabricated number. */
+const store = (key) => {
+  const L = typeof LIMS !== 'undefined' ? LIMS : null;
+  const arr = L && L[key];
+  return Array.isArray(arr) ? arr.length : null;
+};
+
+const DATASETS = [
+  ['patient', 'Patient Data', 'Patient demographic and identifier records', 'PATIENTS', true],
+  ['registration', 'Registration Data', 'Visit registrations and referral details', null, true],
+  ['test', 'Test Data', 'Laboratory test master and ordered tests', 'TESTS', false],
+  ['billing', 'Billing Data', 'Bills, line items, discount and concession', 'BILLS', false],
+  ['payment', 'Payment Data', 'Payments, modes and transaction references', 'PAYMENTS', false],
+  ['accession', 'Sample / Accession Data', 'Accessioned samples and collection status', 'ACCESSIONS', false],
+  ['result', 'Result Data', 'Result entries and parameter values', 'RESULT_ENTRIES', true],
+  ['report', 'Report Data', 'Released reports and dispatch log', null, true],
+  ['doctor', 'Doctor Data', 'Referring doctors and clinic mapping', null, false],
+  ['branch', 'Branch Data', 'Branches and organization mapping', 'BRANCHES', false]
+];
+
+const DEPTS = ['Biochemistry', 'Haematology', 'Microbiology', 'Serology', 'Clinical Pathology'];
+const DOCTORS = ['Dr. Anand Rao', 'Dr. Priya Mehta', 'Dr. Imran Shaikh', 'Dr. Latha Nair', 'Dr. Sameer Joshi', 'Self'];
+
+const FORMATS = [
+  ['Excel', 'One sheet per dataset, .xlsx'],
+  ['CSV', 'One file per dataset, UTF-8'],
+  ['PDF', 'Print-ready summary — totals only, not row-level']
+];
+
+const pad = (n) => String(n).padStart(2, '0');
+const stamp = () => {
+  const d = new Date();
+  const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+  const h = d.getHours() % 12 || 12;
+  return pad(d.getDate()) + ' ' + mon + ' ' + d.getFullYear() + ', ' + pad(h) + ':' + pad(d.getMinutes()) + ' ' + (d.getHours() < 12 ? 'AM' : 'PM');
+};
+
+const TONE = {
+  Completed: ['#DCFCE7', '#166534'],
+  Processing: ['#FEF3C7', '#92400E'],
+  Failed: ['#FEE2E2', '#991B1B']
+};
+
+class Component extends DCLogic {
+  state = {
+    loading: true, loadError: '',
+    selected: { patient: true },
+    from: '2026-08-01', to: '2026-08-31',
+    branch: '', dept: '', test: '', doctor: '', status: '',
+    format: 'Excel',
+    busy: false, banner: '', bannerKind: 'info', downloadBlocked: false,
+    history: [], seq: 124, dateError: ''
+  };
+
+  componentDidMount() { this.load(); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  /* The datasets come from stores loaded with lims-api.js; the only failure
+     mode worth surfacing is that script not being present. */
+  load = () => {
+    clearTimeout(this._t);
+    this.setState({ loading: true, loadError: '' });
+    this._t = setTimeout(() => {
+      const missing = typeof LIMS === 'undefined';
+      this.setState({
+        loading: false,
+        loadError: missing ? 'The LIMS data layer (lims-api.js) did not load, so dataset record counts are unavailable.' : ''
+      });
+    }, 420);
+  };
+
+  reload = () => this.load();
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, dateError: '', banner: '' });
+  toggle = (k) => (e) => this.setState({ selected: { ...this.state.selected, [k]: e.target.checked }, banner: '' });
+  selectAll = () => {
+    const all = {};
+    DATASETS.forEach(([k]) => { all[k] = true; });
+    this.setState({ selected: all, banner: '' });
+  };
+  clearSelection = () => this.setState({ selected: {}, banner: '' });
+  pickFormat = (f) => () => this.setState({ format: f });
+
+  countFor(key) {
+    const n = key ? store(key) : null;
+    return n === null ? null : n;
+  }
+
+  filterSummary() {
+    const s = this.state;
+    const bits = [];
+    if (s.from || s.to) bits.push((s.from || '…') + ' → ' + (s.to || '…'));
+    if (s.branch) bits.push(s.branch);
+    if (s.dept) bits.push(s.dept);
+    if (s.test) bits.push(s.test);
+    if (s.doctor) bits.push(s.doctor);
+    if (s.status) bits.push(s.status);
+    return bits.length ? bits.join(' · ') : 'All';
+  }
+
+  generate = () => {
+    const s = this.state;
+    if (s.busy) return;
+    const picked = DATASETS.filter(([k]) => s.selected[k]);
+    if (!picked.length) {
+      this.setState({ bannerKind: 'error', banner: 'Select at least one dataset before generating an export.', downloadBlocked: false });
+      return;
+    }
+    if (s.from && s.to && s.from > s.to) {
+      this.setState({ dateError: 'The From date is after the To date.', bannerKind: 'error', banner: 'Fix the date range before generating an export.', downloadBlocked: false });
+      return;
+    }
+
+    const id = 'EXP-' + String(s.seq).padStart(5, '0');
+    const row = {
+      id,
+      dataset: picked.length === 1 ? picked[0][1] : picked.length + ' datasets',
+      by: 'admin.pune',
+      at: stamp(),
+      filters: this.filterSummary(),
+      format: s.format,
+      status: 'Processing'
+    };
+
+    this.setState({
+      busy: true, dateError: '',
+      bannerKind: 'info', banner: 'Generating export…', downloadBlocked: false,
+      history: [row].concat(s.history),
+      seq: s.seq + 1
+    });
+
+    setTimeout(() => {
+      this.setState(st => ({
+        busy: false,
+        bannerKind: 'success',
+        banner: 'Export generated successfully — ' + id + ' \u00b7 ' + row.dataset + ' \u00b7 ' + row.format + '.',
+        downloadBlocked: true,
+        history: st.history.map(h => h.id === id ? { ...h, status: 'Completed' } : h)
+      }));
+    }, 1100);
+  };
+
+  download = (id) => () => this.setState({
+    bannerKind: 'info',
+    banner: id + ' cannot be downloaded from this prototype — the export delivery endpoint is not contracted yet.',
+    downloadBlocked: false
+  });
+
+  renderVals() {
+    const s = this.state;
+    const tone = { error: ['#FEF2F2', '#B91C1C', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] };
+    const bt = tone[s.bannerKind] || tone.info;
+
+    const datasets = DATASETS.map(([k, name, note, storeKey, restricted]) => {
+      const n = this.countFor(storeKey);
+      const on = !!s.selected[k];
+      return {
+        name, note, restricted,
+        on,
+        count: n === null ? 'Available' : n.toLocaleString('en-IN') + (n === 1 ? ' record' : ' records'),
+        countFg: n === null ? 'var(--color-text-tertiary)' : 'var(--color-text-secondary)',
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        edge: on ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+        onToggle: this.toggle(k)
+      };
+    });
+
+    const counted = DATASETS.map(([, , , key]) => this.countFor(key)).filter(n => n !== null);
+    const totalRecords = counted.reduce((a, b) => a + b, 0);
+    const selectedCount = datasets.filter(d => d.on).length;
+    const done = s.history.filter(h => h.status === 'Completed');
+    const L = typeof LIMS !== 'undefined' ? LIMS : null;
+
+    return {
+      loading: s.loading,
+      loadError: s.loadError,
+      ready: !s.loading && !s.loadError,
+      skeletons: [1, 2, 3, 4],
+
+      kpis: [
+        { label: 'Available Datasets', value: String(DATASETS.length), note: counted.length + ' with live record counts' },
+        { label: 'Total Records', value: counted.length ? totalRecords.toLocaleString('en-IN') : '\u2014', note: counted.length ? 'Across counted datasets' : 'No counted dataset available' },
+        { label: 'Exports Today', value: s.history.length ? String(s.history.length) : '\u2014', note: 'This session — not persisted' },
+        { label: 'Last Export', value: s.history.length ? s.history[0].id : '\u2014', note: s.history.length ? s.history[0].at : 'No export generated yet' }
+      ],
+
+      datasets,
+      selectedCount,
+      selectAll: this.selectAll,
+      clearSelection: this.clearSelection,
+
+      from: s.from, to: s.to, branch: s.branch, dept: s.dept, test: s.test, doctor: s.doctor, status: s.status,
+      branchOptions: L && Array.isArray(L.BRANCHES) ? L.BRANCHES.map(b => b.name) : [],
+      deptOptions: DEPTS,
+      testOptions: L && Array.isArray(L.TESTS) ? L.TESTS.map(t => t.testCode + ' — ' + t.testName) : [],
+      doctorOptions: DOCTORS,
+      dateError: s.dateError,
+      updateField: this.updateField,
+
+      formats: FORMATS.map(([label, note]) => ({
+        label, note,
+        on: s.format === label,
+        bg: s.format === label ? 'var(--color-interactive-hover)' : '#fff',
+        edge: s.format === label ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+        onPick: this.pickFormat(label)
+      })),
+
+      summaryNote: selectedCount
+        ? selectedCount + ' dataset' + (selectedCount > 1 ? 's' : '') + ' \u00b7 ' + s.format + ' \u00b7 ' + this.filterSummary()
+        : 'No dataset selected yet.',
+
+      busy: s.busy,
+      ctaLabel: s.busy ? 'Generating…' : 'Generate Export',
+      ctaBg: s.busy ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      ctaCursor: s.busy ? 'wait' : 'pointer',
+      generate: this.generate,
+      reload: this.reload,
+
+      banner: s.banner, bannerBg: bt[0], bannerFg: bt[1], bannerBd: bt[2],
+      downloadBlocked: s.downloadBlocked,
+
+      history: s.history.map(h => {
+        const t = TONE[h.status] || TONE.Processing;
+        return {
+          ...h,
+          badgeBg: t[0], badgeFg: t[1],
+          done: h.status === 'Completed',
+          pending: h.status !== 'Completed',
+          onDownload: this.download(h.id)
+        };
+      }),
+      historyCount: s.history.length ? s.history.length + ' this session' : 'none yet',
+      historyEmpty: s.history.length === 0,
+      doneCount: done.length
+    };
+  }
+}
+</script>
+</body>
+</html>

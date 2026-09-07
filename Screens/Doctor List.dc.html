@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="Doctors" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Setup / Doctors</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Referring Doctors</h1>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="width: 240px;">
+              <label>Search Doctor</label>
+              <input type="text" placeholder="Name, clinic, phone or reg. no." value="{{ q }}" onChange="{{ updateField }}" data-field="q" />
+            </div>
+            <div style="width: 172px;">
+              <label>Specialization</label>
+              <select value="{{ spec }}" onChange="{{ updateField }}" data-field="spec">
+                <option value="">All specializations</option>
+                <sc-for list="{{ specOptions }}" as="o" hint-placeholder-count="8"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 150px;">
+              <label>Organization</label>
+              <select value="{{ org }}" onChange="{{ updateField }}" data-field="org">
+                <option value="">All clinics</option>
+                <sc-for list="{{ orgOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 118px;">
+              <label>Status</label>
+              <select value="{{ status }}" onChange="{{ updateField }}" data-field="status">
+                <option value="">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <button onClick="{{ clearAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+          </div>
+          <div style="margin-top: 5px; font-size: 10.5px; color: var(--color-text-tertiary);">Active doctors appear in the Referring Doctor field during registration. Referral volume is read-only.</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ reload }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reload</button>
+          <button onClick="{{ openCreate }}" style="padding: 8px 14px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">+ Add Doctor</button>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBd }};"><span style="font-weight: 700;">{{ bannerTitle }}</span>{{ banner }}</div>
+    </sc-if>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 12px; flex-wrap: wrap;">
+        <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">{{ rowCountLabel }}</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 11px; color: var(--color-text-tertiary);">Sort</span>
+          <select value="{{ sort }}" onChange="{{ updateField }}" data-field="sort" style="width: 186px;">
+            <option value="name">Doctor name</option>
+            <option value="referrals">Referrals (high first)</option>
+            <option value="spec">Specialization</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto;">
+        <div style="min-width: 1080px;">
+          <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: minmax(190px,1.2fr) 148px 132px 124px minmax(160px,1fr) 96px 92px 168px; gap: 10px; padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+            <div>Doctor</div><div>Specialization</div><div>Reg. No.</div><div>Phone</div><div>Organization / Clinic</div>
+            <div style="text-align: right;">Referrals</div><div>Status</div><div>Actions</div>
+          </div>
+
+          <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="6">
+              <div style="display: grid; grid-template-columns: minmax(190px,1.2fr) 148px 132px 124px minmax(160px,1fr) 96px 92px 168px; gap: 10px; padding: 12px; border-bottom: 1px solid var(--color-border-light);">
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+              </div>
+            </sc-for>
+          </sc-if>
+
+          <sc-if value="{{ loadError }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 48px 20px; text-align: center;">
+              <div style="font-size: 14px; font-weight: 700; color: #B91C1C; margin-bottom: 4px;">Could not load the doctor master</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">{{ loadError }}</div>
+              <button onClick="{{ reload }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Retry</button>
+            </div>
+          </sc-if>
+
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="0">
+            <div style="display: grid; grid-template-columns: minmax(190px,1.2fr) 148px 132px 124px minmax(160px,1fr) 96px 92px 168px; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center;" style-hover="background: var(--color-gray-50);">
+              <div style="min-width: 0;">
+                <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.name }}</div>
+                <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.email }}</div>
+              </div>
+              <div style="font-size: 12px;">{{ r.spec }}</div>
+              <div class="mono" style="font-size: 11.5px; color: var(--color-text-secondary);">{{ r.regNo }}</div>
+              <div class="num" style="font-size: 12px;">{{ r.phone }}</div>
+              <div style="font-size: 11.5px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.org }}</div>
+              <div class="num" style="font-size: 12px; font-weight: 700; text-align: right;">{{ r.referrals }}</div>
+              <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span></div>
+              <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                <button onClick="{{ r.onView }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">View</button>
+                <button onClick="{{ r.onEdit }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); background: var(--color-interactive-hover);">Edit</button>
+                <button onClick="{{ r.onToggle }}" style="padding: 5px 10px; background: #fff; border: 1px solid {{ r.toggleBd }}; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: {{ r.toggleFg }}; cursor: pointer; white-space: nowrap;">{{ r.toggleLabel }}</button>
+              </div>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 56px 20px; text-align: center;">
+              <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">{{ emptyTitle }}</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">{{ emptyHint }}</div>
+              <button onClick="{{ emptyAction }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">{{ emptyActionLabel }}</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ showPager }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px;">
+          <div class="num" style="font-size: 11.5px; color: var(--color-text-tertiary);">{{ pageLabel }}</div>
+          <div style="display: flex; gap: 6px;">
+            <button onClick="{{ prevPage }}" disabled="{{ atFirst }}" style="padding: 6px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: {{ prevFg }}; cursor: {{ prevCursor }};">Previous</button>
+            <button onClick="{{ nextPage }}" disabled="{{ atLast }}" style="padding: 6px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: {{ nextFg }}; cursor: {{ nextCursor }};">Next</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 40; display: flex; justify-content: flex-end;" onClick="{{ closeDetail }}">
+      <div onClick="{{ stop }}" style="width: 440px; background: #fff; height: 100%; box-shadow: -8px 0 24px rgba(17,24,39,.14); display: flex; flex-direction: column;">
+        <div style="padding: 14px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Referring doctor</div>
+            <div style="font-size: 15px; font-weight: 700;">{{ detailName }}</div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">{{ detailSpec }}</div>
+          </div>
+          <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 18px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 16px 18px;">
+          <sc-for list="{{ detailRows }}" as="d" hint-placeholder-count="8">
+            <div style="display: flex; justify-content: space-between; gap: 14px; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
+              <span style="font-size: 11px; font-weight: 600; color: var(--color-text-tertiary);">{{ d.k }}</span>
+              <span style="font-size: 12px; font-weight: 600; text-align: right;">{{ d.v }}</span>
+            </div>
+          </sc-for>
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin: 4px 0 8px;">Most referred tests</div>
+          <sc-for list="{{ detailTests }}" as="t" hint-placeholder-count="4">
+            <div style="display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--color-border-light);">
+              <span style="font-size: 12px; font-weight: 600;">{{ t.name }}</span>
+              <span class="num" style="font-size: 12px; color: var(--color-text-secondary);">{{ t.count }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding: 12px 18px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px; justify-content: flex-end;">
+          <button onClick="{{ closeDetail }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+          <button onClick="{{ editFromDetail }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Edit Doctor</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ tryCloseForm }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 600px; max-width: 100%; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 13px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700;">{{ formTitle }}</div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ formSubtitle }}</div>
+          </div>
+          <button onClick="{{ tryCloseForm }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 14px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px;">
+          <div>
+            <label>Doctor Name *</label>
+            <input type="text" placeholder="e.g. Dr. Anand Rao" value="{{ fName }}" onChange="{{ updateForm }}" data-field="name" style="border-color: {{ nameBorder }};" />
+          </div>
+          <div>
+            <label>Specialization *</label>
+            <select value="{{ fSpec }}" onChange="{{ updateForm }}" data-field="spec" style="border-color: {{ specBorder }};">
+              <option value="">Select specialization</option>
+              <sc-for list="{{ specOptions }}" as="o" hint-placeholder-count="8"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </div>
+          <div>
+            <label>Registration No.</label>
+            <input type="text" placeholder="e.g. MMC-2011-48213" value="{{ fRegNo }}" onChange="{{ updateForm }}" data-field="regNo" class="mono" />
+          </div>
+          <div>
+            <label>Qualification</label>
+            <input type="text" placeholder="e.g. MBBS, MD (Medicine)" value="{{ fQual }}" onChange="{{ updateForm }}" data-field="qual" />
+          </div>
+          <div>
+            <label>Phone *</label>
+            <input type="text" maxlength="10" placeholder="10-digit mobile" value="{{ fPhone }}" onChange="{{ updateForm }}" data-field="phone" style="border-color: {{ phoneBorder }};" class="num" />
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="text" placeholder="doctor@clinic.in" value="{{ fEmail }}" onChange="{{ updateForm }}" data-field="email" style="border-color: {{ emailBorder }};" />
+          </div>
+          <div style="grid-column: span 2;">
+            <label>Organization / Clinic *</label>
+            <input type="text" placeholder="e.g. Sahyadri Clinic, Kothrud" value="{{ fOrg }}" onChange="{{ updateForm }}" data-field="org" style="border-color: {{ orgBorder }};" />
+          </div>
+          <div>
+            <label>Referral Price List</label>
+            <select value="{{ fPriceList }}" onChange="{{ updateForm }}" data-field="priceList">
+              <option value="Standard 2026">Standard 2026</option>
+              <option value="Referral A">Referral A</option>
+              <option value="Referral B">Referral B</option>
+            </select>
+          </div>
+          <div>
+            <label>Report Delivery</label>
+            <select value="{{ fDelivery }}" onChange="{{ updateForm }}" data-field="delivery">
+              <option value="Email">Email</option>
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Print pickup">Print pickup</option>
+            </select>
+          </div>
+          <label style="grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 0; font-size: 11.5px; font-weight: 500; color: var(--color-text-secondary);">
+            <input type="checkbox" checked="{{ fActive }}" onChange="{{ toggleFormActive }}" /> Active — selectable as referring doctor during registration
+          </label>
+          <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+            <div style="grid-column: 1 / -1; padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ formError }}</div>
+          </sc-if>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 11px; color: var(--color-text-tertiary);">Referral volume and report delivery history stay read-only.</span>
+          <div style="display: flex; gap: 8px;">
+            <button onClick="{{ tryCloseForm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+            <button onClick="{{ saveForm }}" disabled="{{ saving }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ saveCursor }}; min-width: 124px;">{{ saveLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ confirm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 70; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeConfirm }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 420px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 16px 18px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">{{ confirmTitle }}</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">{{ confirmBody }}</div>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeConfirm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep as is</button>
+          <button onClick="{{ applyConfirm }}" style="padding: 8px 16px; background: {{ confirmBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">{{ confirmLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ unsaved }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.5); z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div style="background: #fff; border-radius: 6px; width: 380px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.26);">
+        <div style="padding: 16px 18px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">Discard unsaved changes?</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">This doctor record has edits that have not been saved.</div>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ keepEditing }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep editing</button>
+          <button onClick="{{ discardForm }}" style="padding: 8px 16px; background: #B91C1C; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Discard</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const SPECS = ['General Medicine', 'Endocrinology', 'Cardiology', 'Paediatrics', 'Orthopaedics', 'Gynaecology', 'Nephrology', 'Pulmonology', 'Dermatology', 'Oncology'];
+
+const SEED = [
+  ['Dr. Anand Rao', 'General Medicine', 'MMC-2009-31204', '9822014577', 'anand.rao@sahyadriclinic.in', 'Sahyadri Clinic, Kothrud', 'MBBS, MD (Medicine)', 412, true],
+  ['Dr. Priya Mehta', 'Endocrinology', 'MMC-2012-44190', '9890123344', 'priya.mehta@endocare.in', 'EndoCare Centre, Aundh', 'MBBS, DM (Endocrinology)', 286, true],
+  ['Dr. Imran Shaikh', 'Cardiology', 'MMC-2008-28871', '9011245566', 'imran.shaikh@heartline.in', 'Heartline Hospital, Camp', 'MBBS, DM (Cardiology)', 233, true],
+  ['Dr. Latha Nair', 'Paediatrics', 'MMC-2014-51002', '9765004411', 'latha.nair@childcare.in', 'Childcare Polyclinic, Baner', 'MBBS, MD (Paediatrics)', 198, true],
+  ['Dr. Sameer Joshi', 'Orthopaedics', 'MMC-2011-39544', '9922114400', 'sameer.joshi@orthoplus.in', 'OrthoPlus, Shivajinagar', 'MBBS, MS (Ortho)', 154, true],
+  ['Dr. Neha Kulkarni', 'Gynaecology', 'MMC-2013-47712', '9850778821', 'neha.kulkarni@matrucare.in', 'Matrucare Clinic, Warje', 'MBBS, DGO', 147, true],
+  ['Dr. Rajesh Pawar', 'Nephrology', 'MMC-2007-22140', '9764412209', 'rajesh.pawar@renalcare.in', 'RenalCare Unit, Hadapsar', 'MBBS, DM (Nephrology)', 121, true],
+  ['Dr. Sanjana Gokhale', 'Pulmonology', 'MMC-2016-58230', '9730092211', 'sanjana.gokhale@pulmocare.in', 'PulmoCare, Pimpri', 'MBBS, MD (Pulmonology)', 96, true],
+  ['Dr. Vivek Deshmukh', 'Dermatology', 'MMC-2015-53318', '9822556677', 'vivek.deshmukh@skinstudio.in', 'Skin Studio, Viman Nagar', 'MBBS, MD (Derm)', 74, true],
+  ['Dr. Meera Iyer', 'Oncology', 'MMC-2010-35520', '9011778890', 'meera.iyer@oncopath.in', 'OncoPath Centre, Kharadi', 'MBBS, DM (Oncology)', 68, true],
+  ['Dr. Farhan Qureshi', 'General Medicine', 'MMC-2018-62901', '9922004411', 'farhan.qureshi@citycare.in', 'CityCare Clinic, Katraj', 'MBBS', 52, true],
+  ['Dr. Aditi Barve', 'Paediatrics', 'MMC-2019-66104', '9765331120', 'aditi.barve@littlesteps.in', 'Little Steps, Wakad', 'MBBS, DCH', 41, true],
+  ['Dr. Suresh Patil', 'Cardiology', 'MMC-2005-18877', '9890443322', 'suresh.patil@pulsehospital.in', 'Pulse Hospital, Nigdi', 'MBBS, MD, DM', 37, false],
+  ['Dr. Kavita Ranade', 'Gynaecology', 'MMC-2017-60455', '9730114455', 'kavita.ranade@aashaclinic.in', 'Aasha Clinic, Dhanakwadi', 'MBBS, DGO', 29, true],
+  ['Dr. Nikhil Chavan', 'Orthopaedics', 'MMC-2020-70118', '9822667788', 'nikhil.chavan@bonecare.in', 'BoneCare, Chinchwad', 'MBBS, MS (Ortho)', 18, false],
+  ['Dr. Shweta Bhandari', 'Endocrinology', 'MMC-2021-74320', '9011990088', 'shweta.bhandari@thyrocare.in', 'ThyroCare Clinic, Bibwewadi', 'MBBS, MD', 11, true]
+].map((d, i) => ({
+  id: 'D' + (i + 1), name: d[0], spec: d[1], regNo: d[2], phone: d[3], email: d[4], org: d[5], qual: d[6],
+  referrals: d[7], active: d[8], priceList: i % 4 === 0 ? 'Referral A' : 'Standard 2026',
+  delivery: ['Email', 'WhatsApp', 'Print pickup'][i % 3],
+  lastReferral: '2026-0' + (8 - (i % 2)) + '-' + String(28 - (i % 22)).padStart(2, '0'),
+  since: 2019 + (i % 6)
+}));
+
+const TOP_TESTS = [
+  [['Complete Blood Count', 96], ['Lipid Profile', 71], ['Liver Function Test', 54], ['Urine Routine', 33]],
+  [['Glycated Haemoglobin', 118], ['Thyroid Profile', 84], ['Vitamin D', 41], ['Glucose Fasting', 27]],
+  [['Lipid Profile', 88], ['Kidney Function Test', 45], ['Complete Blood Count', 39], ['CRP', 22]]
+];
+
+const BLANK = { name: '', spec: '', regNo: '', qual: '', phone: '', email: '', org: '', priceList: 'Standard 2026', delivery: 'Email', active: true };
+const PAGE = 10;
+
+class Component extends DCLogic {
+  state = {
+    docs: SEED.map(d => ({ ...d })),
+    loading: true, loadError: '',
+    q: '', spec: '', org: '', status: '', sort: 'name', page: 0,
+    detailId: null,
+    formOpen: false, formId: null, form: { ...BLANK }, formSnapshot: '', formError: '', saving: false,
+    unsaved: false, confirmId: null,
+    banner: '', bannerKind: 'success', bannerTitle: ''
+  };
+
+  componentDidMount() { this._t = setTimeout(() => this.setState({ loading: false }), 520); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  stop = (e) => e.stopPropagation();
+
+  reload = () => {
+    this.setState({ loading: true, loadError: '', banner: '' });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ loading: false }), 520);
+  };
+
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, page: 0 });
+  clearAll = () => this.setState({ q: '', spec: '', org: '', status: '', page: 0 });
+  prevPage = () => this.setState(s => ({ page: Math.max(0, s.page - 1) }));
+  nextPage = () => this.setState(s => ({ page: s.page + 1 }));
+
+  openDetail = (id) => () => this.setState({ detailId: id });
+  closeDetail = () => this.setState({ detailId: null });
+
+  openCreate = () => this.setState({ formOpen: true, formId: null, form: { ...BLANK }, formSnapshot: JSON.stringify(BLANK), formError: '' });
+  openEdit = (id) => () => {
+    const d = this.state.docs.find(x => x.id === id);
+    if (!d) return;
+    const form = { name: d.name, spec: d.spec, regNo: d.regNo, qual: d.qual, phone: d.phone, email: d.email, org: d.org, priceList: d.priceList, delivery: d.delivery, active: d.active };
+    this.setState({ formOpen: true, formId: id, form, formSnapshot: JSON.stringify(form), formError: '', detailId: null });
+  };
+  editFromDetail = () => this.openEdit(this.state.detailId)();
+
+  updateForm = (e) => {
+    const f = e.target.dataset.field;
+    const v = f === 'phone' ? e.target.value.replace(/\D/g, '') : e.target.value;
+    this.setState(s => ({ form: { ...s.form, [f]: v } }));
+  };
+  toggleFormActive = () => this.setState(s => ({ form: { ...s.form, active: !s.form.active } }));
+
+  tryCloseForm = () => {
+    if (JSON.stringify(this.state.form) !== this.state.formSnapshot) this.setState({ unsaved: true });
+    else this.setState({ formOpen: false, formError: '' });
+  };
+  keepEditing = () => this.setState({ unsaved: false });
+  discardForm = () => this.setState({ unsaved: false, formOpen: false, formError: '' });
+
+  saveForm = () => {
+    const f = this.state.form;
+    const miss = [];
+    if (!String(f.name).trim()) miss.push('Doctor name');
+    if (!f.spec) miss.push('Specialization');
+    if (!String(f.org).trim()) miss.push('Organization');
+    if (String(f.phone).length !== 10) miss.push('Phone (10 digits)');
+    if (String(f.email).trim() && !/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(String(f.email).trim())) miss.push('Valid email');
+    if (miss.length) { this.setState({ formError: '400 Bad Request — check: ' + miss.join(', ') + '.' }); return; }
+    const clash = this.state.docs.find(d => d.phone === f.phone && d.id !== this.state.formId);
+    if (clash) { this.setState({ formError: '409 Conflict — ' + f.phone + ' is already registered to ' + clash.name + '.' }); return; }
+    this.setState({ saving: true, formError: '' });
+    setTimeout(() => {
+      this.setState(s => {
+        const patch = {
+          name: String(f.name).trim(), spec: f.spec, regNo: String(f.regNo).trim() || '—',
+          qual: String(f.qual).trim() || '—', phone: f.phone, email: String(f.email).trim() || '—',
+          org: String(f.org).trim(), priceList: f.priceList, delivery: f.delivery, active: !!f.active
+        };
+        const docs = s.formId
+          ? s.docs.map(d => (d.id === s.formId ? { ...d, ...patch } : d))
+          : [{ id: 'D' + (s.docs.length + 1), referrals: 0, lastReferral: '—', since: 2026, ...patch }].concat(s.docs);
+        return {
+          docs, saving: false, formOpen: false, formError: '',
+          bannerKind: 'success', bannerTitle: s.formId ? '200 OK · ' : '201 Created · ',
+          banner: patch.name + (s.formId ? ' updated.' : ' added to the doctor master.')
+        };
+      });
+    }, 600);
+  };
+
+  askToggle = (id) => () => this.setState({ confirmId: id });
+  closeConfirm = () => this.setState({ confirmId: null });
+  applyConfirm = () => {
+    const id = this.state.confirmId;
+    this.setState(s => {
+      const d = s.docs.find(x => x.id === id);
+      return {
+        confirmId: null,
+        docs: s.docs.map(x => (x.id === id ? { ...x, active: !x.active } : x)),
+        bannerKind: 'success', bannerTitle: '200 OK · ',
+        banner: d.name + ' is now ' + (d.active ? 'inactive — removed from referring-doctor selection.' : 'active and selectable at registration.')
+      };
+    });
+  };
+
+  filtered(s) {
+    const q = s.q.trim().toLowerCase();
+    return s.docs.filter(d => {
+      if (q && (d.name + ' ' + d.org + ' ' + d.phone + ' ' + d.regNo).toLowerCase().indexOf(q) === -1) return false;
+      if (s.spec && d.spec !== s.spec) return false;
+      if (s.org && d.org !== s.org) return false;
+      if (s.status === 'Active' && !d.active) return false;
+      if (s.status === 'Inactive' && d.active) return false;
+      return true;
+    }).sort({
+      name: (a, b) => a.name.localeCompare(b.name),
+      referrals: (a, b) => b.referrals - a.referrals,
+      spec: (a, b) => a.spec.localeCompare(b.spec) || a.name.localeCompare(b.name)
+    }[s.sort]);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const all = this.filtered(s);
+    const pages = Math.max(1, Math.ceil(all.length / PAGE));
+    const page = Math.min(s.page, pages - 1);
+    const rows = s.loading || s.loadError ? [] : all.slice(page * PAGE, page * PAGE + PAGE);
+    const filtersOn = !!(s.q.trim() || s.spec || s.org || s.status);
+    const d = s.docs.find(x => x.id === s.detailId);
+    const c = s.docs.find(x => x.id === s.confirmId);
+    const tone = { success: ['#DCFCE7', '#166534', '#A7F3D0'], error: ['#FEF2F2', '#991B1B', '#FECACA'], info: ['#EFF6FF', '#1E40AF', '#BFDBFE'] }[s.bannerKind];
+    const topIdx = d ? (Number(String(d.id).slice(1)) - 1) % TOP_TESTS.length : 0;
+
+    return {
+      specOptions: SPECS,
+      orgOptions: s.docs.map(x => x.org).filter((v, i, a) => a.indexOf(v) === i).sort(),
+      q: s.q, spec: s.spec, org: s.org, status: s.status, sort: s.sort,
+      updateField: this.updateField, clearAll: this.clearAll, reload: this.reload, openCreate: this.openCreate, stop: this.stop,
+      loading: s.loading, loadError: s.loadError, skeletons: [1, 2, 3, 4, 5, 6],
+      banner: s.banner, bannerTitle: s.bannerTitle, bannerBg: tone[0], bannerFg: tone[1], bannerBd: tone[2],
+      rowCountLabel: s.loading ? 'Loading doctors…' : all.length + ' of ' + s.docs.length + ' doctors',
+      rows: rows.map(x => ({
+        name: x.name, spec: x.spec, regNo: x.regNo, phone: x.phone, org: x.org, email: x.email,
+        referrals: x.referrals.toLocaleString('en-IN'),
+        status: x.active ? 'Active' : 'Inactive',
+        statusBg: x.active ? '#DCFCE7' : 'var(--color-gray-100)',
+        statusFg: x.active ? '#166534' : 'var(--color-text-secondary)',
+        toggleLabel: x.active ? 'Deactivate' : 'Activate',
+        toggleFg: x.active ? '#B91C1C' : '#166534',
+        toggleBd: x.active ? '#FCA5A5' : '#A7F3D0',
+        onView: this.openDetail(x.id), onEdit: this.openEdit(x.id), onToggle: this.askToggle(x.id)
+      })),
+      isEmpty: !s.loading && !s.loadError && all.length === 0,
+      emptyTitle: filtersOn ? 'No doctors match these filters' : 'No referring doctors yet',
+      emptyHint: filtersOn
+        ? 'Clear the search, specialization or status filter to see every doctor.'
+        : 'Add the doctors who refer patients so they can be picked during registration.',
+      emptyActionLabel: filtersOn ? 'Clear filters' : '+ Add Doctor',
+      emptyAction: filtersOn ? this.clearAll : this.openCreate,
+      showPager: !s.loading && !s.loadError && all.length > PAGE,
+      pageLabel: 'Page ' + (page + 1) + ' of ' + pages + ' · showing ' + rows.length + ' rows',
+      atFirst: page === 0, atLast: page >= pages - 1,
+      prevFg: page === 0 ? 'var(--color-text-tertiary)' : 'var(--color-text-secondary)',
+      nextFg: page >= pages - 1 ? 'var(--color-text-tertiary)' : 'var(--color-text-secondary)',
+      prevCursor: page === 0 ? 'not-allowed' : 'pointer',
+      nextCursor: page >= pages - 1 ? 'not-allowed' : 'pointer',
+      prevPage: this.prevPage, nextPage: this.nextPage,
+
+      detail: !!d, closeDetail: this.closeDetail, editFromDetail: this.editFromDetail,
+      detailName: d ? d.name : '', detailSpec: d ? d.spec + ' · ' + d.qual : '',
+      detailRows: d ? [
+        { k: 'Registration no.', v: d.regNo },
+        { k: 'Phone', v: d.phone },
+        { k: 'Email', v: d.email },
+        { k: 'Organization / clinic', v: d.org },
+        { k: 'Referral price list', v: d.priceList },
+        { k: 'Report delivery', v: d.delivery },
+        { k: 'Referrals to date', v: d.referrals.toLocaleString('en-IN') },
+        { k: 'Last referral', v: d.lastReferral },
+        { k: 'Referring since', v: String(d.since) },
+        { k: 'Status', v: d.active ? 'Active' : 'Inactive' }
+      ] : [],
+      detailTests: d ? TOP_TESTS[topIdx].map(t => ({ name: t[0], count: t[1] + ' referrals' })) : [],
+
+      formOpen: s.formOpen, tryCloseForm: this.tryCloseForm, saveForm: this.saveForm,
+      updateForm: this.updateForm, toggleFormActive: this.toggleFormActive,
+      formTitle: s.formId ? 'Edit Doctor' : 'Add Doctor',
+      formSubtitle: s.formId ? 'Doctor master · ' + s.form.name : 'New referring doctor for this organization',
+      fName: s.form.name, fSpec: s.form.spec, fRegNo: s.form.regNo, fQual: s.form.qual,
+      fPhone: s.form.phone, fEmail: s.form.email, fOrg: s.form.org,
+      fPriceList: s.form.priceList, fDelivery: s.form.delivery, fActive: s.form.active,
+      nameBorder: s.formError && !String(s.form.name).trim() ? '#F87171' : 'var(--color-border-base)',
+      specBorder: s.formError && !s.form.spec ? '#F87171' : 'var(--color-border-base)',
+      orgBorder: s.formError && !String(s.form.org).trim() ? '#F87171' : 'var(--color-border-base)',
+      phoneBorder: s.formError && String(s.form.phone).length !== 10 ? '#F87171' : 'var(--color-border-base)',
+      emailBorder: 'var(--color-border-base)',
+      formError: s.formError,
+      saving: s.saving, saveLabel: s.saving ? 'Saving…' : (s.formId ? 'Save Changes' : 'Add Doctor'),
+      saveCursor: s.saving ? 'wait' : 'pointer',
+
+      confirm: !!c, closeConfirm: this.closeConfirm, applyConfirm: this.applyConfirm,
+      confirmTitle: c ? (c.active ? 'Deactivate ' + c.name + '?' : 'Activate ' + c.name + '?') : '',
+      confirmBody: c ? (c.active
+        ? 'The doctor stops appearing in the Referring Doctor field. Past referrals and reports are unchanged.'
+        : 'The doctor becomes selectable during registration again.') : '',
+      confirmLabel: c ? (c.active ? 'Deactivate' : 'Activate') : '',
+      confirmBg: c && c.active ? '#B91C1C' : 'var(--color-primary-deep)',
+
+      unsaved: s.unsaved, keepEditing: this.keepEditing, discardForm: this.discardForm
+    };
+  }
+}
+</script>
+</body>
+</html>

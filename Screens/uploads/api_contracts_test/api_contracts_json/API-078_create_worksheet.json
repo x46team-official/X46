@@ -1,0 +1,97 @@
+{
+  "functionality_id": "API-078",
+  "module": "Worklist Management",
+  "functionality": "Create Worksheet",
+  "http_method": "POST",
+  "endpoint": "/api/worksheets",
+  "description": "Creates a worksheet master entry used alongside a worklist to batch samples for a processing run.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "worksheetCode": "string(30), required",
+      "worksheetName": "string(100), required",
+      "description": "text, optional"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "worksheetCode",
+    "worksheetName"
+  ],
+  "validation": [
+    "organization and branch must exist",
+    "worksheetCode must be unique within organization + branch (uq_worksheet_code)",
+    "worksheetName must be unique within organization + branch (uq_worksheet_name)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Worksheet created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "worksheetCode": "WS001",
+        "worksheetName": "Daily Hematology Worksheet",
+        "isActive": true
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "worksheetCode already exists for the organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate worksheet code"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T142)",
+      "related_functionality_id": "API-083"
+    },
+    {
+      "condition": "worksheetName already exists for the organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate worksheet name"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T143)",
+      "related_functionality_id": "API-084"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "worksheet_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_worksheet_code UNIQUE (organization_id, branch_id, worksheet_code)",
+      "uq_worksheet_name UNIQUE (organization_id, branch_id, worksheet_name)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/009_worklist.sql",
+    "database/api_contracts_test/017_worklist.sql"
+  ],
+  "test_ids": [
+    "API-T137"
+  ]
+}

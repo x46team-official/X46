@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 9px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Reports</div>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main data-fit="screens" style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+
+    <!-- ============ SCREEN 1 — REPORT QUEUE ============ -->
+    <sc-if value="{{ isQueue }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; min-height: 100vh;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Ops / Reports</div>
+          <h1 style="margin: 0 0 10px; font-size: 17px; font-weight: 700;">Reports</h1>
+
+          <div style="display: flex; gap: 8px; align-items: center; max-width: 760px;">
+            <input type="text" placeholder="Search Patient / MRN / Registration No / Accession No / Barcode / Bill No / Test" value="{{ query }}" onChange="{{ onQuery }}" style="padding: 9px 12px; font-size: 13px;" />
+            <button onClick="{{ search }}" style="padding: 9px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Search</button>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: flex-end; margin-top: 10px; flex-wrap: wrap;">
+            <div style="min-width: 134px;"><label>Date</label><input type="date" value="{{ date }}" onChange="{{ updateField }}" data-field="date" /></div>
+            <div style="min-width: 144px;"><label>Department</label><select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept"><option value="">All departments</option><option value="Hematology">Hematology</option><option value="Biochemistry">Biochemistry</option><option value="Immunoassay">Immunoassay</option><option value="Microbiology">Microbiology</option></select></div>
+            <div style="min-width: 150px;"><label>Report Status</label><select value="{{ statusFilter }}" onChange="{{ updateField }}" data-field="statusFilter"><option value="">All</option><option value="READY">Ready</option><option value="GENERATED">Generated</option><option value="PENDING">Pending</option><option value="CORRECTION REQUIRED">Correction Required</option></select></div>
+            <div style="min-width: 108px;"><label>Priority</label><select value="{{ priority }}" onChange="{{ updateField }}" data-field="priority"><option value="">All</option><option value="NORMAL">Normal</option><option value="URGENT">Urgent</option><option value="STAT">STAT</option></select></div>
+            <div style="min-width: 136px;"><label>Test</label><select value="{{ testFilter }}" onChange="{{ updateField }}" data-field="testFilter"><option value="">All tests</option><option value="CBC001">CBC001 — CBC</option><option value="LFT001">LFT001 — LFT</option><option value="HBA1C">HBA1C</option><option value="TSH001">TSH001</option><option value="GLUPP">GLUPP</option></select></div>
+            <div style="min-width: 158px;"><label>Patient</label><select value="{{ patientFilter }}" onChange="{{ updateField }}" data-field="patientFilter"><option value="">All patients</option><option value="Manas Gaikwad">Manas Gaikwad</option><option value="Zubeda Ismail Shaikh">Zubeda Ismail Shaikh</option><option value="Meera Kulkarni">Meera Kulkarni</option><option value="Ibrahim Ahsan Qureshi">Ibrahim Ahsan Qureshi</option></select></div>
+            <button onClick="{{ clearFilters }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear Filters</button>
+          </div>
+        </div>
+
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 0 20px; display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onPick }}" style="padding: 10px 14px; background: none; border: none; border-bottom: 2px solid {{ t.border }}; color: {{ t.color }}; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">{{ t.label }} <span class="num" style="color: var(--color-text-tertiary); font-weight: 500;">{{ t.count }}</span></button>
+          </sc-for>
+          <div style="flex: 1;"></div>
+          <div style="display: flex; gap: 8px; align-items: center; padding: 7px 0;">
+            <span class="num" style="font-size: 11.5px; color: var(--color-text-secondary);">{{ selectionLabel }}</span>
+            <button onClick="{{ generateSelected }}" disabled="{{ noSelection }}" style="padding: 7px 12px; background: {{ bulkBg }}; border: 1px solid {{ bulkBorder }}; border-radius: 4px; font-size: 11.5px; font-weight: 700; color: {{ bulkFg }}; cursor: {{ bulkCursor }};">Generate Selected</button>
+            <button onClick="{{ generateAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Generate All Ready ({{ readyCount }})</button>
+          </div>
+        </div>
+
+        <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBorder }};">{{ banner }}</div>
+        </sc-if>
+
+        <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">Reports: {{ rowCount }}</div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 11px; color: var(--color-text-tertiary);">Only authorized results can be reported</span>
+              <div style="position: relative;">
+                <button onClick="{{ toggleColumnMenu }}" style="padding: 6px 11px; background: #fff; border: 1px solid {{ columnsBorder }}; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Columns · {{ visibleColumnCount }}</button>
+                <sc-if value="{{ columnMenuOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position: absolute; right: 0; top: 36px; z-index: 20; width: 208px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 5px; box-shadow: 0 12px 26px rgba(17,24,39,.16); padding: 6px 0;">
+                    <div style="padding: 6px 12px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary);">Show columns</div>
+                    <sc-for list="{{ columnToggles }}" as="c" hint-placeholder-count="5">
+                      <label style="display: flex; align-items: center; gap: 8px; padding: 5px 12px; margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary); cursor: pointer;">
+                        <input type="checkbox" checked="{{ c.on }}" onChange="{{ c.onToggle }}" /> {{ c.label }}
+                      </label>
+                    </sc-for>
+                    <div style="border-top: 1px solid var(--color-border-light); margin-top: 5px; padding: 6px 12px 2px;">
+                      <button onClick="{{ showAllColumns }}" style="background: none; border: none; padding: 0; font-family: inherit; font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;">Show all</button>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto; max-height: calc(100vh - 320px);">
+            <div style="min-width: 1040px;">
+              <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: {{ gridCols }}; gap: 9px; padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <div><input type="checkbox" checked="{{ allSelected }}" onChange="{{ toggleAll }}" /></div>
+                <sc-if value="{{ colAccession }}" hint-placeholder-val="{{ true }}"><div>Accession</div></sc-if>
+                <div>Patient</div>
+                <div>Test</div>
+                <sc-if value="{{ colDept }}" hint-placeholder-val="{{ true }}"><div>Department</div></sc-if>
+                <sc-if value="{{ colAuthOn }}" hint-placeholder-val="{{ true }}"><div>Authorized On</div></sc-if>
+                <sc-if value="{{ colAuthBy }}" hint-placeholder-val="{{ true }}"><div>Authorized By</div></sc-if>
+                <sc-if value="{{ colStatus }}" hint-placeholder-val="{{ true }}"><div>Report Status</div></sc-if>
+                <div>Actions</div>
+              </div>
+
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+                <div style="display: grid; grid-template-columns: {{ gridCols }}; gap: 9px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ r.rowBg }}; box-shadow: inset 3px 0 0 0 {{ r.priorityEdge }};" style-hover="background: var(--color-gray-50);">
+                  <div><input type="checkbox" checked="{{ r.selected }}" onChange="{{ r.onSelect }}" disabled="{{ r.selectDisabled }}" /></div>
+                  <sc-if value="{{ colAccession }}" hint-placeholder-val="{{ true }}">
+                    <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.accessionNo }}</div>
+                  </sc-if>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patientName }}</div>
+                    <div class="mono" style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.mrn }}</div>
+                  </div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.testName }}">{{ r.short }}</div>
+                    <div class="mono" style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.testCode }}</div>
+                  </div>
+                  <sc-if value="{{ colDept }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.dept }}</div>
+                  </sc-if>
+                  <sc-if value="{{ colAuthOn }}" hint-placeholder-val="{{ true }}">
+                    <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.authorizedAt }}</div>
+                  </sc-if>
+                  <sc-if value="{{ colAuthBy }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.authorizedBy }}</div>
+                  </sc-if>
+                  <sc-if value="{{ colStatus }}" hint-placeholder-val="{{ true }}">
+                    <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.reportStatus }}</span></div>
+                  </sc-if>
+                  <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <button onClick="{{ r.onPreview }}" style="padding: 5px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Preview</button>
+                    <sc-if value="{{ r.canGenerate }}" hint-placeholder-val="{{ true }}">
+                      <button onClick="{{ r.onGenerate }}" style="padding: 5px 9px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Generate Report</button>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 56px 20px; text-align: center;">
+                  <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No reports in this view</div>
+                  <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Adjust the filters, or authorize results in Result Validation.</div>
+                  <button onClick="{{ clearFilters }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Clear Filters</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ SCREEN 2 — REPORT PREVIEW / GENERATION ============ -->
+    <sc-if value="{{ isPreview }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; min-height: 100vh;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 10px 20px; position: sticky; top: 0; z-index: 10;">
+          <button onClick="{{ backToQueue }}" style="background: none; border: none; padding: 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;">‹ Back to Reports</button>
+          <div style="display: flex; align-items: center; gap: 16px; margin-top: 6px; flex-wrap: wrap;">
+            <div>
+              <div style="font-size: 15px; font-weight: 700;">Report Preview</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ dPatient }} · <span class="mono">{{ dMrn }}</span> · <span class="mono">{{ dRegistration }}</span> · <span class="mono">{{ dAccession }}</span></div>
+            </div>
+            <span style="padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dStatusBg }}; color: {{ dStatusFg }};">{{ dStatus }}</span>
+            <div style="flex: 1;"></div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button onClick="{{ printPreview }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Print Preview</button>
+              <sc-if value="{{ canGenerateOne }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ askGenerate }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;" style-hover="background: var(--color-primary-bright);">Generate Report</button>
+              </sc-if>
+              <sc-if value="{{ isGenerated }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ viewReport }}" style="padding: 8px 14px; background: var(--color-accent-teal); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">View Report</button>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 10px 20px; font-size: 12px; font-weight: 600; background: {{ toastBg }}; color: {{ toastFg }}; border-bottom: 1px solid {{ toastBorder }}; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <span>{{ toast }}</span>
+            <sc-if value="{{ isGenerated }}" hint-placeholder-val="{{ false }}">
+              <span style="display: flex; gap: 8px;">
+                <button onClick="{{ viewReport }}" style="padding: 4px 10px; background: #fff; border: 1px solid currentColor; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: inherit; cursor: pointer;">View Report</button>
+                <button onClick="{{ printPreview }}" style="padding: 4px 10px; background: #fff; border: 1px solid currentColor; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: inherit; cursor: pointer;">Print</button>
+              </span>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <div style="flex: 1; padding: 16px 20px 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 280px); gap: 16px; align-items: start;">
+
+          <!-- Report sheet -->
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 26px 28px; min-width: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--color-primary-deep); flex-wrap: wrap;">
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700;">X46</div>
+                <div>
+                  <div style="font-size: 16px; font-weight: 700; letter-spacing: .01em;">X46 Diagnostics</div>
+                  <div style="font-size: 11px; color: var(--color-text-secondary);">Pune Main Branch · NABL accredited laboratory</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 11px; color: var(--color-text-tertiary); font-weight: 600; text-transform: uppercase; letter-spacing: .06em;">Laboratory Report</div>
+                <div class="mono" style="font-size: 12px; font-weight: 700;">{{ dReportNumber }}</div>
+                <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">Report date {{ dReportDate }}</div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 18px; padding: 14px 0; border-bottom: 1px solid var(--color-border-light);">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Patient Name</div><div style="font-size: 13px; font-weight: 700;">{{ dPatient }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Age / Gender</div><div style="font-size: 12.5px; font-weight: 600;">{{ dAge }} · {{ dGender }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">MRN</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dMrn }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Registration No</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dRegistration }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Contact</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dContact }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Referring Doctor</div><div style="font-size: 12.5px; font-weight: 600;">{{ dDoctor }}</div></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 18px; padding: 14px 0; border-bottom: 1px solid var(--color-border-light);">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Accession Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dAccession }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Sample ID / Barcode</div><div class="mono" style="font-size: 12.5px; font-weight: 600; word-break: break-all;">{{ dBarcode }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Sample Type</div><div style="font-size: 12.5px; font-weight: 600;">{{ dSampleType }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Department</div><div style="font-size: 12.5px; font-weight: 600;">{{ dDept }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Collected</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dCollectedFull }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Received</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dReceivedFull }}</div></div>
+            </div>
+
+            <div style="padding-top: 18px;">
+              <div style="font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 10px;">{{ dTestCode }} — {{ dTestName }}</div>
+
+              <div style="border: 1px solid var(--color-border-light); border-radius: 4px; overflow: auto;">
+                <div style="display: grid; grid-template-columns: minmax(120px,1.5fr) minmax(72px,0.7fr) minmax(58px,0.6fr) minmax(96px,1fr) 76px; gap: 8px; padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                  <div>Parameter</div><div>Result</div><div>Unit</div><div>Reference Range</div><div>Flag</div>
+                </div>
+                <sc-for list="{{ params }}" as="p" hint-placeholder-count="8">
+                  <div style="display: grid; grid-template-columns: minmax(120px,1.5fr) minmax(72px,0.7fr) minmax(58px,0.6fr) minmax(96px,1fr) 76px; gap: 8px; padding: 6px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ p.rowBg }};">
+                    <div style="font-size: 12.5px; font-weight: {{ p.nameWeight }};">{{ p.name }}</div>
+                    <div class="num" style="font-size: 13px; font-weight: 700; color: {{ p.valueColor }};">{{ p.value }}</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary);">{{ p.unit }}</div>
+                    <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ p.range }}</div>
+                    <div>
+                      <sc-if value="{{ p.hasFlag }}" hint-placeholder-val="{{ false }}">
+                        <span style="display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-weight: 700; letter-spacing: .03em; background: {{ p.flagBg }}; color: {{ p.flagFg }};">{{ p.flag }}</span>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <sc-if value="{{ hasSmear }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 16px;">
+                  <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary); margin-bottom: 6px;">Peripheral Smear</div>
+                  <sc-for list="{{ smear }}" as="sm" hint-placeholder-count="3">
+                    <div style="display: flex; justify-content: space-between; gap: 14px; padding: 5px 0; border-bottom: 1px dotted var(--color-border-light); font-size: 12.5px;">
+                      <span style="color: var(--color-text-secondary);">{{ sm.name }}</span>
+                      <span style="font-weight: 600; text-align: right;">{{ sm.value }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <div style="margin-top: 16px;">
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary); margin-bottom: 4px;">Impression</div>
+                <div style="font-size: 12.5px;">{{ dImpression }}</div>
+              </div>
+              <div style="margin-top: 12px;">
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary); margin-bottom: 4px;">Advice</div>
+                <div style="font-size: 12.5px;">{{ dAdvice }}</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;">
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary); max-width: 420px;">
+                Results relate only to the sample received. This report is not valid for medico-legal purposes. Printed from X46 LIMS.
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 12.5px; font-weight: 700;">{{ dAuthorizedBy }}</div>
+                <div style="font-size: 10.5px; color: var(--color-text-secondary);">Consultant Pathologist · MD Pathology</div>
+                <div class="num" style="font-size: 10.5px; color: var(--color-text-tertiary);">Authorized {{ dAuthorizedFull }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side panel -->
+          <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Authorization</div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Authorized By</div><div style="font-size: 12.5px; font-weight: 700;">{{ dAuthorizedBy }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Authorization Date / Time</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dAuthorizedFull }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Result Status</div><div><span style="display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: #DCFCE7; color: #166534;">AUTHORIZED</span></div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Report Status</div><div><span style="display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dStatusBg }}; color: {{ dStatusFg }};">{{ dStatus }}</span></div></div>
+              </div>
+              <div style="margin-top: 12px; padding: 9px 11px; border-radius: 4px; background: var(--color-gray-50); font-size: 11px; color: var(--color-text-secondary);">Authorized results are read-only here. Corrections must go back through Result Validation.</div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Order &amp; Organization</div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Bill Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dBillNumber }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Order Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dOrderNumber }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Organization</div><div style="font-size: 12.5px; font-weight: 600;">X46 Diagnostics</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Branch</div><div style="font-size: 12.5px; font-weight: 600;">Pune Main</div></div>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Other tests in this order</div>
+              <sc-for list="{{ siblingTests }}" as="q" hint-placeholder-count="2">
+                <button onClick="{{ q.onPick }}" style="display: block; width: 100%; text-align: left; padding: 8px 0; background: none; border: none; border-bottom: 1px solid var(--color-border-light); font-family: inherit; cursor: pointer;">
+                  <div style="font-size: 12px; font-weight: {{ q.weight }}; color: {{ q.color }};">{{ q.short }} — {{ q.testName }}</div>
+                  <div style="display: flex; justify-content: space-between; gap: 8px; margin-top: 2px;">
+                    <span class="mono" style="font-size: 10px; color: var(--color-text-tertiary);">{{ q.accessionNo }}</span>
+                    <span style="font-size: 10px; font-weight: 700; color: var(--color-text-secondary);">{{ q.reportStatus }}</span>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- Generate confirmation modal -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.4); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeModal }}">
+      <div onClick="{{ stop }}" style="width: 440px; background: #fff; border-radius: 6px; box-shadow: 0 20px 40px rgba(17,24,39,.22); overflow: hidden;">
+        <div style="padding: 14px 18px; border-bottom: 1px solid var(--color-border-light);">
+          <div style="font-size: 14px; font-weight: 700;">Generate report</div>
+          <div style="font-size: 12px; color: var(--color-text-tertiary); margin-top: 2px;">{{ modalSubtitle }}</div>
+        </div>
+        <div style="padding: 16px 18px;">
+          <div style="border: 1px solid var(--color-border-light); border-radius: 4px; overflow: hidden;">
+            <sc-for list="{{ modalFacts }}" as="f" hint-placeholder-count="4">
+              <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--color-border-light); font-size: 12px;">
+                <span style="color: var(--color-text-tertiary); font-weight: 600;">{{ f.k }}</span>
+                <span style="font-weight: 600; text-align: right;">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 12px 18px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px; justify-content: flex-end;">
+          <button onClick="{{ closeModal }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+          <button onClick="{{ confirmGenerate }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Generate Report</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const PANELS = {
+  CBC001: [
+    { code: 'HB', name: 'Hemoglobin', unit: 'g/dL', low: 13, high: 18, range: '13.0 – 18.0' },
+    { code: 'RBC', name: 'RBC Count', unit: 'mill/µL', low: 4.5, high: 5.9, range: '4.5 – 5.9' },
+    { code: 'PCV', name: 'Packed Cell Volume', unit: '%', low: 40, high: 50, range: '40.0 – 50.0' },
+    { code: 'MCV', name: 'MCV', unit: 'fL', low: 83, high: 101, range: '83 – 101' },
+    { code: 'MCH', name: 'MCH', unit: 'pg', low: 27, high: 32, range: '27 – 32' },
+    { code: 'MCHC', name: 'MCHC', unit: 'g/dL', low: 31.5, high: 34.5, range: '31.5 – 34.5' },
+    { code: 'RDW', name: 'RDW', unit: '%', low: 11.6, high: 14, range: '11.6 – 14.0' },
+    { code: 'TLC', name: 'Total Leucocyte Count', unit: '/µL', low: 4000, high: 11000, range: '4,000 – 11,000' },
+    { code: 'NEU', name: 'Neutrophils', unit: '%', low: 40, high: 80, range: '40 – 80' },
+    { code: 'LYM', name: 'Lymphocytes', unit: '%', low: 20, high: 40, range: '20 – 40' },
+    { code: 'MON', name: 'Monocytes', unit: '%', low: 2, high: 10, range: '2 – 10' },
+    { code: 'EOS', name: 'Eosinophils', unit: '%', low: 1, high: 6, range: '1 – 6' },
+    { code: 'PLT', name: 'Platelet Count', unit: '/µL', low: 150000, high: 410000, range: '1,50,000 – 4,10,000' },
+    { code: 'MPV', name: 'MPV', unit: 'fL', low: 6.5, high: 12, range: '6.5 – 12.0' },
+    { code: 'RBCM', name: 'RBC Morphology', unit: '', text: true, range: 'Normocytic normochromic', smear: true },
+    { code: 'WBCM', name: 'WBC Morphology', unit: '', text: true, range: 'Within normal limits', smear: true },
+    { code: 'PLTM', name: 'Platelet Morphology', unit: '', text: true, range: 'Adequate on smear', smear: true }
+  ],
+  LFT001: [
+    { code: 'TBIL', name: 'Total Bilirubin', unit: 'mg/dL', low: 0.3, high: 1.2, range: '0.3 – 1.2' },
+    { code: 'DBIL', name: 'Direct Bilirubin', unit: 'mg/dL', low: 0, high: 0.3, range: '0.0 – 0.3' },
+    { code: 'SGOT', name: 'AST (SGOT)', unit: 'U/L', low: 10, high: 40, range: '10 – 40' },
+    { code: 'SGPT', name: 'ALT (SGPT)', unit: 'U/L', low: 10, high: 45, range: '10 – 45' },
+    { code: 'ALP', name: 'Alkaline Phosphatase', unit: 'U/L', low: 40, high: 129, range: '40 – 129' },
+    { code: 'TPROT', name: 'Total Protein', unit: 'g/dL', low: 6.4, high: 8.3, range: '6.4 – 8.3' },
+    { code: 'ALB', name: 'Albumin', unit: 'g/dL', low: 3.5, high: 5.2, range: '3.5 – 5.2' }
+  ],
+  HBA1C: [
+    { code: 'HBA1C', name: 'Glycated Haemoglobin', unit: '%', low: 4, high: 5.6, range: '4.0 – 5.6' },
+    { code: 'EAG', name: 'Estimated Average Glucose', unit: 'mg/dL', low: 68, high: 114, range: '68 – 114' }
+  ],
+  TSH001: [{ code: 'TSH', name: 'Thyroid Stimulating Hormone', unit: 'µIU/mL', low: 0.35, high: 4.94, range: '0.35 – 4.94' }],
+  GLUPP: [{ code: 'GLUPP', name: 'Blood Glucose (Post Prandial)', unit: 'mg/dL', low: 70, high: 140, range: '70 – 140' }]
+};
+
+const RESULTS = {
+  1: { HB: '6.2', RBC: '3.1', PCV: '24.0', MCV: '77.4', MCH: '20.0', MCHC: '25.8', RDW: '16.8', TLC: '12800', NEU: '84', LYM: '12', MON: '3', EOS: '1', PLT: '96000', MPV: '11.4', RBCM: 'Microcytic hypochromic', WBCM: 'Neutrophilic leucocytosis', PLTM: 'Reduced on smear' },
+  2: { TBIL: '1.0', DBIL: '0.2', SGOT: '38', SGPT: '52', ALP: '104', TPROT: '7.1', ALB: '4.2' },
+  3: { HBA1C: '6.1', EAG: '128' },
+  4: { GLUPP: '186' },
+  5: { TSH: '3.10' },
+  6: { TBIL: '0.8', DBIL: '0.2', SGOT: '31', SGPT: '36', ALP: '92', TPROT: '6.9', ALB: '4.0' }
+};
+
+const SEED = [
+  { id: 1, accessionNo: 'ACC0001', billNumber: 'BL-2026-009114', orderNumber: 'ORD-77412', registrationNumber: 'REG-2026-004182', reportNumber: 'RPT-2026-021884', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, contact: '+91 98220 14577', doctor: 'Dr. S. Kulkarni', testCode: 'CBC001', short: 'CBC', testName: 'Complete Blood Count', sampleType: 'EDTA Whole Blood', dept: 'Hematology', barcode: 'BC20260801160902496', priority: 'NORMAL', collectedFull: '18 Aug 2026, 08:55', receivedFull: '18 Aug 2026, 10:30', reportDate: '18 Aug 2026', authorizedAt: '18 Aug, 12:30', authorizedFull: '18 Aug 2026, 12:30', authorizedBy: 'Dr. A. Mehta', reportStatus: 'READY', impression: 'Microcytic hypochromic anaemia with neutrophilic leucocytosis and thrombocytopenia.', advice: 'Clinical correlation and haematology consultation advised.' },
+  { id: 2, accessionNo: 'ACC0002', billNumber: 'BL-2026-009114', orderNumber: 'ORD-77412', registrationNumber: 'REG-2026-004182', reportNumber: 'RPT-2026-021885', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, contact: '+91 98220 14577', doctor: 'Dr. S. Kulkarni', testCode: 'LFT001', short: 'LFT', testName: 'Liver Function Test', sampleType: 'Serum', dept: 'Biochemistry', barcode: 'BC20260801160902497', priority: 'NORMAL', collectedFull: '18 Aug 2026, 08:55', receivedFull: '18 Aug 2026, 10:32', reportDate: '18 Aug 2026', authorizedAt: '18 Aug, 12:34', authorizedFull: '18 Aug 2026, 12:34', authorizedBy: 'Dr. A. Mehta', reportStatus: 'READY', impression: 'Mildly raised ALT. Other liver parameters within normal limits.', advice: 'Repeat after two weeks if clinically indicated.' },
+  { id: 3, accessionNo: 'ACC0003', billNumber: 'BL-2026-009114', orderNumber: 'ORD-77412', registrationNumber: 'REG-2026-004182', reportNumber: 'RPT-2026-021886', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, contact: '+91 98220 14577', doctor: 'Dr. S. Kulkarni', testCode: 'HBA1C', short: 'HbA1c', testName: 'Glycated Haemoglobin', sampleType: 'EDTA Whole Blood', dept: 'Biochemistry', barcode: 'BC20260801160902498', priority: 'NORMAL', collectedFull: '18 Aug 2026, 08:55', receivedFull: '18 Aug 2026, 10:33', reportDate: '—', authorizedAt: '—', authorizedFull: '—', authorizedBy: '—', reportStatus: 'PENDING', impression: 'Awaiting authorization.', advice: '—' },
+  { id: 4, accessionNo: 'ACC0005', billNumber: 'BL-2026-009090', orderNumber: 'ORD-77385', registrationNumber: 'REG-2026-004160', reportNumber: 'RPT-2026-021871', patientName: 'Zubeda Ismail Shaikh', mrn: 'MRN-TEST-030', sex: 'Female', age: 74, contact: '+91 91300 77415', doctor: 'Dr. S. Kulkarni', testCode: 'GLUPP', short: 'GLU-PP', testName: 'Blood Glucose (Post Prandial)', sampleType: 'Fluoride Plasma', dept: 'Biochemistry', barcode: 'BC20260801160902548', priority: 'STAT', collectedFull: '18 Aug 2026, 07:55', receivedFull: '18 Aug 2026, 08:12', reportDate: '18 Aug 2026', authorizedAt: '18 Aug, 10:05', authorizedFull: '18 Aug 2026, 10:05', authorizedBy: 'Dr. A. Mehta', reportStatus: 'READY', impression: 'Post prandial hyperglycaemia.', advice: 'Correlate with fasting glucose and HbA1c.' },
+  { id: 5, accessionNo: 'ACC0007', billNumber: 'BL-2026-009076', orderNumber: 'ORD-77361', registrationNumber: 'REG-2026-004147', reportNumber: 'RPT-2026-021840', patientName: 'Meera Kulkarni', mrn: 'MRN-TEST-052', sex: 'Female', age: 36, contact: '+91 88880 11902', doctor: 'Self', testCode: 'TSH001', short: 'TSH', testName: 'Thyroid Stimulating Hormone', sampleType: 'Serum', dept: 'Immunoassay', barcode: 'BC20260801160902577', priority: 'NORMAL', collectedFull: '17 Aug 2026, 15:40', receivedFull: '17 Aug 2026, 16:05', reportDate: '17 Aug 2026', authorizedAt: '17 Aug, 18:02', authorizedFull: '17 Aug 2026, 18:02', authorizedBy: 'Dr. R. Bhosale', reportStatus: 'GENERATED', impression: 'Euthyroid.', advice: 'No further action required.' },
+  { id: 6, accessionNo: 'ACC0006', billNumber: 'BL-2026-009081', orderNumber: 'ORD-77370', registrationNumber: 'REG-2026-004152', reportNumber: 'RPT-2026-021852', patientName: 'Ibrahim Ahsan Qureshi', mrn: 'MRN-TEST-044', sex: 'Male', age: 70, contact: '+91 99604 22318', doctor: 'Dr. A. Mehta', testCode: 'LFT001', short: 'LFT', testName: 'Liver Function Test', sampleType: 'Serum', dept: 'Biochemistry', barcode: 'BC20260801160902561', priority: 'NORMAL', collectedFull: '17 Aug 2026, 14:20', receivedFull: '17 Aug 2026, 16:40', reportDate: '—', authorizedAt: '—', authorizedFull: '—', authorizedBy: '—', reportStatus: 'CORRECTION REQUIRED', impression: 'Returned for correction.', advice: '—' }
+];
+
+const NOW = '18 Aug 2026, 13:10';
+
+class Component extends DCLogic {
+  state = {
+    rows: SEED.map(r => ({ ...r, selected: false })),
+    screen: 'queue', selectedId: null,
+    query: '', date: '2026-08-18', dept: '', statusFilter: '', priority: '', testFilter: '', patientFilter: '',
+    tab: 'Ready for Report', banner: '', bannerKind: 'info',
+    modalOpen: false, modalIds: [],
+    toast: '', toastKind: 'success',
+    columnMenuOpen: false,
+    colAccession: true, colDept: true, colAuthOn: true, colAuthBy: true, colStatus: true
+  };
+
+  toggleColumnMenu = () => this.setState(s => ({ columnMenuOpen: !s.columnMenuOpen }));
+  toggleColumn = (key) => () => this.setState(s => ({ [key]: !s[key] }));
+  showAllColumns = () => this.setState({ colAccession: true, colDept: true, colAuthOn: true, colAuthBy: true, colStatus: true });
+
+  onQuery = (e) => this.setState({ query: e.target.value });
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value });
+  clearFilters = () => this.setState({ query: '', dept: '', statusFilter: '', priority: '', testFilter: '', patientFilter: '', banner: '' });
+  search = () => this.setState({ banner: this.state.query.trim() ? 'Showing matches for “' + this.state.query.trim() + '”.' : 'Showing all reportable results.', bannerKind: 'info' });
+  setTab = (t) => () => this.setState({ tab: t });
+  stop = (e) => e.stopPropagation();
+
+  inTab(r, tab) {
+    if (tab === 'Ready for Report') return r.reportStatus === 'READY';
+    if (tab === 'Generated') return r.reportStatus === 'GENERATED';
+    if (tab === 'Pending') return r.reportStatus === 'PENDING';
+    if (tab === 'Rejected / Correction Required') return r.reportStatus === 'CORRECTION REQUIRED';
+    return true;
+  }
+
+  visible(s) {
+    const q = s.query.trim().toLowerCase();
+    return s.rows.filter(r =>
+      this.inTab(r, s.tab) &&
+      (!s.dept || r.dept === s.dept) &&
+      (!s.statusFilter || r.reportStatus === s.statusFilter) &&
+      (!s.priority || r.priority === s.priority) &&
+      (!s.testFilter || r.testCode === s.testFilter) &&
+      (!s.patientFilter || r.patientName === s.patientFilter) &&
+      (!q || [r.patientName, r.mrn, r.registrationNumber, r.accessionNo, r.barcode, r.billNumber, r.testCode, r.testName].join(' ').toLowerCase().includes(q))
+    );
+  }
+
+  toggleRow = (id) => () => this.setState(s => ({ rows: s.rows.map(r => r.id === id ? { ...r, selected: !r.selected } : r) }));
+
+  toggleAll = () => {
+    const vis = this.visible(this.state).filter(r => r.reportStatus === 'READY').map(r => r.id);
+    const all = vis.length > 0 && vis.every(id => this.state.rows.find(r => r.id === id).selected);
+    this.setState(s => ({ rows: s.rows.map(r => vis.includes(r.id) ? { ...r, selected: !all } : r) }));
+  };
+
+  preview = (id) => () => this.setState({ screen: 'preview', selectedId: id, toast: '' });
+  pickSibling = (id) => () => this.setState({ selectedId: id, toast: '' });
+  backToQueue = () => this.setState({ screen: 'queue', toast: '' });
+  printPreview = () => this.setState({ toast: 'Print view prepared for this report.', toastKind: 'info' });
+  viewReport = () => this.setState({ toast: 'Generated report opened in the report viewer.', toastKind: 'info' });
+
+  askGenerate = () => this.setState(s => ({ modalOpen: true, modalIds: [s.selectedId] }));
+
+  generateSelected = () => {
+    const ids = this.state.rows.filter(r => r.selected && r.reportStatus === 'READY').map(r => r.id);
+    if (!ids.length) return;
+    this.setState({ modalOpen: true, modalIds: ids });
+  };
+
+  generateAll = () => {
+    const ids = this.state.rows.filter(r => r.reportStatus === 'READY').map(r => r.id);
+    if (!ids.length) { this.setState({ banner: 'No results are ready for report generation.', bannerKind: 'warning' }); return; }
+    this.setState({ modalOpen: true, modalIds: ids });
+  };
+
+  closeModal = () => this.setState({ modalOpen: false });
+
+  confirmGenerate = () => {
+    const ids = this.state.modalIds;
+    this.setState(s => ({
+      rows: s.rows.map(r => ids.includes(r.id) ? { ...r, reportStatus: 'GENERATED', selected: false, generatedAt: NOW } : r),
+      modalOpen: false,
+      toast: ids.length === 1 ? 'Report generated successfully.' : ids.length + ' reports generated successfully.',
+      toastKind: 'success',
+      banner: s.screen === 'queue' ? (ids.length === 1 ? 'Report generated successfully.' : ids.length + ' reports generated successfully.') : s.banner,
+      bannerKind: 'success'
+    }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const tone = { warning: ['#FFFBEB', '#92400E', '#FCD34D'], error: ['#FEF2F2', '#991B1B', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] };
+    const prio = { NORMAL: ['#F3F4F6', '#374151', 'transparent'], URGENT: ['#FEF3C7', '#92400E', 'var(--color-warning)'], STAT: ['#FEE2E2', '#991B1B', 'var(--color-error)'] };
+    const stat = {
+      READY: ['#DBEAFE', '#1E40AF'], GENERATED: ['#DCFCE7', '#166534'],
+      PENDING: ['#F3F4F6', '#4B5563'], 'CORRECTION REQUIRED': ['#FEF3C7', '#92400E']
+    };
+    const flagTone = {
+      CRITICAL: ['#FEE2E2', '#991B1B', '#FEF2F2', 'var(--color-error)'],
+      HIGH: ['#FEF3C7', '#92400E', '#FFFDF5', '#92400E'],
+      LOW: ['#DBEAFE', '#1E40AF', '#F8FAFF', '#1E40AF'],
+      NORMAL: ['', '', '#fff', 'var(--color-text-primary)']
+    };
+
+    const flagOf = (p, raw) => {
+      if (p.text || p.low === undefined) return 'NORMAL';
+      const n = parseFloat(String(raw).replace(/,/g, ''));
+      if (isNaN(n)) return 'NORMAL';
+      const span = p.high - p.low;
+      if (n < p.low - span * 0.5 || n > p.high + span * 0.5) return 'CRITICAL';
+      if (n < p.low) return 'LOW';
+      if (n > p.high) return 'HIGH';
+      return 'NORMAL';
+    };
+
+    const vis = this.visible(s);
+    const rows = vis.map(r => {
+      const p = prio[r.priority], t = stat[r.reportStatus];
+      return {
+        ...r,
+        priorityBg: p[0], priorityFg: p[1], priorityEdge: p[2],
+        statusBg: t[0], statusFg: t[1],
+        rowBg: r.selected ? 'var(--color-interactive-hover)' : '#fff',
+        canGenerate: r.reportStatus === 'READY',
+        selectDisabled: r.reportStatus !== 'READY',
+        onSelect: this.toggleRow(r.id),
+        onPreview: this.preview(r.id),
+        onGenerate: () => this.setState({ modalOpen: true, modalIds: [r.id], selectedId: r.id })
+      };
+    });
+
+    const tabs = ['Ready for Report', 'Generated', 'Pending', 'Rejected / Correction Required'].map(label => ({
+      label, onPick: this.setTab(label),
+      count: s.rows.filter(r => this.inTab(r, label)).length,
+      border: s.tab === label ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.tab === label ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    const sel = s.rows.filter(r => r.selected && r.reportStatus === 'READY');
+    const readyVis = vis.filter(r => r.reportStatus === 'READY');
+
+    const d = s.selectedId ? s.rows.find(r => r.id === s.selectedId) : null;
+    const dS = d ? stat[d.reportStatus] : stat.READY;
+    const panel = d ? (PANELS[d.testCode] || []) : [];
+    const vals = d ? (RESULTS[d.id] || {}) : {};
+
+    const params = [], smear = [];
+    panel.forEach(p => {
+      const raw = vals[p.code] !== undefined ? vals[p.code] : '–';
+      if (p.smear) { smear.push({ name: p.name, value: raw }); return; }
+      const flag = flagOf(p, raw);
+      const ft = flagTone[flag];
+      params.push({
+        ...p, value: raw,
+        hasFlag: flag !== 'NORMAL', flag, flagBg: ft[0], flagFg: ft[1], rowBg: ft[2], valueColor: ft[3],
+        nameWeight: flag === 'NORMAL' ? 500 : 700
+      });
+    });
+
+    const siblingTests = d ? s.rows.filter(r => r.orderNumber === d.orderNumber).map(r => {
+      const on = r.id === d.id;
+      return { ...r, onPick: this.pickSibling(r.id), weight: on ? 700 : 500, color: on ? 'var(--color-primary-deep)' : 'var(--color-text-primary)' };
+    }) : [];
+
+    const modalRows = s.modalIds.map(id => s.rows.find(r => r.id === id)).filter(Boolean);
+    const first = modalRows[0];
+    const many = modalRows.length > 1;
+
+    const tToast = tone[s.toastKind], tBanner = tone[s.bannerKind];
+
+    return {
+      ...s,
+      isQueue: s.screen === 'queue',
+      isPreview: s.screen === 'preview',
+      rows, tabs, params, smear, siblingTests,
+      columnToggles: [['colAccession', 'Accession Number'], ['colDept', 'Department'], ['colAuthOn', 'Authorized On'], ['colAuthBy', 'Authorized By'], ['colStatus', 'Report Status']]
+        .map(([k, label]) => ({ label, on: s[k], onToggle: this.toggleColumn(k) })),
+      visibleColumnCount: 3 + ['colAccession', 'colDept', 'colAuthOn', 'colAuthBy', 'colStatus'].filter(k => s[k]).length,
+      columnsBorder: s.columnMenuOpen ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+      gridCols: ['32px', s.colAccession ? '96px' : '', 'minmax(130px,1fr)', '100px', s.colDept ? '116px' : '', s.colAuthOn ? '116px' : '', s.colAuthBy ? '116px' : '', s.colStatus ? '122px' : '', '118px'].filter(Boolean).join(' '),
+      rowCount: rows.length,
+      isEmpty: rows.length === 0,
+      hasSmear: smear.length > 0,
+      allSelected: readyVis.length > 0 && readyVis.every(r => r.selected),
+      noSelection: sel.length === 0,
+      selectionLabel: sel.length ? sel.length + ' selected' : '',
+      readyCount: s.rows.filter(r => r.reportStatus === 'READY').length,
+      bulkBg: sel.length ? 'var(--color-primary-deep)' : 'var(--color-gray-100)',
+      bulkFg: sel.length ? '#fff' : 'var(--color-text-tertiary)',
+      bulkBorder: sel.length ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+      bulkCursor: sel.length ? 'pointer' : 'not-allowed',
+      bannerBg: tBanner[0], bannerFg: tBanner[1], bannerBorder: tBanner[2],
+      toastBg: tToast[0], toastFg: tToast[1], toastBorder: tToast[2],
+      dPatient: d ? d.patientName : '',
+      dMrn: d ? d.mrn : '',
+      dRegistration: d ? d.registrationNumber : '',
+      dAccession: d ? d.accessionNo : '',
+      dAge: d ? d.age + ' years' : '',
+      dGender: d ? d.sex : '',
+      dContact: d ? d.contact : '',
+      dDoctor: d ? d.doctor : '',
+      dTestCode: d ? d.testCode : '',
+      dTestName: d ? d.testName : '',
+      dDept: d ? d.dept : '',
+      dSampleType: d ? d.sampleType : '',
+      dBarcode: d ? d.barcode : '',
+      dBillNumber: d ? d.billNumber : '',
+      dOrderNumber: d ? d.orderNumber : '',
+      dReportNumber: d ? d.reportNumber : '',
+      dReportDate: d ? d.reportDate : '',
+      dCollectedFull: d ? d.collectedFull : '',
+      dReceivedFull: d ? d.receivedFull : '',
+      dAuthorizedBy: d ? d.authorizedBy : '',
+      dAuthorizedFull: d ? d.authorizedFull : '',
+      dImpression: d ? d.impression : '',
+      dAdvice: d ? d.advice : '',
+      dStatus: d ? d.reportStatus : '',
+      dStatusBg: dS[0], dStatusFg: dS[1],
+      canGenerateOne: !!(d && d.reportStatus === 'READY'),
+      isGenerated: !!(d && d.reportStatus === 'GENERATED'),
+      modalSubtitle: many ? 'Generate ' + modalRows.length + ' reports using the authorized results?' : 'Generate this report using the authorized results?',
+      modalFacts: !first ? [] : (many ? [
+        { k: 'Reports', v: String(modalRows.length) },
+        { k: 'Patients', v: String(new Set(modalRows.map(r => r.mrn)).size) },
+        { k: 'All authorized', v: 'Yes' },
+        { k: 'Report Status', v: 'READY → GENERATED' }
+      ] : [
+        { k: 'Patient', v: first.patientName + ' · ' + first.mrn },
+        { k: 'Accession', v: first.accessionNo },
+        { k: 'Test', v: first.testCode + ' — ' + first.testName },
+        { k: 'Authorized By', v: first.authorizedBy + ' · ' + first.authorizedFull }
+      ]),
+      onQuery: this.onQuery, updateField: this.updateField, clearFilters: this.clearFilters, search: this.search,
+      toggleColumnMenu: this.toggleColumnMenu, showAllColumns: this.showAllColumns,
+      toggleAll: this.toggleAll, generateSelected: this.generateSelected, generateAll: this.generateAll,
+      backToQueue: this.backToQueue, printPreview: this.printPreview, viewReport: this.viewReport,
+      askGenerate: this.askGenerate, closeModal: this.closeModal, confirmGenerate: this.confirmGenerate, stop: this.stop
+    };
+  }
+}
+</script>
+</body>
+</html>

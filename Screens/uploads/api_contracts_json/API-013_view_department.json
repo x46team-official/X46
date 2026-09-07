@@ -1,0 +1,65 @@
+{
+  "functionality_id": "API-013",
+  "module": "Department Management",
+  "functionality": "View Department",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/departments/{departmentId}",
+  "description": "Retrieves a single department record scoped to organization and branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "departmentId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "departmentId"],
+
+  "validation": [
+    "organization and branch must exist",
+    "department must exist and belong to the specified organization + branch"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Department fetched successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "departmentCode": "BIO",
+        "departmentName": "Biochemistry",
+        "description": "Biochemistry Department",
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "Invalid request (malformed path parameters)",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid request" }
+    },
+    {
+      "condition": "organizationId, branchId, or departmentId not found / department not in scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Department not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["department_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/e2e-validation/002_master_data.sql"],
+
+  "test_ids": ["API-T188"],
+  "notes": "No dedicated api_contracts_test SQL file existed yet for Department Management; API-T188 is a net-new ID continuing the global sequence (previous max was API-T186) and still needs a backing api_contracts_test script."
+}

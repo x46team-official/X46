@@ -1,0 +1,161 @@
+{
+  "functionality_id": "API-006",
+  "module": "Test Management",
+  "functionality": "Create Test",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/tests",
+  "description": "Creates a new test in the test catalogue (test_master) for an organization/branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "departmentId": "uuid, required - references department_master.id",
+      "testCode": "string(50), required",
+      "testName": "string(200), required",
+      "displayName": "string(200), optional",
+      "printName": "string(200), optional",
+      "shortCode": "string(50), optional",
+      "sellingPrice": "numeric(10,2), optional - default 0",
+      "costPrice": "numeric(10,2), optional - default 0",
+      "cprr": "numeric(10,2), optional - default 0",
+      "testCategoryId": "uuid, optional - references test_category_master.id",
+      "billingCategoryId": "uuid, optional - references billing_category_master.id",
+      "sampleTypeId": "uuid, optional - references sample_type_master.id",
+      "performingLabId": "uuid, optional - references performing_lab_master.id",
+      "outsourceCenterId": "uuid, optional - references outsource_center_master.id",
+      "worksheetId": "uuid, optional - references worksheet_master.id",
+      "worklistId": "uuid, optional - references worklist_master.id",
+      "testMethod": "string(200), optional",
+      "testType": "string(100), optional",
+      "tatMinutes": "integer, optional - default 0",
+      "machineTestCode": "string(100), optional",
+      "consumptionGroup": "string(100), optional",
+      "autoApproval": "boolean, optional - default false",
+      "automaticallyAuthorize": "boolean, optional - default false",
+      "nablAccredited": "boolean, optional - default false",
+      "markAsProfile": "boolean, optional - default false",
+      "twoStepVerification": "boolean, optional - default false",
+      "authorizeOnlyByAuthorizer": "boolean, optional - default false",
+      "outsourceTest": "boolean, optional - default false",
+      "notifyAccession": "boolean, optional - default false",
+      "description": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "departmentId", "testCode", "testName"],
+
+  "validation": [
+    "organization and branch must exist",
+    "departmentId must reference an existing department_master row (NOT NULL FK)",
+    "testCode must not be null (NOT NULL)",
+    "testName must not be null (NOT NULL)",
+    "testCode must be unique within organization + branch (UNIQUE uq_test_code)",
+    "testName must be unique within organization + branch (UNIQUE uq_test_name)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Test created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "departmentId": "uuid",
+        "testCode": "LFT001",
+        "testName": "Liver Function Test",
+        "sellingPrice": 600,
+        "costPrice": 350,
+        "cprr": 0,
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "testCode is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "testCode is required" },
+      "source": "database/api_contracts_test/006_api_test_master.sql (API-T026)"
+    },
+    {
+      "condition": "testName is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "testName is required" },
+      "source": "database/api_contracts_test/006_api_test_master.sql (API-T027)"
+    },
+    {
+      "condition": "departmentId is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "departmentId is required" },
+      "source": "database/api_contracts_test/006_api_test_master.sql (API-T028)"
+    },
+    {
+      "condition": "branchId does not exist / does not belong to organizationId",
+      "status_code": 404,
+      "response": { "success": false, "error": "Branch not found" },
+      "source": "database/api_contracts_test/006_api_test_master.sql (API-T030)"
+    },
+    {
+      "condition": "departmentId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Department not found" },
+      "source": "database/api_contracts_test/006_api_test_master.sql (API-T031)"
+    },
+    {
+      "condition": "testCode already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate test code" },
+      "source": "database/api_contracts_test/006_api_test_master.sql (API-T029)"
+    },
+    {
+      "condition": "testName already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate test name" },
+      "source": "database/api_contracts_test/006_api_test_master.sql (API-T032)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["test_master", "department_master", "organizations", "branches"],
+    "relationships": [
+      "test_master.organization_id -> organizations.id",
+      "test_master.branch_id -> branches.id",
+      "test_master.department_id -> department_master.id",
+      "test_master.test_category_id -> test_category_master.id (optional)",
+      "test_master.billing_category_id -> billing_category_master.id (optional)",
+      "test_master.sample_type_id -> sample_type_master.id (optional)",
+      "test_master.performing_lab_id -> performing_lab_master.id (optional)",
+      "test_master.outsource_center_id -> outsource_center_master.id (optional)",
+      "test_master.worksheet_id -> worksheet_master.id (optional)",
+      "test_master.worklist_id -> worklist_master.id (optional)"
+    ],
+    "constraints": [
+      "department_id NOT NULL",
+      "test_code NOT NULL",
+      "test_name NOT NULL",
+      "UNIQUE (organization_id, branch_id, test_code) -- uq_test_code",
+      "UNIQUE (organization_id, branch_id, test_name) -- uq_test_name"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/002_master_data.sql",
+    "database/api_contracts_test/006_api_test_master.sql",
+    "database/dry-run/F015_test_master.sql"
+  ],
+
+  "test_ids": ["API-T025", "API-T026", "API-T027", "API-T028", "API-T029", "API-T030", "API-T031", "API-T032"],
+  "notes": "database/schema/015_test_master.sql ends with an ALTER TABLE ADD CONSTRAINT referencing a container_type_id column, but that column is not present in the current schema snapshot (database/schema/versions/v25.sql) - it only appears in older snapshots (v22-v24). container_type_id is therefore excluded from this contract as it does not exist in the current (v25) live schema."
+}

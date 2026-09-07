@@ -1,0 +1,60 @@
+{
+  "functionality_id": "API-127",
+  "module": "Test Package Management",
+  "functionality": "Invalid Package ID (Billing)",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billings/{billingId}/test-packages",
+  "description": "Documents the specific error scenario of API-122 where the request fails this validation. Same endpoint as API-122, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "packageId": "'00000000-0000-0000-0000-000000000000' - not an existing test_package_master row"
+    }
+  },
+  "required_fields": [
+    "packageId"
+  ],
+  "validation": [
+    "packageId must reference an existing test_package_master row"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary bill-package contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "packageId must reference an existing test_package_master row",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Test package not found"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T186)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "billing_tests",
+      "test_package_master"
+    ],
+    "relationships": [
+      "billing_tests.package_id -> test_package_master.id"
+    ],
+    "constraints": [
+      "billing_tests.package_id REFERENCES test_package_master(id)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/023_test_package.sql (API-T186)"
+  ],
+  "test_ids": [
+    "API-T186"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "functionality_id": "API-099",
+  "module": "Result Authorization",
+  "functionality": "Result Entry Not Completed",
+  "http_method": "PATCH",
+  "endpoint": "/api/result-entries/{resultEntryId}/authorize",
+  "description": "Documents the specific error scenario of API-097 (Authorize Result Entry) where the request fails this validation. Same endpoint as API-097, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "resultEntryId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "resultEntryId": "result_entry row with result_status = PENDING in this scenario"
+    }
+  },
+  "required_fields": [
+    "resultEntryId"
+  ],
+  "validation": [
+    "resultEntryId should be COMPLETED before it can be authorized"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "resultEntryId should be COMPLETED before it can be authorized",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Result entry must be completed before authorization"
+      },
+      "source": "database/api_contracts_test/019_result_authorization.sql (API-T158)",
+      "database_gap": true
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry"
+    ],
+    "relationships": [],
+    "constraints": [
+      "No CHECK/trigger enforces COMPLETED -> AUTHORIZED ordering (database_gap)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/019_result_authorization.sql (API-T158)"
+  ],
+  "test_ids": [
+    "API-T158"
+  ],
+  "database_gap": true
+}

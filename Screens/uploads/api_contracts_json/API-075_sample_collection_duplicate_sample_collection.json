@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-075",
+  "module": "Sample Collection",
+  "functionality": "Duplicate Sample Collection",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Documents the specific error scenario of API-069 (Create Sample Collection) where accessionTestId already has a sample_collection record. Same endpoint as API-069, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "accessionTestId": "accession_test_id that already has a sample_collection row in this scenario" }
+  },
+
+  "required_fields": ["accessionTestId"],
+
+  "validation": ["accessionTestId must not already have a sample_collection record (UNIQUE constraint uq_sample_collection)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-069 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "accessionTestId already has a sample_collection record",
+      "status_code": 409,
+      "response": { "success": false, "error": "Sample already collected for this accession test" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T134)"
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection"],
+    "relationships": [],
+    "constraints": ["uq_sample_collection UNIQUE (accession_test_id)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/016_sample_collection.sql (API-T134)"],
+
+  "test_ids": ["API-T134"]
+}

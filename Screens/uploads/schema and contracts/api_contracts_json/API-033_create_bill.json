@@ -1,0 +1,103 @@
+{
+  "functionality_id": "API-033",
+  "module": "Billing",
+  "functionality": "Create Bill",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing",
+  "description": "Creates a new bill (billing_master) against a patient registration.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "patientRegistrationId": "uuid, required",
+      "billNumber": "string(30), required",
+      "billingCategoryId": "uuid, optional",
+      "referringDoctorId": "uuid, optional - references users.id",
+      "totalAmount": "numeric(10,2), optional - default 0",
+      "discountAmount": "numeric(10,2), optional - default 0",
+      "concessionAmount": "numeric(10,2), optional - default 0",
+      "additionalAmount": "numeric(10,2), optional - default 0",
+      "payableAmount": "numeric(10,2), optional - default 0",
+      "paymentStatus": "string(30), optional - default 'Pending'",
+      "remarks": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientRegistrationId", "billNumber"],
+
+  "validation": [
+    "organization and branch must exist",
+    "patientRegistrationId must reference an existing patient_registrations row (NOT NULL FK)",
+    "billNumber must not be null (NOT NULL)",
+    "billNumber must be unique within organization + branch (UNIQUE uq_bill_number)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Bill created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "patientRegistrationId": "uuid",
+        "billNumber": "BILL-API-091",
+        "totalAmount": 350,
+        "payableAmount": 350,
+        "paidAmount": 0,
+        "balanceAmount": 350,
+        "paymentStatus": "Pending"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "billNumber missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "billNumber is required" }
+    },
+    {
+      "condition": "patientRegistrationId does not reference an existing registration",
+      "status_code": 404,
+      "response": { "success": false, "error": "Registration not found" },
+      "source": "database/api_contracts_test/013_billing.sql",
+      "related_functionality_id": "API-040"
+    },
+    {
+      "condition": "billNumber already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate bill number" },
+      "source": "database/api_contracts_test/013_billing.sql",
+      "related_functionality_id": "API-041"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master", "patient_registrations"],
+    "relationships": ["billing_master.patient_registration_id -> patient_registrations.id"],
+    "constraints": [
+      "patient_registration_id NOT NULL",
+      "bill_number NOT NULL",
+      "UNIQUE (organization_id, branch_id, bill_number) -- uq_bill_number"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/005_billing.sql",
+    "database/api_contracts_test/013_billing.sql"
+  ],
+
+  "test_ids": ["API-T091"],
+  "notes": "The amount fields (total_amount, discount_amount, concession_amount, additional_amount, payable_amount, paid_amount, balance_amount, refund_amount) are all NUMERIC(10,2) DEFAULT 0 with no CHECK constraints - the database does not enforce payableAmount = totalAmount - discountAmount - concessionAmount + additionalAmount, or that amounts are non-negative. Any arithmetic consistency between these fields must be enforced at the API layer; no schema-level guarantee exists."
+}

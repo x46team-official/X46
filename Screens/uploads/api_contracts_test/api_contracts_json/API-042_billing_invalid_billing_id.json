@@ -1,0 +1,40 @@
+{
+  "functionality_id": "API-042",
+  "module": "Billing",
+  "functionality": "Invalid Billing ID",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing/{billingId}",
+  "description": "Documents the specific error scenario of API-034 (View Bill) where billingId does not reference an existing, in-scope bill. Same endpoint as API-034, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "billingId": "uuid - invalid/non-existent in this scenario" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["billingId"],
+
+  "validation": ["billingId must reference an existing bill scoped to organization + branch"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-034 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "billingId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Bill not found" },
+      "source": "database/api_contracts_test/013_billing.sql"
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql"]
+}

@@ -1,0 +1,40 @@
+{
+  "functionality_id": "API-040",
+  "module": "Billing",
+  "functionality": "Invalid Registration",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing",
+  "description": "Documents the specific error scenario of API-033 (Create Bill) where patientRegistrationId does not reference an existing registration. Same endpoint as API-033, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "patientRegistrationId": "uuid - invalid/non-existent in this scenario", "billNumber": "string, required" }
+  },
+
+  "required_fields": ["patientRegistrationId"],
+
+  "validation": ["patientRegistrationId must reference an existing patient_registrations row (billing_master.patient_registration_id NOT NULL FK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-033 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "patientRegistrationId does not reference an existing registration",
+      "status_code": 404,
+      "response": { "success": false, "error": "Registration not found" },
+      "source": "database/api_contracts_test/013_billing.sql"
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master", "patient_registrations"],
+    "relationships": ["billing_master.patient_registration_id -> patient_registrations.id"],
+    "constraints": ["patient_registration_id NOT NULL"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql"]
+}

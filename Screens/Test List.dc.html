@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="Test List" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Setup / Test List</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Test List</h1>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="width: 230px;">
+              <label>Search Test</label>
+              <input type="text" placeholder="Code, name or method" value="{{ q }}" onChange="{{ updateField }}" data-field="q" />
+            </div>
+            <div style="width: 150px;">
+              <label>Department</label>
+              <select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept">
+                <option value="">All departments</option>
+                <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 140px;">
+              <label>Sample Type</label>
+              <select value="{{ sample }}" onChange="{{ updateField }}" data-field="sample">
+                <option value="">All samples</option>
+                <sc-for list="{{ sampleOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 132px;">
+              <label>Category</label>
+              <select value="{{ category }}" onChange="{{ updateField }}" data-field="category">
+                <option value="">All</option>
+                <option value="Routine">Routine</option>
+                <option value="Profile">Profile</option>
+                <option value="Specialised">Specialised</option>
+              </select>
+            </div>
+            <div style="width: 118px;">
+              <label>Status</label>
+              <select value="{{ status }}" onChange="{{ updateField }}" data-field="status">
+                <option value="">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <button onClick="{{ clearAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+          </div>
+          <div style="margin-top: 5px; font-size: 10.5px; color: var(--color-text-tertiary);">Rates and turnaround are branch-scoped. Parameters and reference ranges for a test are configured under Performing Labs.</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ reload }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reload</button>
+          <button onClick="{{ openExtract }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Extract from Branch</button>
+          <button onClick="{{ openCreate }}" style="padding: 8px 14px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">+ Add Test</button>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBd }};"><span style="font-weight: 700;">{{ bannerTitle }}</span>{{ banner }}</div>
+    </sc-if>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 12px; flex-wrap: wrap;">
+        <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">{{ rowCountLabel }}</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 11px; color: var(--color-text-tertiary);">Sort</span>
+          <select value="{{ sort }}" onChange="{{ updateField }}" data-field="sort" style="width: 168px;">
+            <option value="code">Test code</option>
+            <option value="name">Test name</option>
+            <option value="rate">Rate (high first)</option>
+            <option value="tat">TAT (slowest first)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto;">
+        <div style="min-width: 1080px;">
+          <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 92px minmax(190px,1.3fr) 132px 104px 128px 84px 92px 92px 168px; gap: 10px; padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+            <div>Code</div><div>Test Name</div><div>Department</div><div>Sample</div><div>Method</div>
+            <div style="text-align: right;">Rate</div><div style="text-align: right;">TAT</div><div>Status</div><div>Actions</div>
+          </div>
+
+          <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="6">
+              <div style="display: grid; grid-template-columns: 92px minmax(190px,1.3fr) 132px 104px 128px 84px 92px 92px 168px; gap: 10px; padding: 12px; border-bottom: 1px solid var(--color-border-light);">
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+                <div style="height: 9px; border-radius: 3px; background: var(--color-gray-100);"></div>
+              </div>
+            </sc-for>
+          </sc-if>
+
+          <sc-if value="{{ loadError }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 48px 20px; text-align: center;">
+              <div style="font-size: 14px; font-weight: 700; color: #B91C1C; margin-bottom: 4px;">Could not load the test master</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">{{ loadError }}</div>
+              <button onClick="{{ reload }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Retry</button>
+            </div>
+          </sc-if>
+
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="0">
+            <div style="display: grid; grid-template-columns: 92px minmax(190px,1.3fr) 132px 104px 128px 84px 92px 92px 168px; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center;" style-hover="background: var(--color-gray-50);">
+              <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.code }}</div>
+              <div style="min-width: 0;">
+                <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.name }}</div>
+                <div style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.meta }}</div>
+              </div>
+              <div style="font-size: 12px;">{{ r.dept }}</div>
+              <div style="font-size: 12px;">{{ r.sampleType }}</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ r.method }}</div>
+              <div class="num" style="font-size: 12px; font-weight: 700; text-align: right;">{{ r.rateShown }}</div>
+              <div class="num" style="font-size: 12px; text-align: right;">{{ r.tatShown }}</div>
+              <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span></div>
+              <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                <button onClick="{{ r.onView }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">View</button>
+                <button onClick="{{ r.onEdit }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); background: var(--color-interactive-hover);">Edit</button>
+                <button onClick="{{ r.onToggle }}" style="padding: 5px 10px; background: #fff; border: 1px solid {{ r.toggleBd }}; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; color: {{ r.toggleFg }}; cursor: pointer; white-space: nowrap;">{{ r.toggleLabel }}</button>
+              </div>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 56px 20px; text-align: center;">
+              <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">{{ emptyTitle }}</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">{{ emptyHint }}</div>
+              <button onClick="{{ emptyAction }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">{{ emptyActionLabel }}</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ showPager }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px;">
+          <div class="num" style="font-size: 11.5px; color: var(--color-text-tertiary);">{{ pageLabel }}</div>
+          <div style="display: flex; gap: 6px;">
+            <button onClick="{{ prevPage }}" disabled="{{ atFirst }}" style="padding: 6px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: {{ prevFg }}; cursor: {{ prevCursor }};">Previous</button>
+            <button onClick="{{ nextPage }}" disabled="{{ atLast }}" style="padding: 6px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: {{ nextFg }}; cursor: {{ nextCursor }};">Next</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 40; display: flex; justify-content: flex-end;" onClick="{{ closeDetail }}">
+      <div onClick="{{ stop }}" style="width: 440px; background: #fff; height: 100%; box-shadow: -8px 0 24px rgba(17,24,39,.14); display: flex; flex-direction: column;">
+        <div style="padding: 14px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Test master</div>
+            <div style="font-size: 15px; font-weight: 700;">{{ detailName }}</div>
+            <div class="mono" style="font-size: 11px; color: var(--color-text-tertiary);">{{ detailCode }}</div>
+          </div>
+          <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 18px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 16px 18px;">
+          <sc-for list="{{ detailRows }}" as="d" hint-placeholder-count="9">
+            <div style="display: flex; justify-content: space-between; gap: 14px; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
+              <span style="font-size: 11px; font-weight: 600; color: var(--color-text-tertiary);">{{ d.k }}</span>
+              <span style="font-size: 12px; font-weight: 600; text-align: right;">{{ d.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding: 12px 18px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px; justify-content: flex-end;">
+          <button onClick="{{ closeDetail }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+          <button onClick="{{ editFromDetail }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Edit Test</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ tryCloseForm }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 620px; max-width: 100%; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 13px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700;">{{ formTitle }}</div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ formSubtitle }}</div>
+          </div>
+          <button onClick="{{ tryCloseForm }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 14px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px;">
+          <div>
+            <label>Test Code *</label>
+            <input type="text" placeholder="e.g. CBC" value="{{ fCode }}" onChange="{{ updateForm }}" data-field="code" style="border-color: {{ codeBorder }}; text-transform: uppercase;" class="mono" />
+          </div>
+          <div>
+            <label>Test Name *</label>
+            <input type="text" placeholder="e.g. Complete Blood Count" value="{{ fName }}" onChange="{{ updateForm }}" data-field="name" style="border-color: {{ nameBorder }};" />
+          </div>
+          <div>
+            <label>Department *</label>
+            <select value="{{ fDept }}" onChange="{{ updateForm }}" data-field="dept" style="border-color: {{ deptBorder }};">
+              <option value="">Select department</option>
+              <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </div>
+          <div>
+            <label>Sample Type *</label>
+            <select value="{{ fSample }}" onChange="{{ updateForm }}" data-field="sampleType" style="border-color: {{ sampleBorder }};">
+              <option value="">Select sample</option>
+              <sc-for list="{{ sampleOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </div>
+          <div>
+            <label>Method</label>
+            <input type="text" placeholder="e.g. Flow cytometry" value="{{ fMethod }}" onChange="{{ updateForm }}" data-field="method" />
+          </div>
+          <div>
+            <label>Category</label>
+            <select value="{{ fCategory }}" onChange="{{ updateForm }}" data-field="category">
+              <option value="Routine">Routine</option>
+              <option value="Profile">Profile</option>
+              <option value="Specialised">Specialised</option>
+            </select>
+          </div>
+          <div>
+            <label>Rate (₹) *</label>
+            <input type="number" min="0" step="1" value="{{ fRate }}" onChange="{{ updateForm }}" data-field="rate" style="border-color: {{ rateBorder }};" class="num" />
+          </div>
+          <div>
+            <label>Turnaround (hours) *</label>
+            <input type="number" min="1" step="1" value="{{ fTat }}" onChange="{{ updateForm }}" data-field="tat" style="border-color: {{ tatBorder }};" class="num" />
+          </div>
+          <div>
+            <label>Container</label>
+            <input type="text" placeholder="e.g. EDTA (lavender)" value="{{ fContainer }}" onChange="{{ updateForm }}" data-field="container" />
+          </div>
+          <div>
+            <label>Performing Lab</label>
+            <select value="{{ fLab }}" onChange="{{ updateForm }}" data-field="lab">
+              <option value="In-house">In-house</option>
+              <option value="Outsourced">Outsourced</option>
+            </select>
+          </div>
+          <label style="grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 0; font-size: 11.5px; font-weight: 500; color: var(--color-text-secondary);">
+            <input type="checkbox" checked="{{ fActive }}" onChange="{{ toggleFormActive }}" /> Active — available for selection during registration and billing
+          </label>
+          <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+            <div style="grid-column: 1 / -1; padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ formError }}</div>
+          </sc-if>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 11px; color: var(--color-text-tertiary);">{{ formFootHint }}</span>
+          <div style="display: flex; gap: 8px;">
+            <button onClick="{{ tryCloseForm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+            <button onClick="{{ saveForm }}" disabled="{{ saving }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ saveCursor }}; min-width: 116px;">{{ saveLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ confirm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 70; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeConfirm }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 420px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 16px 18px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">{{ confirmTitle }}</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">{{ confirmBody }}</div>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeConfirm }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep as is</button>
+          <button onClick="{{ applyConfirm }}" style="padding: 8px 16px; background: {{ confirmBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">{{ confirmLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ unsaved }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.5); z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div style="background: #fff; border-radius: 6px; width: 380px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.26);">
+        <div style="padding: 16px 18px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">Discard unsaved changes?</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">This test has edits that have not been saved to the master.</div>
+        </div>
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ keepEditing }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep editing</button>
+          <button onClick="{{ discardForm }}" style="padding: 8px 16px; background: #B91C1C; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Discard</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ extractOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.44); z-index: 85; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeExtract }}">
+      <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 940px; max-width: 100%; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 13px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 14px; font-weight: 700;">Extract Tests from Existing Branch</div>
+            <div style="font-size: 11.5px; color: var(--color-text-secondary);">Copy an existing test configuration from another branch of the same organization.</div>
+          </div>
+          <button onClick="{{ closeExtract }}" style="background: none; border: none; font-size: 17px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+
+        <sc-if value="{{ extractMessage }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 8px 18px; font-size: 11.5px; font-weight: 600; background: {{ extractMessageBg }}; color: {{ extractMessageFg }}; border-bottom: 1px solid {{ extractMessageBd }};">{{ extractMessage }}</div>
+        </sc-if>
+
+        <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 15px 18px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: grid; grid-template-columns: 220px 240px minmax(0, 1fr); gap: 10px; align-items: end;">
+            <div>
+              <label>Target Branch</label>
+              <input type="text" value="{{ targetBranch }}" readonly="{{ true }}" style="background: var(--color-gray-50); color: var(--color-text-secondary);" />
+            </div>
+            <div>
+              <label>Source Branch <span style="color: var(--color-error);">*</span></label>
+              <select value="{{ srcBranch }}" onChange="{{ pickSource }}">
+                <option value="">Select branch…</option>
+                <sc-for list="{{ srcOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Rates come across as configured in the source branch — review them before extracting. Tests already in this branch cannot be extracted twice.</div>
+          </div>
+
+          <sc-if value="{{ noSource }}" hint-placeholder-val="{{ true }}">
+            <div style="padding: 34px 16px; text-align: center; border: 1px dashed var(--color-border-base); border-radius: 5px;">
+              <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">Select a source branch</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary);">Tests configured in that branch will be listed here for extraction.</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hasSource }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+              <div style="font-size: 12px; font-weight: 700;">Tests available in {{ srcBranch }} <span class="num" style="color: var(--color-text-tertiary); font-weight: 600;">· {{ availCount }}</span></div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" placeholder="Search tests" value="{{ extractQuery }}" onChange="{{ setExtractQuery }}" style="width: 180px;" />
+                <select value="{{ extractDept }}" onChange="{{ setExtractDept }}" style="width: 160px;">
+                  <option value="">All departments</option>
+                  <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+                <button onClick="{{ toggleAllExtract }}" style="padding: 6px 11px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">{{ allLabel }}</button>
+              </div>
+            </div>
+
+            <div style="border: 1px solid var(--color-border-light); border-radius: 5px; overflow: hidden;">
+              <div style="display: grid; grid-template-columns: 34px 96px minmax(180px,1fr) 132px 104px 88px 118px; gap: 8px; padding: 7px 11px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 9.5px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <div></div><div>Code</div><div>Test Name</div><div>Department</div><div>Sample</div>
+                <div style="text-align: right;">Rate</div><div>In this branch</div>
+              </div>
+              <div style="max-height: 320px; overflow-y: auto;">
+                <sc-for list="{{ extractRows }}" as="e" hint-placeholder-count="6">
+                  <label style="display: grid; grid-template-columns: 34px 96px minmax(180px,1fr) 132px 104px 88px 118px; gap: 8px; padding: 8px 11px; border-bottom: 1px solid var(--color-border-light); align-items: center; margin: 0; cursor: {{ e.cursor }}; background: {{ e.bg }};">
+                    <input type="checkbox" checked="{{ e.on }}" disabled="{{ e.exists }}" onChange="{{ e.onToggle }}" style="width: 14px; height: 14px;" />
+                    <div class="mono" style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);">{{ e.code }}</div>
+                    <div style="font-size: 11.5px; font-weight: 600; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ e.name }}</div>
+                    <div style="font-size: 11.5px;">{{ e.dept }}</div>
+                    <div style="font-size: 11.5px;">{{ e.sampleType }}</div>
+                    <div class="num" style="font-size: 11.5px; font-weight: 700; text-align: right;">{{ e.rateShown }}</div>
+                    <div>
+                      <sc-if value="{{ e.exists }}" hint-placeholder-val="{{ false }}">
+                        <span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: #F3F4F6; color: #4B5563;">Already added</span>
+                      </sc-if>
+                    </div>
+                  </label>
+                </sc-for>
+                <sc-if value="{{ extractEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding: 30px 16px; text-align: center;">
+                    <div style="font-size: 12.5px; font-weight: 700; margin-bottom: 3px;">No tests found</div>
+                    <div style="font-size: 11.5px; color: var(--color-text-tertiary);">Try a different search or department.</div>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="padding: 11px 18px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div class="num" style="font-size: 12px; font-weight: 700;">{{ extractSelectedLabel }} <span style="font-weight: 600; color: var(--color-text-tertiary);">{{ extractDupNote }}</span></div>
+          <div style="display: flex; gap: 8px;">
+            <button onClick="{{ closeExtract }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+            <button onClick="{{ runExtract }}" disabled="{{ extracting }}" style="padding: 8px 16px; background: {{ extractBtnBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ extractCursor }}; min-width: 140px;">{{ extractBtnLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const DEPTS = ['Haematology', 'Biochemistry', 'Microbiology', 'Serology', 'Clinical Pathology', 'Histopathology', 'Molecular'];
+const SAMPLES = ['Whole Blood', 'Serum', 'Plasma', 'Urine', 'Stool', 'Swab', 'Tissue'];
+
+const SEED = [
+  ['CBC', 'Complete Blood Count', 'Haematology', 'Whole Blood', 'Impedance / Flow', 'Routine', 350, 4, 'EDTA (lavender)', 'In-house', true],
+  ['ESR', 'Erythrocyte Sedimentation Rate', 'Haematology', 'Whole Blood', 'Westergren', 'Routine', 180, 4, 'ESR (black)', 'In-house', true],
+  ['PT-INR', 'Prothrombin Time with INR', 'Haematology', 'Plasma', 'Coagulometry', 'Routine', 420, 6, 'Citrate (blue)', 'In-house', true],
+  ['PS-MP', 'Peripheral Smear for Malarial Parasite', 'Haematology', 'Whole Blood', 'Microscopy', 'Routine', 260, 5, 'EDTA (lavender)', 'In-house', true],
+  ['HBA1C', 'Glycated Haemoglobin (HbA1c)', 'Biochemistry', 'Whole Blood', 'HPLC', 'Routine', 620, 8, 'EDTA (lavender)', 'In-house', true],
+  ['LIPID', 'Lipid Profile', 'Biochemistry', 'Serum', 'Enzymatic colorimetric', 'Profile', 890, 8, 'Plain (red)', 'In-house', true],
+  ['LFT', 'Liver Function Test', 'Biochemistry', 'Serum', 'Enzymatic / photometric', 'Profile', 950, 8, 'Plain (red)', 'In-house', true],
+  ['KFT', 'Kidney Function Test', 'Biochemistry', 'Serum', 'Enzymatic / photometric', 'Profile', 880, 8, 'Plain (red)', 'In-house', true],
+  ['GLU-F', 'Glucose Fasting', 'Biochemistry', 'Plasma', 'GOD-POD', 'Routine', 140, 3, 'Fluoride (grey)', 'In-house', true],
+  ['TSH', 'Thyroid Stimulating Hormone', 'Biochemistry', 'Serum', 'CLIA', 'Routine', 380, 12, 'Plain (red)', 'In-house', true],
+  ['T3T4TSH', 'Thyroid Profile (T3, T4, TSH)', 'Biochemistry', 'Serum', 'CLIA', 'Profile', 700, 12, 'Plain (red)', 'In-house', true],
+  ['VITD', 'Vitamin D (25-OH)', 'Biochemistry', 'Serum', 'CLIA', 'Specialised', 1450, 24, 'Plain (red)', 'In-house', true],
+  ['VITB12', 'Vitamin B12', 'Biochemistry', 'Serum', 'CLIA', 'Specialised', 1250, 24, 'Plain (red)', 'In-house', true],
+  ['CRP', 'C-Reactive Protein', 'Serology', 'Serum', 'Turbidimetry', 'Routine', 520, 6, 'Plain (red)', 'In-house', true],
+  ['WIDAL', 'Widal Test', 'Serology', 'Serum', 'Slide agglutination', 'Routine', 300, 8, 'Plain (red)', 'In-house', true],
+  ['DENGUE', 'Dengue NS1 / IgM / IgG', 'Serology', 'Serum', 'Rapid immunochromatography', 'Routine', 900, 6, 'Plain (red)', 'In-house', true],
+  ['HIV-SCR', 'HIV I & II Screening', 'Serology', 'Serum', 'CLIA', 'Routine', 640, 12, 'Plain (red)', 'In-house', true],
+  ['URINE-R', 'Urine Routine & Microscopy', 'Clinical Pathology', 'Urine', 'Strip / Microscopy', 'Routine', 200, 4, 'Sterile container', 'In-house', true],
+  ['CUL-URI', 'Urine Culture & Sensitivity', 'Microbiology', 'Urine', 'Culture', 'Routine', 780, 72, 'Sterile container', 'In-house', true],
+  ['CUL-BLD', 'Blood Culture & Sensitivity', 'Microbiology', 'Whole Blood', 'Automated culture', 'Routine', 1150, 120, 'Culture bottle', 'In-house', true],
+  ['AFB-SM', 'AFB Smear (Ziehl-Neelsen)', 'Microbiology', 'Swab', 'Microscopy', 'Routine', 340, 24, 'Sterile container', 'In-house', false],
+  ['HISTO-S', 'Histopathology — Small Specimen', 'Histopathology', 'Tissue', 'H&E microscopy', 'Specialised', 2100, 96, 'Formalin jar', 'In-house', true],
+  ['PAP', 'PAP Smear (Conventional)', 'Histopathology', 'Swab', 'Cytology', 'Specialised', 850, 72, 'Fixative slide', 'In-house', true],
+  ['TB-PCR', 'Mycobacterium TB PCR', 'Molecular', 'Swab', 'Real-time PCR', 'Specialised', 2600, 48, 'Sterile container', 'Outsourced', true],
+  ['HCV-VL', 'HCV Viral Load (Quantitative)', 'Molecular', 'Plasma', 'Real-time PCR', 'Specialised', 4200, 72, 'EDTA (lavender)', 'Outsourced', false]
+].map((t, i) => ({
+  id: 'T' + (i + 1), code: t[0], name: t[1], dept: t[2], sampleType: t[3], method: t[4],
+  category: t[5], rate: t[6], tat: t[7], container: t[8], lab: t[9], active: t[10],
+  updated: '2026-08-' + String(9 + (i % 20)).padStart(2, '0'), updatedBy: ['Dr. S. Kulkarni', 'A. Bhosale', 'M. Ranade'][i % 3]
+}));
+
+const BLANK = { code: '', name: '', dept: '', sampleType: '', method: '', category: 'Routine', rate: '', tat: '', container: '', lab: 'In-house', active: true };
+const PAGE = 10;
+
+/* Test catalogues configured in the organization's other branches (API-011
+   search, scoped to the source branch). */
+const SOURCE_BRANCHES = {
+  'Mumbai Lab · MUM-01': [
+    ['CBC', 'Complete Blood Count', 'Haematology', 'Whole blood', 'Automated 5-part', 'Routine', 340, 4, 'EDTA (lavender)', 'In-house'],
+    ['ESR', 'Erythrocyte Sedimentation Rate', 'Haematology', 'Whole blood', 'Westergren', 'Routine', 160, 4, 'EDTA (lavender)', 'In-house'],
+    ['FERR', 'Serum Ferritin', 'Immunoassay', 'Serum', 'CLIA', 'Specialised', 780, 24, 'Plain (red)', 'In-house'],
+    ['IRON', 'Serum Iron / TIBC', 'Biochemistry', 'Serum', 'Colorimetric', 'Routine', 460, 12, 'Plain (red)', 'In-house'],
+    ['ANA', 'Antinuclear Antibody (IFA)', 'Serology', 'Serum', 'Immunofluorescence', 'Specialised', 1450, 48, 'Plain (red)', 'Outsourced']
+  ],
+  'Nashik Branch · NSK-01': [
+    ['CBC', 'Complete Blood Count', 'Haematology', 'Whole blood', 'Automated 5-part', 'Routine', 320, 4, 'EDTA (lavender)', 'In-house'],
+    ['URIC', 'Serum Uric Acid', 'Biochemistry', 'Serum', 'Uricase', 'Routine', 200, 8, 'Plain (red)', 'In-house'],
+    ['AMYL', 'Serum Amylase', 'Biochemistry', 'Serum', 'Enzymatic', 'Routine', 420, 12, 'Plain (red)', 'In-house'],
+    ['MP-QBC', 'Malaria Parasite (QBC)', 'Microbiology', 'Whole blood', 'QBC fluorescence', 'Routine', 380, 6, 'EDTA (lavender)', 'In-house']
+  ],
+  'Pimpri Collection Centre · PMP-01': [
+    ['FBS', 'Fasting Blood Sugar', 'Biochemistry', 'Plasma', 'GOD-POD', 'Routine', 120, 4, 'Fluoride (grey)', 'In-house'],
+    ['PPBS', 'Post Prandial Blood Sugar', 'Biochemistry', 'Plasma', 'GOD-POD', 'Routine', 120, 4, 'Fluoride (grey)', 'In-house'],
+    ['URIN-M', 'Urine Microscopy', 'Clinical Pathology', 'Urine', 'Microscopy', 'Routine', 150, 4, 'Sterile container', 'In-house']
+  ]
+};
+
+Object.keys(SOURCE_BRANCHES).forEach(k => {
+  SOURCE_BRANCHES[k] = SOURCE_BRANCHES[k].map(r => ({
+    code: r[0], name: r[1], dept: r[2], sampleType: r[3], method: r[4],
+    category: r[5], rate: r[6], tat: r[7], container: r[8], lab: r[9]
+  }));
+});
+
+class Component extends DCLogic {
+  state = {
+    tests: SEED.map(t => ({ ...t })),
+    loading: true, loadError: '',
+    q: '', dept: '', sample: '', category: '', status: '', sort: 'code', page: 0,
+    detailId: null,
+    formOpen: false, formId: null, form: { ...BLANK }, formSnapshot: '', formError: '', saving: false,
+    unsaved: false, confirmId: null,
+    extractOpen: false, srcBranch: '', extractPicked: {}, extractQuery: '', extractDept: '',
+    extracting: false, extractMessage: '', extractMessageKind: 'info',
+    banner: '', bannerKind: 'success', bannerTitle: ''
+  };
+
+  componentDidMount() { this._t = setTimeout(() => this.setState({ loading: false }), 520); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  stop = (e) => e.stopPropagation();
+  money = (n) => '₹ ' + Number(n || 0).toLocaleString('en-IN');
+
+  reload = () => {
+    this.setState({ loading: true, loadError: '', banner: '' });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ loading: false }), 520);
+  };
+
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, page: 0 });
+  clearAll = () => this.setState({ q: '', dept: '', sample: '', category: '', status: '', page: 0 });
+  prevPage = () => this.setState(s => ({ page: Math.max(0, s.page - 1) }));
+  nextPage = () => this.setState(s => ({ page: s.page + 1 }));
+
+  openDetail = (id) => () => this.setState({ detailId: id });
+  closeDetail = () => this.setState({ detailId: null });
+
+  /* Extract from an existing branch — the source catalogue is the same test
+     master read per branch, so a code already configured here is not offered. */
+  openExtract = () => this.setState({ extractOpen: true, srcBranch: '', extractPicked: {}, extractQuery: '', extractDept: '', extractMessage: '', extracting: false });
+  closeExtract = () => { if (!this.state.extracting) this.setState({ extractOpen: false, extractMessage: '' }); };
+  pickSource = (e) => this.setState({ srcBranch: e.target.value, extractPicked: {}, extractMessage: '' });
+  setExtractQuery = (e) => this.setState({ extractQuery: e.target.value });
+  setExtractDept = (e) => this.setState({ extractDept: e.target.value });
+  toggleExtract = (code) => (e) => this.setState({ extractPicked: { ...this.state.extractPicked, [code]: e.target.checked }, extractMessage: '' });
+
+  sourceRows() {
+    const s = this.state;
+    if (!s.srcBranch) return [];
+    const have = s.tests.map(t => t.code);
+    const seed = SOURCE_BRANCHES[s.srcBranch] || [];
+    const q = String(s.extractQuery).trim().toLowerCase();
+    return seed
+      .filter(r => !s.extractDept || r.dept === s.extractDept)
+      .filter(r => !q || (r.code + ' ' + r.name).toLowerCase().includes(q))
+      .map(r => ({ ...r, exists: have.indexOf(r.code) > -1 }));
+  }
+
+  toggleAllExtract = () => {
+    const rows = this.sourceRows().filter(r => !r.exists);
+    const picked = { ...this.state.extractPicked };
+    const allOn = rows.length > 0 && rows.every(r => picked[r.code]);
+    rows.forEach(r => { picked[r.code] = !allOn; });
+    this.setState({ extractPicked: picked, extractMessage: '' });
+  };
+
+  runExtract = () => {
+    const s = this.state;
+    if (s.extracting) return;
+    if (!s.srcBranch) {
+      this.setState({ extractMessageKind: 'error', extractMessage: '400 Bad Request — Select a source branch first.' });
+      return;
+    }
+    const rows = (SOURCE_BRANCHES[s.srcBranch] || []).filter(r => s.extractPicked[r.code]);
+    const have = s.tests.map(t => t.code);
+    const fresh = rows.filter(r => have.indexOf(r.code) === -1);
+    if (!fresh.length) {
+      this.setState({ extractMessageKind: 'error', extractMessage: 'Select at least one test that is not already configured in this branch.' });
+      return;
+    }
+
+    this.setState({ extracting: true, extractMessage: '' });
+    setTimeout(() => {
+      const st = this.state;
+      let n = st.tests.length;
+      const added = fresh.map(r => ({
+        id: 'T' + (++n) + '-X',
+        code: r.code, name: r.name, dept: r.dept, sampleType: r.sampleType, method: r.method,
+        category: r.category, rate: r.rate, tat: r.tat, container: r.container, lab: r.lab,
+        active: true, updated: '2026-09-03', updatedBy: 'admin.pune'
+      }));
+      this.setState({
+        tests: st.tests.concat(added),
+        extracting: false, extractOpen: false, extractPicked: {},
+        bannerKind: 'success', bannerTitle: '201 Created — ',
+        banner: added.length + ' test(s) extracted from ' + st.srcBranch + ' into X46 Diagnostics · Pune Main. Review rates before use.'
+      });
+    }, 720);
+  };
+
+  openCreate = () => this.setState({ formOpen: true, formId: null, form: { ...BLANK }, formSnapshot: JSON.stringify(BLANK), formError: '' });
+  openEdit = (id) => () => {
+    const t = this.state.tests.find(x => x.id === id);
+    if (!t) return;
+    const form = { code: t.code, name: t.name, dept: t.dept, sampleType: t.sampleType, method: t.method, category: t.category, rate: t.rate, tat: t.tat, container: t.container, lab: t.lab, active: t.active };
+    this.setState({ formOpen: true, formId: id, form, formSnapshot: JSON.stringify(form), formError: '', detailId: null });
+  };
+  editFromDetail = () => this.openEdit(this.state.detailId)();
+
+  updateForm = (e) => {
+    const f = e.target.dataset.field;
+    const v = f === 'code' ? e.target.value.toUpperCase() : e.target.value;
+    this.setState(s => ({ form: { ...s.form, [f]: v } }));
+  };
+  toggleFormActive = () => this.setState(s => ({ form: { ...s.form, active: !s.form.active } }));
+
+  tryCloseForm = () => {
+    if (JSON.stringify(this.state.form) !== this.state.formSnapshot) this.setState({ unsaved: true });
+    else this.setState({ formOpen: false, formError: '' });
+  };
+  keepEditing = () => this.setState({ unsaved: false });
+  discardForm = () => this.setState({ unsaved: false, formOpen: false, formError: '' });
+
+  saveForm = () => {
+    const f = this.state.form;
+    const miss = [];
+    if (!String(f.code).trim()) miss.push('Test code');
+    if (!String(f.name).trim()) miss.push('Test name');
+    if (!f.dept) miss.push('Department');
+    if (!f.sampleType) miss.push('Sample type');
+    if (String(f.rate) === '' || Number(f.rate) < 0) miss.push('Rate');
+    if (String(f.tat) === '' || Number(f.tat) <= 0) miss.push('Turnaround');
+    if (miss.length) { this.setState({ formError: '400 Bad Request — required: ' + miss.join(', ') + '.' }); return; }
+    const code = String(f.code).trim().toUpperCase();
+    const clash = this.state.tests.find(t => t.code === code && t.id !== this.state.formId);
+    if (clash) { this.setState({ formError: '409 Conflict — test code ' + code + ' already exists (' + clash.name + ').' }); return; }
+    this.setState({ saving: true, formError: '' });
+    setTimeout(() => {
+      this.setState(s => {
+        const patch = {
+          code, name: String(f.name).trim(), dept: f.dept, sampleType: f.sampleType,
+          method: String(f.method).trim() || '—', category: f.category,
+          rate: Number(f.rate), tat: Number(f.tat), container: String(f.container).trim() || '—',
+          lab: f.lab, active: !!f.active, updated: '2026-09-03', updatedBy: 'A. Bhosale'
+        };
+        const tests = s.formId
+          ? s.tests.map(t => (t.id === s.formId ? { ...t, ...patch } : t))
+          : [{ id: 'T' + (s.tests.length + 1), ...patch }].concat(s.tests);
+        return {
+          tests, saving: false, formOpen: false, formError: '',
+          bannerKind: 'success', bannerTitle: s.formId ? '200 OK · ' : '201 Created · ',
+          banner: s.formId ? code + ' updated in the test master.' : code + ' added to the test master.'
+        };
+      });
+    }, 600);
+  };
+
+  askToggle = (id) => () => this.setState({ confirmId: id });
+  closeConfirm = () => this.setState({ confirmId: null });
+  applyConfirm = () => {
+    const id = this.state.confirmId;
+    this.setState(s => {
+      const t = s.tests.find(x => x.id === id);
+      return {
+        confirmId: null,
+        tests: s.tests.map(x => (x.id === id ? { ...x, active: !x.active } : x)),
+        bannerKind: 'success', bannerTitle: '200 OK · ',
+        banner: t.code + ' is now ' + (t.active ? 'inactive — it will not appear in test selection.' : 'active and available for billing.')
+      };
+    });
+  };
+
+  filtered(s) {
+    const q = s.q.trim().toLowerCase();
+    let rows = s.tests.filter(t => {
+      if (q && (t.code + ' ' + t.name + ' ' + t.method).toLowerCase().indexOf(q) === -1) return false;
+      if (s.dept && t.dept !== s.dept) return false;
+      if (s.sample && t.sampleType !== s.sample) return false;
+      if (s.category && t.category !== s.category) return false;
+      if (s.status === 'Active' && !t.active) return false;
+      if (s.status === 'Inactive' && t.active) return false;
+      return true;
+    });
+    const by = {
+      code: (a, b) => a.code.localeCompare(b.code),
+      name: (a, b) => a.name.localeCompare(b.name),
+      rate: (a, b) => b.rate - a.rate,
+      tat: (a, b) => b.tat - a.tat
+    }[s.sort];
+    return rows.sort(by);
+  }
+
+  extractVals() {
+    const s = this.state;
+    const rows = this.sourceRows();
+    const selectable = rows.filter(r => !r.exists);
+    const picked = selectable.filter(r => s.extractPicked[r.code]);
+    const dupes = rows.filter(r => r.exists).length;
+    const tone = { error: ['#FEF2F2', '#B91C1C', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] };
+    const mt = tone[s.extractMessageKind] || tone.info;
+
+    return {
+      extractOpen: s.extractOpen,
+      openExtract: this.openExtract, closeExtract: this.closeExtract,
+      targetBranch: 'X46 Diagnostics · Pune Main',
+      srcBranch: s.srcBranch,
+      srcOptions: Object.keys(SOURCE_BRANCHES),
+      pickSource: this.pickSource,
+      noSource: s.extractOpen && !s.srcBranch,
+      hasSource: s.extractOpen && !!s.srcBranch,
+      extractQuery: s.extractQuery, extractDept: s.extractDept,
+      setExtractQuery: this.setExtractQuery, setExtractDept: this.setExtractDept,
+      availCount: rows.length + ' test' + (rows.length === 1 ? '' : 's'),
+      extractRows: rows.map(r => ({
+        code: r.code, name: r.name, dept: r.dept, sampleType: r.sampleType,
+        rateShown: '\u20b9 ' + Number(r.rate).toLocaleString('en-IN'),
+        exists: r.exists,
+        on: !r.exists && !!s.extractPicked[r.code],
+        cursor: r.exists ? 'not-allowed' : 'pointer',
+        bg: !r.exists && s.extractPicked[r.code] ? 'var(--color-interactive-hover)' : 'transparent',
+        onToggle: this.toggleExtract(r.code)
+      })),
+      extractEmpty: !!s.srcBranch && rows.length === 0,
+      toggleAllExtract: this.toggleAllExtract,
+      allLabel: selectable.length > 0 && picked.length === selectable.length ? 'Clear all' : 'Select all',
+      extractSelectedLabel: picked.length + ' test' + (picked.length === 1 ? '' : 's') + ' selected',
+      extractDupNote: dupes ? '· ' + dupes + ' already in this branch' : '',
+      extracting: s.extracting,
+      extractBtnLabel: s.extracting ? 'Extracting…' : 'Extract Tests',
+      extractBtnBg: s.extracting ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      extractCursor: s.extracting ? 'wait' : 'pointer',
+      runExtract: this.runExtract,
+      extractMessage: s.extractMessage,
+      extractMessageBg: mt[0], extractMessageFg: mt[1], extractMessageBd: mt[2]
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const all = this.filtered(s);
+    const pages = Math.max(1, Math.ceil(all.length / PAGE));
+    const page = Math.min(s.page, pages - 1);
+    const rows = s.loading || s.loadError ? [] : all.slice(page * PAGE, page * PAGE + PAGE);
+    const filtersOn = !!(s.q.trim() || s.dept || s.sample || s.category || s.status);
+    const d = s.tests.find(t => t.id === s.detailId);
+    const c = s.tests.find(t => t.id === s.confirmId);
+    const tone = { success: ['#DCFCE7', '#166534', '#A7F3D0'], error: ['#FEF2F2', '#991B1B', '#FECACA'], info: ['#EFF6FF', '#1E40AF', '#BFDBFE'] }[s.bannerKind];
+
+    return {
+      deptOptions: DEPTS, sampleOptions: SAMPLES,
+      q: s.q, dept: s.dept, sample: s.sample, category: s.category, status: s.status, sort: s.sort,
+      updateField: this.updateField, clearAll: this.clearAll, reload: this.reload, openCreate: this.openCreate, stop: this.stop,
+      ...this.extractVals(),
+      loading: s.loading, loadError: s.loadError,
+      skeletons: [1, 2, 3, 4, 5, 6],
+      banner: s.banner, bannerTitle: s.bannerTitle, bannerBg: tone[0], bannerFg: tone[1], bannerBd: tone[2],
+      rowCountLabel: s.loading ? 'Loading tests…' : all.length + ' of ' + s.tests.length + ' tests',
+      rows: rows.map(t => ({
+        code: t.code, name: t.name, dept: t.dept, sampleType: t.sampleType, method: t.method,
+        meta: t.category + ' · ' + t.lab,
+        rateShown: this.money(t.rate), tatShown: t.tat + ' h',
+        status: t.active ? 'Active' : 'Inactive',
+        statusBg: t.active ? '#DCFCE7' : 'var(--color-gray-100)',
+        statusFg: t.active ? '#166534' : 'var(--color-text-secondary)',
+        toggleLabel: t.active ? 'Deactivate' : 'Activate',
+        toggleFg: t.active ? '#B91C1C' : '#166534',
+        toggleBd: t.active ? '#FCA5A5' : '#A7F3D0',
+        onView: this.openDetail(t.id), onEdit: this.openEdit(t.id), onToggle: this.askToggle(t.id)
+      })),
+      isEmpty: !s.loading && !s.loadError && all.length === 0,
+      emptyTitle: filtersOn ? 'No tests match these filters' : 'No tests in the master yet',
+      emptyHint: filtersOn
+        ? 'Clear the search, department or status filter to see the full test master.'
+        : 'Add the first test so it can be selected during registration and billing.',
+      emptyActionLabel: filtersOn ? 'Clear filters' : '+ Add Test',
+      emptyAction: filtersOn ? this.clearAll : this.openCreate,
+      showPager: !s.loading && !s.loadError && all.length > PAGE,
+      pageLabel: 'Page ' + (page + 1) + ' of ' + pages + ' · showing ' + rows.length + ' rows',
+      atFirst: page === 0, atLast: page >= pages - 1,
+      prevFg: page === 0 ? 'var(--color-text-tertiary)' : 'var(--color-text-secondary)',
+      nextFg: page >= pages - 1 ? 'var(--color-text-tertiary)' : 'var(--color-text-secondary)',
+      prevCursor: page === 0 ? 'not-allowed' : 'pointer',
+      nextCursor: page >= pages - 1 ? 'not-allowed' : 'pointer',
+      prevPage: this.prevPage, nextPage: this.nextPage,
+
+      detail: !!d, closeDetail: this.closeDetail, editFromDetail: this.editFromDetail,
+      detailName: d ? d.name : '', detailCode: d ? d.code : '',
+      detailRows: d ? [
+        { k: 'Department', v: d.dept },
+        { k: 'Sample type', v: d.sampleType },
+        { k: 'Container', v: d.container },
+        { k: 'Method', v: d.method },
+        { k: 'Category', v: d.category },
+        { k: 'Rate', v: this.money(d.rate) },
+        { k: 'Turnaround', v: d.tat + ' hours' },
+        { k: 'Performing lab', v: d.lab },
+        { k: 'Status', v: d.active ? 'Active' : 'Inactive' },
+        { k: 'Last updated', v: d.updated + ' · ' + d.updatedBy }
+      ] : [],
+
+      formOpen: s.formOpen, tryCloseForm: this.tryCloseForm, saveForm: this.saveForm,
+      updateForm: this.updateForm, toggleFormActive: this.toggleFormActive,
+      formTitle: s.formId ? 'Edit Test' : 'Add Test',
+      formSubtitle: s.formId ? 'Test master · ' + s.form.code : 'New row in the branch test master',
+      formFootHint: 'Parameters and reference ranges are configured under Performing Labs.',
+      fCode: s.form.code, fName: s.form.name, fDept: s.form.dept, fSample: s.form.sampleType,
+      fMethod: s.form.method, fCategory: s.form.category, fRate: s.form.rate, fTat: s.form.tat,
+      fContainer: s.form.container, fLab: s.form.lab, fActive: s.form.active,
+      codeBorder: s.formError && !String(s.form.code).trim() ? '#F87171' : 'var(--color-border-base)',
+      nameBorder: s.formError && !String(s.form.name).trim() ? '#F87171' : 'var(--color-border-base)',
+      deptBorder: s.formError && !s.form.dept ? '#F87171' : 'var(--color-border-base)',
+      sampleBorder: s.formError && !s.form.sampleType ? '#F87171' : 'var(--color-border-base)',
+      rateBorder: s.formError && String(s.form.rate) === '' ? '#F87171' : 'var(--color-border-base)',
+      tatBorder: s.formError && String(s.form.tat) === '' ? '#F87171' : 'var(--color-border-base)',
+      formError: s.formError,
+      saving: s.saving, saveLabel: s.saving ? 'Saving…' : (s.formId ? 'Save Changes' : 'Add Test'),
+      saveCursor: s.saving ? 'wait' : 'pointer',
+
+      confirm: !!c, closeConfirm: this.closeConfirm, applyConfirm: this.applyConfirm,
+      confirmTitle: c ? (c.active ? 'Deactivate ' + c.code + '?' : 'Activate ' + c.code + '?') : '',
+      confirmBody: c ? (c.active
+        ? c.name + ' will stop appearing in test selection. Existing orders and results are not affected.'
+        : c.name + ' becomes selectable during registration and billing again.') : '',
+      confirmLabel: c ? (c.active ? 'Deactivate' : 'Activate') : '',
+      confirmBg: c && c.active ? '#B91C1C' : 'var(--color-primary-deep)',
+
+      unsaved: s.unsaved, keepEditing: this.keepEditing, discardForm: this.discardForm
+    };
+  }
+}
+</script>
+</body>
+</html>

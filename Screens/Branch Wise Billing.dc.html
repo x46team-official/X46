@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12.5px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.4; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 8px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 3px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .card { background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; }
+    .chd { padding: 9px 13px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 190px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700;">X46</div>
+      <div style="font-size: 12.5px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 8px 14px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 11.5px; font-weight: 600; margin-top: 1px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 6px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <a href="Accession.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Accession</a>
+      <a href="Worklist.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist</a>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Billing Report</a>
+      <div style="display: block; padding: 6px 14px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Branch Wise Billing</div>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; position: sticky; top: 0; z-index: 6;">
+      <div>
+        <div style="font-size: 10.5px; color: var(--color-text-tertiary);"><a href="Finance.dc.html">Finance</a> / Branch-wise Billing</div>
+        <h1 style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.01em;">Branch-wise Billing Report</h1>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px; border-right: 1px solid var(--color-border-light);">
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Prototype state</span>
+          <sc-for list="{{ stateTabs }}" as="st" hint-placeholder-count="4">
+            <button onClick="{{ st.onPick }}" style="padding: 4px 9px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid {{ st.border }}; background: {{ st.bg }}; color: {{ st.fg }};">{{ st.label }}</button>
+          </sc-for>
+        </div>
+        <a href="Finance.dc.html" style="padding: 7px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary);">Back to Finance</a>
+      </div>
+    </div>
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 10px 18px 11px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(134px, 1fr)); gap: 9px 10px; align-items: end;">
+        <div><label>Bill date from</label><input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" /></div>
+        <div><label>Bill date to</label><input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" /></div>
+        <div><label>Organization</label><select value="{{ org }}" onChange="{{ updateField }}" data-field="org"><sc-for list="{{ orgOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></div>
+        <div><label>Branch</label><select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch"><sc-for list="{{ branchOptions }}" as="b" hint-placeholder-count="5"><option value="{{ b.value }}">{{ b.label }}</option></sc-for></select></div>
+        <div><label>Payment status</label><select value="{{ status }}" onChange="{{ updateField }}" data-field="status"><sc-for list="{{ statusOptions }}" as="s" hint-placeholder-count="4"><option value="{{ s.value }}">{{ s.label }}</option></sc-for></select></div>
+        <div style="grid-column: span 2;"><label>Search bill no. / MRN / patient</label><input type="text" value="{{ q }}" placeholder="e.g. BILL0129" onChange="{{ updateField }}" onInput="{{ updateField }}" data-field="q" /></div>
+        <div style="display: flex; gap: 7px;">
+          <button onClick="{{ applyFilters }}" style="flex: 1; padding: 6px 10px; background: var(--color-primary-deep); border: 1px solid var(--color-primary-deep); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #fff; cursor: pointer;">Apply</button>
+          <button onClick="{{ resetFilters }}" style="padding: 6px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Clear</button>
+        </div>
+      </div>
+      <sc-if value="{{ hasActiveFilters }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top: 8px; font-size: 11px; color: var(--color-text-tertiary);">{{ activeFilterLabel }}</div>
+      </sc-if>
+    </div>
+
+    <div style="flex: 1; padding: 14px 18px 28px; display: flex; flex-direction: column; gap: 12px;">
+
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="border-color: #FCA5A5; background: #FEF2F2; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #991B1B;">Branch billing could not be loaded</div>
+            <div style="font-size: 11.5px; color: #991B1B;">The request failed. Branch totals are hidden so an incomplete comparison isn't read as final.</div>
+          </div>
+          <button onClick="{{ retry }}" style="padding: 7px 14px; background: #fff; border: 1px solid #FCA5A5; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #991B1B; cursor: pointer;">Retry</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ badRange }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="border-color: #FDE68A; background: #FFFBEB; padding: 11px 14px; font-size: 11.5px; color: #92400E; font-weight: 600;">Bill date from is after bill date to — correct the range to run this report.</div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(146px, 1fr)); gap: 10px;">
+        <sc-for list="{{ totals }}" as="t" hint-placeholder-count="5">
+          <div class="card" style="padding: 10px 13px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ t.label }}</div>
+            <div style="font-size: 18px; font-weight: 700; margin-top: 4px; color: {{ t.color }};" class="num">{{ t.value }}</div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ t.hint }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div class="card">
+        <div class="chd">
+          <span>Billing by branch</span>
+          <span style="font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);">{{ branchCountLabel }}</span>
+        </div>
+
+        <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 14px 13px; display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{ skeletons }}" as="sk" hint-placeholder-count="6">
+              <div style="height: 15px; border-radius: 3px; background: linear-gradient(90deg, var(--color-gray-100), var(--color-gray-50), var(--color-gray-100)); width: {{ sk.w }};"></div>
+            </sc-for>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Loading branch billing…</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showBranches }}" hint-placeholder-val="{{ true }}">
+          <div style="overflow-x: auto;">
+            <div style="min-width: 1000px;">
+              <div style="display: grid; grid-template-columns: 22px minmax(130px,1.2fr) minmax(120px,1fr) 74px 104px 104px 104px 104px 116px; gap: 8px; padding: 7px 13px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+                <div></div><div>Branch</div><div>Organization</div><div style="text-align: right;">Bills</div><div style="text-align: right;">Total</div><div style="text-align: right;">Payable</div><div style="text-align: right;">Paid</div><div style="text-align: right;">Balance</div><div style="text-align: right;">Share of payable</div>
+              </div>
+              <sc-for list="{{ branchRows }}" as="b" hint-placeholder-count="3">
+                <div>
+                  <div onClick="{{ b.onToggle }}" style="display: grid; grid-template-columns: 22px minmax(130px,1.2fr) minmax(120px,1fr) 74px 104px 104px 104px 104px 116px; gap: 8px; padding: 9px 13px; border-bottom: 1px solid var(--color-border-light); align-items: center; cursor: pointer; background: {{ b.bg }};" style-hover="background: var(--color-interactive-hover);">
+                    <div style="font-size: 10px; color: var(--color-text-tertiary);">{{ b.caret }}</div>
+                    <div style="font-size: 12px; font-weight: 700;">{{ b.name }}</div>
+                    <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ b.org }}</div>
+                    <div style="font-size: 11.5px; text-align: right;" class="num">{{ b.count }}</div>
+                    <div style="font-size: 11.5px; text-align: right; color: var(--color-text-secondary);" class="num">{{ b.total }}</div>
+                    <div style="font-size: 14px; font-weight: 700; text-align: right;" class="num">{{ b.payable }}</div>
+                    <div style="font-size: 11.5px; text-align: right; color: var(--color-secondary-green);" class="num">{{ b.paid }}</div>
+                    <div style="font-size: 12px; font-weight: 700; text-align: right; color: {{ b.balColor }};" class="num">{{ b.balance }}</div>
+                    <div style="display: flex; align-items: center; gap: 7px; justify-content: flex-end;">
+                      <div style="flex: 1; max-width: 64px; height: 6px; border-radius: 3px; background: var(--color-gray-100); overflow: hidden;"><div style="height: 100%; width: {{ b.barPct }}; background: var(--color-primary-deep);"></div></div>
+                      <span style="font-size: 11px; color: var(--color-text-secondary); width: 36px; text-align: right;" class="num">{{ b.share }}%</span>
+                    </div>
+                  </div>
+
+                  <sc-if value="{{ b.open }}" hint-placeholder-val="{{ false }}">
+                    <div style="background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); padding: 9px 13px 11px 35px;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 7px;">
+                        <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Bills raised at {{ b.name }}</div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                          <span style="font-size: 11px; color: var(--color-text-secondary);">{{ b.pageLabel }}</span>
+                          <button onClick="{{ b.onPrev }}" style="padding: 3px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Prev</button>
+                          <button onClick="{{ b.onNext }}" style="padding: 3px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Next</button>
+                        </div>
+                      </div>
+                      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 5px; overflow: hidden;">
+                        <div style="display: grid; grid-template-columns: 84px 74px minmax(116px,1.1fr) 92px 108px 84px 74px 84px 84px 84px 84px; gap: 8px; padding: 6px 11px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+                          <div>Bill no.</div><div>Date</div><div>Patient</div><div>MRN</div><div>Registration</div><div style="text-align: right;">Total</div><div style="text-align: right;">Disc.</div><div style="text-align: right;">Payable</div><div style="text-align: right;">Paid</div><div style="text-align: right;">Balance</div><div>Status</div>
+                        </div>
+                        <sc-for list="{{ b.bills }}" as="r" hint-placeholder-count="5">
+                          <div onClick="{{ r.onOpen }}" style="display: grid; grid-template-columns: 84px 74px minmax(116px,1.1fr) 92px 108px 84px 74px 84px 84px 84px 84px; gap: 8px; padding: 6px 11px; border-bottom: 1px solid var(--color-border-light); align-items: center; cursor: pointer;" style-hover="background: var(--color-interactive-hover);">
+                            <div style="font-size: 11px; font-weight: 700; color: var(--color-primary-deep);" class="num">{{ r.billNumber }}</div>
+                            <div style="font-size: 11px; color: var(--color-text-secondary);" class="num">{{ r.billDate }}</div>
+                            <div style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patient }}</div>
+                            <div style="font-size: 11px; color: var(--color-text-secondary);" class="num">{{ r.mrn }}</div>
+                            <div style="font-size: 11px; color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="num">{{ r.reg }}</div>
+                            <div style="font-size: 11px; text-align: right;" class="num">{{ r.total }}</div>
+                            <div style="font-size: 11px; text-align: right; color: var(--color-text-secondary);" class="num">{{ r.discount }}</div>
+                            <div style="font-size: 11.5px; font-weight: 600; text-align: right;" class="num">{{ r.payable }}</div>
+                            <div style="font-size: 11px; text-align: right;" class="num">{{ r.paid }}</div>
+                            <div style="font-size: 11.5px; font-weight: 700; text-align: right; color: {{ r.balColor }};" class="num">{{ r.balance }}</div>
+                            <div><span style="padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span></div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <div style="display: grid; grid-template-columns: 22px minmax(130px,1.2fr) minmax(120px,1fr) 74px 104px 104px 104px 104px 116px; gap: 8px; padding: 9px 13px; background: var(--color-gray-50); align-items: center; font-weight: 700; font-size: 12px;">
+                <div></div><div>Total</div><div></div>
+                <div style="text-align: right;" class="num">{{ tBills }}</div>
+                <div style="text-align: right;" class="num">{{ tTotal }}</div>
+                <div style="text-align: right;" class="num">{{ tPayable }}</div>
+                <div style="text-align: right;" class="num">{{ tPaid }}</div>
+                <div style="text-align: right;" class="num">{{ tBalance }}</div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 8px 13px; border-top: 1px solid var(--color-border-light); font-size: 11px; color: var(--color-text-secondary);">Click a branch row to see its bills · click a bill for its full detail</div>
+        </sc-if>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 40px 16px; text-align: center;">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No billing in this period</div>
+            <div style="font-size: 11.5px; color: var(--color-text-tertiary);">{{ emptyHint }}</div>
+            <button onClick="{{ resetFilters }}" style="margin-top: 10px; padding: 6px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Clear filters</button>
+          </div>
+        </sc-if>
+      </div>
+
+    </div>
+  </main>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 20; display: flex; justify-content: flex-end;">
+      <div style="width: 410px; max-width: 94vw; background: #fff; height: 100%; display: flex; flex-direction: column; box-shadow: -8px 0 24px rgba(17,24,39,.18);">
+        <div style="padding: 12px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Bill</div>
+            <div style="font-size: 15px; font-weight: 700;" class="num">{{ detailTitle }}</div>
+            <div style="font-size: 11.5px; color: var(--color-text-secondary);">{{ detailSubtitle }}</div>
+          </div>
+          <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 16px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;" style-hover="color: var(--color-error);">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 12px 16px;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <sc-for list="{{ detailFields }}" as="f" hint-placeholder-count="6">
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-light);">
+                <span style="color: var(--color-text-secondary);">{{ f.k }}</span>
+                <span style="font-weight: 600; text-align: right;" class="num">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 14px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary); margin-bottom: 6px;">Tests billed</div>
+            <sc-for list="{{ detailItems }}" as="it" hint-placeholder-count="3">
+              <div style="display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--color-border-light); font-size: 11.5px;">
+                <span>{{ it.name }}</span>
+                <span style="font-weight: 600;" class="num">₹ {{ it.amount }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 14px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary); margin-bottom: 6px;">Amounts</div>
+            <sc-for list="{{ detailAmounts }}" as="a" hint-placeholder-count="7">
+              <div style="display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--color-border-light); font-size: 11.5px;">
+                <span style="color: var(--color-text-secondary);">{{ a.k }}</span>
+                <span style="font-weight: 700; color: {{ a.color }};" class="num">{{ a.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 11px 16px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px;">
+          <a href="Bill Details.dc.html" style="flex: 1; text-align: center; padding: 8px 12px; background: var(--color-primary-deep); color: #fff; border-radius: 4px; font-size: 11.5px; font-weight: 700;">Open full bill</a>
+          <button onClick="{{ closeDetail }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const ORGS = [{ id: 'ORG-1', name: 'X46 Diagnostics' }, { id: 'ORG-2', name: 'Sanjeevani Labs' }];
+const BRANCHES = [
+  { id: 'BR-1', org: 'ORG-1', name: 'Pune Main' },
+  { id: 'BR-2', org: 'ORG-1', name: 'Baner' },
+  { id: 'BR-3', org: 'ORG-2', name: 'Nashik' },
+  { id: 'BR-4', org: 'ORG-1', name: 'Hadapsar' }
+];
+const USERS = [{ id: 'U-1', name: 'A. Kulkarni' }, { id: 'U-2', name: 'S. Pawar' }, { id: 'U-3', name: 'R. Naik' }, { id: 'U-4', name: 'M. Deshmukh' }];
+
+const BILLS = [
+  { id: 'b1', billNumber: 'BILL0121', billDate: '2026-08-12', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004102', patient: 'Kusum Kamble', mrn: 'MRN-10233', totalAmount: 2400, discountAmount: 100, concessionAmount: 0, additionalAmount: 0, payableAmount: 2300, paidAmount: 2300, paymentStatus: 'Paid', items: [['CBC (Complete Blood Count)', 400], ['Glycosylated Haemoglobin (HbA1c)', 900], ['Liver Function Test (LFT)', 1100]] },
+  { id: 'b2', billNumber: 'BILL0122', billDate: '2026-08-12', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004108', patient: 'Bharat Pandit', mrn: 'MRN-10241', totalAmount: 1500, discountAmount: 0, concessionAmount: 75, additionalAmount: 0, payableAmount: 1425, paidAmount: 900, paymentStatus: 'Partial', items: [['Lipid Profile', 800], ['Thyroid Stimulating Hormone (TSH)', 700]] },
+  { id: 'b3', billNumber: 'BILL0123', billDate: '2026-08-13', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004115', patient: 'Shano Parveen', mrn: 'MRN-10248', totalAmount: 900, discountAmount: 0, concessionAmount: 0, additionalAmount: 50, payableAmount: 950, paidAmount: 450, paymentStatus: 'Partial', items: [['Liver Function Test (LFT)', 900]] },
+  { id: 'b4', billNumber: 'BILL0124', billDate: '2026-08-13', org: 'ORG-2', branch: 'BR-3', createdBy: 'U-3', reg: 'REG-2026-004121', patient: 'Vinod Waghmare', mrn: 'MRN-10256', totalAmount: 3600, discountAmount: 200, concessionAmount: 0, additionalAmount: 0, payableAmount: 3400, paidAmount: 3400, paymentStatus: 'Paid', items: [['CBC (Complete Blood Count)', 400], ['Kidney Function Test (KFT)', 1200], ['Liver Function Test (LFT)', 1100], ['Urine Routine', 300], ['Vitamin D', 600]] },
+  { id: 'b5', billNumber: 'BILL0125', billDate: '2026-08-14', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004130', patient: 'Roman Rathod', mrn: 'MRN-10261', totalAmount: 700, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 700, paidAmount: 700, paymentStatus: 'Paid', items: [['Lipid Profile', 700]] },
+  { id: 'b6', billNumber: 'BILL0126', billDate: '2026-08-14', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004134', patient: 'Baljeet Kaur', mrn: 'MRN-10270', totalAmount: 2500, discountAmount: 0, concessionAmount: 125, additionalAmount: 0, payableAmount: 2375, paidAmount: 1000, paymentStatus: 'Partial', items: [['Vitamin D', 600], ['Vitamin B12', 900], ['CBC (Complete Blood Count)', 1000]] },
+  { id: 'b7', billNumber: 'BILL0127', billDate: '2026-08-15', org: 'ORG-1', branch: 'BR-4', createdBy: 'U-4', reg: 'REG-2026-004141', patient: 'Asmatara Faquih', mrn: 'MRN-10277', totalAmount: 1400, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 1400, paidAmount: 0, paymentStatus: 'Pending', items: [['Glycosylated Haemoglobin (HbA1c)', 900], ['Blood Glucose - PP', 500]] },
+  { id: 'b8', billNumber: 'BILL0128', billDate: '2026-08-15', org: 'ORG-2', branch: 'BR-3', createdBy: 'U-3', reg: 'REG-2026-004147', patient: 'Rais Iqbal', mrn: 'MRN-10284', totalAmount: 1100, discountAmount: 100, concessionAmount: 0, additionalAmount: 0, payableAmount: 1000, paidAmount: 1000, paymentStatus: 'Paid', items: [['CBC (Complete Blood Count)', 400], ['ESR', 300], ['C-Reactive Protein (CRP)', 400]] },
+  { id: 'b9', billNumber: 'BILL0129', billDate: '2026-08-16', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004155', patient: 'Shital Jadhav', mrn: 'MRN-10290', totalAmount: 4200, discountAmount: 300, concessionAmount: 0, additionalAmount: 0, payableAmount: 3900, paidAmount: 2000, paymentStatus: 'Partial', items: [['Kidney Function Test (KFT)', 1200], ['Liver Function Test (LFT)', 1100], ['Uric Acid', 400], ['Thyroid Function Test (TFT)', 1500]] },
+  { id: 'b10', billNumber: 'BILL0130', billDate: '2026-08-16', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-1', reg: 'REG-2026-004162', patient: 'Ganpat Gujar', mrn: 'MRN-10298', totalAmount: 600, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 600, paidAmount: 600, paymentStatus: 'Paid', items: [['Urine Routine', 300], ['CBC (Complete Blood Count)', 300]] },
+  { id: 'b11', billNumber: 'BILL0131', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004170', patient: 'Harshit Sagar', mrn: 'MRN-10304', totalAmount: 1800, discountAmount: 0, concessionAmount: 90, additionalAmount: 0, payableAmount: 1710, paidAmount: 1710, paymentStatus: 'Paid', items: [['Thyroid Function Test (TFT)', 1500], ['Free Thyroid Panel', 300]] },
+  { id: 'b12', billNumber: 'BILL0132', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-4', createdBy: 'U-4', reg: 'REG-2026-004176', patient: 'Vibhavari Salvi', mrn: 'MRN-10311', totalAmount: 950, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 950, paidAmount: 0, paymentStatus: 'Pending', items: [['Liver Function Test (LFT)', 950]] },
+  { id: 'b13', billNumber: 'BILL0133', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004181', patient: 'Francis Mendonca', mrn: 'MRN-10318', totalAmount: 1200, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 1200, paidAmount: 1200, paymentStatus: 'Paid', items: [['CBC (Complete Blood Count)', 800], ['C-Reactive Protein (CRP)', 400]] },
+  { id: 'b14', billNumber: 'BILL0134', billDate: '2026-08-18', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004188', patient: 'Laxman Munekar', mrn: 'MRN-10325', totalAmount: 2100, discountAmount: 150, concessionAmount: 0, additionalAmount: 0, payableAmount: 1950, paidAmount: 1950, paymentStatus: 'Paid', items: [['Dengue Combo (Antigen & Antibodies)', 1200], ['CBC (Complete Blood Count)', 900]] },
+  { id: 'b15', billNumber: 'BILL0135', billDate: '2026-08-18', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004193', patient: 'Prabhavati Devi', mrn: 'MRN-10331', totalAmount: 800, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 800, paidAmount: 300, paymentStatus: 'Partial', items: [['Malarial Antigen Rapid', 500], ['ESR', 300]] },
+  { id: 'b16', billNumber: 'BILL0136', billDate: '2026-08-19', org: 'ORG-2', branch: 'BR-3', createdBy: 'U-3', reg: 'REG-2026-004201', patient: 'Afzal Yusuf Khan', mrn: 'MRN-10340', totalAmount: 3050, discountAmount: 0, concessionAmount: 150, additionalAmount: 0, payableAmount: 2900, paidAmount: 2900, paymentStatus: 'Paid', items: [['Anti HBs (Hepatitis B surface Antibody)', 1400], ['Liver Function Test (LFT)', 1100], ['Urine Routine', 550]] },
+  { id: 'b17', billNumber: 'BILL0137', billDate: '2026-08-19', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004209', patient: 'Heena Sayyed', mrn: 'MRN-10346', totalAmount: 1650, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 1650, paidAmount: 1650, paymentStatus: 'Paid', items: [['Thyroid Function Test (TFT)', 1500], ['ESR', 150]] },
+  { id: 'b18', billNumber: 'BILL0138', billDate: '2026-08-19', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004214', patient: 'Suraj Kamble', mrn: 'MRN-10352', totalAmount: 520, discountAmount: 20, concessionAmount: 0, additionalAmount: 0, payableAmount: 500, paidAmount: 500, paymentStatus: 'Paid', items: [['Blood Glucose - F (Fasting)', 250], ['Blood Glucose - PP', 270]] },
+  { id: 'b19', billNumber: 'BILL0139', billDate: '2026-08-19', org: 'ORG-1', branch: 'BR-4', createdBy: 'U-4', reg: 'REG-2026-004219', patient: 'Arambh Gogawale', mrn: 'MRN-10358', totalAmount: 1750, discountAmount: 50, concessionAmount: 0, additionalAmount: 0, payableAmount: 1700, paidAmount: 1200, paymentStatus: 'Partial', items: [['Urine Routine', 350], ['CBC (Complete Blood Count)', 700], ['C-Reactive Protein (CRP)', 700]] }
+];
+
+const DEFAULTS = { from: '2026-08-12', to: '2026-08-19', org: 'ALL', branch: 'ALL', status: 'ALL', q: '' };
+const PAGE_SIZE = 5;
+
+class Component extends DCLogic {
+  state = { ...DEFAULTS, view: 'DATA', expanded: null, subPage: 0, detail: null };
+
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    const patch = { [f]: e.target.value, expanded: null, subPage: 0 };
+    if (f === 'org') patch.branch = 'ALL';
+    this.setState(patch);
+  };
+  applyFilters = () => this.setState({ view: this.state.view === 'ERROR' ? 'DATA' : this.state.view });
+  resetFilters = () => this.setState({ ...DEFAULTS, view: 'DATA', expanded: null, subPage: 0, detail: null });
+  setView = (v) => () => this.setState({ view: v, expanded: null, detail: null });
+  retry = () => this.setState({ view: 'DATA' });
+  toggle = (id) => () => this.setState({ expanded: this.state.expanded === id ? null : id, subPage: 0 });
+  subPrev = () => this.setState({ subPage: Math.max(0, this.state.subPage - 1) });
+  subNext = () => this.setState({ subPage: this.state.subPage + 1 });
+  openBill = (id) => (e) => { e.stopPropagation(); this.setState({ detail: id }); };
+  closeDetail = () => this.setState({ detail: null });
+
+  money(n) { return '₹ ' + Number(n || 0).toLocaleString('en-IN'); }
+  branchName(id) { const b = BRANCHES.find(x => x.id === id); return b ? b.name : id; }
+  orgName(id) { const o = ORGS.find(x => x.id === id); return o ? o.name : id; }
+  userName(id) { const u = USERS.find(x => x.id === id); return u ? u.name : id; }
+  tone(v) { return ({ Paid: ['#DCFCE7', '#166534'], Partial: ['#DBEAFE', '#1E40AF'], Pending: ['#FEF3C7', '#92400E'] }[v] || ['var(--color-gray-100)', 'var(--color-text-secondary)']); }
+  balanceOf(b) { return Math.max(0, b.payableAmount - b.paidAmount); }
+
+  filtered() {
+    const s = this.state;
+    const q = s.q.trim().toLowerCase();
+    return BILLS.filter(b => b.billDate >= s.from && b.billDate <= s.to
+      && (s.org === 'ALL' || b.org === s.org)
+      && (s.branch === 'ALL' || b.branch === s.branch)
+      && (s.status === 'ALL' || b.paymentStatus === s.status)
+      && (!q || b.billNumber.toLowerCase().indexOf(q) > -1 || b.mrn.toLowerCase().indexOf(q) > -1 || b.patient.toLowerCase().indexOf(q) > -1 || b.reg.toLowerCase().indexOf(q) > -1));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const badRange = s.from > s.to;
+    const isLoading = s.view === 'LOADING';
+    const isError = s.view === 'ERROR';
+    const forcedEmpty = s.view === 'EMPTY';
+    const all = badRange || forcedEmpty || isError ? [] : this.filtered();
+    const isEmpty = !isLoading && !isError && !badRange && all.length === 0;
+    const hasData = !isLoading && !isError && !badRange && !isEmpty;
+
+    const sum = (list, f) => list.reduce((a, x) => a + f(x), 0);
+    const tTotal = sum(all, b => b.totalAmount);
+    const tPayable = sum(all, b => b.payableAmount);
+    const tPaid = sum(all, b => b.paidAmount);
+    const tBalance = sum(all, b => this.balanceOf(b));
+
+    const map = new Map();
+    all.forEach(b => {
+      const g = map.get(b.branch) || { branch: b.branch, org: b.org, rows: [] };
+      g.rows.push(b); map.set(b.branch, g);
+    });
+    const groups = [...map.values()].map(g => ({
+      ...g,
+      count: g.rows.length,
+      total: sum(g.rows, b => b.totalAmount),
+      payable: sum(g.rows, b => b.payableAmount),
+      paid: sum(g.rows, b => b.paidAmount),
+      balance: sum(g.rows, b => this.balanceOf(b))
+    })).sort((a, b) => b.payable - a.payable);
+    const maxPayable = Math.max(1, ...groups.map(g => g.payable));
+
+    const activeCount = ['org', 'branch', 'status'].filter(k => s[k] !== 'ALL').length + (s.q.trim() ? 1 : 0);
+    const d = s.detail ? BILLS.find(b => b.id === s.detail) : null;
+
+    return {
+      ...s,
+      orgOptions: [{ value: 'ALL', label: 'All organizations' }].concat(ORGS.map(o => ({ value: o.id, label: o.name }))),
+      branchOptions: [{ value: 'ALL', label: 'All branches' }].concat(BRANCHES.filter(b => s.org === 'ALL' || b.org === s.org).map(b => ({ value: b.id, label: b.name }))),
+      statusOptions: [{ value: 'ALL', label: 'All statuses' }, { value: 'Paid', label: 'Paid' }, { value: 'Partial', label: 'Partial' }, { value: 'Pending', label: 'Pending' }],
+      updateField: this.updateField, applyFilters: this.applyFilters, resetFilters: this.resetFilters, retry: this.retry, closeDetail: this.closeDetail,
+      hasActiveFilters: activeCount > 0,
+      activeFilterLabel: activeCount + (activeCount === 1 ? ' filter applied' : ' filters applied') + ' · branches are ranked by payable amount',
+      stateTabs: [['DATA', 'Data'], ['LOADING', 'Loading'], ['EMPTY', 'Empty'], ['ERROR', 'Error']].map(([k, label]) => {
+        const on = s.view === k;
+        return { label, onPick: this.setView(k), bg: on ? 'var(--color-primary-deep)' : '#fff', fg: on ? '#fff' : 'var(--color-text-secondary)', border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)' };
+      }),
+      isLoading, isError, isEmpty, badRange,
+      showBranches: hasData,
+      skeletons: [{ w: '95%' }, { w: '88%' }, { w: '92%' }, { w: '74%' }, { w: '84%' }, { w: '66%' }],
+      totals: [
+        { label: 'Bills', value: String(all.length), hint: 'In this range', color: 'var(--color-text-primary)' },
+        { label: 'Billed amount', value: this.money(tTotal), hint: 'Before discount', color: 'var(--color-text-primary)' },
+        { label: 'Payable', value: this.money(tPayable), hint: 'Net of discount', color: 'var(--color-text-primary)' },
+        { label: 'Paid', value: this.money(tPaid), hint: 'Received so far', color: 'var(--color-secondary-green)' },
+        { label: 'Balance', value: this.money(tBalance), hint: 'Still outstanding', color: tBalance > 0 ? 'var(--color-error)' : 'var(--color-text-primary)' }
+      ],
+      branchCountLabel: groups.length + (groups.length === 1 ? ' branch' : ' branches'),
+      branchRows: groups.map(g => {
+        const open = s.expanded === g.branch;
+        const rows = g.rows.slice().sort((a, b) => (a.billDate < b.billDate ? 1 : a.billDate > b.billDate ? -1 : 0));
+        const pageCount = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+        const page = Math.min(s.subPage, pageCount - 1);
+        const slice = rows.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+        return {
+          name: this.branchName(g.branch),
+          org: this.orgName(g.org),
+          count: g.count,
+          total: this.money(g.total),
+          payable: this.money(g.payable),
+          paid: this.money(g.paid),
+          balance: this.money(g.balance),
+          balColor: g.balance > 0 ? 'var(--color-error)' : 'var(--color-text-primary)',
+          share: Math.round((g.payable / (tPayable || 1)) * 100),
+          barPct: Math.round((g.payable / maxPayable) * 100) + '%',
+          caret: open ? '▾' : '▸',
+          bg: open ? 'var(--color-interactive-hover)' : '#fff',
+          open,
+          onToggle: this.toggle(g.branch),
+          onPrev: this.subPrev,
+          onNext: this.subNext,
+          pageLabel: rows.length + ' bills · page ' + (page + 1) + ' of ' + pageCount,
+          bills: slice.map(b => {
+            const bal = this.balanceOf(b);
+            const t = this.tone(b.paymentStatus);
+            return {
+              billNumber: b.billNumber, billDate: b.billDate.slice(5), patient: b.patient, mrn: b.mrn, reg: b.reg,
+              total: this.money(b.totalAmount),
+              discount: this.money(b.discountAmount + b.concessionAmount),
+              payable: this.money(b.payableAmount),
+              paid: this.money(b.paidAmount),
+              balance: this.money(bal),
+              balColor: bal > 0 ? 'var(--color-error)' : 'var(--color-text-primary)',
+              status: b.paymentStatus, statusBg: t[0], statusFg: t[1],
+              onOpen: this.openBill(b.id)
+            };
+          })
+        };
+      }),
+      tBills: all.length,
+      tTotal: this.money(tTotal),
+      tPayable: this.money(tPayable),
+      tPaid: this.money(tPaid),
+      tBalance: this.money(tBalance),
+      emptyHint: badRange ? 'Fix the date range first.' : (s.q.trim() ? 'Nothing matched “' + s.q.trim() + '” in this date range.' : 'No bills were raised at any branch for this filter combination.'),
+      detail: d ? true : false,
+      detailTitle: d ? d.billNumber : '',
+      detailSubtitle: d ? d.patient + ' · ' + d.mrn : '',
+      detailFields: d ? [
+        ['Bill date', d.billDate],
+        ['Organization', this.orgName(d.org)],
+        ['Branch', this.branchName(d.branch)],
+        ['Registration no.', d.reg],
+        ['Payment status', d.paymentStatus],
+        ['Raised by', this.userName(d.createdBy)]
+      ].map(([k, v]) => ({ k, v })) : [],
+      detailItems: d ? d.items.map(([name, amount]) => ({ name, amount: Number(amount).toLocaleString('en-IN') })) : [],
+      detailAmounts: d ? [
+        ['Total amount', this.money(d.totalAmount), 'var(--color-text-primary)'],
+        ['Discount', this.money(d.discountAmount), 'var(--color-text-primary)'],
+        ['Concession', this.money(d.concessionAmount), 'var(--color-text-primary)'],
+        ['Additional', this.money(d.additionalAmount), 'var(--color-text-primary)'],
+        ['Payable', this.money(d.payableAmount), 'var(--color-text-primary)'],
+        ['Paid', this.money(d.paidAmount), 'var(--color-secondary-green)'],
+        ['Balance', this.money(this.balanceOf(d)), this.balanceOf(d) > 0 ? 'var(--color-error)' : 'var(--color-text-primary)']
+      ].map(([k, v, color]) => ({ k, v, color })) : []
+    };
+  }
+}
+
+</script>
+</body>
+</html>

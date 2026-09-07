@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <dc-import name="LimsNav" active="TAT Analytics" hint-size="216px,100vh" style="flex: 0 0 216px; align-self: stretch;"></dc-import>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);"><a href="Analytics.dc.html">Analytics</a> / TAT Analytics</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Turnaround Time</h1>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="width: 146px;">
+              <label>From</label>
+              <input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" />
+            </div>
+            <div style="width: 146px;">
+              <label>To</label>
+              <input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" />
+            </div>
+            <div style="width: 162px;">
+              <label>Branch</label>
+              <select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch">
+                <option value="">All branches</option>
+                <sc-for list="{{ branchOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 150px;">
+              <label>Department</label>
+              <select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept">
+                <option value="">All departments</option>
+                <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 168px;">
+              <label>Test</label>
+              <select value="{{ test }}" onChange="{{ updateField }}" data-field="test">
+                <option value="">All tests</option>
+                <sc-for list="{{ testOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="width: 158px;">
+              <label>Technician</label>
+              <select value="{{ tech }}" onChange="{{ updateField }}" data-field="tech">
+                <option value="">All technicians</option>
+                <sc-for list="{{ techOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+            <button onClick="{{ clearAll }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear</button>
+          </div>
+          <div style="margin-top: 5px; font-size: 10.5px; color: var(--color-text-tertiary);">{{ scopeNote }}</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <button onClick="{{ reload }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reload</button>
+          <a href="MIS Data Export.dc.html" style="padding: 8px 14px; background: var(--color-primary-deep); border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap;">Export</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 8px 20px 0; display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+      <sc-for list="{{ statusPills }}" as="p" hint-placeholder-count="4">
+        <button onClick="{{ p.onPick }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; margin-bottom: 8px; background: {{ p.bg }}; border: 1px solid {{ p.edge }}; border-radius: 999px; font-family: inherit; font-size: 12px; font-weight: {{ p.weight }}; color: {{ p.color }}; cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">
+          <span>{{ p.label }}</span>
+          <span class="num" style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ p.count }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="6">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 12px 13px;">
+              <div style="height: 8px; width: 62%; border-radius: 3px; background: var(--color-gray-100);"></div>
+              <div style="height: 18px; width: 44%; border-radius: 3px; background: var(--color-gray-100); margin-top: 10px;"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; height: 240px; margin-top: 12px;"></div>
+      </sc-if>
+
+      <sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 11px 13px; display: flex; flex-direction: column; gap: 5px; border-top: 3px solid {{ k.edge }};">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ k.label }}</span>
+              <div class="num" style="font-size: 20px; font-weight: 700; line-height: 1.1; color: {{ k.fg }};">{{ k.value }}</div>
+              <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ k.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; margin-top: 12px;">
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 12.5px; font-weight: 700;">TAT trend vs target</div>
+              <div style="display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em;">
+                <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: var(--color-accent-teal);"></span>Actual</span>
+                <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 14px; height: 2px; background: var(--color-text-tertiary);"></span>Target {{ targetLabel }}</span>
+              </div>
+            </div>
+            <div style="padding: 14px; height: 218px; display: flex; align-items: flex-end; gap: 8px; position: relative;">
+              <div style="position: absolute; left: 14px; right: 14px; bottom: {{ targetLine }}; border-top: 2px dashed var(--color-text-tertiary); pointer-events: none;"></div>
+              <sc-for list="{{ trend }}" as="d" hint-placeholder-count="7">
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 100%;">
+                  <div class="num" style="font-size: 10px; font-weight: 700; text-align: center; color: {{ d.color }};">{{ d.value }}</div>
+                  <div style="height: {{ d.pct }}; min-height: 3px; border-radius: 3px 3px 0 0; background: {{ d.color }};" title="{{ d.tip }}"></div>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary); text-align: center; white-space: nowrap;">{{ d.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; display: flex; flex-direction: column;">
+            <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="font-size: 12.5px; font-weight: 700;">Breakdown</div>
+              <select value="{{ breakdown }}" onChange="{{ updateField }}" data-field="breakdown" style="width: 148px;">
+                <option value="test">By test</option>
+                <option value="dept">By department</option>
+                <option value="branch">By branch</option>
+                <option value="tech">By technician</option>
+              </select>
+            </div>
+            <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 9px;">
+              <sc-for list="{{ breakdownRows }}" as="b" hint-placeholder-count="6">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                    <span style="font-size: 11.5px; font-weight: 600; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ b.name }}</span>
+                    <span class="num" style="font-size: 11.5px; font-weight: 700; color: {{ b.fg }}; white-space: nowrap;">{{ b.value }} · {{ b.within }} within</span>
+                  </div>
+                  <div style="height: 7px; border-radius: 999px; background: var(--color-gray-100); overflow: hidden;">
+                    <div style="height: 100%; width: {{ b.pct }}; background: {{ b.fg }};"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; margin-top: 12px; overflow: auto;">
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div style="font-size: 12.5px; font-weight: 700;">Sample-level TAT <span class="num" style="font-weight: 600; color: var(--color-text-tertiary);">· {{ rowCount }} records</span></div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" placeholder="Search accession or test" value="{{ q }}" onChange="{{ updateField }}" data-field="q" style="width: 220px;" />
+              <select value="{{ sort }}" onChange="{{ updateField }}" data-field="sort" style="width: 176px;">
+                <option value="variance">Variance (worst first)</option>
+                <option value="actual">Actual TAT (slowest)</option>
+                <option value="accession">Accession ID</option>
+              </select>
+            </div>
+          </div>
+          <div style="min-width: 1400px;">
+            <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 128px minmax(170px,1.1fr) 128px 112px 112px 112px 112px 100px 96px 104px 108px; gap: 9px; padding: 8px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 9.5px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+              <div>Accession</div><div>Test</div><div>Technician</div>
+              <div>Collected</div><div>Accessioned</div><div>Result</div><div>Validated</div><div>Reported</div>
+              <div style="text-align: right;">Actual</div><div style="text-align: right;">Target</div><div>Status</div>
+            </div>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+              <div style="display: grid; grid-template-columns: 128px minmax(170px,1.1fr) 128px 112px 112px 112px 112px 100px 96px 104px 108px; gap: 9px; padding: 9px 14px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ r.rowBg }};" style-hover="background: var(--color-gray-50);">
+                <div class="mono" style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);">{{ r.accession }}</div>
+                <div style="min-width: 0;">
+                  <div style="font-size: 11.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.test }}</div>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.meta }}</div>
+                </div>
+                <div style="font-size: 11.5px;">{{ r.tech }}</div>
+                <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.collected }}</div>
+                <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.accessioned }}</div>
+                <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.result }}</div>
+                <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.validated }}</div>
+                <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.reported }}</div>
+                <div class="num" style="font-size: 11.5px; font-weight: 700; text-align: right;">{{ r.actual }}</div>
+                <div class="num" style="font-size: 11.5px; text-align: right; color: var(--color-text-secondary);">{{ r.target }}</div>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.badgeBg }}; color: {{ r.badgeFg }}; width: fit-content;">{{ r.status }}</span>
+                  <span class="num" style="font-size: 10px; font-weight: 700; color: {{ r.badgeFg }};">{{ r.variance }}</span>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 48px 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No samples in this scope</div>
+                <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">No accessioned tests match the selected filters and TAT status.</div>
+                <button onClick="{{ clearAll }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Clear filters</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1600px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const BRANCHES = ['Pune Main', 'Pune — Baner', 'Pimpri Collection Centre', 'Nashik Branch'];
+const DEPTS = ['Biochemistry', 'Haematology', 'Microbiology', 'Serology', 'Clinical Pathology'];
+const TECHS = ['R. Kulkarni', 'S. Iyer', 'A. Deshmukh', 'P. Jadhav', 'M. Ansari'];
+const TARGET = 8;
+
+/* accession, test, dept, branch, technician, collected, accessioned, result, validated, reported, actual hrs */
+const SAMPLES = [
+  ['ACC-2026-11840', 'Complete Blood Count', 'Haematology', 'Pune Main', 'R. Kulkarni', '08:10', '08:34', '10:02', '10:40', '11:05', 2.9],
+  ['ACC-2026-11841', 'Lipid Profile', 'Biochemistry', 'Pune Main', 'S. Iyer', '08:12', '08:38', '12:20', '13:05', '13:30', 5.3],
+  ['ACC-2026-11842', 'Culture & Sensitivity', 'Microbiology', 'Pune Main', 'A. Deshmukh', '07:45', '08:20', '—', '—', '—', 26.4],
+  ['ACC-2026-11845', 'Glycated Haemoglobin (HbA1c)', 'Biochemistry', 'Pune — Baner', 'S. Iyer', '09:02', '09:48', '13:10', '14:02', '14:25', 5.4],
+  ['ACC-2026-11849', 'Thyroid Stimulating Hormone', 'Biochemistry', 'Pune — Baner', 'P. Jadhav', '09:20', '10:40', '17:50', '—', '—', 9.8],
+  ['ACC-2026-11852', 'Urine Routine', 'Clinical Pathology', 'Pimpri Collection Centre', 'M. Ansari', '10:05', '11:52', '14:20', '14:55', '15:20', 5.3],
+  ['ACC-2026-11854', 'Liver Function Panel', 'Biochemistry', 'Nashik Branch', 'P. Jadhav', '07:30', '09:15', '15:40', '16:30', '—', 9.0],
+  ['ACC-2026-11858', 'HBsAg (ELISA)', 'Serology', 'Pune Main', 'A. Deshmukh', '08:55', '09:20', '13:45', '14:20', '14:48', 5.9],
+  ['ACC-2026-11861', 'Dengue NS1 / IgM / IgG', 'Serology', 'Nashik Branch', 'M. Ansari', '11:10', '13:05', '—', '—', '—', 14.2],
+  ['ACC-2026-11864', 'Prothrombin Time / INR', 'Haematology', 'Pune Main', 'R. Kulkarni', '07:20', '07:44', '08:55', '09:20', '09:40', 2.3],
+  ['ACC-2026-11868', 'Kidney Function Panel', 'Biochemistry', 'Pune — Baner', 'S. Iyer', '08:40', '09:30', '14:10', '15:00', '15:26', 6.8],
+  ['ACC-2026-11872', 'Complete Blood Count', 'Haematology', 'Pimpri Collection Centre', 'M. Ansari', '09:50', '12:10', '15:05', '15:44', '16:10', 6.3],
+  ['ACC-2026-11875', 'Vitamin D3 (25-OH)', 'Biochemistry', 'Pune Main', 'P. Jadhav', '08:05', '08:40', '18:20', '19:05', '—', 11.0],
+  ['ACC-2026-11879', 'Culture & Sensitivity', 'Microbiology', 'Nashik Branch', 'A. Deshmukh', '07:55', '09:40', '—', '—', '—', 31.5]
+];
+
+const DAY = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const TREND = [6.2, 6.0, 6.9, 5.8, 6.1, 7.4, 8.6];
+
+const statusOf = (hrs) => hrs <= TARGET ? 'Within TAT' : hrs <= TARGET * 1.5 ? 'At Risk' : 'Delayed';
+const TONE = {
+  'Within TAT': ['#DCFCE7', '#166534'],
+  'At Risk': ['#FEF3C7', '#92400E'],
+  'Delayed': ['#FEE2E2', '#991B1B']
+};
+
+class Component extends DCLogic {
+  state = {
+    loading: true, from: '2026-08-24', to: '2026-08-30',
+    branch: '', dept: '', test: '', tech: '', status: '', q: '', sort: 'variance', breakdown: 'test'
+  };
+
+  componentDidMount() { this.load(); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  load = () => {
+    clearTimeout(this._t);
+    this.setState({ loading: true });
+    this._t = setTimeout(() => this.setState({ loading: false }), 500);
+  };
+
+  reload = () => this.load();
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    this.setState({ [f]: e.target.value });
+    if (['from', 'to', 'branch', 'dept', 'test', 'tech'].indexOf(f) > -1) this.load();
+  };
+  clearAll = () => { this.setState({ branch: '', dept: '', test: '', tech: '', status: '', q: '' }); this.load(); };
+  setStatus = (k) => () => this.setState({ status: this.state.status === k ? '' : k });
+
+  /* Filters minus the TAT status, so the status pills can show honest counts
+     of what the other filters already selected. */
+  base() {
+    const s = this.state;
+    return SAMPLES.filter(r =>
+      (!s.branch || r[3] === s.branch) &&
+      (!s.dept || r[2] === s.dept) &&
+      (!s.test || r[1] === s.test) &&
+      (!s.tech || r[4] === s.tech)
+    ).map(r => ({
+      accession: r[0], test: r[1], dept: r[2], branch: r[3], tech: r[4],
+      collected: r[5], accessioned: r[6], result: r[7], validated: r[8], reported: r[9],
+      actual: r[10], status: statusOf(r[10])
+    }));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const base = this.base();
+    const q = String(s.q).trim().toLowerCase();
+
+    let rows = base.filter(r =>
+      (!s.status || r.status === s.status) &&
+      (!q || (r.accession + ' ' + r.test).toLowerCase().includes(q))
+    );
+
+    const sorters = {
+      variance: (a, b) => (b.actual - TARGET) - (a.actual - TARGET),
+      actual: (a, b) => b.actual - a.actual,
+      accession: (a, b) => a.accession.localeCompare(b.accession)
+    };
+    rows = rows.slice().sort(sorters[s.sort] || sorters.variance);
+
+    const times = base.map(r => r.actual).sort((a, b) => a - b);
+    const avg = times.length ? times.reduce((a, b) => a + b, 0) / times.length : 0;
+    const median = times.length ? (times.length % 2 ? times[(times.length - 1) / 2] : (times[times.length / 2 - 1] + times[times.length / 2]) / 2) : 0;
+    const within = base.filter(r => r.status === 'Within TAT').length;
+    const delayed = base.filter(r => r.status === 'Delayed').length;
+    const atRisk = base.filter(r => r.status === 'At Risk').length;
+    const critical = base.filter(r => r.actual > TARGET * 2).length;
+    const withinPct = base.length ? Math.round(within / base.length * 100) : 0;
+
+    const maxTrend = Math.max.apply(null, TREND.concat([TARGET])) || 1;
+
+    const keyOf = { test: 'test', dept: 'dept', branch: 'branch', tech: 'tech' }[s.breakdown] || 'test';
+    const groups = {};
+    base.forEach(r => {
+      const k = r[keyOf];
+      groups[k] = groups[k] || [];
+      groups[k].push(r);
+    });
+    const breakdownRows = Object.keys(groups).map(k => {
+      const g = groups[k];
+      const a = g.reduce((sum, r) => sum + r.actual, 0) / g.length;
+      const w = Math.round(g.filter(r => r.status === 'Within TAT').length / g.length * 100);
+      return {
+        name: k,
+        value: a.toFixed(1) + ' h',
+        within: w + '%',
+        pct: Math.min(100, Math.round(a / (TARGET * 2) * 100)) + '%',
+        fg: a <= TARGET ? 'var(--color-secondary-green)' : a <= TARGET * 1.5 ? '#F59E0B' : '#DC2626',
+        raw: a
+      };
+    }).sort((x, y) => y.raw - x.raw);
+
+    return {
+      loading: s.loading,
+      ready: !s.loading,
+      skeletons: [1, 2, 3, 4, 5, 6],
+      from: s.from, to: s.to, branch: s.branch, dept: s.dept, test: s.test, tech: s.tech,
+      q: s.q, sort: s.sort, breakdown: s.breakdown,
+      branchOptions: BRANCHES, deptOptions: DEPTS, techOptions: TECHS,
+      testOptions: SAMPLES.map(r => r[1]).filter((v, i, a) => a.indexOf(v) === i),
+      scopeNote: 'TAT measured collection \u2192 report release against a ' + TARGET + ' h target \u00b7 ' + s.from + ' to ' + s.to + ' \u00b7 ' + (s.branch || 'all branches') + ' \u00b7 ' + (s.tech || 'all technicians') + '. Microbiology cultures carry their own incubation target.',
+      reload: this.reload, updateField: this.updateField, clearAll: this.clearAll,
+      targetLabel: TARGET + ' h',
+      targetLine: Math.round(TARGET / maxTrend * 174) + 'px',
+
+      statusPills: [['', 'All samples', base.length], ['Within TAT', 'Within TAT', within], ['At Risk', 'At Risk', atRisk], ['Delayed', 'Delayed', delayed]].map(([k, label, count]) => {
+        const on = s.status === k;
+        return {
+          label, count,
+          onPick: this.setStatus(k),
+          bg: on ? 'var(--color-interactive-hover)' : '#fff',
+          edge: on ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+          color: on ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)',
+          weight: on ? 700 : 500
+        };
+      }),
+
+      kpis: [
+        { label: 'Average TAT', value: avg.toFixed(1) + ' h', note: 'Across ' + base.length + ' samples', edge: 'var(--color-primary-deep)', fg: 'var(--color-text-primary)' },
+        { label: 'Median TAT', value: median.toFixed(1) + ' h', note: 'Half of samples faster', edge: 'var(--color-primary-bright)', fg: 'var(--color-text-primary)' },
+        { label: 'Target TAT', value: TARGET + ' h', note: 'Branch service commitment', edge: 'var(--color-accent-teal)', fg: 'var(--color-text-primary)' },
+        { label: 'Within TAT', value: withinPct + '%', note: within + ' of ' + base.length + ' samples', edge: 'var(--color-secondary-green)', fg: withinPct >= 90 ? '#166534' : '#92400E' },
+        { label: 'Delayed Tests', value: String(delayed), note: 'Past target by over 50%', edge: '#F59E0B', fg: delayed ? '#B45309' : 'var(--color-text-primary)' },
+        { label: 'Critical Delays', value: String(critical), note: 'Over twice the target', edge: '#DC2626', fg: critical ? '#B91C1C' : 'var(--color-text-primary)' }
+      ],
+
+      trend: TREND.map((v, i) => ({
+        label: DAY[i],
+        value: v.toFixed(1),
+        pct: Math.round(v / maxTrend * 100) + '%',
+        color: v <= TARGET ? 'var(--color-accent-teal)' : v <= TARGET * 1.5 ? '#F59E0B' : '#DC2626',
+        tip: DAY[i] + ' \u00b7 ' + v + ' h average'
+      })),
+
+      breakdownRows,
+
+      rows: rows.map(r => {
+        const tone = TONE[r.status];
+        const variance = r.actual - TARGET;
+        return {
+          accession: r.accession,
+          test: r.test,
+          meta: r.dept + ' \u00b7 ' + r.branch,
+          tech: r.tech,
+          collected: r.collected, accessioned: r.accessioned,
+          result: r.result, validated: r.validated, reported: r.reported,
+          actual: r.actual.toFixed(1) + ' h',
+          target: TARGET + ' h',
+          variance: (variance > 0 ? '+' : '') + variance.toFixed(1) + ' h',
+          status: r.status,
+          badgeBg: tone[0], badgeFg: tone[1],
+          rowBg: r.status === 'Delayed' ? '#FEF8F8' : 'transparent'
+        };
+      }),
+      rowCount: rows.length,
+      isEmpty: rows.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

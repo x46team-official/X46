@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-054",
+  "module": "Accession",
+  "functionality": "Invalid Billing ID",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions",
+  "description": "Documents the specific error scenario of API-043 (Create Accession) where billingId does not reference an existing bill. Same endpoint as API-043, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "billingId": "uuid - invalid/non-existent in this scenario" }
+  },
+
+  "required_fields": ["billingId"],
+
+  "validation": ["billingId must reference an existing billing_master row (accession_master.billing_id NOT NULL FK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-043 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "billingId does not reference an existing bill",
+      "status_code": 404,
+      "response": { "success": false, "error": "Billing not found" },
+      "source": "database/api_contracts_test/014_accession.sql"
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_master", "billing_master"],
+    "relationships": ["accession_master.billing_id -> billing_master.id"],
+    "constraints": ["billing_id NOT NULL"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql"],
+
+  "test_ids": ["API-T112"]
+}

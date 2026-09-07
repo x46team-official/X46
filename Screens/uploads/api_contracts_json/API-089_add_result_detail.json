@@ -1,0 +1,115 @@
+{
+  "functionality_id": "API-089",
+  "module": "Result Entry",
+  "functionality": "Add Result Detail",
+  "http_method": "POST",
+  "endpoint": "/api/result-entries/{resultEntryId}/details",
+  "description": "Records a single parameter's result value against a result_entry header.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "resultEntryId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "parameterId": "uuid, required - references parameter_master.id",
+      "resultValue": "string(255), optional",
+      "resultFlag": "enum, optional - NORMAL | HIGH | LOW | CRITICAL | ABNORMAL",
+      "remarks": "text, optional"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "resultEntryId",
+    "parameterId"
+  ],
+  "validation": [
+    "parameterId must reference an existing parameter_master row (NOT NULL FK)",
+    "parameterId must not already have a result_entry_details record for this resultEntryId (UNIQUE constraint uq_result_parameter)",
+    "resultFlag, if provided, must be one of NORMAL, HIGH, LOW, CRITICAL, ABNORMAL (CHECK)"
+  ],
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Result detail recorded successfully",
+      "data": {
+        "id": "uuid",
+        "resultEntryId": "uuid",
+        "parameterId": "uuid",
+        "resultValue": "10",
+        "resultFlag": "NORMAL"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "parameterId does not reference an existing parameter",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Parameter not found"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T152)",
+      "related_functionality_id": "API-093"
+    },
+    {
+      "condition": "parameterId already has a result_entry_details record for this resultEntryId",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Result already recorded for this parameter"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T153)",
+      "related_functionality_id": "API-094"
+    },
+    {
+      "condition": "resultFlag is not one of the allowed enum values",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid result flag"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T154)",
+      "related_functionality_id": "API-095"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry_details",
+      "parameter_master",
+      "result_entry"
+    ],
+    "relationships": [
+      "result_entry_details.result_entry_id -> result_entry.id",
+      "result_entry_details.parameter_id -> parameter_master.id"
+    ],
+    "constraints": [
+      "parameter_id NOT NULL",
+      "uq_result_parameter UNIQUE (result_entry_id, parameter_id)",
+      "result_flag CHECK IN (NORMAL, HIGH, LOW, CRITICAL, ABNORMAL)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/010_result_entry.sql",
+    "database/api_contracts_test/018_result_entry.sql"
+  ],
+  "test_ids": [
+    "API-T148"
+  ]
+}

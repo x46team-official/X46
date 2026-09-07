@@ -1,0 +1,58 @@
+{
+  "functionality_id": "API-091",
+  "module": "Result Entry",
+  "functionality": "Invalid Accession Test",
+  "http_method": "POST",
+  "endpoint": "/api/result-entries",
+  "description": "Documents the specific error scenario of API-088 where the request fails this validation. Same endpoint as API-088, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "accessionTestId": "'00000000-0000-0000-0000-000000000000' - not an existing accession_tests row"
+    }
+  },
+  "required_fields": [
+    "accessionTestId"
+  ],
+  "validation": [
+    "accessionTestId must reference an existing accession test"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "accessionTestId must reference an existing accession test",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Accession test not found"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T150)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry",
+      "accession_tests"
+    ],
+    "relationships": [
+      "result_entry.accession_test_id -> accession_tests.id"
+    ],
+    "constraints": []
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/018_result_entry.sql (API-T150)"
+  ],
+  "test_ids": [
+    "API-T150"
+  ]
+}

@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Worklist Processing</div>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main data-fit="screens" style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+
+    <!-- ============ SCREEN 1 — WORKLIST ============ -->
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; min-height: 100vh;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Ops / Worklist</div>
+          <h1 style="margin: 0 0 10px; font-size: 17px; font-weight: 700;">Worklist</h1>
+
+          <div style="display: flex; gap: 8px; align-items: center; max-width: 720px;">
+            <input type="text" placeholder="Scan barcode or search Patient / MRN / Registration No / Accession No / Test" value="{{ query }}" onChange="{{ onQuery }}" style="padding: 9px 12px; font-size: 13px;" />
+            <button onClick="{{ search }}" style="padding: 9px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Search</button>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: flex-end; margin-top: 10px; flex-wrap: wrap;">
+            <div style="min-width: 138px;"><label>Received Date</label><input type="date" value="{{ date }}" onChange="{{ updateField }}" data-field="date" /></div>
+            <div style="min-width: 150px;"><label>Department</label><select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept"><option value="">All departments</option><option value="Haematology">Haematology</option><option value="Biochemistry">Biochemistry</option><option value="Microbiology">Microbiology</option><option value="Immunoassay">Immunoassay</option></select></div>
+            <div style="min-width: 112px;"><label>Priority</label><select value="{{ priority }}" onChange="{{ updateField }}" data-field="priority"><option value="">All</option><option value="NORMAL">Normal</option><option value="URGENT">Urgent</option><option value="STAT">STAT</option></select></div>
+            <div style="min-width: 128px;"><label>Status</label><select value="{{ statusFilter }}" onChange="{{ updateField }}" data-field="statusFilter"><option value="">All</option><option value="PENDING">Pending</option><option value="IN PROGRESS">In Progress</option><option value="RESULT PENDING">Result Pending</option><option value="COMPLETED">Completed</option><option value="ON HOLD">On Hold</option></select></div>
+            <div style="min-width: 156px;"><label>Sample Type</label><select value="{{ sampleTypeFilter }}" onChange="{{ updateField }}" data-field="sampleTypeFilter"><option value="">All sample types</option><option value="EDTA Whole Blood">EDTA Whole Blood</option><option value="Serum">Serum</option><option value="Fluoride Plasma">Fluoride Plasma</option><option value="Urine">Urine</option></select></div>
+            <div style="min-width: 176px;"><label>Performing Lab / Instrument</label><select value="{{ instrument }}" onChange="{{ updateField }}" data-field="instrument"><option value="">All</option><option value="Sysmex XN-550">Sysmex XN-550</option><option value="Mindray BS-240">Mindray BS-240</option><option value="Roche Cobas e411">Roche Cobas e411</option><option value="Manual bench">Manual bench</option><option value="Outsource · Metropolis">Outsource · Metropolis</option></select></div>
+            <button onClick="{{ clearFilters }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear Filters</button>
+          </div>
+        </div>
+
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 0 20px; display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+            <button onClick="{{ t.onPick }}" style="padding: 10px 14px; background: none; border: none; border-bottom: 2px solid {{ t.border }}; color: {{ t.color }}; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">{{ t.label }} <span class="num" style="color: var(--color-text-tertiary); font-weight: 500;">{{ t.count }}</span></button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBorder }};">{{ banner }}</div>
+        </sc-if>
+
+        <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">Tests: {{ rowCount }}</div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Only samples received in the lab appear here</div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto; max-height: calc(100vh - 320px);">
+            <div style="min-width: 1042px;">
+              <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 46px 108px minmax(150px,1fr) 104px minmax(180px,1.2fr) 118px 132px 96px 108px 118px 104px minmax(160px,0.9fr); gap: 10px; padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <div>Priority</div>
+                <div>Accession</div>
+                <div>Patient</div>
+                <div>MRN</div>
+                <div>Test</div>
+                <div>Sample Type</div>
+                <div>Barcode</div>
+                <div>Dept</div>
+                <div>Received</div>
+                <div>Status</div>
+                <div>Assigned To</div>
+                <div>Actions</div>
+              </div>
+
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+                <div style="display: grid; grid-template-columns: 46px 108px minmax(150px,1fr) 104px minmax(180px,1.2fr) 118px 132px 96px 108px 118px 104px minmax(160px,0.9fr); gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center; box-shadow: inset 3px 0 0 0 {{ r.priorityEdge }};" style-hover="background: var(--color-gray-50);">
+                  <div><span title="{{ r.priorityFull }}" aria-label="{{ r.priorityFull }}" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 18px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0; background: {{ r.priorityBg }}; color: {{ r.priorityFg }}; cursor: default;">{{ r.priorityShort }}</span></div>
+                  <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.accessionNo }}</div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patientName }}</div>
+                    <div style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.ageGender }}</div>
+                  </div>
+                  <div class="mono" style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.mrn }}</div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.testCode }} — {{ r.testName }}</div>
+                    <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.instrument }}</div>
+                  </div>
+                  <div style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.sampleType }}</div>
+                  <div class="mono" style="font-size: 10.5px; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.barcode }}</div>
+                  <div style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.dept }}</div>
+                  <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.receivedAt }}</div>
+                  <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span></div>
+                  <div style="font-size: 11px; color: {{ r.assignedColor }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.assignedTo }}</div>
+                  <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                    <button onClick="{{ r.onOpen }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Open</button>
+                    <sc-if value="{{ r.canStart }}" hint-placeholder-val="{{ true }}">
+                      <button onClick="{{ r.onStart }}" style="padding: 5px 10px; background: var(--color-primary-deep); border: 1px solid var(--color-primary-deep); border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Start Processing</button>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 56px 20px; text-align: center;">
+                  <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No tests match this view</div>
+                  <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Adjust the filters, or receive samples in Accession to populate the worklist.</div>
+                  <button onClick="{{ clearFilters }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Clear Filters</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ SCREEN 2 — WORKLIST TEST DETAIL ============ -->
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; min-height: 100vh;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+          <button onClick="{{ backToList }}" style="background: none; border: none; padding: 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;">‹ Back to Worklist</button>
+          <div style="display: flex; align-items: flex-start; gap: 16px; margin-top: 6px; flex-wrap: wrap;">
+            <div>
+              <div class="mono" style="font-size: 17px; font-weight: 700;">{{ dAccession }}</div>
+              <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 2px;">{{ dPatient }} · {{ dAgeGender }}</div>
+            </div>
+            <div style="flex: 1;"></div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span style="padding: 4px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: .03em; background: {{ dPriorityBg }}; color: {{ dPriorityFg }};">{{ dPriority }}</span>
+              <span style="padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: {{ dStatusBg }}; color: {{ dStatusFg }};">{{ dStatus }}</span>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 10px 20px; font-size: 12px; font-weight: 600; background: {{ toastBg }}; color: {{ toastFg }}; border-bottom: 1px solid {{ toastBorder }};">{{ toast }}</div>
+        </sc-if>
+
+        <div style="flex: 1; padding: 16px 20px 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 360px); gap: 16px; align-items: start;">
+
+          <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+              <div style="padding: 10px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Patient Information</div>
+              <div style="padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px 16px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Patient Name</div><div style="font-size: 12.5px; font-weight: 600;">{{ dPatient }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">MRN</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dMrn }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Registration Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dRegistration }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Age</div><div style="font-size: 12.5px; font-weight: 600;">{{ dAge }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Gender</div><div style="font-size: 12.5px; font-weight: 600;">{{ dGender }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Contact</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dContact }}</div></div>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+              <div style="padding: 10px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Order Information</div>
+              <div style="padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px 16px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Bill Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dBill }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Accession Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dAccession }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Test Code</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dTestCode }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Test Name</div><div style="font-size: 12.5px; font-weight: 600;">{{ dTestName }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Department</div><div style="font-size: 12.5px; font-weight: 600;">{{ dDept }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Sample Type</div><div style="font-size: 12.5px; font-weight: 600;">{{ dSampleType }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Priority</div><div style="font-size: 12.5px; font-weight: 600;">{{ dPriority }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Received Date / Time</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dReceivedFull }}</div></div>
+              </div>
+              <div style="padding: 0 14px 14px;">
+                <div style="border: 1px solid var(--color-border-light); border-radius: 4px; padding: 10px 12px; background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+                  <div>
+                    <div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600; text-transform: uppercase; letter-spacing: .06em;">Barcode</div>
+                    <div class="mono" style="font-size: 15px; font-weight: 700; letter-spacing: .02em;">{{ dBarcode }}</div>
+                  </div>
+                  <div style="display: flex; align-items: flex-end; gap: 2px; height: 30px;">
+                    <sc-for list="{{ barcodeBars }}" as="b" hint-placeholder-count="18">
+                      <span style="display: block; width: {{ b.w }}; height: 30px; background: var(--color-text-primary);"></span>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+              <div style="padding: 10px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Processing Status</div>
+              <div style="padding: 18px 14px 16px;">
+                <div style="display: flex; align-items: flex-start;">
+                  <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative;">
+                      <div style="height: 2px; background: {{ st.barBg }}; position: absolute; top: 12px; left: 0; right: 0;"></div>
+                      <div style="width: 26px; height: 26px; border-radius: 999px; border: 2px solid {{ st.ringColor }}; background: {{ st.dotBg }}; color: {{ st.dotFg }}; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">{{ st.mark }}</div>
+                      <div style="font-size: 11.5px; font-weight: {{ st.weight }}; color: {{ st.labelColor }}; margin-top: 7px;">{{ st.label }}</div>
+                      <div class="num" style="font-size: 10px; color: var(--color-text-tertiary);">{{ st.time }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+              <div style="padding: 10px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Processing Information</div>
+              <div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                  <label>Assigned To</label>
+                  <select value="{{ assignedTo }}" onChange="{{ updateField }}" data-field="assignedTo"><option value="Unassigned">Unassigned</option><option value="Anita D.">Anita D.</option><option value="S. Rane">S. Rane</option><option value="N. Patil">N. Patil</option><option value="A. Joshi">A. Joshi</option></select>
+                </div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Processing Start Time</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dStartTime }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Performing Lab / Instrument</div><div style="font-size: 12.5px; font-weight: 600;">{{ dInstrument }}</div></div>
+                <div>
+                  <label>Remarks</label>
+                  <textarea rows="3" placeholder="Processing remarks (optional)" value="{{ remarks }}" onChange="{{ updateField }}" data-field="remarks" style="resize: vertical;"></textarea>
+                </div>
+              </div>
+              <div style="padding: 12px 14px; border-top: 1px solid var(--color-border-light); display: flex; flex-direction: column; gap: 8px;">
+                <button onClick="{{ startProcessing }}" disabled="{{ startDisabled }}" style="padding: 10px 16px; background: {{ startBg }}; border: none; border-radius: 4px; font-size: 12.5px; font-weight: 700; color: {{ startFg }}; cursor: {{ startCursor }};" style-hover="background: var(--color-primary-bright);">{{ startLabel }}</button>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button onClick="{{ askHold }}" style="flex: 0 0 auto; padding: 9px 14px; background: #fff; border: 1px solid #FCD34D; border-radius: 4px; font-size: 12px; font-weight: 600; color: #92400E; cursor: pointer; white-space: nowrap;" style-hover="background: #FFFBEB;">Hold</button>
+                  <button onClick="{{ openValidation }}" style="flex: 1 1 auto; padding: 9px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Send to Validation</button>
+                  <button onClick="{{ openResultEntry }}" style="flex: 1 1 100%; padding: 9px 14px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-size: 12px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-interactive-hover);">Open Result Entry</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px;">
+              <div style="padding: 10px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Bill &amp; Workflow Actions</div>
+              <div style="display: flex; flex-direction: column;">
+                <sc-for list="{{ workflowActions }}" as="w" hint-placeholder-count="4">
+                  <button onClick="{{ w.onOpen }}" style="display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; background: none; border: none; border-bottom: 1px solid var(--color-border-light); font-family: inherit; text-align: left; cursor: pointer;" style-hover="background: var(--color-interactive-hover);">
+                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: var(--color-gray-100); color: var(--color-text-secondary); font-size: 10px; font-weight: 700; flex-shrink: 0;">{{ w.icon }}</span>
+                    <span style="flex: 1; min-width: 0;">
+                      <span style="display: block; font-size: 12.5px; font-weight: 600;">{{ w.label }}</span>
+                      <span style="display: block; font-size: 10.5px; color: var(--color-text-tertiary);">{{ w.sub }}</span>
+                    </span>
+                    <span style="display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ w.chipBg }}; color: {{ w.chipFg }}; white-space: nowrap;">{{ w.current }}</span>
+                    <span style="font-size: 13px; color: var(--color-text-tertiary); flex-shrink: 0;">›</span>
+                  </button>
+                </sc-for>
+                <button onClick="{{ openCancelBill }}" style="display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; background: none; border: none; font-family: inherit; text-align: left; cursor: pointer;" style-hover="background: #FEF2F2;">
+                  <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: #FEE2E2; color: #B91C1C; font-size: 10px; font-weight: 700; flex-shrink: 0;">✕</span>
+                  <span style="flex: 1; min-width: 0;">
+                    <span style="display: block; font-size: 12.5px; font-weight: 700; color: #B91C1C;">Cancel Bill</span>
+                    <span style="display: block; font-size: 10.5px; color: var(--color-text-tertiary);">{{ dBill }} · marks the bill cancelled</span>
+                  </span>
+                  <span style="font-size: 13px; color: #FCA5A5; flex-shrink: 0;">›</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Sample Checks</div>
+              <sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
+                <div style="display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--color-border-light); font-size: 12px;">
+                  <span style="color: var(--color-text-secondary);">{{ c.k }}</span>
+                  <span style="font-weight: 600; color: {{ c.color }};">{{ c.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ statusModal }}" hint-placeholder-val="{{ false }}">
+      <div style="position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeStatus }}">
+        <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 430px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+          <div style="padding: 12px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="font-size: 13.5px; font-weight: 700;">{{ statusTitle }}</div>
+              <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ statusEndpoint }}</div>
+            </div>
+            <button onClick="{{ closeStatus }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+          </div>
+          <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px;">
+              <span style="color: var(--color-text-tertiary); font-weight: 600;">{{ dAccession }} · {{ dTestCode }}</span>
+              <span style="font-weight: 700;">Current: {{ statusCurrent }}</span>
+            </div>
+            <div>
+              <label>New Value</label>
+              <select value="{{ statusDraft }}" onChange="{{ setStatusDraft }}">
+                <sc-for list="{{ statusOptions }}" as="o" hint-placeholder-count="3">
+                  <option value="{{ o }}">{{ o }}</option>
+                </sc-for>
+              </select>
+            </div>
+            <sc-if value="{{ statusError }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ statusError }}</div>
+            </sc-if>
+          </div>
+          <div style="padding: 11px 16px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+            <button onClick="{{ closeStatus }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+            <button onClick="{{ saveStatus }}" disabled="{{ statusBusy }}" style="padding: 8px 16px; background: {{ statusBtnBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ statusCursor }}; min-width: 122px;">{{ statusBtnLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ cancelBillOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 85; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeCancelBill }}">
+        <div onClick="{{ stop }}" style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; width: 420px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+          <div style="padding: 16px 16px 12px;">
+            <div style="font-size: 13.5px; font-weight: 700;">Cancel Bill?</div>
+            <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">Are you sure you want to cancel <strong class="mono">{{ dBill }}</strong>? This marks the bill as cancelled — it is not a delete.</div>
+            <div style="margin-top: 12px;">
+              <label>Cancellation Remarks</label>
+              <input type="text" placeholder="e.g. Cancelled by admin" value="{{ cancelRemarks }}" onChange="{{ setCancelRemarks }}" />
+            </div>
+            <sc-if value="{{ cancelBillError }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top: 10px; padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ cancelBillError }}</div>
+            </sc-if>
+          </div>
+          <div style="padding: 11px 16px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+            <button onClick="{{ closeCancelBill }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep Bill</button>
+            <button onClick="{{ confirmCancelBill }}" disabled="{{ cancelBillBusy }}" style="padding: 8px 16px; background: {{ cancelBillBg }}; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #fff; cursor: {{ cancelBillCursor }}; min-width: 126px;">{{ cancelBillLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Result Entry placeholder -->
+    <sc-if value="{{ isResultEntry }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height: 100vh; display: flex; flex-direction: column;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+          <button onClick="{{ backToDetail }}" style="background: none; border: none; padding: 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;">‹ Back to Test Detail</button>
+          <h1 style="margin: 6px 0 0; font-size: 17px; font-weight: 700;">Result Entry</h1>
+          <div style="font-size: 12px; color: var(--color-text-tertiary);">{{ dAccession }} · {{ dTestCode }} — {{ dTestName }}</div>
+        </div>
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px;">
+          <div style="background: #fff; border: 1px dashed var(--color-border-base); border-radius: 6px; padding: 40px; text-align: center; max-width: 460px;">
+            <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Result Entry is not designed yet</div>
+            <div style="font-size: 12.5px; color: var(--color-text-tertiary); margin-bottom: 16px;">This test is queued for result entry. The Result Entry screen will be designed in the next batch once the Worklist screens are approved.</div>
+            <button onClick="{{ backToDetail }}" style="padding: 9px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Back to Test Detail</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- Hold confirmation modal -->
+  <sc-if value="{{ holdOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.4); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeHold }}">
+      <div onClick="{{ stop }}" style="width: 420px; background: #fff; border-radius: 6px; box-shadow: 0 20px 40px rgba(17,24,39,.2); overflow: hidden;">
+        <div style="padding: 14px 18px; border-bottom: 1px solid var(--color-border-light);">
+          <div style="font-size: 14px; font-weight: 700;">Place test on hold</div>
+          <div style="font-size: 12px; color: var(--color-text-tertiary); margin-top: 2px;">{{ dAccession }} · {{ dTestCode }} — {{ dTestName }}</div>
+        </div>
+        <div style="padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label>Hold Reason <span style="color: var(--color-error);">*</span></label>
+            <select value="{{ holdReason }}" onChange="{{ updateField }}" data-field="holdReason"><option value="">Select a reason</option><option value="Insufficient sample">Insufficient sample</option><option value="Sample haemolysed">Sample haemolysed</option><option value="Instrument down">Instrument down</option><option value="Reagent unavailable">Reagent unavailable</option><option value="Awaiting clarification">Awaiting clarification</option></select>
+          </div>
+          <div>
+            <label>Remarks</label>
+            <textarea rows="2" placeholder="Additional detail (optional)" value="{{ holdRemarks }}" onChange="{{ updateField }}" data-field="holdRemarks" style="resize: vertical;"></textarea>
+          </div>
+          <sc-if value="{{ holdError }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size: 11.5px; font-weight: 600; color: var(--color-error);">{{ holdError }}</div>
+          </sc-if>
+        </div>
+        <div style="padding: 12px 18px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px; justify-content: flex-end;">
+          <button onClick="{{ closeHold }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+          <button onClick="{{ confirmHold }}" style="padding: 8px 16px; background: #B45309; border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Confirm Hold</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+/* Stamps each worklist line with the real UUIDs its status contracts need, and
+   registers any bill this screen shows that the billing store does not yet
+   hold, so Cancel Bill acts on an actual record rather than a stub. */
+function seedRows() {
+  const SAMPLE_OF = { PENDING: 'RECEIVED', IN_PROGRESS: 'PROCESSING', COMPLETED: 'COMPLETED', ON_HOLD: 'RECEIVED', REJECTED: 'REJECTED' };
+  return SEED.map(r => ({
+    ...r,
+    accessionId: LIMS.newId(),
+    accessionTestId: LIMS.newId(),
+    billingId: null, /* resolved against the billing store in componentDidMount */
+    sampleStatus: SAMPLE_OF[r.status] || 'RECEIVED',
+    collectionStatus: 'COLLECTED',
+    reportStatus: 'PENDING',
+    authorizationStatus: 'PENDING'
+  }));
+}
+
+/* Ensures every bill number this screen displays exists in the billing store,
+   so Cancel Bill addresses a real record instead of a stub. */
+function ensureBill(billNumber) {
+  let bill = LIMS.BILLS.find(b => b.billNumber === billNumber);
+  if (bill) return bill;
+  bill = LIMS.recalcBill({
+    id: LIMS.newId(), organizationId: LIMS.session.organizationId, branchId: LIMS.session.branchId,
+    patientRegistrationId: LIMS.newId(), billNumber, billDate: new Date().toISOString(),
+    totalAmount: 0, discountAmount: 0, concessionAmount: 0, additionalAmount: 0,
+    paidAmount: 0, paymentMode: null, remarks: null, isCancelled: false
+  });
+  LIMS.BILLS.push(bill);
+  return bill;
+}
+
+const SEED = [
+  { id: 1, accessionNo: 'ACC0001', billNumber: 'BL-2026-009114', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, contact: '+91 98220 14577', testCode: 'CBC001', testName: 'Complete Blood Count', sampleType: 'EDTA Whole Blood', dept: 'Haematology', barcode: 'BC20260801160902496', priority: 'NORMAL', receivedAt: '18 Aug, 09:12', receivedFull: '18 Aug 2026, 09:12', status: 'PENDING', assignedTo: 'Unassigned', instrument: 'Sysmex XN-550', sampleCondition: 'Adequate', quantity: '3 mL' },
+  { id: 2, accessionNo: 'ACC0002', billNumber: 'BL-2026-009114', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, contact: '+91 98220 14577', testCode: 'HBA1C', testName: 'Glycated Haemoglobin', sampleType: 'EDTA Whole Blood', dept: 'Biochemistry', barcode: 'BC20260801160902497', priority: 'NORMAL', receivedAt: '18 Aug, 09:14', receivedFull: '18 Aug 2026, 09:14', status: 'IN PROGRESS', assignedTo: 'S. Rane', instrument: 'Mindray BS-240', startTime: '18 Aug 2026, 09:40', sampleCondition: 'Adequate', quantity: '3 mL' },
+  { id: 3, accessionNo: 'ACC0003', billNumber: 'BL-2026-009102', registrationNumber: 'REG-2026-004171', patientName: 'Saniya Shaikh', mrn: 'MRN-TEST-014', sex: 'Female', age: 29, contact: '+91 90112 45880', testCode: 'UR001', testName: 'Urine Routine', sampleType: 'Urine', dept: 'Biochemistry', barcode: 'BC20260801160902512', priority: 'URGENT', receivedAt: '18 Aug, 08:50', receivedFull: '18 Aug 2026, 08:50', status: 'RESULT PENDING', assignedTo: 'N. Patil', instrument: 'Manual bench', startTime: '18 Aug 2026, 09:05', sampleCondition: 'Adequate', quantity: '20 mL' },
+  { id: 4, accessionNo: 'ACC0004', billNumber: 'BL-2026-009098', registrationNumber: 'REG-2026-004166', patientName: 'Harishchandra Shinde', mrn: 'MRN-TEST-021', sex: 'Male', age: 85, contact: '+91 98505 66201', testCode: 'HBSAG', testName: 'HbsAg (Australian Antigen)', sampleType: 'Serum', dept: 'Immunoassay', barcode: 'BC20260801160902530', priority: 'STAT', receivedAt: '18 Aug, 08:31', receivedFull: '18 Aug 2026, 08:31', status: 'IN PROGRESS', assignedTo: 'A. Joshi', instrument: 'Roche Cobas e411', startTime: '18 Aug 2026, 08:44', sampleCondition: 'Adequate', quantity: '5 mL' },
+  { id: 5, accessionNo: 'ACC0005', billNumber: 'BL-2026-009090', registrationNumber: 'REG-2026-004160', patientName: 'Zubeda Ismail Shaikh', mrn: 'MRN-TEST-030', sex: 'Female', age: 74, contact: '+91 91300 77415', testCode: 'GLUPP', testName: 'Blood Glucose (Post Prandial)', sampleType: 'Fluoride Plasma', dept: 'Biochemistry', barcode: 'BC20260801160902548', priority: 'STAT', receivedAt: '18 Aug, 08:12', receivedFull: '18 Aug 2026, 08:12', status: 'COMPLETED', assignedTo: 'S. Rane', instrument: 'Mindray BS-240', startTime: '18 Aug 2026, 08:20', sampleCondition: 'Adequate', quantity: '2 mL' },
+  { id: 6, accessionNo: 'ACC0006', billNumber: 'BL-2026-009081', registrationNumber: 'REG-2026-004152', patientName: 'Ibrahim Ahsan Qureshi', mrn: 'MRN-TEST-044', sex: 'Male', age: 70, contact: '+91 99604 22318', testCode: 'CULT01', testName: 'Urine Culture & Sensitivity', sampleType: 'Urine', dept: 'Microbiology', barcode: 'BC20260801160902561', priority: 'NORMAL', receivedAt: '17 Aug, 18:20', receivedFull: '17 Aug 2026, 18:20', status: 'ON HOLD', assignedTo: 'M. Iqbal', instrument: 'Manual bench', holdReason: 'Insufficient sample', sampleCondition: 'Insufficient', quantity: '8 mL' },
+  { id: 7, accessionNo: 'ACC0007', billNumber: 'BL-2026-009076', registrationNumber: 'REG-2026-004147', patientName: 'Meera Kulkarni', mrn: 'MRN-TEST-052', sex: 'Female', age: 36, contact: '+91 88880 11902', testCode: 'TSH001', testName: 'Thyroid Stimulating Hormone', sampleType: 'Serum', dept: 'Immunoassay', barcode: 'BC20260801160902577', priority: 'NORMAL', receivedAt: '17 Aug, 16:05', receivedFull: '17 Aug 2026, 16:05', status: 'PENDING', assignedTo: 'Unassigned', instrument: 'Roche Cobas e411', sampleCondition: 'Adequate', quantity: '5 mL' },
+  { id: 8, accessionNo: 'ACC0008', billNumber: 'BL-2026-009070', registrationNumber: 'REG-2026-004140', patientName: 'Aniket Pawar', mrn: 'MRN-TEST-061', sex: 'Male', age: 31, contact: '+91 70301 55480', testCode: 'LFT001', testName: 'Liver Function Panel', sampleType: 'Serum', dept: 'Biochemistry', barcode: 'BC20260801160902590', priority: 'NORMAL', receivedAt: '17 Aug, 15:12', receivedFull: '17 Aug 2026, 15:12', status: 'COMPLETED', assignedTo: 'N. Patil', instrument: 'Outsource · Metropolis', startTime: '17 Aug 2026, 15:30', sampleCondition: 'Adequate', quantity: '5 mL' }
+];
+
+const FLOW = ['Received', 'Processing', 'Result Pending', 'Completed'];
+const STAGE_OF = { PENDING: 0, 'IN PROGRESS': 1, 'ON HOLD': 1, 'RESULT PENDING': 2, COMPLETED: 3 };
+const NOW = '18 Aug 2026, 10:05';
+
+class Component extends DCLogic {
+  state = {
+    rows: seedRows(),
+    screen: 'list', selectedId: null,
+    query: '', date: '2026-08-18', dept: '', priority: '', statusFilter: '', sampleTypeFilter: '', instrument: '',
+    tab: 'All', banner: '', bannerKind: 'info',
+    assignedTo: 'Unassigned', remarks: '',
+    statusModal: null, statusDraft: '', statusBusy: false, statusError: '',
+    cancelBillOpen: false, cancelBillBusy: false, cancelBillError: '', cancelRemarks: '',
+    toast: '', toastKind: 'success',
+    holdOpen: false, holdReason: '', holdRemarks: '', holdError: ''
+  };
+
+  componentDidMount() {
+    this.setState(st => ({ rows: st.rows.map(r => ({ ...r, billingId: ensureBill(r.billNumber).id })) }));
+  }
+
+  /* Accession-test workflow status contracts. Allowed values come straight from
+     each contract's CHECK constraint — nothing here is invented. */
+  WORKFLOW = [
+    { key: 'sampleStatus', endpoint: 'sampleStatus', contract: 'API-048', label: 'Update Sample Status', sub: 'Sample Status', icon: 'SM', body: 'sampleStatus', error: 'Invalid sample status',
+      options: ['PENDING', 'COLLECTED', 'RECEIVED', 'PROCESSING', 'COMPLETED', 'REJECTED', 'IN_TRANSIT', 'RECOLLECTION_REQUESTED'] },
+    { key: 'collectionStatus', endpoint: 'collectionStatus', contract: 'API-049', label: 'Update Collection Status', sub: 'Collection Status', icon: 'CO', body: 'collectionStatus', error: 'Invalid collection status',
+      options: ['NOT_COLLECTED', 'COLLECTED', 'PARTIALLY_COLLECTED'] },
+    { key: 'authorizationStatus', endpoint: 'authorizationStatus', contract: 'API-050', label: 'Update Authorization Status', sub: 'Authorization Status', icon: 'AU', body: 'authorizationStatus', error: 'Invalid authorization status',
+      options: ['PENDING', 'AUTHORIZED', 'REJECTED'] },
+    { key: 'reportStatus', endpoint: 'reportStatus', contract: 'API-051', label: 'Update Report Status', sub: 'Report Status', icon: 'RP', body: 'reportStatus', error: 'Invalid report status',
+      options: ['PENDING', 'READY', 'RELEASED'] }
+  ];
+
+  openStatus = (key) => () => {
+    const def = this.WORKFLOW.find(w => w.key === key);
+    const row = this.state.rows.find(r => r.id === this.state.selectedId);
+    if (!def || !row) return;
+    this.setState({ statusModal: key, statusDraft: row[key] || def.options[0], statusBusy: false, statusError: '' });
+  };
+  closeStatus = () => { if (!this.state.statusBusy) this.setState({ statusModal: null, statusError: '' }); };
+  setStatusDraft = (e) => this.setState({ statusDraft: e.target.value, statusError: '' });
+
+  saveStatus = async () => {
+    const s = this.state;
+    if (s.statusBusy) return;
+    const def = this.WORKFLOW.find(w => w.key === s.statusModal);
+    const row = s.rows.find(r => r.id === s.selectedId);
+    if (!def || !row) return;
+    if (def.options.indexOf(s.statusDraft) === -1) {
+      return this.setState({ statusError: '400 Bad Request — ' + def.error });
+    }
+    this.setState({ statusBusy: true, statusError: '' });
+    try {
+      await LIMS.request(def.endpoint, {
+        contract: def.contract,
+        params: { accessionId: row.accessionId, accessionTestId: row.accessionTestId },
+        body: { [def.body]: s.statusDraft },
+        resolve: () => (row.accessionId && row.accessionTestId
+          ? { status: 200, message: def.sub + ' updated successfully', data: { id: row.accessionTestId, [def.body]: s.statusDraft } }
+          : { status: 404, error: 'Accession test not found' })
+      });
+      this.setState(st => ({
+        statusBusy: false, statusModal: null,
+        rows: st.rows.map(r => r.id === st.selectedId ? { ...r, [def.key]: st.statusDraft } : r),
+        toast: '200 OK — ' + def.sub + ' set to ' + s.statusDraft + ' for ' + row.accessionNo + '.',
+        toastKind: 'success'
+      }));
+    } catch (err) {
+      this.setState({ statusBusy: false, statusError: err.status ? err.status + ' — ' + err.message : 'Request could not be built — ' + err.message });
+    }
+  };
+
+  openCancelBill = () => this.setState({ cancelBillOpen: true, cancelBillBusy: false, cancelBillError: '', cancelRemarks: '' });
+  closeCancelBill = () => { if (!this.state.cancelBillBusy) this.setState({ cancelBillOpen: false, cancelBillError: '' }); };
+  setCancelRemarks = (e) => this.setState({ cancelRemarks: e.target.value, cancelBillError: '' });
+
+  /* API-039 PATCH …/billing/{billingId}/cancel — never a DELETE. */
+  confirmCancelBill = async () => {
+    const s = this.state;
+    if (s.cancelBillBusy) return;
+    const row = s.rows.find(r => r.id === s.selectedId);
+    if (!row) return;
+    /* Re-resolve against the store: a stale id would 404 for the wrong reason. */
+    const billingId = ensureBill(row.billNumber).id;
+    this.setState({ cancelBillBusy: true, cancelBillError: '' });
+    try {
+      await LIMS.request('cancelBill', {
+        contract: 'API-039',
+        params: { billingId },
+        body: { remarks: String(s.cancelRemarks).trim() || null },
+        resolve: () => {
+          const b = LIMS.billById(row.billingId);
+          if (!b) return { status: 404, error: 'Bill not found' };
+          if (b.isCancelled) return { status: 409, error: 'Bill is already cancelled' };
+          b.isCancelled = true;
+          b.remarks = String(s.cancelRemarks).trim() || b.remarks;
+          return { status: 200, message: 'Bill cancelled successfully', data: { id: b.id, billNumber: b.billNumber, isCancelled: true } };
+        }
+      });
+      this.setState({ cancelBillBusy: false, cancelBillOpen: false, toast: '200 OK — Bill ' + row.billNumber + ' cancelled successfully.', toastKind: 'success' });
+    } catch (err) {
+      this.setState({ cancelBillBusy: false, cancelBillError: err.status ? err.status + ' — ' + err.message : 'Request could not be built — ' + err.message });
+    }
+  };
+
+  onQuery = (e) => this.setState({ query: e.target.value });
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value });
+  clearFilters = () => this.setState({ query: '', dept: '', priority: '', statusFilter: '', sampleTypeFilter: '', instrument: '', tab: 'All', banner: '' });
+  search = () => this.setState({ banner: this.state.query.trim() ? 'Showing matches for “' + this.state.query.trim() + '”.' : 'Showing all received tests.', bannerKind: 'info' });
+  setTab = (t) => () => this.setState({ tab: t });
+  stop = (e) => e.stopPropagation();
+
+  inTab(r, tab) {
+    if (tab === 'All') return true;
+    if (tab === 'Pending') return r.status === 'PENDING';
+    if (tab === 'In Progress') return r.status === 'IN PROGRESS';
+    if (tab === 'Completed') return r.status === 'COMPLETED';
+    if (tab === 'On Hold') return r.status === 'ON HOLD';
+    return true;
+  }
+
+  visible(s) {
+    const q = s.query.trim().toLowerCase();
+    return s.rows.filter(r =>
+      this.inTab(r, s.tab) &&
+      (!s.dept || r.dept === s.dept) &&
+      (!s.priority || r.priority === s.priority) &&
+      (!s.statusFilter || r.status === s.statusFilter) &&
+      (!s.sampleTypeFilter || r.sampleType === s.sampleTypeFilter) &&
+      (!s.instrument || r.instrument === s.instrument) &&
+      (!q || [r.patientName, r.mrn, r.registrationNumber, r.accessionNo, r.barcode, r.testCode, r.testName].join(' ').toLowerCase().includes(q))
+    );
+  }
+
+  begin(r) {
+    return { ...r, status: 'IN PROGRESS', assignedTo: r.assignedTo === 'Unassigned' ? 'Anita D.' : r.assignedTo, startTime: r.startTime || NOW };
+  }
+
+  startRow = (id) => (e) => {
+    e.stopPropagation();
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState(s => ({
+      rows: s.rows.map(x => x.id === id ? this.begin(x) : x),
+      banner: r.accessionNo + ' · ' + r.testCode + ' moved to IN PROGRESS.', bannerKind: 'success'
+    }));
+  };
+
+  open = (id) => () => {
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState({ screen: 'detail', selectedId: id, assignedTo: r.assignedTo, remarks: r.remarks || '', toast: '', holdOpen: false, holdReason: '', holdRemarks: '', holdError: '' });
+  };
+
+  backToList = () => this.setState({ screen: 'list', selectedId: null, toast: '' });
+  backToDetail = () => this.setState({ screen: 'detail' });
+  openResultEntryPlaceholder = () => this.setState({ screen: 'resultEntry' });
+
+  startProcessing = () => {
+    const id = this.state.selectedId;
+    this.setState(s => ({
+      rows: s.rows.map(x => x.id === id ? { ...this.begin(x), assignedTo: s.assignedTo === 'Unassigned' ? 'Anita D.' : s.assignedTo, remarks: s.remarks } : x),
+      assignedTo: s.assignedTo === 'Unassigned' ? 'Anita D.' : s.assignedTo,
+      toast: 'Processing started — status changed from RECEIVED to IN PROGRESS.', toastKind: 'success'
+    }));
+  };
+
+  askHold = () => this.setState({ holdOpen: true, holdError: '' });
+  closeHold = () => this.setState({ holdOpen: false, holdError: '' });
+
+  confirmHold = () => {
+    if (!this.state.holdReason) { this.setState({ holdError: 'Select a hold reason to continue.' }); return; }
+    const id = this.state.selectedId;
+    this.setState(s => ({
+      rows: s.rows.map(x => x.id === id ? { ...x, status: 'ON HOLD', holdReason: s.holdReason, remarks: s.holdRemarks || s.remarks } : x),
+      holdOpen: false, holdReason: '', holdRemarks: '',
+      toast: 'Test placed ON HOLD — ' + s.holdReason + '.', toastKind: 'warning'
+    }));
+  };
+
+  openResultEntry = () => { window.location.href = 'Result Entry.dc.html'; };
+  openValidation = () => { window.location.href = 'Result Validation.dc.html'; };
+
+  renderVals() {
+    const s = this.state;
+    const tone = { warning: ['#FFFBEB', '#92400E', '#FCD34D'], error: ['#FEF2F2', '#991B1B', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] };
+    const prio = { NORMAL: ['#F3F4F6', '#374151', 'transparent'], URGENT: ['#FEF3C7', '#92400E', 'var(--color-warning)'], STAT: ['#FEE2E2', '#991B1B', 'var(--color-error)'] };
+    const stat = {
+      PENDING: ['#F3F4F6', '#4B5563'], 'IN PROGRESS': ['#DBEAFE', '#1E40AF'],
+      'RESULT PENDING': ['#EDE9FE', '#5B21B6'], COMPLETED: ['#DCFCE7', '#166534'], 'ON HOLD': ['#FEF3C7', '#92400E']
+    };
+
+    const rows = this.visible(s).map(r => {
+      const p = prio[r.priority], t = stat[r.status];
+      return {
+        ...r,
+        ageGender: r.age + ' y · ' + (r.sex === 'Male' ? 'M' : 'F'),
+        priorityBg: p[0], priorityFg: p[1], priorityEdge: p[2],
+        priorityShort: { NORMAL: 'N', URGENT: 'U', STAT: 'S' }[r.priority] || r.priority.slice(0, 1),
+        priorityFull: { NORMAL: 'Normal', URGENT: 'Urgent', STAT: 'STAT' }[r.priority] || r.priority,
+        statusBg: t[0], statusFg: t[1],
+        assignedColor: r.assignedTo === 'Unassigned' ? 'var(--color-text-tertiary)' : 'var(--color-text-primary)',
+        canStart: r.status === 'PENDING' || r.status === 'ON HOLD',
+        onOpen: this.open(r.id),
+        onStart: this.startRow(r.id)
+      };
+    });
+
+    const tabs = ['All', 'Pending', 'In Progress', 'Completed', 'On Hold'].map(label => ({
+      label, onPick: this.setTab(label),
+      count: s.rows.filter(r => this.inTab(r, label)).length,
+      border: s.tab === label ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.tab === label ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    const d = s.selectedId ? s.rows.find(r => r.id === s.selectedId) : null;
+    const statusDef = s.statusModal ? this.WORKFLOW.find(w => w.key === s.statusModal) : null;
+    const dP = d ? prio[d.priority] : prio.NORMAL;
+    const dS = d ? stat[d.status] : stat.PENDING;
+    const stage = d ? STAGE_OF[d.status] : 0;
+    const steps = FLOW.map((label, i) => {
+      const done = i < stage, current = i === stage;
+      return {
+        label, mark: done ? '✓' : String(i + 1),
+        dotBg: done ? 'var(--color-primary-deep)' : (current ? '#fff' : 'var(--color-gray-50)'),
+        dotFg: done ? '#fff' : (current ? 'var(--color-primary-deep)' : 'var(--color-text-tertiary)'),
+        ringColor: (done || current) ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+        barBg: i <= stage ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+        labelColor: (done || current) ? 'var(--color-text-primary)' : 'var(--color-text-tertiary)',
+        weight: current ? 700 : 500,
+        time: !d ? '' : (i === 0 ? d.receivedFull.split(', ')[1] : (i === 1 && stage >= 1 ? (d.startTime || NOW).split(', ')[1] : ''))
+      };
+    });
+
+    const bars = [];
+    if (d) {
+      const src = d.barcode;
+      for (let i = 0; i < 26; i++) bars.push({ w: (src.charCodeAt(i % src.length) % 3 === 0) ? '3px' : '1px' });
+    }
+
+    const canStartDetail = d ? (d.status === 'PENDING' || d.status === 'ON HOLD') : false;
+    const tToast = tone[s.toastKind];
+    const tBanner = tone[s.bannerKind];
+
+    return {
+      ...s,
+      isList: s.screen === 'list',
+      isDetail: s.screen === 'detail',
+      isResultEntry: s.screen === 'resultEntry',
+      rows, tabs,
+      rowCount: rows.length,
+      isEmpty: rows.length === 0,
+      bannerBg: tBanner[0], bannerFg: tBanner[1], bannerBorder: tBanner[2],
+      toastBg: tToast[0], toastFg: tToast[1], toastBorder: tToast[2],
+      dAccession: d ? d.accessionNo : '',
+      dPatient: d ? d.patientName : '',
+      dMrn: d ? d.mrn : '',
+      dRegistration: d ? d.registrationNumber : '',
+      dAge: d ? d.age + ' years' : '',
+      dGender: d ? d.sex : '',
+      dAgeGender: d ? d.age + ' y · ' + d.sex : '',
+      dContact: d ? d.contact : '',
+      dBill: d ? d.billNumber : '',
+      dTestCode: d ? d.testCode : '',
+      dTestName: d ? d.testName : '',
+      dDept: d ? d.dept : '',
+      dSampleType: d ? d.sampleType : '',
+      dBarcode: d ? d.barcode : '',
+      stop: this.stop,
+      workflowActions: this.WORKFLOW.map(w => {
+        const cur = d ? (d[w.key] || '—') : '—';
+        const warn = cur === 'REJECTED' || cur === 'NOT_COLLECTED' || cur === 'RECOLLECTION_REQUESTED';
+        const good = cur === 'AUTHORIZED' || cur === 'RELEASED' || cur === 'COLLECTED' || cur === 'COMPLETED';
+        return {
+          label: w.label, sub: w.sub, icon: w.icon, current: cur,
+          chipBg: warn ? '#FEE2E2' : good ? '#DCFCE7' : 'var(--color-gray-100)',
+          chipFg: warn ? '#991B1B' : good ? '#166534' : 'var(--color-text-secondary)',
+          onOpen: this.openStatus(w.key)
+        };
+      }),
+      statusModal: !!s.statusModal,
+      statusTitle: statusDef ? statusDef.label : '',
+      statusEndpoint: statusDef ? 'PATCH …/tests/{accessionTestId}/' + (statusDef.key === 'sampleStatus' ? 'sample-status' : statusDef.key === 'collectionStatus' ? 'collection-status' : statusDef.key === 'authorizationStatus' ? 'authorization-status' : 'report-status') : '',
+      statusOptions: statusDef ? statusDef.options : [],
+      statusCurrent: statusDef && d ? (d[statusDef.key] || '—') : '—',
+      statusDraft: s.statusDraft, setStatusDraft: this.setStatusDraft,
+      statusError: s.statusError, statusBusy: s.statusBusy,
+      statusBtnLabel: s.statusBusy ? 'Updating…' : 'Update Status',
+      statusBtnBg: s.statusBusy ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      statusCursor: s.statusBusy ? 'wait' : 'pointer',
+      closeStatus: this.closeStatus, saveStatus: this.saveStatus,
+      openCancelBill: this.openCancelBill, closeCancelBill: this.closeCancelBill,
+      confirmCancelBill: this.confirmCancelBill, setCancelRemarks: this.setCancelRemarks,
+      cancelBillOpen: s.cancelBillOpen, cancelRemarks: s.cancelRemarks,
+      cancelBillError: s.cancelBillError, cancelBillBusy: s.cancelBillBusy,
+      cancelBillLabel: s.cancelBillBusy ? 'Cancelling…' : 'Cancel Bill',
+      cancelBillBg: s.cancelBillBusy ? 'var(--color-gray-300)' : '#B91C1C',
+      cancelBillCursor: s.cancelBillBusy ? 'wait' : 'pointer',
+      dPriority: d ? d.priority : '',
+      dPriorityBg: dP[0], dPriorityFg: dP[1],
+      dStatus: d ? d.status : '',
+      dStatusBg: dS[0], dStatusFg: dS[1],
+      dReceivedFull: d ? d.receivedFull : '',
+      dStartTime: d ? (d.startTime || 'Not started') : '',
+      dInstrument: d ? d.instrument : '',
+      barcodeBars: bars,
+      steps,
+      checks: d ? [
+        { k: 'Sample status', v: 'Received in lab', color: 'var(--color-success)' },
+        { k: 'Barcode status', v: 'Verified', color: 'var(--color-success)' },
+        { k: 'Sample condition', v: d.sampleCondition, color: d.sampleCondition === 'Adequate' ? 'var(--color-success)' : 'var(--color-error)' },
+        { k: 'Quantity received', v: d.quantity, color: 'var(--color-text-primary)' },
+        { k: 'Hold reason', v: d.holdReason || '—', color: d.holdReason ? '#92400E' : 'var(--color-text-tertiary)' }
+      ] : [],
+      startLabel: canStartDetail ? 'Start Processing' : (d && d.status === 'IN PROGRESS' ? 'Processing in progress' : 'Processing complete'),
+      startDisabled: !canStartDetail,
+      startBg: canStartDetail ? 'var(--color-primary-deep)' : 'var(--color-gray-100)',
+      startFg: canStartDetail ? '#fff' : 'var(--color-text-tertiary)',
+      startCursor: canStartDetail ? 'pointer' : 'not-allowed',
+      onQuery: this.onQuery, updateField: this.updateField, clearFilters: this.clearFilters, search: this.search,
+      backToList: this.backToList, backToDetail: this.backToDetail, openResultEntry: this.openResultEntry,
+      startProcessing: this.startProcessing, askHold: this.askHold, closeHold: this.closeHold, confirmHold: this.confirmHold,
+      stop: this.stop
+    };
+  }
+}
+</script>
+</body>
+</html>

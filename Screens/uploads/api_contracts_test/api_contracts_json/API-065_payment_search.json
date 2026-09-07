@@ -1,0 +1,59 @@
+{
+  "functionality_id": "API-065",
+  "module": "Payment",
+  "functionality": "Payment Search",
+  "http_method": "GET",
+  "endpoint": "/api/payments",
+  "description": "Searches payments by bill number, scoped to organization and branch.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": { "billNumber": "string, required - matched against billing_master.bill_number via the payment's billing_master_id" },
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["billNumber"],
+
+  "validation": ["billNumber must not be empty", "results are scoped to the caller's organization + branch"],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Payments fetched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "billingMasterId": "uuid",
+          "billNumber": "BILL0001",
+          "paymentMode": "CASH",
+          "amountPaid": 350,
+          "paymentStatus": "SUCCESS",
+          "transactionReference": "TXN0001",
+          "paymentDate": "timestamp with time zone"
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "no payments found for billNumber",
+      "status_code": 404,
+      "response": { "success": false, "error": "No payment found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["payment", "billing_master"],
+    "relationships": ["payment.billing_master_id -> billing_master.id"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T124)"],
+
+  "test_ids": ["API-T124"]
+}

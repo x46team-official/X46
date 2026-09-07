@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="fit-screen.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --green: #1f8a4c; --green-soft: #e9f6ee;
+      --radius: 3px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+    input:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: grid; grid-template-columns: 1fr 420px; background: var(--page-bg);">
+  <div style="background: #16202b; color: #fff; padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 24px; height: 24px; border-radius: 3px; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;">X46</div>
+      <div style="font-size: 14px; font-weight: 700;">LIMS</div>
+    </div>
+    <div style="max-width: 440px;">
+      <h1 style="margin: 0 0 10px; font-size: 26px; line-height: 1.25; font-weight: 700; letter-spacing: -0.3px; text-wrap: pretty;">Laboratory Information Management System</h1>
+      <p style="margin: 0; font-size: 13px; color: #a9b4c2; text-wrap: pretty;">Registration, accessioning, results and reporting — one auditable system of record for your laboratory network.</p>
+    </div>
+    <div style="font-size: 11.5px; color: #6b7787;">Authorized use only. All activity is logged.</div>
+  </div>
+
+  <div style="background: var(--bg); border-left: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; padding: 32px;">
+    <div style="width: 100%; max-width: 320px; margin: 0 auto;">
+      <div style="margin-bottom: 18px;">
+        <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700; letter-spacing: -0.2px;">Sign in</h2>
+        <p style="margin: 0; font-size: 12.5px; color: var(--text-2);">Use your X46 LIMS account credentials.</p>
+      </div>
+
+      <div id="loginMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--red); margin-bottom: 14px; font-weight: 600;"></div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label for="username" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Username <span style="color: var(--red);">*</span></label>
+          <input type="text" id="username" autocomplete="username" placeholder="admin.pune" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          <div id="usernameError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <label for="password" style="font-size: 12px; font-weight: 600; color: var(--text-2);">Password <span style="color: var(--red);">*</span></label>
+            <a href="#" style="font-size: 11.5px; font-weight: 600;">Forgot password?</a>
+          </div>
+          <div style="position: relative;">
+            <input type="password" id="password" autocomplete="current-password" placeholder="••••••••" style="width: 100%; padding: 7px 56px 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+            <button type="button" id="togglePw" style="position: absolute; top: 50%; right: 5px; transform: translateY(-50%); background: none; border: none; padding: 3px 6px; font-size: 11px; font-weight: 700; font-family: inherit; color: var(--text-2); cursor: pointer;">Show</button>
+          </div>
+          <div id="passwordError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12.5px;">
+          <input type="checkbox" id="remember" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+          <span style="color: var(--text-2);">Keep me signed in on this device</span>
+        </label>
+
+        <button type="button" id="signInBtn" style="width: 100%; padding: 8px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 700; font-family: inherit; cursor: pointer;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Sign in</button>
+      </div>
+
+      <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 11.5px; color: var(--text-3);">Trouble signing in? Contact your system administrator.</div>
+        <div style="font-size: 11.5px; color: var(--text-3);">Demo — try <span style="font-family: ui-monospace, monospace; color: var(--text-2);">admin.pune</span> / <span style="font-family: ui-monospace, monospace; color: var(--text-2);">x46lims</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const $ = (id) => document.getElementById(id);
+    $('signInBtn').addEventListener('click', this.submit);
+    $('togglePw').addEventListener('click', this.togglePw);
+    ['username', 'password'].forEach((id) => {
+      const el = $(id);
+      el.addEventListener('focus', () => this.focusStyle(el, true));
+      el.addEventListener('blur', () => this.focusStyle(el, false));
+      el.addEventListener('input', () => this.clearFieldError(id));
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter') this.submit(); });
+    });
+  }
+
+  focusStyle = (el, on) => {
+    if (el.dataset.invalid === 'true') return;
+    el.style.borderColor = on ? 'var(--blue)' : 'var(--line)';
+    el.style.boxShadow = on ? '0 0 0 2px rgba(22, 104, 220, 0.14)' : 'none';
+  };
+
+  setFieldError = (id, msg) => {
+    const el = document.getElementById(id);
+    el.dataset.invalid = 'true';
+    el.style.borderColor = 'var(--red)';
+    el.style.boxShadow = '0 0 0 2px rgba(208, 52, 44, 0.12)';
+    el.setAttribute('aria-invalid', 'true');
+    const err = document.getElementById(id + 'Error');
+    err.textContent = msg;
+    err.style.display = 'block';
+  };
+
+  clearFieldError = (id) => {
+    const el = document.getElementById(id);
+    if (el.dataset.invalid !== 'true') return;
+    el.dataset.invalid = 'false';
+    el.style.borderColor = 'var(--line)';
+    el.style.boxShadow = 'none';
+    el.removeAttribute('aria-invalid');
+    document.getElementById(id + 'Error').style.display = 'none';
+  };
+
+  message = (type, text) => {
+    const el = document.getElementById('loginMessage');
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  togglePw = () => {
+    const el = document.getElementById('password');
+    const btn = document.getElementById('togglePw');
+    const hidden = el.type === 'password';
+    el.type = hidden ? 'text' : 'password';
+    btn.textContent = hidden ? 'Hide' : 'Show';
+  };
+
+  submit = () => {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const btn = document.getElementById('signInBtn');
+
+    this.clearFieldError('username');
+    this.clearFieldError('password');
+    document.getElementById('loginMessage').style.display = 'none';
+
+    let bad = false;
+    if (!username) { this.setFieldError('username', 'Username is required'); bad = true; }
+    if (!password) { this.setFieldError('password', 'Password is required'); bad = true; }
+    if (bad) return this.message('error', '400 Bad Request \u2014 Required fields are missing');
+
+    btn.disabled = true;
+    btn.style.opacity = '0.65';
+    btn.style.cursor = 'wait';
+    btn.textContent = 'Signing in\u2026';
+
+    setTimeout(() => {
+      const ok = username === 'admin.pune' && password === 'x46lims';
+      if (ok) {
+        btn.textContent = 'Signed in';
+        this.message('success', '200 OK \u2014 Signed in. Opening workspace\u2026');
+        setTimeout(() => { window.location.href = 'Branch Management.dc.html'; }, 900);
+        return;
+      }
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      btn.textContent = 'Sign in';
+      if (username === 'locked.user') return this.message('error', '403 Forbidden \u2014 Account is inactive. Contact your administrator.');
+      this.setFieldError('password', 'Incorrect username or password');
+      this.message('error', '401 Unauthorized \u2014 Incorrect username or password');
+    }, 900);
+  };
+
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

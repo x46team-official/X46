@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="fit-screen.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --nav-bg: #16202b; --nav-bg-hover: #1f2c3a; --nav-text: #c7d1dc;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --line-soft: #eaedf1; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --green: #1f8a4c; --green-soft: #e9f6ee; --grey-pill: #eef0f3;
+      --radius: 3px; --sidebar: 244px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+    input:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+    tbody tr:hover { background: #f7f9fc; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh; background: var(--page-bg);">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Departments</div>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: var(--page-bg); flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 10px; flex: 1; min-width: 260px; max-width: 460px;">
+        <input type="text" id="searchInput" placeholder="Search by department code or name" style="flex: 1; min-width: 0; border: none; padding: 7px 0; font-size: 12.5px; background: transparent; font-family: inherit; color: var(--text); outline: none;" />
+        <span style="color: var(--text-3); font-size: 13px;">⌕</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-left: auto;">
+        <select id="branchSelect" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+          <option value="PUNE-01">Pune Main Branch · PUNE-01</option>
+          <option value="MUM-01">Mumbai Lab · MUM-01</option>
+          <option value="BNG-01">Bangalore Center · BNG-01</option>
+        </select>
+        <button id="createBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create Department</button>
+      </div>
+    </div>
+
+    <div style="flex: 1; padding: 0 20px 20px;">
+      <div id="pageToast" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 10px; font-weight: 600;"></div>
+
+      <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+        <div style="display: flex; align-items: center; gap: 22px; padding: 0 16px; border-bottom: 1px solid var(--line);">
+          <a href="Branch Management.dc.html" style="padding: 10px 2px; font-size: 12.5px; color: var(--text-2);">Branches</a>
+          <div style="padding: 10px 2px; font-size: 12.5px; font-weight: 600; color: var(--blue); border-bottom: 2px solid var(--blue);">Departments</div>
+          <a href="Roles.dc.html" style="padding: 10px 2px; font-size: 12.5px; color: var(--text-2);">Roles</a>
+          <a href="Users.dc.html" style="padding: 10px 2px; font-size: 12.5px; color: var(--text-2);">Users</a>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 11.5px; color: var(--text-2);">
+            <span>Organization <b style="color: var(--text);">X46 Diagnostics</b></span>
+          </div>
+        </div>
+
+        <div style="padding: 8px 16px; font-size: 12px; font-weight: 700;">Rows: <span id="resultCount">4</span></div>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 12.5px;">
+            <thead>
+              <tr style="background: var(--head-bg);">
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); width: 140px;">Code</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 220px;">Department Name</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft);">Description</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 120px;">Status</th>
+                <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 190px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="data-row" data-search="bio biochemistry serum chemistry analysers" style="border-bottom: 1px solid var(--line-soft);">
+                <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">BIO</td>
+                <td style="padding: 9px 16px; font-weight: 600;">Biochemistry</td>
+                <td style="padding: 9px 16px; color: var(--text-2);">Serum chemistry analysers</td>
+                <td style="padding: 9px 16px;"><span class="status-cell" style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                  <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--blue); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: #eaf2fd; border-color: var(--blue);">Edit</button>
+                  <button type="button" class="pause-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Pause</button>
+                  <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                </div></td>
+              </tr>
+              <tr class="data-row" data-search="haem haematology cbc coagulation" style="border-bottom: 1px solid var(--line-soft);">
+                <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">HAEM</td>
+                <td style="padding: 9px 16px; font-weight: 600;">Haematology</td>
+                <td style="padding: 9px 16px; color: var(--text-2);">CBC and coagulation</td>
+                <td style="padding: 9px 16px;"><span class="status-cell" style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                  <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--blue); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: #eaf2fd; border-color: var(--blue);">Edit</button>
+                  <button type="button" class="pause-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Pause</button>
+                  <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                </div></td>
+              </tr>
+              <tr class="data-row" data-search="micro microbiology culture sensitivity" style="border-bottom: 1px solid var(--line-soft);">
+                <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">MICRO</td>
+                <td style="padding: 9px 16px; font-weight: 600;">Microbiology</td>
+                <td style="padding: 9px 16px; color: var(--text-2);">Culture and sensitivity</td>
+                <td style="padding: 9px 16px;"><span class="status-cell" style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                  <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--blue); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: #eaf2fd; border-color: var(--blue);">Edit</button>
+                  <button type="button" class="pause-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Pause</button>
+                  <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                </div></td>
+              </tr>
+              <tr class="data-row" data-search="patho histopathology cytology" style="border-bottom: 1px solid var(--line-soft);">
+                <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">PATHO</td>
+                <td style="padding: 9px 16px; font-weight: 600;">Histopathology</td>
+                <td style="padding: 9px 16px; color: var(--text-3);">—</td>
+                <td style="padding: 9px 16px;"><span class="status-cell" style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--grey-pill); color: var(--text-2); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Inactive</span></td>
+                <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                  <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--blue); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: #eaf2fd; border-color: var(--blue);">Edit</button>
+                  <button type="button" class="pause-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Activate</button>
+                  <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="emptyState" style="display: none; padding: 40px 16px; text-align: center;">
+          <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No departments found</div>
+          <div style="font-size: 12.5px; color: var(--text-2);">Try a different search term.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="createModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 100; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h2 id="modalTitle" style="margin: 0; font-size: 14px; font-weight: 700;">Create Department</h2>
+        <div id="modalContext" style="font-size: 11.5px; color: var(--text-3); margin-top: 1px;">X46 Diagnostics · PUNE-01</div>
+      </div>
+      <button id="closeModalBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+    <div style="padding: 20px;">
+      <div id="formMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 16px; font-weight: 600;"></div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div>
+          <label for="deptName" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Department Name <span style="color: var(--red);">*</span></label>
+          <input type="text" id="deptName" placeholder="Biochemistry" maxlength="100" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          <div id="deptNameError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="deptCode" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Department Code <span style="color: var(--red);">*</span></label>
+          <input type="text" id="deptCode" placeholder="BIO" maxlength="30" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+          <div id="deptCodeError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+          <div id="deptCodeHelp" style="margin-top: 4px; font-size: 11.5px; color: var(--text-3);">Unique within organization + branch</div>
+        </div>
+        <div>
+          <label for="deptDesc" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Description</label>
+          <textarea id="deptDesc" rows="3" placeholder="Optional" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); resize: vertical;"></textarea>
+        </div>
+        <label for="deptActive" style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;">
+          <input type="checkbox" id="deptActive" defaultChecked="{{ true }}" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+          <span style="font-size: 12.5px; font-weight: 600;">Active</span>
+        </label>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="cancelBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="submitBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 160px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create Department</button>
+    </div>
+  </div>
+</div>
+
+<div id="deleteModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 110; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 420px; width: 100%;">
+    <div style="padding: 20px 20px 14px;">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700;">Delete department?</h2>
+      <p style="margin: 0; font-size: 12.5px; color: var(--text-2);">This will permanently remove <span id="deleteTarget" style="font-family: ui-monospace, monospace; font-weight: 700; color: var(--text);"></span> from this branch. This action cannot be undone.</p>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="cancelDeleteBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="confirmDeleteBtn" style="padding: 6px 14px; background: var(--red); color: #fff; border: 1px solid var(--red); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 140px;" style-hover="background: #b02a24; border-color: #b02a24;">Delete department</button>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+class Component extends DCLogic {
+  state = { codes: ['BIO', 'HAEM', 'MICRO', 'PATHO'], names: ['biochemistry', 'haematology', 'microbiology', 'histopathology'] };
+
+  componentDidMount() {
+    const $ = (id) => document.getElementById(id);
+    $('createBtn').addEventListener('click', this.openModal);
+    $('closeModalBtn').addEventListener('click', this.closeModal);
+    $('cancelBtn').addEventListener('click', this.closeModal);
+    $('submitBtn').addEventListener('click', this.submit);
+    $('searchInput').addEventListener('input', this.filter);
+    $('branchSelect').addEventListener('change', (e) => { $('modalContext').textContent = 'X46 Diagnostics \u00b7 ' + e.target.value; });
+
+    const modal = $('createModal');
+    modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModal(); });
+    const del = $('deleteModal');
+    del.addEventListener('click', (e) => { if (e.target === del) this.closeDelete(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (del.style.display === 'flex') this.closeDelete();
+      else if (modal.style.display === 'flex') this.closeModal();
+    });
+
+    ['deptName', 'deptCode', 'deptDesc'].forEach((id) => {
+      const el = $(id);
+      el.addEventListener('focus', () => this.focusStyle(el, true));
+      el.addEventListener('blur', () => this.focusStyle(el, false));
+      el.addEventListener('input', () => this.clearFieldError(id));
+    });
+
+    $('tableBody').addEventListener('click', (e) => {
+      const row = e.target.closest('tr');
+      if (!row) return;
+      if (e.target.classList.contains('edit-btn')) this.openEdit(row);
+      if (e.target.classList.contains('pause-btn')) this.togglePause(row, e.target);
+      if (e.target.classList.contains('delete-btn')) this.askDelete(row);
+    });
+    $('cancelDeleteBtn').addEventListener('click', this.closeDelete);
+    $('confirmDeleteBtn').addEventListener('click', this.confirmDelete);
+  }
+
+  focusStyle = (el, on) => {
+    if (el.dataset.invalid === 'true') return;
+    el.style.borderColor = on ? 'var(--blue)' : 'var(--line)';
+    el.style.boxShadow = on ? '0 0 0 2px rgba(22, 104, 220, 0.14)' : 'none';
+  };
+
+  setFieldError = (id, msg) => {
+    const el = document.getElementById(id);
+    el.dataset.invalid = 'true';
+    el.style.borderColor = 'var(--red)';
+    el.style.boxShadow = '0 0 0 2px rgba(208, 52, 44, 0.12)';
+    el.setAttribute('aria-invalid', 'true');
+    const err = document.getElementById(id + 'Error');
+    if (err) { err.textContent = msg; err.style.display = 'block'; }
+    if (id === 'deptCode') document.getElementById('deptCodeHelp').style.display = 'none';
+  };
+
+  clearFieldError = (id) => {
+    const el = document.getElementById(id);
+    if (el.dataset.invalid !== 'true') return;
+    el.dataset.invalid = 'false';
+    el.style.borderColor = 'var(--line)';
+    el.style.boxShadow = 'none';
+    el.removeAttribute('aria-invalid');
+    const err = document.getElementById(id + 'Error');
+    if (err) err.style.display = 'none';
+    if (id === 'deptCode') document.getElementById('deptCodeHelp').style.display = 'block';
+  };
+
+  message = (elId, type, text) => {
+    const el = document.getElementById(elId);
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  toast = (text) => { this.message('pageToast', 'success', text); setTimeout(() => { document.getElementById('pageToast').style.display = 'none'; }, 3000); };
+  setMode = (editing, code) => {
+    const codeEl = document.getElementById('deptCode');
+    codeEl.disabled = !!editing;
+    codeEl.style.background = editing ? 'var(--head-bg)' : 'var(--bg)';
+    codeEl.style.color = editing ? 'var(--text-2)' : 'var(--text)';
+    document.getElementById('deptCodeHelp').textContent = editing
+      ? 'Department code cannot be changed after creation'
+      : 'Unique within organization + branch';
+    document.getElementById('modalTitle').textContent = editing ? 'Edit Department \u00b7 ' + code : 'Create Department';
+    document.getElementById('submitBtn').textContent = editing ? 'Save Changes' : 'Create Department';
+  };
+
+  openModal = () => {
+    this.editingRow = null;
+    this.setMode(false);
+    document.getElementById('createModal').style.display = 'flex';
+  };
+
+  openEdit = (row) => {
+    ['deptName', 'deptCode', 'deptDesc'].forEach(this.clearFieldError);
+    document.getElementById('formMessage').style.display = 'none';
+    this.editingRow = row;
+    const code = row.cells[0].textContent.trim();
+    const desc = row.cells[2].textContent.trim();
+    document.getElementById('deptCode').value = code;
+    document.getElementById('deptName').value = row.cells[1].textContent.trim();
+    document.getElementById('deptDesc').value = desc === '\u2014' ? '' : desc;
+    document.getElementById('deptActive').checked = row.cells[3].textContent.indexOf('Inactive') === -1;
+    this.setMode(true, code);
+    document.getElementById('createModal').style.display = 'flex';
+  };
+
+  closeModal = () => {
+    document.getElementById('createModal').style.display = 'none';
+    ['deptName', 'deptCode', 'deptDesc'].forEach((id) => { document.getElementById(id).value = ''; this.clearFieldError(id); });
+    document.getElementById('deptActive').checked = true;
+    document.getElementById('formMessage').style.display = 'none';
+    this.editingRow = null;
+    this.setMode(false);
+  };
+
+  applyBadge = (cell, active) => {
+    const dot = '<span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>';
+    cell.innerHTML = '<span class="status-cell" style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;background:'
+      + (active ? 'var(--green-soft)' : 'var(--grey-pill)') + ';color:' + (active ? 'var(--green)' : 'var(--text-2)')
+      + ';border-radius:2px;font-size:11px;font-weight:700;">' + dot + (active ? 'Active' : 'Inactive') + '</span>';
+  };
+
+  submit = () => {
+    const name = document.getElementById('deptName').value.trim();
+    const code = document.getElementById('deptCode').value.trim().toUpperCase();
+    const desc = document.getElementById('deptDesc').value.trim();
+    const active = document.getElementById('deptActive').checked;
+    const btn = document.getElementById('submitBtn');
+
+    ['deptName', 'deptCode'].forEach(this.clearFieldError);
+    document.getElementById('formMessage').style.display = 'none';
+
+    let bad = false;
+    if (!name) { this.setFieldError('deptName', 'departmentName is required'); bad = true; }
+    if (!code) { this.setFieldError('deptCode', 'departmentCode is required'); bad = true; }
+    if (bad) return this.message('formMessage', 'error', '400 Validation error \u2014 Required fields are missing');
+
+    if (this.editingRow) {
+      const row = this.editingRow;
+      btn.disabled = true; btn.style.opacity = '0.65'; btn.style.cursor = 'wait'; btn.textContent = 'Saving\u2026';
+      setTimeout(() => {
+        btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'Save Changes';
+        row.cells[1].textContent = name;
+        row.cells[2].textContent = desc || '\u2014';
+        row.cells[2].style.color = desc ? 'var(--text-2)' : 'var(--text-3)';
+        this.applyBadge(row.cells[3], active);
+        const pause = row.querySelector('.pause-btn');
+        if (pause) pause.textContent = active ? 'Pause' : 'Activate';
+        row.setAttribute('data-search', (code + ' ' + name + ' ' + desc).toLowerCase());
+        this.message('formMessage', 'success', '200 OK \u2014 Department updated successfully');
+        setTimeout(() => { this.closeModal(); this.filter(); this.toast('Department ' + code + ' updated'); }, 1100);
+      }, 800);
+      return;
+    }
+
+    if (this.state.codes.includes(code) || this.state.names.includes(name.toLowerCase())) {
+      if (this.state.codes.includes(code)) this.setFieldError('deptCode', 'Duplicate department code');
+      if (this.state.names.includes(name.toLowerCase())) this.setFieldError('deptName', 'Duplicate department name');
+      return this.message('formMessage', 'error', '409 Conflict \u2014 Duplicate department code/name');
+    }
+
+    btn.disabled = true; btn.style.opacity = '0.65'; btn.style.cursor = 'wait'; btn.textContent = 'Creating\u2026';
+    setTimeout(() => {
+      btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'Create Department';
+      if (code === 'FAIL-500') return this.message('formMessage', 'error', '500 Internal server error \u2014 Please try again');
+      if (code === 'FAIL-404') return this.message('formMessage', 'error', '404 Not Found \u2014 Organization or branch not found');
+      this.setState({ codes: [...this.state.codes, code], names: [...this.state.names, name.toLowerCase()] });
+      this.addRow(code, name, desc, active);
+      this.message('formMessage', 'success', '201 Created \u2014 Department created successfully');
+      setTimeout(() => { this.closeModal(); this.toast('Department ' + code + ' created successfully'); }, 1200);
+    }, 900);
+  };
+
+  addRow = (code, name, desc, active) => {
+    const tbody = document.getElementById('tableBody');
+    const row = document.createElement('tr');
+    row.className = 'data-row';
+    row.setAttribute('data-search', (code + ' ' + name + ' ' + desc).toLowerCase());
+    row.style.cssText = 'border-bottom: 1px solid var(--line-soft); background: #eaf2fd;';
+    const badge = active
+      ? '<span class="status-cell" style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;background:var(--green-soft);color:var(--green);border-radius:2px;font-size:11px;font-weight:700;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Active</span>'
+      : '<span class="status-cell" style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;background:var(--grey-pill);color:var(--text-2);border-radius:2px;font-size:11px;font-weight:700;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Inactive</span>';
+    row.innerHTML =
+      '<td style="padding:9px 16px;font-family:ui-monospace,monospace;font-weight:600;">' + code + '</td>' +
+      '<td style="padding:9px 16px;font-weight:600;">' + name + '</td>' +
+      '<td style="padding:9px 16px;color:' + (desc ? 'var(--text-2)' : 'var(--text-3)') + ';">' + (desc || '\u2014') + '</td>' +
+      '<td style="padding:9px 16px;">' + badge + '</td>' +
+      '<td style="padding:9px 16px;"><div style="display:flex;gap:6px;">' +
+        '<button type="button" class="edit-btn" style="padding:3px 10px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--blue);font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;">Edit</button>' +
+        '<button type="button" class="pause-btn" style="padding:3px 10px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--text-2);font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;">' + (active ? 'Pause' : 'Activate') + '</button>' +
+        '<button type="button" class="delete-btn" style="padding:3px 10px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--red);font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;">Delete</button>' +
+      '</div></td>';
+    tbody.insertBefore(row, tbody.firstChild);
+    setTimeout(() => { row.style.background = ''; }, 1800);
+    this.updateCount();
+  };
+
+  togglePause = (row, btn) => {
+    const badge = row.querySelector('.status-cell');
+    const active = btn.textContent.trim() === 'Pause';
+    const dot = '<span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>';
+    badge.style.background = active ? 'var(--grey-pill)' : 'var(--green-soft)';
+    badge.style.color = active ? 'var(--text-2)' : 'var(--green)';
+    badge.innerHTML = dot + (active ? 'Inactive' : 'Active');
+    btn.textContent = active ? 'Activate' : 'Pause';
+    this.toast('Department ' + row.cells[0].textContent.trim() + (active ? ' paused' : ' activated'));
+  };
+
+  askDelete = (row) => { this.pendingRow = row; document.getElementById('deleteTarget').textContent = row.cells[0].textContent.trim(); document.getElementById('deleteModal').style.display = 'flex'; };
+  closeDelete = () => { this.pendingRow = null; document.getElementById('deleteModal').style.display = 'none'; };
+  confirmDelete = () => {
+    const row = this.pendingRow;
+    if (!row) return this.closeDelete();
+    const code = row.cells[0].textContent.trim();
+    const name = row.cells[1].textContent.trim().toLowerCase();
+    row.remove();
+    this.setState({ codes: this.state.codes.filter((c) => c !== code), names: this.state.names.filter((n) => n !== name) });
+    this.closeDelete();
+    this.filter();
+    this.toast('Department ' + code + ' deleted');
+  };
+
+  filter = () => {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    let visible = 0;
+    document.querySelectorAll('.data-row').forEach((row) => {
+      const match = row.getAttribute('data-search').includes(q);
+      row.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('resultCount').textContent = visible;
+  };
+
+  updateCount = () => { document.getElementById('resultCount').textContent = document.querySelectorAll('.data-row').length; };
+
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

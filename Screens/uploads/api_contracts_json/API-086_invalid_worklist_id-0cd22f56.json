@@ -1,0 +1,58 @@
+{
+  "functionality_id": "API-086",
+  "module": "Worklist Management",
+  "functionality": "Invalid Worklist ID (Assignment)",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accession-tests/{accessionTestId}/worklist",
+  "description": "Documents the specific error scenario of API-077 where the request fails this validation. Same endpoint as API-077, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "worklistId": "'00000000-0000-0000-0000-000000000000' - not an existing worklist_master row"
+    }
+  },
+  "required_fields": [
+    "worklistId"
+  ],
+  "validation": [
+    "worklistId must reference an existing worklist_master row"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "worklistId must reference an existing worklist_master row",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Worklist not found"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T145)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "accession_tests",
+      "worklist_master"
+    ],
+    "relationships": [
+      "accession_tests.worklist_id -> worklist_master.id"
+    ],
+    "constraints": []
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/017_worklist.sql (API-T145)"
+  ],
+  "test_ids": [
+    "API-T145"
+  ]
+}

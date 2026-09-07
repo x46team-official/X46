@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="fit-screen.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --line-soft: #eaedf1; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --amber: #92400e; --amber-soft: #fef3c7;
+      --green: #1f8a4c; --green-soft: #e9f6ee;
+      --radius: 3px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="min-height: 100vh; background: var(--page-bg); display: flex; flex-direction: column;">
+  <div style="height: 52px; background: #16202b; display: flex; align-items: center; gap: 10px; padding: 0 20px; flex-shrink: 0;">
+    <div style="width: 22px; height: 22px; border-radius: 3px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700;">X46</div>
+    <div style="font-size: 14px; font-weight: 700; color: #fff;">LIMS</div>
+    <div style="margin-left: auto; font-size: 11.5px; color: #c7d1dc;">X46 Diagnostics</div>
+  </div>
+
+  <div style="flex: 1; display: flex; justify-content: center; padding: 32px 20px 44px;">
+    <div style="max-width: 640px; width: 100%;">
+      <div style="font-size: 12px; color: var(--text-3); margin-bottom: 10px;"><a href="{{ backHref }}">{{ backLabel }}</a> <span>/</span> <span style="color: var(--text);">{{ crumb }}</span></div>
+
+      <sc-if value="{{ is404 }}" hint-placeholder-val="{{ true }}">
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+          <div style="padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--head-bg); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <h2 style="margin: 0; font-size: 13px; font-weight: 700;">Organization reference failed</h2>
+            <span class="mono" style="font-size: 11px; color: var(--red); background: var(--red-soft); border-radius: var(--radius); padding: 1px 7px; font-weight: 700;">404 Not Found</span>
+          </div>
+          <div style="padding: 24px 20px;">
+            <div style="display: flex; gap: 18px; align-items: flex-start;">
+              <div style="font-size: 44px; font-weight: 700; line-height: 1; color: var(--red); letter-spacing: -1px;">404</div>
+              <div>
+                <h1 style="margin: 0 0 5px; font-size: 19px; font-weight: 700; letter-spacing: -0.2px;">Organization not found</h1>
+                <p style="margin: 0; color: var(--text-2); font-size: 12.5px; max-width: 420px;">The organization this record points to does not exist. The request was rejected before any data was written.</p>
+              </div>
+            </div>
+
+            <div style="margin-top: 20px; border: 1px solid var(--line); border-radius: var(--radius);">
+              <div style="padding: 7px 12px; background: var(--head-bg); border-bottom: 1px solid var(--line); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-2);">Likely cause</div>
+              <div style="padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--text-2);">
+                <div>The organization was deleted or deactivated after this screen was opened.</div>
+                <div>The organization ID sent with the request is not a valid foreign-key reference.</div>
+                <div>Your user account no longer has access to that organization.</div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is500 }}" hint-placeholder-val="{{ false }}">
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+          <div style="padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--head-bg); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <h2 style="margin: 0; font-size: 13px; font-weight: 700;">Server or database failure</h2>
+            <span class="mono" style="font-size: 11px; color: var(--red); background: var(--red-soft); border-radius: var(--radius); padding: 1px 7px; font-weight: 700;">500 Internal Server Error</span>
+          </div>
+          <div style="padding: 24px 20px;">
+            <div style="display: flex; gap: 18px; align-items: flex-start;">
+              <div style="font-size: 44px; font-weight: 700; line-height: 1; color: var(--red); letter-spacing: -1px;">500</div>
+              <div>
+                <h1 style="margin: 0 0 5px; font-size: 19px; font-weight: 700; letter-spacing: -0.2px;">Something went wrong on our side</h1>
+                <p style="margin: 0; color: var(--text-2); font-size: 12.5px; max-width: 430px;">The request could not be completed. Nothing was saved — you can retry safely, and no duplicate record will be created.</p>
+              </div>
+            </div>
+
+            <div style="margin-top: 18px; font-size: 12.5px; color: var(--text-2);">Report this to your lab administrator if it keeps happening.</div>
+
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="margin-top: 14px; background: var(--amber-soft); border: 1px solid #fde68a; border-radius: var(--radius); padding: 9px 12px; font-size: 11.5px; color: var(--amber);">
+        <span style="font-weight: 700;">QA note ·</span> {{ qaNote }}
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1280px&quot;,&quot;height&quot;:&quot;860px&quot;}}">
+const SCREENS = {
+  'Create Organization.dc.html': 'Create Organization',
+  'Branch Management.dc.html': 'Branches',
+  'Users.dc.html': 'Users',
+  'Registration.dc.html': 'Registration & Billing',
+  'Finance.dc.html': 'Finance Overview'
+};
+
+class Component extends DCLogic {
+  state = { code: '500', from: '', endpoint: '', ref: '', retrying: false, retryFailed: false };
+
+  componentDidMount() {
+    const q = new URLSearchParams(window.location.search);
+    const hash = (window.location.hash || '').replace('#', '');
+    const code = q.get('state') || (hash === '500' ? '500' : hash === '404' ? '404' : null);
+    const stamp = new Date();
+    this.setState({
+      code: code === '500' ? '500' : '404',
+      from: q.get('from') || '',
+      endpoint: q.get('endpoint') || '',
+      ref: 'X46-' + stamp.toISOString().slice(0, 10).replace(/-/g, '') + '-' + String(Math.floor(Math.random() * 9000) + 1000),
+      when: stamp.toLocaleString('en-IN')
+    });
+  }
+
+  setCode = (c) => () => this.setState({ code: c, retryFailed: false });
+  goBack = () => { window.location.href = this.state.from || 'Finance.dc.html'; };
+  retry = () => {
+    if (this.state.retrying) return;
+    this.setState({ retrying: true, retryFailed: false });
+    setTimeout(() => this.setState({ retrying: false, retryFailed: true }), 1100);
+  };
+
+  renderVals() {
+    const s = this.state;
+    const is404 = s.code === '404';
+    const backHref = s.from || 'Finance.dc.html';
+    const backLabel = SCREENS[s.from] || 'Finance Overview';
+    const endpoint = s.endpoint || (is404 ? 'POST /api/organizations/{organizationId}/branches' : 'POST /api/organizations');
+
+    return {
+      is404, is500: !is404,
+      stateTabs: [['404', '404 Organization'], ['500', '500 Server']].map(([k, label]) => {
+        const on = s.code === k;
+        return { label, onPick: this.setCode(k), bg: on ? 'var(--blue)' : 'transparent', fg: on ? '#fff' : '#c7d1dc', border: on ? 'var(--blue)' : '#3a4756' };
+      }),
+      crumb: is404 ? 'Organization not found' : 'Server error',
+      backHref, backLabel,
+      goBack: this.goBack,
+      retry: this.retry,
+      retryLabel: s.retrying ? 'Retrying…' : 'Retry request',
+      retryFailed: s.retryFailed,
+      details: is404
+        ? [
+            { k: 'Status', v: '404 Not Found' },
+            { k: 'Endpoint', v: endpoint },
+            { k: 'Failed reference', v: 'organizationId — no matching record' },
+            { k: 'Came from', v: backLabel },
+            { k: 'Reference', v: s.ref || '—' },
+            { k: 'Time', v: s.when || '—' }
+          ]
+        : [
+            { k: 'Status', v: '500 Internal Server Error' },
+            { k: 'Endpoint', v: endpoint },
+            { k: 'Failure', v: 'Unexpected server / database failure' },
+            { k: 'Data written', v: 'None — transaction rolled back' },
+            { k: 'Reference', v: s.ref || '—' },
+            { k: 'Time', v: s.when || '—' }
+          ],
+      qaNote: is404
+        ? 'Test ID pending — the JSON contract labels this API-T009 while the SQL notes and the Excel sheet assign API-T009 elsewhere. Verify the mapping before assigning a Test ID.'
+        : 'Not tested — verification requires a controlled server or database failure to be simulated.'
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-070",
+  "module": "Sample Collection",
+  "functionality": "Invalid Accession Test ID",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Documents the specific error scenario of API-069 (Create Sample Collection) where accessionTestId does not reference an existing accession test. Same endpoint as API-069, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "accessionTestId": "'00000000-0000-0000-0000-000000000000' - not an existing accession_tests row in this scenario" }
+  },
+
+  "required_fields": ["accessionTestId"],
+
+  "validation": ["accessionTestId must reference an existing accession_tests row (NOT NULL FK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-069 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "accessionTestId does not reference an existing accession test",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession test not found" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T129)"
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection", "accession_tests"],
+    "relationships": ["sample_collection.accession_test_id -> accession_tests.id"],
+    "constraints": ["accession_test_id NOT NULL REFERENCES accession_tests(id) ON DELETE CASCADE"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/016_sample_collection.sql (API-T129)"],
+
+  "test_ids": ["API-T129"]
+}

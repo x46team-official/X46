@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-123",
+  "module": "Test Package Management",
+  "functionality": "Duplicate Package Code",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/test-packages",
+  "description": "Documents the specific error scenario of API-120 where the request fails this validation. Same endpoint as API-120, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "packageCode": "'PKG001' - duplicate of an existing package_code in this scenario"
+    }
+  },
+  "required_fields": [
+    "packageCode"
+  ],
+  "validation": [
+    "packageCode must be unique within organization + branch"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "packageCode must be unique within organization + branch",
+      "status_code": 409,
+      "response": {
+        "success": false,
+        "error": "Duplicate package code"
+      },
+      "source": "database/api_contracts_test/023_test_package.sql (API-T182)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "test_package_master"
+    ],
+    "relationships": [],
+    "constraints": [
+      "uq_test_package_code UNIQUE (organization_id, branch_id, package_code)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/023_test_package.sql (API-T182)"
+  ],
+  "test_ids": [
+    "API-T182"
+  ]
+}

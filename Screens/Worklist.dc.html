@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Worklist</div>
+      <sc-for list="{{ queues }}" as="q" hint-placeholder-count="8">
+        <button onClick="{{ q.onPick }}" style="display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 16px 6px 28px; background: {{ q.navBg }}; border: none; border-left: 3px solid {{ q.navEdge }}; font-family: inherit; font-size: 12px; font-weight: {{ q.weight }}; color: {{ q.color }}; cursor: pointer; text-align: left;" style-hover="background: var(--color-gray-50);">
+          <span>{{ q.label }}</span>
+          <span style="font-size: 10px; color: var(--color-text-tertiary); font-variant-numeric: tabular-nums;">{{ q.count }}</span>
+        </button>
+      </sc-for>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="min-width: 240px; max-width: 320px; flex: 1;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Ops / Worklist / {{ queueLabel }}</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">Waiting List</h1>
+          <select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept"><option value="">All Departments</option><option value="Haematology">Haematology</option><option value="Biochemistry">Biochemistry</option><option value="Microbiology">Microbiology</option><option value="Immunoassay">Immunoassay</option></select>
+        </div>
+        <div style="flex: 1;"></div>
+        <div style="display: flex; gap: 8px; align-items: flex-end;">
+          <div style="min-width: 132px;"><label>Latest Updated — From</label><input type="date" value="{{ fromDate }}" onChange="{{ updateField }}" data-field="fromDate" /></div>
+          <div style="min-width: 132px;"><label>To</label><input type="date" value="{{ toDate }}" onChange="{{ updateField }}" data-field="toDate" /></div>
+          <div style="min-width: 150px;"><label>Instrument / Lab</label><select value="{{ instrument }}" onChange="{{ updateField }}" data-field="instrument"><option value="">All</option><option value="Sysmex XN-550">Sysmex XN-550</option><option value="Mindray BS-240">Mindray BS-240</option><option value="Roche Cobas e411">Roche Cobas e411</option><option value="Manual bench">Manual bench</option><option value="Outsource · Metropolis">Outsource · Metropolis</option></select></div>
+          <div style="min-width: 112px;"><label>Priority</label><select value="{{ priority }}" onChange="{{ updateField }}" data-field="priority"><option value="">All</option><option value="Routine">Routine</option><option value="Urgent">Urgent</option><option value="STAT">STAT</option></select></div>
+          <button onClick="{{ clearFilters }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear Filters</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 12px;">
+        <sc-for list="{{ queues }}" as="q" hint-placeholder-count="8">
+          <button onClick="{{ q.onPick }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; background: {{ q.bg }}; border: 1px solid {{ q.edge }}; border-radius: 999px; font-family: inherit; font-size: 12px; font-weight: {{ q.weight }}; color: {{ q.color }}; cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">
+            <span>{{ q.label }}</span>
+            <span style="font-size: 10.5px; color: var(--color-text-tertiary); font-variant-numeric: tabular-nums;">{{ q.count }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; gap: 18px; align-items: center; margin-top: 12px; border-bottom: 1px solid var(--color-border-light);">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <button onClick="{{ t.onPick }}" style="padding: 8px 2px; background: none; border: none; border-bottom: 2px solid {{ t.border }}; color: {{ t.color }}; font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;">{{ t.label }}</button>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px; max-width: 620px; position: relative;">
+          <input type="text" placeholder="Select by Patient Id / Name / Accession Number / National ID / DOB (DDMMYYYY)" value="{{ query }}" onChange="{{ onQuery }}" style="padding-right: 104px;" />
+          <div style="position: absolute; right: 8px; top: 6px; display: flex; align-items: center; gap: 8px; pointer-events: none;">
+            <span class="mono" style="font-size: 10px; color: var(--color-text-tertiary); border: 1px solid var(--color-border-light); border-radius: 3px; padding: 1px 5px;">ctrl+i</span>
+            <span style="font-size: 12px; color: var(--color-text-tertiary);">▮▯▮</span>
+          </div>
+        </div>
+        <button onClick="{{ refresh }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Refresh ⟳</button>
+        <button onClick="{{ submitAll }}" style="padding: 8px 12px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;" style-hover="background: var(--color-primary-bright);">Submit All <span class="num" style="opacity: .85;">{{ pendingTotal }}</span></button>
+      </div>
+    </div>
+
+    <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBorder }};">{{ banner }}</div>
+    </sc-if>
+
+    <div style="flex: 1; overflow: auto; padding: 12px 20px 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">Rows: {{ rowCount }}</div>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <span style="padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; background: #FEE2E2; color: #991B1B;">Incomplete {{ incompleteTotal }}</span>
+          <span style="padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; background: #DCFCE7; color: #166534;">Completed {{ completedTotal }}</span>
+          <span style="padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; background: #DBEAFE; color: #1E40AF;">Signed {{ signedTotal }}</span>
+        </div>
+      </div>
+
+      <sc-if value="{{ isPatientView }}" hint-placeholder-val="{{ true }}">
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto; max-height: calc(100vh - 330px);">
+          <div style="min-width: 1040px;">
+            <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 104px minmax(210px,1.3fr) 128px minmax(150px,1fr) minmax(140px,0.9fr) 84px 84px 84px 96px; gap: 10px; padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+              <div>Patient ID</div>
+              <div>Patient Details</div>
+              <div>Bill ID</div>
+              <div>Referral</div>
+              <div>Organisation</div>
+              <div style="text-align: center;">Incomplete</div>
+              <div style="text-align: center;">Completed</div>
+              <div style="text-align: center;">Signed</div>
+              <div>Actions</div>
+            </div>
+
+            <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">
+                  <span style="font-size: 10px;">▾</span><span>{{ g.title }}</span>
+                </div>
+                <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                  <div style="border-bottom: 1px solid var(--color-border-light); background: {{ r.rowBg }}; box-shadow: inset 3px 0 0 0 {{ r.edge }};">
+                    <div style="display: grid; grid-template-columns: 104px minmax(210px,1.3fr) 128px minmax(150px,1fr) minmax(140px,0.9fr) 84px 84px 84px 96px; gap: 10px; padding: 10px 12px 2px; align-items: start;">
+                      <div class="mono" style="font-size: 12px; color: var(--color-text-secondary);">#{{ r.mrnShort }}</div>
+                      <div style="min-width: 0;">
+                        <div style="font-size: 13px; font-weight: 700;">{{ r.title }}</div>
+                        <div style="font-size: 11px; color: var(--color-text-tertiary); display: flex; align-items: center; gap: 6px;">
+                          <span>{{ r.ageSex }}</span>
+                          <span style="padding: 0 4px; border-radius: 3px; font-size: 9px; font-weight: 700; background: var(--color-primary-deep); color: #fff;">{{ r.flag }}</span>
+                        </div>
+                      </div>
+                      <div class="num" style="font-size: 12px;">{{ r.billId }}</div>
+                      <div style="font-size: 12px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.referral }}</div>
+                      <div style="font-size: 12px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.organisation }}</div>
+                      <div class="num" style="font-size: 12px; text-align: center; font-weight: 700; color: {{ r.incompleteColor }};">{{ r.incomplete }}</div>
+                      <div class="num" style="font-size: 12px; text-align: center;">{{ r.completed }}</div>
+                      <div class="num" style="font-size: 12px; text-align: center;">{{ r.signed }}</div>
+                      <div style="display: flex; gap: 5px;">
+                        <button onClick="{{ r.onOpen }}" style="padding: 4px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Open</button>
+                      </div>
+                    </div>
+                    <div style="padding: 0 12px 10px; font-size: 11.5px; color: var(--color-primary-deep); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.testLine }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+
+            <sc-if value="{{ isEmptyGroups }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 56px 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No patients in this queue</div>
+                <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Adjust filters or receive samples in Accession.</div>
+                <button onClick="{{ clearFilters }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Clear Filters</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTestView }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto; max-height: calc(100vh - 330px);">
+          <div style="min-width: 1016px;">
+            <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 118px minmax(140px,1fr) 96px minmax(160px,1.1fr) 104px 106px 84px 62px 104px 112px minmax(170px,0.8fr); gap: 10px; padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+              <div>Accession No</div><div>Patient</div><div>MRN</div><div>Test</div><div>Sample</div><div>Barcode</div><div>Dept</div><div>Priority</div><div>Received</div><div>Status</div><div>Actions</div>
+            </div>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+              <div style="display: grid; grid-template-columns: 118px minmax(140px,1fr) 96px minmax(160px,1.1fr) 104px 106px 84px 62px 104px 112px minmax(170px,0.8fr); gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center; box-shadow: inset 3px 0 0 0 {{ r.priorityEdge }};" style-hover="background: var(--color-gray-50);">
+                <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.accessionNo }}</div>
+                <div style="min-width: 0;">
+                  <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patientName }}</div>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.ageGender }}</div>
+                </div>
+                <div class="mono" style="font-size: 11px;">{{ r.mrn }}</div>
+                <div style="min-width: 0;">
+                  <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.testName }}</div>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.testCode }} · {{ r.instrument }}</div>
+                </div>
+                <div style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.sampleType }}</div>
+                <div class="mono" style="font-size: 11px;">{{ r.barcode }}</div>
+                <div style="font-size: 11px;">{{ r.deptShort }}</div>
+                <div><span title="{{ r.priorityFull }}" aria-label="{{ r.priorityFull }}" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; padding: 0; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.priorityBg }}; color: {{ r.priorityFg }}; cursor: default;">{{ r.priorityShort }}</span></div>
+                <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.receivedAt }}</div>
+                <div>
+                  <span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.status }}</span>
+                  <div style="font-size: 10px; color: var(--color-text-tertiary); margin-top: 2px;">{{ r.assignedTo }}</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                  <button onClick="{{ r.onOpen }}" style="padding: 5px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Open</button>
+                  <sc-if value="{{ r.canStart }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ r.onStart }}" style="padding: 5px 10px; background: var(--color-primary-deep); border: 1px solid var(--color-primary-deep); border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Start</button>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 56px 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No tests in this view</div>
+                <div style="font-size: 12px; color: var(--color-text-tertiary);">Adjust the filters to see pending work.</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isInstrumentView }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+          <sc-for list="{{ instrumentCards }}" as="i" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 700;">{{ i.name }}</div>
+                  <div style="font-size: 11px; color: var(--color-text-tertiary);">{{ i.dept }}</div>
+                </div>
+                <span style="padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ i.stateBg }}; color: {{ i.stateFg }};">{{ i.state }}</span>
+              </div>
+              <div style="display: flex; gap: 16px; margin-top: 12px;">
+                <div><div class="num" style="font-size: 18px; font-weight: 700;">{{ i.pending }}</div><div style="font-size: 10px; color: var(--color-text-tertiary);">Pending</div></div>
+                <div><div class="num" style="font-size: 18px; font-weight: 700;">{{ i.running }}</div><div style="font-size: 10px; color: var(--color-text-tertiary);">In progress</div></div>
+                <div><div class="num" style="font-size: 18px; font-weight: 700;">{{ i.done }}</div><div style="font-size: 10px; color: var(--color-text-tertiary);">Completed</div></div>
+              </div>
+              <button onClick="{{ i.onPick }}" style="margin-top: 12px; padding: 7px 12px; width: 100%; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">View tests on this instrument</button>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 40; display: flex; justify-content: flex-end;" onClick="{{ closeDetail }}">
+      <div onClick="{{ stop }}" style="width: 520px; background: #fff; height: 100%; box-shadow: -8px 0 24px rgba(17,24,39,.14); display: flex; flex-direction: column;">
+        <div style="padding: 14px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Worklist · test detail</div>
+            <div style="font-size: 15px; font-weight: 700;">{{ dTestName }}</div>
+            <div class="mono" style="font-size: 11px; color: var(--color-text-tertiary);">{{ dAccession }}</div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="padding: 3px 9px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ dStatusBg }}; color: {{ dStatusFg }};">{{ dStatus }}</span>
+            <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 18px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+          </div>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 16px;">
+          <div style="border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Patient Information</div>
+            <div style="padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Patient</div><div style="font-size: 12px; font-weight: 600;">{{ dPatient }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">MRN</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dMrn }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Registration &amp; Billing</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dRegistration }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Age / Gender</div><div style="font-size: 12px; font-weight: 600;">{{ dAgeGender }}</div></div>
+            </div>
+          </div>
+
+          <div style="border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Order Information</div>
+            <div style="padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Accession</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dAccession }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Test</div><div style="font-size: 12px; font-weight: 600;">{{ dTestFull }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Department</div><div style="font-size: 12px; font-weight: 600;">{{ dDept }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Sample Type</div><div style="font-size: 12px; font-weight: 600;">{{ dSampleType }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Barcode</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dBarcode }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Priority</div><div style="font-size: 12px; font-weight: 600;">{{ dPriority }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Received Date / Time</div><div class="num" style="font-size: 12px; font-weight: 600;">{{ dReceivedAt }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Instrument / Performing Lab</div><div style="font-size: 12px; font-weight: 600;">{{ dInstrument }}</div></div>
+            </div>
+          </div>
+
+          <div style="border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Processing Status</div>
+            <div style="padding: 14px 12px;">
+              <div style="display: flex; align-items: flex-start;">
+                <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative;">
+                    <div style="height: 2px; background: {{ st.barBg }}; position: absolute; top: 10px; left: 0; right: 0;"></div>
+                    <div style="width: 22px; height: 22px; border-radius: 999px; border: 2px solid {{ st.ringColor }}; background: {{ st.dotBg }}; color: {{ st.dotFg }}; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">{{ st.mark }}</div>
+                    <div style="font-size: 11px; font-weight: {{ st.weight }}; color: {{ st.labelColor }}; margin-top: 6px;">{{ st.label }}</div>
+                    <div class="num" style="font-size: 10px; color: var(--color-text-tertiary);">{{ st.time }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Assigned To</div><div style="font-size: 12px; font-weight: 600;">{{ dAssignedTo }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Current Status</div><div style="font-size: 12px; font-weight: 600;">{{ dStatus }}</div></div>
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ drawerNote }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 9px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; background: #F0FDF4; color: #166534; border: 1px solid #86EFAC;">{{ drawerNote }}</div>
+          </sc-if>
+        </div>
+
+        <div style="padding: 12px 18px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;">
+          <button onClick="{{ closeDetail }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+          <button onClick="{{ drawerHold }}" style="padding: 8px 14px; background: #fff; border: 1px solid #FCD34D; border-radius: 4px; font-size: 12px; font-weight: 600; color: #92400E; cursor: pointer;" style-hover="background: #FFFBEB;">Hold</button>
+          <button onClick="{{ drawerStart }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-size: 12px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;" style-hover="background: var(--color-interactive-hover);">Start Processing</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+/* Worklist — contract mapping
+   API-056 GET   …/accessions/search                                  → waiting list (query / priority / date filters)
+   API-047 GET   …/accessions/{accessionId}/tests                     → tests per accession
+   API-130 GET   …/worklists                                          → worklist cards + worklist filter
+   API-079 PATCH …/accession-tests/{accessionTestId}/worklist         → assign pending tests to a worklist
+   API-048 PATCH …/accessions/{a}/tests/{t}/sample-status             → start processing
+   Sample type, department and instrument have no field in these contracts, so
+   they render as \u2014 rather than being invented. The sample-status CHECK
+   constraint has no "hold" value, so Hold reports that instead of sending one. */
+
+const FLOW = ['Received', 'Processing', 'Result Pending', 'Completed'];
+const STAGE_OF = { Pending: 0, 'In Progress': 1, 'On Hold': 1, 'Result Pending': 2, Completed: 3 };
+const PRIORITY_LABEL = { ROUTINE: 'Routine', URGENT: 'Urgent', STAT: 'STAT' };
+const WHEN = (iso) => {
+  const d = new Date(iso);
+  return isNaN(d) ? '\u2014' : d.toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+};
+
+class Component extends DCLogic {
+  state = {
+    ready: false, loading: true, loadError: '',
+    rows: [], worklists: [],
+    query: '', fromDate: '2026-08-26', toDate: '2026-08-28',
+    dept: '', priority: '', instrument: '',
+    queue: 'all', tab: 'Patients Waiting List',
+    detail: null, drawerNote: '', banner: '', bannerKind: 'info'
+  };
+
+  QUEUES = [
+    ['all', 'All Tests'], ['incomplete', 'Incomplete'], ['progress', 'In Progress'],
+    ['resultPending', 'Result Pending'], ['completed', 'Completed'], ['hold', 'On Hold'],
+    ['emergency', 'Emergency Reports'], ['outsourced', 'Outsourced']
+  ];
+  // accepts the canonical key or its kebab-case form (#queue=result-pending)
+  queueFromHash = () => {
+    const m = /queue=([A-Za-z-]+)/.exec(window.location.hash || '');
+    if (!m) return null;
+    const raw = m[1].toLowerCase();
+    const hit = this.QUEUES.find(([k]) => k.toLowerCase() === raw || k.replace(/([A-Z])/g, '-$1').toLowerCase() === raw);
+    return hit ? hit[0] : (raw === 'on-hold' ? 'hold' : null);
+  };
+  componentDidMount() {
+    const k = this.queueFromHash();
+    if (k) this.setState({ queue: k });
+    this._onHash = () => { const v = this.queueFromHash(); if (v) this.setState({ queue: v, detail: null }); };
+    window.addEventListener('hashchange', this._onHash);
+    this.waitForApi();
+  }
+  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('hashchange', this._onHash); }
+
+  waitForApi = () => {
+    if (typeof LIMS === 'undefined') { this._t = setTimeout(this.waitForApi, 60); return; }
+    this.setState({ ready: true });
+    this.loadWorklists();
+    this.load();
+  };
+
+  errText = (err, fallback) => (err && err.message ? (err.status ? err.status + ' \u2014 ' : '') + err.message : fallback);
+
+  /* ------------------------------------------------------------- API-130 */
+  loadWorklists = async () => {
+    try {
+      const res = await LIMS.request('listWorklists', {
+        contract: 'API-130',
+        resolve: () => ({
+          status: 200,
+          data: LIMS.WORKLISTS
+            .filter((w) => w.organizationId === LIMS.session.organizationId && w.branchId === LIMS.session.branchId)
+            .map((w) => Object.assign({}, w))
+        })
+      });
+      this.setState({ worklists: res.data });
+    } catch (err) {
+      this.setState({ worklists: [] });
+    }
+  };
+
+  statusOf = (at) => {
+    if (at.sampleStatus === 'COMPLETED') return 'Completed';
+    if (at.sampleStatus === 'REJECTED') return 'On Hold';
+    const hasResult = LIMS.RESULT_ENTRIES.some((e) => e.accessionTestId === at.id);
+    if (hasResult) return 'Result Pending';
+    if (at.sampleStatus === 'PROCESSING') return 'In Progress';
+    return 'Pending';
+  };
+
+  /* --------------------------------------------------- API-056 + API-047 */
+  load = async () => {
+    const s = this.state;
+    this.setState({ loading: true, loadError: '' });
+    try {
+      const found = await LIMS.request('searchAccessions', {
+        contract: 'API-056',
+        query: { query: String(s.query).trim(), priority: s.priority ? s.priority.toUpperCase() : '', fromDate: s.fromDate, toDate: s.toDate },
+        resolve: () => {
+          const q = String(s.query).trim().toLowerCase();
+          const rows = LIMS.ACCESSIONS.filter((a) => {
+            if (a.organizationId !== LIMS.session.organizationId || a.branchId !== LIMS.session.branchId) return false;
+            const day = String(a.accessionDate).slice(0, 10);
+            if (day < s.fromDate || day > s.toDate) return false;
+            if (s.priority && a.priority !== s.priority.toUpperCase()) return false;
+            if (!q) return true;
+            const p = LIMS.patientById(a.patientId);
+            const hay = [a.accessionNumber, p ? p.mrn : '', p ? p.firstName + ' ' + p.lastName : ''].join(' ').toLowerCase();
+            return hay.indexOf(q) > -1;
+          }).map((a) => Object.assign({}, a));
+          return { status: 200, message: 'Accessions fetched successfully', data: rows };
+        }
+      });
+
+      const rows = [];
+      for (const acc of found.data) {
+        const res = await LIMS.request('listAccessionTests', {
+          contract: 'API-047',
+          params: { accessionId: acc.id },
+          resolve: () => {
+            if (!LIMS.accessionById(acc.id)) return { status: 404, error: 'Accession not found' };
+            return { status: 200, data: LIMS.accessionTestsFor(acc.id).map((x) => Object.assign({}, x)) };
+          }
+        });
+        const patient = LIMS.patientById(acc.patientId);
+        const bill = LIMS.BILLS.filter((b) => b.patientRegistrationId === acc.patientRegistrationId)[0];
+        res.data.forEach((at) => {
+          const test = LIMS.testById(at.testId);
+          const wl = at.worklistId ? LIMS.worklistById(at.worklistId) : null;
+          const user = at.assignedUserId ? LIMS.USERS.filter((u) => u.id === at.assignedUserId)[0] : null;
+          rows.push({
+            id: at.id,
+            accessionId: acc.id,
+            accessionNo: acc.accessionNumber,
+            billId: bill ? bill.billNumber : '\u2014',
+            registrationNumber: acc.patientRegistrationId,
+            patientName: patient ? patient.firstName + ' ' + patient.lastName : '\u2014',
+            title: patient ? patient.title + '.' : '',
+            mrn: patient ? patient.mrn : '\u2014',
+            sex: patient && patient.gender === 'FEMALE' ? 'F' : 'M',
+            age: patient ? patient.ageY : '\u2014',
+            testName: test ? test.testName : '\u2014',
+            testCode: test ? test.testCode : '\u2014',
+            sampleType: '\u2014',
+            dept: '\u2014',
+            barcode: at.barcode || '\u2014',
+            priority: PRIORITY_LABEL[acc.priority] || acc.priority,
+            receivedAt: WHEN(acc.accessionDate),
+            status: this.statusOf(at),
+            sampleStatus: at.sampleStatus,
+            assignedTo: user ? user.username : 'Unassigned',
+            instrument: wl ? wl.worklistNumber : 'Unassigned',
+            worklistId: at.worklistId || null,
+            referral: patient ? patient.referringDoctor : '\u2014',
+            organisation: LIMS.orgLabel(acc.organizationId).split(' (')[0],
+            emergency: acc.priority !== 'ROUTINE'
+          });
+        });
+      }
+      this.setState({ loading: false, rows });
+    } catch (err) {
+      const msg = this.errText(err, 'Unable to load the worklist.');
+      this.setState({ loading: false, rows: [], loadError: msg, banner: msg, bannerKind: 'error' });
+    }
+  };
+
+  onQuery = (e) => this.setState({ query: e.target.value });
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    this.setState({ [f]: e.target.value }, () => {
+      if (f === 'priority' || f === 'fromDate' || f === 'toDate') this.load();
+    });
+  };
+  clearFilters = () => this.setState({ query: '', dept: '', priority: '', instrument: '', queue: 'all' }, this.load);
+  setQueue = (k) => () => {
+    if (window.history && window.history.replaceState) window.history.replaceState(null, '', '#queue=' + k);
+    this.setState({ queue: k, detail: null });
+  };
+  setTab = (t) => () => this.setState({ tab: t, detail: null });
+  stop = (e) => e.stopPropagation();
+  refresh = () => { this.setState({ banner: 'Waiting list refreshed.', bannerKind: 'info' }); this.load(); };
+
+  /* ------------------------------------------------------------- API-079 */
+  submitAll = async () => {
+    const pending = this.state.rows.filter((r) => r.status === 'Pending' && !r.worklistId);
+    const worklist = this.state.worklists.filter((w) => w.status === 'OPEN')[0] || this.state.worklists[0];
+    if (!pending.length) { this.setState({ banner: 'No pending test is waiting for a worklist.', bannerKind: 'info' }); return; }
+    if (!worklist) { this.setState({ banner: 'No worklist is available to assign these tests to.', bannerKind: 'error' }); return; }
+    let ok = 0; let lastError = '';
+    for (const row of pending) {
+      try {
+        await LIMS.request('assignToWorklist', {
+          contract: 'API-079',
+          params: { accessionTestId: row.id },
+          body: { worklistId: worklist.id },
+          resolve: () => {
+            const at = LIMS.accessionTestById(row.id);
+            if (!at) return { status: 404, error: 'Accession test not found' };
+            if (!LIMS.worklistById(worklist.id)) return { status: 404, error: 'Worklist not found' };
+            if (at.worklistId) return { status: 409, error: 'Test is already assigned to a worklist' };
+            at.worklistId = worklist.id;
+            return { status: 200, message: 'Test assigned to worklist successfully', data: { id: at.id, worklistId: worklist.id } };
+          }
+        });
+        ok++;
+      } catch (err) { lastError = this.errText(err, 'Worklist assignment failed.'); }
+    }
+    this.setState({
+      banner: lastError ? lastError : ok + ' test(s) assigned to ' + worklist.worklistNumber + '.',
+      bannerKind: lastError ? 'error' : 'success'
+    });
+    await this.load();
+  };
+
+  /* ------------------------------------------------------------- API-048 */
+  startProcessing = async (row) => {
+    try {
+      await LIMS.request('sampleStatus', {
+        contract: 'API-048',
+        params: { accessionId: row.accessionId, accessionTestId: row.id },
+        body: { sampleStatus: 'PROCESSING' },
+        resolve: () => {
+          const at = LIMS.accessionTestById(row.id);
+          if (!at) return { status: 404, error: 'Accession test not found' };
+          if (at.sampleStatus === 'COMPLETED') return { status: 409, error: 'Sample is already completed' };
+          at.sampleStatus = 'PROCESSING';
+          return { status: 200, message: 'Sample status updated successfully', data: { id: at.id, sampleStatus: 'PROCESSING' } };
+        }
+      });
+      this.setState({ banner: 'Processing started for ' + row.accessionNo + ' \u00b7 ' + row.testCode + '.', bannerKind: 'success' });
+      await this.load();
+      return true;
+    } catch (err) {
+      this.setState({ banner: this.errText(err, 'Unable to start processing.'), bannerKind: 'error' });
+      return false;
+    }
+  };
+
+  start = (id) => () => {
+    const row = this.state.rows.filter((r) => r.id === id)[0];
+    if (row) this.startProcessing(row);
+  };
+  openDetail = (id) => () => this.setState({ detail: id, drawerNote: '' });
+  closeDetail = () => this.setState({ detail: null, drawerNote: '' });
+
+  drawerStart = async () => {
+    const row = this.state.rows.filter((r) => r.id === this.state.detail)[0];
+    if (!row) return;
+    const ok = await this.startProcessing(row);
+    if (ok) this.setState({ drawerNote: 'Sample status is PROCESSING (API-048). Enter results when the run completes.' });
+  };
+
+  drawerHold = () => this.setState({
+    banner: 'No hold value exists in the sample-status contract (PENDING, COLLECTED, RECEIVED, PROCESSING, COMPLETED, REJECTED, IN_TRANSIT, RECOLLECTION_REQUESTED) \u2014 nothing was sent.',
+    bannerKind: 'error',
+    drawerNote: 'Hold is not mapped: API-048 has no hold status. Use Result Validation to reject, or add the status to the contract first.'
+  });
+
+  pickInstrument = (name) => () => this.setState({ instrument: name, tab: 'Test-wise Waiting List' });
+
+  inQueue(r, q) {
+    if (q === 'incomplete') return r.status === 'Pending' || r.status === 'In Progress';
+    if (q === 'progress') return r.status === 'In Progress';
+    if (q === 'resultPending') return r.status === 'Result Pending';
+    if (q === 'completed') return r.status === 'Completed';
+    if (q === 'hold') return r.status === 'On Hold';
+    if (q === 'emergency') return r.emergency;
+    if (q === 'outsourced') return false;
+    return true;
+  }
+
+  visible(s) {
+    const q = s.query.trim().toLowerCase();
+    return s.rows.filter(r =>
+      this.inQueue(r, s.queue) &&
+      (!s.priority || r.priority === s.priority) &&
+      (!s.instrument || r.instrument === s.instrument) &&
+      (!q || [r.patientName, r.mrn, r.accessionNo, r.barcode, r.testName, r.testCode, r.billId].join(' ').toLowerCase().includes(q))
+    );
+  }
+
+  renderVals() {
+    const s = this.state;
+    if (!s.ready) return {};
+    const tone = { error: ['#FEF2F2', '#991B1B', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] }[s.bannerKind];
+    const prio = { Routine: ['#F3F4F6', '#374151', 'transparent'], Urgent: ['#FEF3C7', '#92400E', 'var(--color-warning)'], STAT: ['#FEE2E2', '#991B1B', 'var(--color-error)'] };
+    const stat = {
+      Pending: ['#F3F4F6', '#4B5563'], 'In Progress': ['#DBEAFE', '#1E40AF'],
+      'Result Pending': ['#EDE9FE', '#5B21B6'], Completed: ['#DCFCE7', '#166534'], 'On Hold': ['#FEF3C7', '#92400E']
+    };
+
+    const vis = this.visible(s);
+
+    const rows = vis.map(r => {
+      const p = prio[r.priority] || prio.Routine, t = stat[r.status];
+      return {
+        ...r,
+        ageGender: r.age + ' y \u00b7 ' + (r.sex === 'M' ? 'Male' : 'Female'),
+        deptShort: r.dept,
+        priorityBg: p[0], priorityFg: p[1], priorityEdge: p[2],
+        priorityShort: { Routine: 'N', Urgent: 'U', STAT: 'S' }[r.priority] || String(r.priority).slice(0, 1),
+        priorityFull: r.priority === 'Routine' ? 'Normal' : r.priority,
+        statusBg: t[0], statusFg: t[1],
+        canStart: r.status === 'Pending' || r.status === 'On Hold',
+        onOpen: this.openDetail(r.id),
+        onStart: this.start(r.id)
+      };
+    });
+
+    const byPatient = {};
+    vis.forEach(r => {
+      const k = r.mrn + '|' + r.billId;
+      if (!byPatient[k]) byPatient[k] = { key: k, ref: r, tests: [] };
+      byPatient[k].tests.push(r);
+    });
+    const buildRow = (g) => {
+      const r = g.ref;
+      const incomplete = g.tests.filter(t => t.status === 'Pending' || t.status === 'In Progress' || t.status === 'On Hold').length;
+      const completed = g.tests.filter(t => t.status === 'Completed').length;
+      const allDone = incomplete === 0;
+      return {
+        mrnShort: String(r.mrn).replace('MRN-', ''),
+        title: (r.title ? r.title + ' ' : '') + String(r.patientName).toUpperCase(),
+        ageSex: r.age + ' years /- ' + r.sex,
+        flag: r.emergency ? 'E' : 'R',
+        billId: g.tests.map(t => t.billId).filter((v, i, a) => a.indexOf(v) === i).join(', '),
+        referral: r.referral,
+        organisation: r.organisation,
+        incomplete, completed, signed: completed,
+        incompleteColor: incomplete ? 'var(--color-error)' : 'var(--color-text-tertiary)',
+        rowBg: r.emergency ? '#FEF2F2' : (allDone ? '#F0FDF4' : '#fff'),
+        edge: r.emergency ? 'var(--color-error)' : (allDone ? 'var(--color-success)' : 'transparent'),
+        testLine: g.tests.map(t => t.testName + ' (' + t.testCode + ')').join(', '),
+        onOpen: this.openDetail(r.id)
+      };
+    };
+    const groupList = Object.values(byPatient);
+    const emergencyRows = groupList.filter(g => g.ref.emergency).map(buildRow);
+    const routineRows = groupList.filter(g => !g.ref.emergency).map(buildRow);
+    const groups = [];
+    if (emergencyRows.length) groups.push({ title: 'Emergency Report (' + emergencyRows.length + ')', rows: emergencyRows });
+    if (routineRows.length) groups.push({ title: 'Routine Reports (' + routineRows.length + ')', rows: routineRows });
+
+    const QUEUES = this.QUEUES;
+    const queues = QUEUES.map(([k, label]) => {
+      const on = s.queue === k;
+      return {
+        label, onPick: this.setQueue(k),
+        count: s.rows.filter(r => this.inQueue(r, k)).length,
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        edge: on ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+        navBg: on ? 'var(--color-interactive-hover)' : 'transparent',
+        navEdge: on ? 'var(--color-primary-bright)' : 'transparent',
+        color: on ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)',
+        weight: on ? 700 : 500
+      };
+    });
+    const activeQueue = QUEUES.filter(x => x[0] === s.queue)[0] || QUEUES[0];
+
+    const tabs = ['Patients Waiting List', 'Test-wise Waiting List', 'Instrument-wise Waiting List'].map(label => ({
+      label, onPick: this.setTab(label),
+      border: s.tab === label ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.tab === label ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    /* Worklists stand in for the instrument cards: instruments have no contract,
+       worklists (API-130) are what tests are actually assigned to. */
+    const stateTone = { OPEN: ['#DCFCE7', '#166534'], IN_PROGRESS: ['#DBEAFE', '#1E40AF'], CLOSED: ['#F3F4F6', '#4B5563'] };
+    const instrumentCards = s.worklists.map((w) => {
+      const mine = s.rows.filter(r => r.worklistId === w.id);
+      const tn = stateTone[w.status] || stateTone.CLOSED;
+      return {
+        name: w.worklistNumber, dept: w.departmentName, state: w.status.replace('_', ' '),
+        stateBg: tn[0], stateFg: tn[1],
+        pending: mine.filter(r => r.status === 'Pending').length,
+        running: mine.filter(r => r.status === 'In Progress').length,
+        done: mine.filter(r => r.status === 'Completed').length,
+        onPick: this.pickInstrument(w.worklistNumber)
+      };
+    });
+
+    const d = s.detail ? s.rows.filter(r => r.id === s.detail)[0] : null;
+    const dTone = d ? stat[d.status] : ['#F3F4F6', '#4B5563'];
+    const stage = d ? STAGE_OF[d.status] : 0;
+    const steps = FLOW.map((label, i) => {
+      const done = i < stage, current = i === stage;
+      return {
+        label, mark: done ? '\u2713' : String(i + 1),
+        dotBg: done ? 'var(--color-primary-deep)' : (current ? '#fff' : 'var(--color-gray-50)'),
+        dotFg: done ? '#fff' : (current ? 'var(--color-primary-deep)' : 'var(--color-text-tertiary)'),
+        ringColor: (done || current) ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+        barBg: i <= stage ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+        labelColor: (done || current) ? 'var(--color-text-primary)' : 'var(--color-text-tertiary)',
+        weight: current ? 700 : 500,
+        time: d && i === 0 ? d.receivedAt : ''
+      };
+    });
+
+    return {
+      ...s,
+      rows, groups, queues, tabs, instrumentCards,
+      queueLabel: activeQueue[1],
+      isPatientView: s.tab === 'Patients Waiting List',
+      isTestView: s.tab === 'Test-wise Waiting List',
+      isInstrumentView: s.tab === 'Instrument-wise Waiting List',
+      rowCount: s.tab === 'Patients Waiting List' ? groupList.length : rows.length,
+      isEmpty: !s.loading && rows.length === 0,
+      isEmptyGroups: !s.loading && groups.length === 0,
+      pendingTotal: s.rows.filter(r => r.status === 'Pending').length,
+      incompleteTotal: s.rows.filter(r => r.status === 'Pending' || r.status === 'In Progress' || r.status === 'On Hold').length,
+      completedTotal: s.rows.filter(r => r.status === 'Completed').length,
+      signedTotal: s.rows.filter(r => r.status === 'Completed').length,
+      detail: !!d,
+      dTestName: d ? d.testName : '',
+      dTestFull: d ? d.testName + ' (' + d.testCode + ')' : '',
+      dAccession: d ? d.accessionNo : '',
+      dPatient: d ? d.patientName : '',
+      dMrn: d ? d.mrn : '',
+      dRegistration: d ? d.registrationNumber : '',
+      dAgeGender: d ? d.age + ' years \u00b7 ' + (d.sex === 'M' ? 'Male' : 'Female') : '',
+      dDept: d ? d.dept : '',
+      dSampleType: d ? d.sampleType : '',
+      dBarcode: d ? d.barcode : '',
+      dPriority: d ? d.priority : '',
+      dReceivedAt: d ? d.receivedAt : '',
+      dInstrument: d ? d.instrument : '',
+      dAssignedTo: d ? d.assignedTo : '',
+      dStatus: d ? d.status : '',
+      dStatusBg: dTone[0], dStatusFg: dTone[1],
+      steps,
+      bannerBg: tone[0], bannerFg: tone[1], bannerBorder: tone[2],
+      onQuery: this.onQuery, updateField: this.updateField, clearFilters: this.clearFilters,
+      refresh: this.refresh, submitAll: this.submitAll,
+      closeDetail: this.closeDetail, stop: this.stop,
+      drawerStart: this.drawerStart, drawerHold: this.drawerHold
+    };
+  }
+}
+</script>
+</body>
+</html>

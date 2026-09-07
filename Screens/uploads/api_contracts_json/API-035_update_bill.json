@@ -1,0 +1,72 @@
+{
+  "functionality_id": "API-035",
+  "module": "Billing",
+  "functionality": "Update Bill",
+  "http_method": "PUT",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing/{billingId}",
+  "description": "Updates an existing bill's amount fields and remarks.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "billingId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "discountAmount": "numeric(10,2), optional",
+      "concessionAmount": "numeric(10,2), optional",
+      "additionalAmount": "numeric(10,2), optional",
+      "payableAmount": "numeric(10,2), optional",
+      "balanceAmount": "numeric(10,2), optional",
+      "remarks": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "billingId"],
+
+  "validation": [
+    "bill must exist and belong to organization + branch",
+    "amount fields, if provided, must be numeric"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Bill updated successfully",
+      "data": {
+        "id": "uuid",
+        "billNumber": "BILL0001",
+        "totalAmount": 350,
+        "discountAmount": 50,
+        "payableAmount": 300,
+        "balanceAmount": 300,
+        "remarks": "Updated bill"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "Invalid/non-numeric amount field",
+      "status_code": 400,
+      "response": { "success": false, "error": "Validation error" }
+    },
+    {
+      "condition": "bill not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Bill not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql (API-T093)"],
+
+  "test_ids": ["API-T093"],
+  "notes": "As with Create Bill, no CHECK constraint enforces payableAmount/balanceAmount arithmetic consistency with totalAmount/discountAmount/concessionAmount - the database will accept any combination of values."
+}

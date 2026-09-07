@@ -1,0 +1,64 @@
+{
+  "functionality_id": "API-058",
+  "module": "Payment",
+  "functionality": "View Payment",
+  "http_method": "GET",
+  "endpoint": "/api/payments/{paymentId}",
+  "description": "Retrieves a single payment record.",
+
+  "request": {
+    "path_parameters": { "paymentId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["paymentId"],
+
+  "validation": ["paymentId must reference an existing payment"],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Payment fetched successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "accessionId": "uuid",
+        "billingMasterId": "uuid",
+        "patientRegistrationId": "uuid",
+        "paymentMode": "CASH",
+        "amountPaid": 350,
+        "transactionReference": "TXN0001",
+        "paymentStatus": "SUCCESS",
+        "paymentDate": "timestamp with time zone",
+        "remarks": null
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "paymentId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Payment not found" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T125)",
+      "related_functionality_id": "API-066"
+    }
+  ],
+
+  "database": {
+    "tables": ["payment"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T117)"],
+
+  "test_ids": ["API-T117"],
+  "notes": "This endpoint is not org/branch path-scoped (/api/payments/{paymentId} rather than /api/organizations/{organizationId}/branches/{branchId}/payments/{paymentId}) - organization/branch isolation must be enforced by checking the caller's session/tenant context against payment.organization_id and payment.branch_id server-side. See API-067 for the tenant-isolation error scenario."
+}

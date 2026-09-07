@@ -1,0 +1,77 @@
+{
+  "functionality_id": "API-047",
+  "module": "Accession",
+  "functionality": "List Accession Tests",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/{accessionId}/tests",
+  "description": "Returns all test line items (accession_tests) for an accession, ordered by creation time.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "accessionId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "accessionId"],
+
+  "validation": ["accession must exist and belong to organization + branch"],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Accession tests fetched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "accessionId": "uuid",
+          "billingTestId": "uuid",
+          "testId": "uuid",
+          "testCode": "CBC001",
+          "testName": "Complete Blood Count",
+          "sampleTypeId": "uuid",
+          "performingLabId": "uuid",
+          "barcode": "string",
+          "barcodeStatus": "GENERATED",
+          "sampleStatus": "PENDING",
+          "collectionStatus": "NOT_COLLECTED",
+          "authorizationStatus": "PENDING",
+          "reportStatus": "PENDING",
+          "remarks": null
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "accession not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Accession not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_tests", "test_master"],
+    "relationships": [
+      "accession_tests.accession_id -> accession_master.id",
+      "accession_tests.test_id -> test_master.id",
+      "accession_tests.billing_test_id -> billing_tests.id"
+    ],
+    "constraints": [
+      "barcode_status CHECK IN (GENERATED, PRINTED, REPRINTED, CANCELLED)",
+      "sample_status CHECK IN (PENDING, COLLECTED, RECEIVED, PROCESSING, COMPLETED, REJECTED)",
+      "collection_status CHECK IN (NOT_COLLECTED, COLLECTED, PARTIALLY_COLLECTED)",
+      "authorization_status CHECK IN (PENDING, AUTHORIZED, REJECTED)",
+      "report_status CHECK IN (PENDING, READY, RELEASED)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql (List Accession Tests)"],
+
+  "test_ids": ["API-T105"],
+  "notes": "As of database/schema/032_sample_status_master.sql, accession_tests.sample_status is enforced by an FK to sample_status_master (organization_id, branch_id, sample_status_code) rather than the original hardcoded CHECK - the master table's currently seeded values are PENDING, COLLECTED, RECEIVED, PROCESSING, COMPLETED, REJECTED, IN_TRANSIT, RECOLLECTION_REQUESTED (a superset of the original CHECK list). collection_status, authorization_status, and report_status remain plain CHECK constraints, not master-table driven."
+}

@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="fit-screen.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --nav-bg: #16202b; --nav-bg-hover: #1f2c3a; --nav-text: #c7d1dc;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --line-soft: #eaedf1; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --green: #1f8a4c; --green-soft: #e9f6ee; --grey-pill: #eef0f3;
+      --radius: 3px; --sidebar: 244px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+    input:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+    tbody tr:hover { background: #f7f9fc; }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh; background: var(--page-bg);">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Performing Labs</div>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="padding: 16px 20px 0;">
+      <div style="max-width: 1200px;">
+
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 12px;">
+          <h1 style="margin: 0; font-size: 16px; font-weight: 700;">Lab Master</h1>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button id="addPkgBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">+ Add Package</button>
+            <button id="addRangeBtn" style="display: none; padding: 6px 14px; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Add Reference Range</button>
+            <button id="addParamBtn" style="display: none; padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create Parameter</button>
+            <button id="extractBtn" style="display: none; padding: 6px 14px; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Extract from Existing Branch</button>
+            <button id="createBtn" style="display: none; padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create Test</button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 14px;">
+          <button type="button" id="tabTests" style="display: none; padding: 8px 14px; background: none; border: none; border-bottom: 2px solid var(--blue); font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--blue); cursor: pointer;">Tests</button>
+          <button type="button" id="tabPackages" style="padding: 8px 14px; background: none; border: none; border-bottom: 2px solid var(--blue); font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--blue); cursor: pointer;">Packages</button>
+          <button type="button" id="tabParams" style="padding: 8px 14px; background: none; border: none; border-bottom: 2px solid transparent; font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--text-2); cursor: pointer;">Parameters &amp; Ranges</button>
+          <a href="Test List.dc.html" style="margin-left: auto; align-self: center; font-size: 12px; font-weight: 600;">Tests are managed in Test List →</a>
+        </div>
+
+        <div id="testsPane" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 10px;">
+            <input type="text" id="searchInput" placeholder="Search tests or panels" style="flex: 1; min-width: 0; border: none; padding: 7px 0; font-size: 12.5px; background: transparent; font-family: inherit; color: var(--text); outline: none;" />
+            <span style="color: var(--text-3); font-size: 13px;">⌕</span>
+          </div>
+          <select id="filterDept" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+            <option value="">All Departments</option>
+            <option value="BIO">Biochemistry</option>
+            <option value="HAEM">Haematology</option>
+            <option value="MICRO">Microbiology</option>
+          </select>
+          <select id="filterType" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+            <option value="">All Types</option>
+            <option value="TEST">Test</option>
+            <option value="PANEL">Panel</option>
+          </select>
+        </div>
+
+        <div id="searchError" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--red); background: var(--red-soft); color: var(--red); margin-bottom: 12px; font-weight: 600;"></div>
+
+        <div id="pageToast" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 12px; font-weight: 600;"></div>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+          <div style="padding: 8px 16px; font-size: 12px; font-weight: 700;">Rows: <span id="resultCount">4</span></div>
+
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 12.5px;">
+              <thead>
+                <tr style="background: var(--head-bg);">
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); width: 120px;">Code</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 150px;">Name</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 100px;">Type</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 110px;">Department</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 80px;">Status</th>
+                  <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 210px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr class="data-row" data-search="fbs fasting blood sugar" data-price="120" data-dept="BIO" data-type="TEST" style="border-bottom: 1px solid var(--line-soft);">
+                  <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">FBS</td>
+                  <td style="padding: 9px 16px; font-weight: 600;">Fasting Blood Sugar</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Test</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Biochemistry</td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                  <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                    <button type="button" class="status-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Status</button>
+                    <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Edit</button>
+                    <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                  </div></td>
+                </tr>
+                <tr class="data-row" data-search="lipid profile cholesterol" data-price="700" data-dept="BIO" data-type="PANEL" style="border-bottom: 1px solid var(--line-soft);">
+                  <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">LIP</td>
+                  <td style="padding: 9px 16px; font-weight: 600;">Lipid Profile</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Panel</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Biochemistry</td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                  <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                    <button type="button" class="status-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Status</button>
+                    <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Edit</button>
+                    <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                  </div></td>
+                </tr>
+                <tr class="data-row" data-search="cbc complete blood count" data-price="350" data-dept="HAEM" data-type="TEST" style="border-bottom: 1px solid var(--line-soft);">
+                  <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">CBC</td>
+                  <td style="padding: 9px 16px; font-weight: 600;">Complete Blood Count</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Test</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Haematology</td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                  <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                    <button type="button" class="status-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Status</button>
+                    <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Edit</button>
+                    <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                  </div></td>
+                </tr>
+                <tr class="data-row" data-search="culture sensitivity microbiology" data-price="750" data-dept="MICRO" data-type="TEST" style="border-bottom: 1px solid var(--line-soft);">
+                  <td style="padding: 9px 16px; font-family: ui-monospace, monospace; font-weight: 600;">CULT</td>
+                  <td style="padding: 9px 16px; font-weight: 600;">Culture &amp; Sensitivity</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Test</td>
+                  <td style="padding: 9px 16px; color: var(--text-2);">Microbiology</td>
+                  <td style="padding: 9px 16px;"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: var(--green-soft); color: var(--green); border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Active</span></td>
+                  <td style="padding: 9px 16px;"><div style="display: flex; gap: 6px;">
+                    <button type="button" class="status-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Status</button>
+                    <button type="button" class="edit-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); color: var(--text);">Edit</button>
+                    <button type="button" class="delete-btn" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--red-soft); border-color: var(--red);">Delete</button>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="emptyState" style="display: none; padding: 40px 16px; text-align: center;">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No tests found</div>
+            <div style="font-size: 12.5px; color: var(--text-2);">Try a different search or filter.</div>
+          </div>
+        </div>
+
+        </div>
+
+        <div id="packagesPane">
+          <div style="display: grid; grid-template-columns: 1fr 200px 160px auto auto; gap: 10px; margin-bottom: 14px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 10px;">
+              <input type="text" id="pkgSearchInput" placeholder="Search package code or package name" style="flex: 1; min-width: 0; border: none; padding: 7px 0; font-size: 12.5px; background: transparent; font-family: inherit; color: var(--text); outline: none;" />
+              <span style="color: var(--text-3); font-size: 13px;">⌕</span>
+            </div>
+            <select id="pkgFilterCat" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+              <option value="">All Categories</option>
+              <option value="Health Checkup">Health Checkup</option>
+              <option value="Chronic Care">Chronic Care</option>
+              <option value="Screening">Screening</option>
+              <option value="Corporate">Corporate</option>
+            </select>
+            <select id="pkgFilterStatus" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+              <option value="">All Status</option>
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+            </select>
+            <button type="button" id="pkgSearchBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Search</button>
+            <button type="button" id="pkgClearBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Clear</button>
+          </div>
+
+          <div id="pkgToast" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 12px; font-weight: 600;"></div>
+
+          <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+            <div style="padding: 8px 16px; font-size: 12px; font-weight: 700;">Packages: <span id="pkgCount">0</span></div>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; min-width: 1020px; border-collapse: collapse; font-size: 12.5px;">
+                <thead>
+                  <tr style="background: var(--head-bg);">
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); width: 104px;">Package Code</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft);">Package Name</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 128px;">Category</th>
+                    <th style="padding: 8px 16px; text-align: right; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 92px;">No. of Tests</th>
+                    <th style="padding: 8px 16px; text-align: right; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 108px;">Package Price</th>
+                    <th style="padding: 8px 16px; text-align: right; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 128px;">Individual Price</th>
+                    <th style="padding: 8px 16px; text-align: right; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 92px;">Savings</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 88px;">Status</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 190px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="pkgBody"></tbody>
+              </table>
+            </div>
+            <div id="pkgEmptyState" style="display: none; padding: 40px 16px; text-align: center;">
+              <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No packages found</div>
+              <div style="font-size: 12.5px; color: var(--text-2);">Try a different search or filter, or add a package.</div>
+            </div>
+          </div>
+          <div style="margin-top: 10px; font-size: 11.5px; color: var(--text-3);">Inactive packages are not offered during registration, order or billing. Package code and package name must be unique within this organization and branch.</div>
+        </div>
+
+        <div id="paramsPane" style="display: none;">
+          <div id="paramToast" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 12px; font-weight: 600;"></div>
+
+          <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 14px;">
+            <div style="padding: 8px 16px; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 700;">Reference Range Lookup</div>
+            <div style="padding: 14px 16px;">
+              <div style="display: grid; grid-template-columns: 150px 120px 90px 110px 130px 1fr auto; gap: 10px; align-items: end;">
+                <div>
+                  <label for="lkParam" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Parameter Code <span style="color: var(--red);">*</span></label>
+                  <input type="text" id="lkParam" placeholder="HGB" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+                </div>
+                <div>
+                  <label for="lkGender" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Gender <span style="color: var(--red);">*</span></label>
+                  <select id="lkGender" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="ANY">Any</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="lkAge" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Age <span style="color: var(--red);">*</span></label>
+                  <input type="number" id="lkAge" min="0" value="34" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+                </div>
+                <div>
+                  <label for="lkAgeUnit" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Age Unit</label>
+                  <select id="lkAgeUnit" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+                    <option value="YEARS">Years</option>
+                    <option value="MONTHS">Months</option>
+                    <option value="DAYS">Days</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="lkAsOf" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">As Of Date</label>
+                  <input type="date" id="lkAsOf" style="width: 100%; padding: 6px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+                </div>
+                <label for="lkPreg" style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;">
+                  <input type="checkbox" id="lkPreg" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+                  <span style="font-size: 12.5px; font-weight: 600;">Pregnancy</span>
+                </label>
+                <button type="button" id="lkBtn" style="padding: 7px 16px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Look Up</button>
+              </div>
+              <div id="lkResult" style="display: none; margin-top: 12px;"></div>
+            </div>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 14px;">
+            <div style="padding: 8px 16px; font-size: 12px; font-weight: 700;">Parameters: <span id="paramCount">0</span> <span style="font-weight: 600; color: var(--text-3);">· X46 Diagnostics (ORG001) · Pune Main Branch (PUNE-01)</span></div>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 12.5px;">
+                <thead>
+                  <tr style="background: var(--head-bg);">
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); width: 120px;">Parameter Code</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft);">Parameter Name</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 110px;">Unit</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 150px;">Default Range</th>
+                    <th style="padding: 8px 16px; text-align: right; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 100px;">Bands</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 150px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="paramBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+            <div style="padding: 8px 16px; font-size: 12px; font-weight: 700;">Reference Ranges: <span id="rangeCount">0</span></div>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; min-width: 1040px; border-collapse: collapse; font-size: 12.5px;">
+                <thead>
+                  <tr style="background: var(--head-bg);">
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); width: 130px;">Parameter</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 90px;">Gender</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 140px;">Age Band</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 100px;">Pregnancy</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 150px;">Reference Bounds</th>
+                    <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft);">Effective</th>
+                  </tr>
+                </thead>
+                <tbody id="rangeBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div style="margin-top: 10px; font-size: 11.5px; color: var(--text-3);">Parameter code is unique within this organization and branch. A reference range must not overlap an existing active band for the same gender, age band, pregnancy flag and effective-date window.</div>
+        </div>
+
+        <div style="height: 24px;"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="createModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 100; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+      <h2 id="modalTitle" style="margin: 0; font-size: 14px; font-weight: 700;">Create Test</h2>
+      <button id="closeModalBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+    <div style="padding: 20px;">
+      <div id="formMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 16px; font-weight: 600;"></div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div>
+          <label for="testCode" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Test Code <span style="color: var(--red);">*</span></label>
+          <input type="text" id="testCode" placeholder="FBS" maxlength="30" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+          <div id="testCodeError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="testName" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Test Name <span style="color: var(--red);">*</span></label>
+          <input type="text" id="testName" placeholder="Fasting Blood Sugar" maxlength="100" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          <div id="testNameError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="testType" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Type <span style="color: var(--red);">*</span></label>
+          <select id="testType" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+            <option value="">Select type</option>
+            <option value="TEST">Test</option>
+            <option value="PANEL">Panel</option>
+          </select>
+          <div id="testTypeError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="testDept" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Department <span style="color: var(--red);">*</span></label>
+          <select id="testDept" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+            <option value="">Select department</option>
+            <option value="BIO">Biochemistry</option>
+            <option value="HAEM">Haematology</option>
+            <option value="MICRO">Microbiology</option>
+            <option value="IMMUNO">Immunoassay</option>
+          </select>
+          <div id="testDeptError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="testPrice" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Price (₹) <span style="color: var(--red);">*</span></label>
+          <input type="number" id="testPrice" min="0" step="10" placeholder="120" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; font-variant-numeric: tabular-nums; background: var(--bg); color: var(--text);" />
+          <div id="testPriceError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <label for="testActive" style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;">
+          <input type="checkbox" id="testActive" defaultChecked="{{ true }}" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+          <span style="font-size: 12.5px; font-weight: 600;">Active</span>
+        </label>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="cancelBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="submitBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 130px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create Test</button>
+    </div>
+  </div>
+</div>
+
+<div id="pkgFormModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 106; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 900px; width: 100%; max-height: 92vh; display: flex; flex-direction: column;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+      <h2 id="pkgFormTitle" style="margin: 0; font-size: 14px; font-weight: 700;">Add Package</h2>
+      <button id="closePkgFormBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+
+    <div style="padding: 16px 20px; overflow-y: auto; flex: 1; min-height: 0;">
+      <div id="pkgFormMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 14px; font-weight: 600;"></div>
+
+      <div style="display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label for="pkgCode" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Package Code <span style="color: var(--red);">*</span></label>
+            <input type="text" id="pkgCode" placeholder="PKG003" maxlength="30" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+            <div id="pkgCodeError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+          </div>
+          <div>
+            <label for="pkgName" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Package Name <span style="color: var(--red);">*</span></label>
+            <input type="text" id="pkgName" placeholder="Complete Health Package" maxlength="120" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+            <div id="pkgNameError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+          </div>
+          <div>
+            <label for="pkgCat" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Package Category <span style="color: var(--red);">*</span></label>
+            <select id="pkgCat" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+              <option value="">Select category</option>
+              <option value="Health Checkup">Health Checkup</option>
+              <option value="Chronic Care">Chronic Care</option>
+              <option value="Screening">Screening</option>
+              <option value="Corporate">Corporate</option>
+            </select>
+          </div>
+          <div>
+            <label for="pkgDesc" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Description</label>
+            <textarea id="pkgDesc" rows="3" placeholder="What this package covers" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); resize: vertical;"></textarea>
+          </div>
+          <div>
+            <label for="pkgPrice" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Package Price (₹) <span style="color: var(--red);">*</span></label>
+            <input type="number" id="pkgPrice" min="0" placeholder="1999" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); font-variant-numeric: tabular-nums;" />
+          </div>
+          <label for="pkgActive" style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;">
+            <input type="checkbox" id="pkgActive" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+            <span style="font-size: 12.5px; font-weight: 600;">Active</span>
+          </label>
+        </div>
+
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+            <div style="font-size: 12.5px; font-weight: 700;">Add Tests to Package <span id="pkgSelCount" style="color: var(--text-3); font-weight: 600;">Selected Tests: 0</span></div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 9px; width: 172px;">
+                <input type="text" id="pkgTestSearch" placeholder="Search tests" style="flex: 1; min-width: 0; border: none; padding: 6px 0; font-size: 12.5px; background: transparent; font-family: inherit; color: var(--text); outline: none;" />
+                <span style="color: var(--text-3); font-size: 13px;">⌕</span>
+              </div>
+              <select id="pkgTestDept" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+                <option value="">All Departments</option>
+                <option value="Biochemistry">Biochemistry</option>
+                <option value="Haematology">Haematology</option>
+                <option value="Microbiology">Microbiology</option>
+                <option value="Immunoassay">Immunoassay</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="border: 1px solid var(--line); border-radius: var(--radius); max-height: 260px; overflow-y: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+              <thead>
+                <tr style="background: var(--head-bg);">
+                  <th style="padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); width: 32px;"><input type="checkbox" id="pkgTestAll" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" /></th>
+                  <th style="padding: 7px 10px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 84px;">Test Code</th>
+                  <th style="padding: 7px 10px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line);">Test Name</th>
+                  <th style="padding: 7px 10px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 112px;">Department</th>
+                  <th style="padding: 7px 10px; text-align: right; font-weight: 700; border-bottom: 1px solid var(--line); width: 88px;">Price</th>
+                  <th style="padding: 7px 10px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 88px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="pkgTestBody"></tbody>
+            </table>
+            <div id="pkgTestNoMatch" style="display: none; padding: 24px 12px; text-align: center; font-size: 12.5px; color: var(--text-2);">No tests match this search.</div>
+          </div>
+
+          <div style="margin-top: 12px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+              <div style="padding: 10px 12px; border-right: 1px solid var(--line-soft);">
+                <div style="font-size: 11px; font-weight: 600; color: var(--text-2);">Individual Test Total</div>
+                <div id="pkgSumIndividual" style="font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums;">₹ 0</div>
+              </div>
+              <div style="padding: 10px 12px; border-right: 1px solid var(--line-soft);">
+                <div style="font-size: 11px; font-weight: 600; color: var(--text-2);">Package Price</div>
+                <div id="pkgSumPrice" style="font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums;">₹ 0</div>
+              </div>
+              <div style="padding: 10px 12px; background: var(--head-bg);">
+                <div style="font-size: 11px; font-weight: 600; color: var(--text-2);">Savings</div>
+                <div id="pkgSumSavings" style="font-size: 15px; font-weight: 700; color: var(--green); font-variant-numeric: tabular-nums;">₹ 0</div>
+              </div>
+            </div>
+            <div id="pkgPriceWarning" style="display: none; padding: 8px 12px; border-top: 1px solid var(--line); background: var(--red-soft); color: var(--red); font-size: 12px; font-weight: 600;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg); flex-shrink: 0;">
+      <button type="button" id="cancelPkgFormBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="submitPkgBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 140px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Save Package</button>
+    </div>
+  </div>
+</div>
+
+<div id="pkgDetailModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 107; justify-content: flex-end; align-items: stretch;">
+  <div style="background: var(--bg); box-shadow: -12px 0 32px rgba(16,24,34,0.2); max-width: 640px; width: 100%; display: flex; flex-direction: column;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; flex-shrink: 0;">
+      <div>
+        <h2 id="pkgDetailName" style="margin: 0; font-size: 14px; font-weight: 700;">Package</h2>
+        <p id="pkgDetailSub" style="margin: 2px 0 0; font-size: 12px; color: var(--text-2);"></p>
+      </div>
+      <button id="closePkgDetailBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+
+    <div style="padding: 16px 20px; overflow-y: auto; flex: 1; min-height: 0;">
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin-bottom: 8px;">Package Information</div>
+      <div id="pkgDetailInfo" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin-bottom: 18px;"></div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3);">Included Tests</div>
+        <button type="button" id="pkgDetailAddTests" style="padding: 4px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Add / Remove Tests</button>
+      </div>
+      <div id="pkgAddTestMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--red); margin-bottom: 10px; font-weight: 600;"></div>
+      <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 10px;">
+        <input type="text" id="pkgAddTestCode" placeholder="Test code to add (e.g. TSH)" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+        <button type="button" id="pkgAddTestBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--head-bg); border-color: var(--blue); color: var(--blue);">Add Test</button>
+      </div>
+      <div style="border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+          <thead>
+            <tr style="background: var(--head-bg);">
+              <th style="padding: 7px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 84px;">Code</th>
+              <th style="padding: 7px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line);">Test Name</th>
+              <th style="padding: 7px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 112px;">Department</th>
+              <th style="padding: 7px 12px; text-align: right; font-weight: 700; border-bottom: 1px solid var(--line); width: 84px;">Price</th>
+              <th style="padding: 7px 12px; text-align: right; font-weight: 700; border-bottom: 1px solid var(--line); width: 78px;"></th>
+            </tr>
+          </thead>
+          <tbody id="pkgDetailTests"></tbody>
+        </table>
+      </div>
+
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin: 18px 0 8px;">Pricing Summary</div>
+      <div style="border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;">
+        <div id="pkgDetailPricing"></div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg); flex-shrink: 0;">
+      <button type="button" id="pkgDetailToggle" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Deactivate</button>
+      <button type="button" id="pkgDetailEdit" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Edit Package</button>
+    </div>
+  </div>
+</div>
+
+<div id="pkgConfirmModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 112; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 420px; width: 100%;">
+    <div style="padding: 20px 20px 14px;">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700;">Remove test from package?</h2>
+      <p style="margin: 0; font-size: 12.5px; color: var(--text-2);">Remove <span id="pkgConfirmTarget" style="font-family: ui-monospace, monospace; font-weight: 700; color: var(--text);"></span> from this package? The pricing summary will be recalculated.</p>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="pkgConfirmCancel" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="pkgConfirmRemove" style="padding: 6px 14px; background: var(--red); color: #fff; border: 1px solid var(--red); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 120px;" style-hover="background: #b02a24; border-color: #b02a24;">Remove test</button>
+    </div>
+  </div>
+</div>
+
+<div id="extractModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 105; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 940px; width: 100%; max-height: 92vh; display: flex; flex-direction: column;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+      <div>
+        <h2 style="margin: 0; font-size: 14px; font-weight: 700;">Extract Tests from Existing Branch</h2>
+        <p style="margin: 2px 0 0; font-size: 12px; color: var(--text-2);">Copy an existing test configuration from another branch of the same organization.</p>
+      </div>
+      <button id="closeExtractBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+
+    <div style="padding: 16px 20px; overflow-y: auto; flex: 1; min-height: 0;">
+      <div id="extractMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 14px; font-weight: 600;"></div>
+
+      <div style="display: grid; grid-template-columns: 220px 260px 1fr; gap: 12px; align-items: end;">
+        <div>
+          <label style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Organization</label>
+          <input type="text" value="X46 Diagnostics" readOnly="{{ true }}" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--head-bg); color: var(--text-2);" />
+        </div>
+        <div>
+          <label for="extractBranch" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Source Branch <span style="color: var(--red);">*</span></label>
+          <select id="extractBranch" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+            <option value="">Select Branch</option>
+            <option value="MUM">Mumbai Branch</option>
+            <option value="NAS">Nashik Branch</option>
+            <option value="PIM">Pimpri Branch</option>
+          </select>
+        </div>
+        <div style="font-size: 11.5px; color: var(--text-3); padding-bottom: 7px;">Destination: <span style="color: var(--text-2); font-weight: 600;">Pune Main Branch (current)</span> · only branches inside X46 Diagnostics are listed.</div>
+      </div>
+
+      <div id="extractEmptyState" style="margin-top: 18px; padding: 34px 16px; text-align: center; border: 1px dashed var(--line); border-radius: var(--radius);">
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">Select a source branch</div>
+        <div style="font-size: 12.5px; color: var(--text-2);">Tests configured in that branch will be listed here for extraction.</div>
+      </div>
+
+      <div id="extractPanel" style="display: none; margin-top: 18px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;">
+          <div style="font-size: 12.5px; font-weight: 700;">Tests available in <span id="extractBranchName"></span> <span id="extractAvailCount" style="color: var(--text-3); font-weight: 600;"></span></div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 9px; width: 200px;">
+              <input type="text" id="extractSearch" placeholder="Search tests" style="flex: 1; min-width: 0; border: none; padding: 6px 0; font-size: 12.5px; background: transparent; font-family: inherit; color: var(--text); outline: none;" />
+              <span style="color: var(--text-3); font-size: 13px;">⌕</span>
+            </div>
+            <select id="extractDept" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+              <option value="">All Departments</option>
+              <option value="Biochemistry">Biochemistry</option>
+              <option value="Haematology">Haematology</option>
+              <option value="Microbiology">Microbiology</option>
+              <option value="Immunoassay">Immunoassay</option>
+            </select>
+            <select id="extractCat" style="padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-family: inherit; font-size: 12.5px; color: var(--text); cursor: pointer;">
+              <option value="">All Categories</option>
+              <option value="Routine">Routine</option>
+              <option value="Profile">Profile</option>
+              <option value="Special">Special</option>
+              <option value="Culture">Culture</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="border: 1px solid var(--line); border-radius: var(--radius); overflow-x: auto;">
+          <table style="width: 100%; min-width: 860px; border-collapse: collapse; font-size: 12.5px;">
+            <thead>
+              <tr style="background: var(--head-bg);">
+                <th style="padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); width: 34px;"><input type="checkbox" id="extractSelectAll" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" /></th>
+                <th style="padding: 8px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 96px;">Test Code</th>
+                <th style="padding: 8px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line);">Test Name</th>
+                <th style="padding: 8px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 116px;">Department</th>
+                <th style="padding: 8px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 92px;">Category</th>
+                <th style="padding: 8px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 132px;">Sample Type</th>
+                <th style="padding: 8px 12px; text-align: right; font-weight: 700; border-bottom: 1px solid var(--line); width: 82px;">Price</th>
+                <th style="padding: 8px 12px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 196px;">Status</th>
+              </tr>
+            </thead>
+            <tbody id="extractBody"></tbody>
+          </table>
+          <div id="extractNoMatch" style="display: none; padding: 30px 16px; text-align: center;">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No tests found</div>
+            <div style="font-size: 12.5px; color: var(--text-2);">Try a different search or filter.</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px; padding: 9px 12px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); font-size: 12px; color: var(--text-2);">
+          Existing tests are never overwritten automatically. For a test that already exists in Pune Main Branch, choose <span style="font-weight: 700; color: var(--text);">Skip</span> (default) or <span style="font-weight: 700; color: var(--text);">Update</span> on that row.
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg); flex-shrink: 0;">
+      <div style="font-size: 12.5px; font-weight: 700;"><span id="extractCount">0 tests selected</span> <span id="extractDupNote" style="color: var(--text-3); font-weight: 600;"></span></div>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" id="cancelExtractBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+        <button type="button" id="submitExtractBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 170px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Extract Selected Tests</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="statusModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 114; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 470px; width: 100%;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="margin: 0; font-size: 14px; font-weight: 700;">Update Test Status</h2>
+      <button id="closeStatusBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+    <div style="padding: 18px 20px;">
+      <div id="statusMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 14px; font-weight: 600;"></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin-bottom: 14px;">
+        <div>
+          <div style="font-size: 11px; font-weight: 600; color: var(--text-2);">Test</div>
+          <div id="statusTestLabel" style="font-size: 12.5px; font-weight: 700;">—</div>
+        </div>
+        <div>
+          <div style="font-size: 11px; font-weight: 600; color: var(--text-2);">Current Status</div>
+          <div id="statusCurrent" style="font-size: 12.5px; font-weight: 700;">—</div>
+        </div>
+        <div style="grid-column: span 2;">
+          <div style="font-size: 11px; font-weight: 600; color: var(--text-2);">Test ID</div>
+          <div id="statusTestId" style="font-size: 11.5px; font-family: ui-monospace, monospace; color: var(--text-2); word-break: break-all;">—</div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div>
+          <label for="statusOrg" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Organization</label>
+          <input type="text" id="statusOrg" value="X46 Diagnostics (ORG001)" readOnly="{{ true }}" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--head-bg); color: var(--text-2);" />
+        </div>
+        <div>
+          <label for="statusBranch" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Branch</label>
+          <select id="statusBranch" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;"></select>
+        </div>
+        <div style="grid-column: span 2;">
+          <label for="statusValue" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Status <span style="color: var(--red);">*</span></label>
+          <select id="statusValue" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+            <option value="">Not set</option>
+          </select>
+          <div id="statusValueError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+      </div>
+      <div style="margin-top: 12px; font-size: 11.5px; color: var(--text-3);">The test master is configured per branch. Selecting a branch where this test is not configured returns a not-found response.</div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="cancelStatusBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="submitStatusBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 130px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<div id="paramModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 115; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 460px; width: 100%;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="margin: 0; font-size: 14px; font-weight: 700;">Create Parameter</h2>
+      <button id="closeParamBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+    <div style="padding: 18px 20px;">
+      <div id="paramMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 14px; font-weight: 600;"></div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label for="paramCode" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Parameter Code <span style="color: var(--red);">*</span></label>
+          <input type="text" id="paramCode" placeholder="HGB" maxlength="50" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+          <div id="paramCodeError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="paramName" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Parameter Name <span style="color: var(--red);">*</span></label>
+          <input type="text" id="paramName" placeholder="Haemoglobin" maxlength="255" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          <div id="paramNameError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label for="paramUnit" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Unit</label>
+            <input type="text" id="paramUnit" placeholder="g/dL" maxlength="50" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          </div>
+          <div>
+            <label for="paramDefault" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Default Reference Range</label>
+            <input type="text" id="paramDefault" placeholder="13 - 17" maxlength="255" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          </div>
+        </div>
+        <div style="font-size: 11.5px; color: var(--text-3);">Created in X46 Diagnostics (ORG001) · Pune Main Branch (PUNE-01).</div>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="cancelParamBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="submitParamBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 140px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create Parameter</button>
+    </div>
+  </div>
+</div>
+
+<div id="rangeModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 116; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 620px; width: 100%; max-height: 92vh; display: flex; flex-direction: column;">
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+      <h2 style="margin: 0; font-size: 14px; font-weight: 700;">Add Reference Range</h2>
+      <button id="closeRangeBtn" aria-label="Close" style="background: none; border: none; font-size: 17px; line-height: 1; cursor: pointer; color: var(--text-3);">✕</button>
+    </div>
+    <div style="padding: 18px 20px; overflow-y: auto; flex: 1; min-height: 0;">
+      <div id="rangeMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 14px; font-weight: 600;"></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <div style="grid-column: span 2;">
+          <label for="rngParam" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Parameter Code <span style="color: var(--red);">*</span></label>
+          <input type="text" id="rngParam" placeholder="HGB" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+          <div id="rngParamError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="rngGender" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Gender</label>
+          <select id="rngGender" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+            <option value="ANY">Any</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+          </select>
+        </div>
+        <div>
+          <label for="rngAgeMin" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Age Min</label>
+          <input type="number" id="rngAgeMin" value="0" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+        </div>
+        <div>
+          <label for="rngAgeMax" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Age Max</label>
+          <input type="number" id="rngAgeMax" value="150" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          <div id="rngAgeError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <div>
+          <label for="rngAgeUnit" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Age Unit</label>
+          <select id="rngAgeUnit" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text); cursor: pointer;">
+            <option value="YEARS">Years</option>
+            <option value="MONTHS">Months</option>
+            <option value="DAYS">Days</option>
+          </select>
+        </div>
+        <div>
+          <label for="rngRefMin" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Reference Min</label>
+          <input type="number" id="rngRefMin" step="0.01" placeholder="13" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+        </div>
+        <div>
+          <label for="rngRefMax" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Reference Max</label>
+          <input type="number" id="rngRefMax" step="0.01" placeholder="17" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          <div id="rngBoundsError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+        <label for="rngPreg" style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; align-self: end; height: 34px;">
+          <input type="checkbox" id="rngPreg" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+          <span style="font-size: 12.5px; font-weight: 600;">Pregnancy</span>
+        </label>
+        <div>
+          <label for="rngCritLow" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Critical Low</label>
+          <input type="number" id="rngCritLow" step="0.01" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+        </div>
+        <div>
+          <label for="rngCritHigh" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Critical High</label>
+          <input type="number" id="rngCritHigh" step="0.01" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+        </div>
+        <div>
+          <label for="rngText" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Reference Range Text</label>
+          <input type="text" id="rngText" placeholder="13 - 17 g/dL" maxlength="255" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+        </div>
+        <div>
+          <label for="rngFrom" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Effective From</label>
+          <input type="date" id="rngFrom" style="width: 100%; padding: 6px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+        </div>
+        <div>
+          <label for="rngTo" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Effective To</label>
+          <input type="date" id="rngTo" style="width: 100%; padding: 6px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+          <div id="rngDateError" style="display: none; margin-top: 4px; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg); flex-shrink: 0;">
+      <button type="button" id="cancelRangeBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="submitRangeBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 150px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Save Reference Range</button>
+    </div>
+  </div>
+</div>
+
+<div id="deleteModal" style="display: none; position: fixed; inset: 0; background: rgba(20, 28, 38, 0.5); z-index: 110; justify-content: center; align-items: center; padding: 24px;">
+  <div style="background: var(--bg); border-radius: var(--radius); box-shadow: 0 12px 32px rgba(16,24,34,0.25); max-width: 420px; width: 100%;">
+    <div style="padding: 20px 20px 14px;">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700;">Delete test?</h2>
+      <p style="margin: 0; font-size: 12.5px; color: var(--text-2);">This will permanently remove <span id="deleteTarget" style="font-family: ui-monospace, monospace; font-weight: 700; color: var(--text);"></span> from the lab master. This action cannot be undone.</p>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+      <button type="button" id="cancelDeleteBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+      <button type="button" id="confirmDeleteBtn" style="padding: 6px 14px; background: var(--red); color: #fff; border: 1px solid var(--red); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 120px;" style-hover="background: #b02a24; border-color: #b02a24;">Delete test</button>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+const DEPT_CODE = { Biochemistry: 'BIO', Haematology: 'HAEM', Microbiology: 'MICRO', Immunoassay: 'IMMUNO' };
+
+const BRANCHES = {
+  MUM: { name: 'Mumbai Branch', tests: [
+    { code: 'FBS', name: 'Fasting Blood Sugar', dept: 'Biochemistry', cat: 'Routine', sample: 'Fluoride Plasma', price: 120, active: true, type: 'TEST' },
+    { code: 'CBC', name: 'Complete Blood Count', dept: 'Haematology', cat: 'Routine', sample: 'EDTA Whole Blood', price: 350, active: true, type: 'TEST' },
+    { code: 'HBA1C', name: 'Glycated Haemoglobin (HbA1c)', dept: 'Biochemistry', cat: 'Special', sample: 'EDTA Whole Blood', price: 600, active: true, type: 'TEST' },
+    { code: 'KFT', name: 'Kidney Function Panel', dept: 'Biochemistry', cat: 'Profile', sample: 'Serum', price: 850, active: true, type: 'PANEL' },
+    { code: 'TSH', name: 'Thyroid Stimulating Hormone', dept: 'Immunoassay', cat: 'Special', sample: 'Serum', price: 400, active: true, type: 'TEST' },
+    { code: 'VITD', name: 'Vitamin D (25-OH)', dept: 'Immunoassay', cat: 'Special', sample: 'Serum', price: 1400, active: true, type: 'TEST' },
+    { code: 'ESR', name: 'ESR (Westergren)', dept: 'Haematology', cat: 'Routine', sample: 'EDTA Whole Blood', price: 150, active: true, type: 'TEST' },
+    { code: 'URIC', name: 'Uric Acid', dept: 'Biochemistry', cat: 'Routine', sample: 'Serum', price: 250, active: true, type: 'TEST' },
+    { code: 'CRP', name: 'C-Reactive Protein', dept: 'Immunoassay', cat: 'Special', sample: 'Serum', price: 550, active: true, type: 'TEST' },
+    { code: 'CULT', name: 'Urine Culture & Sensitivity', dept: 'Microbiology', cat: 'Culture', sample: 'Urine', price: 750, active: false, type: 'TEST' }
+  ] },
+  NAS: { name: 'Nashik Branch', tests: [
+    { code: 'LIP', name: 'Lipid Profile', dept: 'Biochemistry', cat: 'Profile', sample: 'Serum', price: 700, active: true, type: 'PANEL' },
+    { code: 'HBA1C', name: 'Glycated Haemoglobin (HbA1c)', dept: 'Biochemistry', cat: 'Special', sample: 'EDTA Whole Blood', price: 640, active: true, type: 'TEST' },
+    { code: 'FT4', name: 'Free T4', dept: 'Immunoassay', cat: 'Special', sample: 'Serum', price: 420, active: true, type: 'TEST' },
+    { code: 'GLUPP', name: 'Blood Glucose (Post Prandial)', dept: 'Biochemistry', cat: 'Routine', sample: 'Fluoride Plasma', price: 180, active: true, type: 'TEST' },
+    { code: 'UR1', name: 'Urine Routine', dept: 'Microbiology', cat: 'Routine', sample: 'Urine', price: 200, active: true, type: 'TEST' },
+    { code: 'ESR', name: 'ESR (Westergren)', dept: 'Haematology', cat: 'Routine', sample: 'EDTA Whole Blood', price: 140, active: false, type: 'TEST' }
+  ] },
+  PIM: { name: 'Pimpri Branch', tests: [
+    { code: 'CBC', name: 'Complete Blood Count', dept: 'Haematology', cat: 'Routine', sample: 'EDTA Whole Blood', price: 330, active: true, type: 'TEST' },
+    { code: 'LFT', name: 'Liver Function Panel', dept: 'Biochemistry', cat: 'Profile', sample: 'Serum', price: 900, active: true, type: 'PANEL' },
+    { code: 'TSH', name: 'Thyroid Stimulating Hormone', dept: 'Immunoassay', cat: 'Special', sample: 'Serum', price: 390, active: true, type: 'TEST' },
+    { code: 'VITB12', name: 'Vitamin B12', dept: 'Immunoassay', cat: 'Special', sample: 'Serum', price: 1100, active: true, type: 'TEST' },
+    { code: 'HBSAG', name: 'HbsAg (Australian Antigen)', dept: 'Immunoassay', cat: 'Special', sample: 'Serum', price: 450, active: true, type: 'TEST' }
+  ] }
+};
+
+const TEST_CATALOG = [
+  { code: 'FBS', name: 'Fasting Blood Sugar', dept: 'Biochemistry', price: 120, active: true },
+  { code: 'LIP', name: 'Lipid Profile', dept: 'Biochemistry', price: 700, active: true },
+  { code: 'CBC', name: 'Complete Blood Count', dept: 'Haematology', price: 350, active: true },
+  { code: 'CULT', name: 'Culture & Sensitivity', dept: 'Microbiology', price: 750, active: true },
+  { code: 'HBA1C', name: 'Glycated Haemoglobin (HbA1c)', dept: 'Biochemistry', price: 600, active: true },
+  { code: 'LFT', name: 'Liver Function Panel', dept: 'Biochemistry', price: 900, active: true },
+  { code: 'KFT', name: 'Kidney Function Panel', dept: 'Biochemistry', price: 850, active: true },
+  { code: 'URIC', name: 'Uric Acid', dept: 'Biochemistry', price: 250, active: true },
+  { code: 'TSH', name: 'Thyroid Stimulating Hormone', dept: 'Immunoassay', price: 400, active: true },
+  { code: 'VITD', name: 'Vitamin D (25-OH)', dept: 'Immunoassay', price: 1400, active: true },
+  { code: 'ESR', name: 'ESR (Westergren)', dept: 'Haematology', price: 150, active: true },
+  { code: 'UR1', name: 'Urine Routine', dept: 'Microbiology', price: 200, active: false }
+];
+
+const SEED_PACKAGES = [
+  { code: 'PKG001', name: 'Complete Health Package', cat: 'Health Checkup', desc: 'Full annual health screen covering blood counts, lipids, sugar, thyroid and urine.', price: 1999, active: true, tests: ['CBC', 'LIP', 'FBS', 'UR1', 'ESR', 'URIC', 'TSH', 'HBA1C'] },
+  { code: 'PKG002', name: 'Basic Health Package', cat: 'Health Checkup', desc: 'Entry level screen for walk-in patients and camps.', price: 999, active: true, tests: ['CBC', 'FBS', 'LIP', 'UR1', 'ESR'] },
+  { code: 'PKG003', name: 'Diabetes Care Package', cat: 'Chronic Care', desc: 'Quarterly follow-up panel for diagnosed diabetic patients.', price: 1399, active: true, tests: ['HBA1C', 'FBS', 'KFT', 'UR1'] },
+  { code: 'PKG004', name: 'Thyroid Screening Package', cat: 'Screening', desc: 'Thyroid screen bundled with baseline counts and lipids.', price: 1149, active: false, tests: ['TSH', 'CBC', 'LIP'] }
+];
+
+class Component extends DCLogic {
+  state = { codes: ['FBS', 'LIP', 'CBC', 'CULT'] };
+  packages = SEED_PACKAGES.map(p => ({ ...p, tests: [...p.tests] }));
+  pkgFilters = { q: '', cat: '', status: '' };
+  pkgEditing = null;
+  pkgSel = {};
+  pkgRemoveTarget = null;
+  extractSel = {};
+  dupMode = {};
+  extractBranch = '';
+
+  componentDidMount() {
+    const $ = (id) => document.getElementById(id);
+    $('createBtn').addEventListener('click', this.openModal);
+    $('closeModalBtn').addEventListener('click', this.closeModal);
+    $('cancelBtn').addEventListener('click', this.closeModal);
+    $('submitBtn').addEventListener('click', this.submit);
+    $('searchInput').addEventListener('input', this.filter);
+    $('filterDept').addEventListener('change', this.filter);
+    $('filterType').addEventListener('change', this.filter);
+
+    const modal = $('createModal');
+    modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModal(); });
+    const del = $('deleteModal');
+    del.addEventListener('click', (e) => { if (e.target === del) this.closeDelete(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (del.style.display === 'flex') this.closeDelete();
+      else if (modal.style.display === 'flex') this.closeModal();
+    });
+
+    ['testCode', 'testName', 'testType', 'testDept'].forEach((id) => {
+      const el = $(id);
+      el.addEventListener('focus', () => this.focusStyle(el, true));
+      el.addEventListener('blur', () => this.focusStyle(el, false));
+      const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+      el.addEventListener(evt, () => this.clearFieldError(id));
+    });
+
+    $('tableBody').addEventListener('click', (e) => {
+      const row = e.target.closest('tr');
+      if (!row) return;
+      if (e.target.classList.contains('delete-btn')) this.askDelete(row);
+      if (e.target.classList.contains('edit-btn')) this.openEdit(row);
+      if (e.target.classList.contains('status-btn')) this.openStatus(row);
+    });
+    $('cancelDeleteBtn').addEventListener('click', this.closeDelete);
+    $('confirmDeleteBtn').addEventListener('click', this.confirmDelete);
+
+    $('extractBtn').addEventListener('click', this.openExtract);
+    $('closeExtractBtn').addEventListener('click', this.closeExtract);
+    $('cancelExtractBtn').addEventListener('click', this.closeExtract);
+    $('submitExtractBtn').addEventListener('click', this.runExtract);
+    $('extractBranch').addEventListener('change', this.onBranchChange);
+    $('extractSearch').addEventListener('input', this.renderExtract);
+    $('extractDept').addEventListener('change', this.renderExtract);
+    $('extractCat').addEventListener('change', this.renderExtract);
+    $('extractSelectAll').addEventListener('change', this.onSelectAll);
+    $('extractBody').addEventListener('change', this.onExtractRowChange);
+    const ex = $('extractModal');
+    ex.addEventListener('click', (e) => { if (e.target === ex) this.closeExtract(); });
+
+    this.switchTab('PACKAGES');
+    $('tabPackages').addEventListener('click', () => this.switchTab('PACKAGES'));
+    $('tabParams').addEventListener('click', () => this.switchTab('PARAMS'));
+
+    /* API-009 status control */
+    $('closeStatusBtn').addEventListener('click', this.closeStatus);
+    $('cancelStatusBtn').addEventListener('click', this.closeStatus);
+    $('submitStatusBtn').addEventListener('click', this.submitStatus);
+    const sm = $('statusModal');
+    sm.addEventListener('click', (e) => { if (e.target === sm) this.closeStatus(); });
+    this.whenApiReady(() => {
+      $('statusBranch').innerHTML = LIMS.branchOptions().map(o => '<option value="' + o.value + '">' + o.label + '</option>').join('');
+      $('statusBranch').value = LIMS.session.branchId;
+      this.renderParams();
+    });
+
+    /* API-011 search — the contract rejects an empty query */
+    $('searchInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') this.searchTests(); });
+
+    /* API-111 / API-112 / API-113 */
+    $('addParamBtn').addEventListener('click', this.openParam);
+    $('closeParamBtn').addEventListener('click', this.closeParam);
+    $('cancelParamBtn').addEventListener('click', this.closeParam);
+    $('submitParamBtn').addEventListener('click', this.submitParam);
+    $('addRangeBtn').addEventListener('click', this.openRange);
+    $('closeRangeBtn').addEventListener('click', this.closeRange);
+    $('cancelRangeBtn').addEventListener('click', this.closeRange);
+    $('submitRangeBtn').addEventListener('click', this.submitRange);
+    $('lkBtn').addEventListener('click', this.lookupRange);
+    $('paramBody').addEventListener('click', this.onParamTableClick);
+    const pm = $('paramModal');
+    pm.addEventListener('click', (e) => { if (e.target === pm) this.closeParam(); });
+    const rm = $('rangeModal');
+    rm.addEventListener('click', (e) => { if (e.target === rm) this.closeRange(); });
+
+    /* API-121 add test to package */
+    $('pkgAddTestBtn').addEventListener('click', this.addTestToPackage);
+
+    $('addPkgBtn').addEventListener('click', () => this.openPkgForm(null));
+    $('pkgSearchBtn').addEventListener('click', this.applyPkgFilters);
+    $('pkgClearBtn').addEventListener('click', this.clearPkgFilters);
+    $('pkgSearchInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') this.applyPkgFilters(); });
+    $('pkgBody').addEventListener('click', this.onPkgTableClick);
+    $('closePkgFormBtn').addEventListener('click', this.closePkgForm);
+    $('cancelPkgFormBtn').addEventListener('click', this.closePkgForm);
+    $('submitPkgBtn').addEventListener('click', this.savePackage);
+    $('pkgTestSearch').addEventListener('input', this.renderPkgPicker);
+    $('pkgTestDept').addEventListener('change', this.renderPkgPicker);
+    $('pkgTestAll').addEventListener('change', this.onPkgTestAll);
+    $('pkgTestBody').addEventListener('change', this.onPkgTestPick);
+    $('pkgPrice').addEventListener('input', this.updatePkgPricing);
+    $('closePkgDetailBtn').addEventListener('click', this.closePkgDetail);
+    $('pkgDetailEdit').addEventListener('click', () => { const c = this.pkgDetailCode; this.closePkgDetail(); this.openPkgForm(c); });
+    $('pkgDetailAddTests').addEventListener('click', () => { const c = this.pkgDetailCode; this.closePkgDetail(); this.openPkgForm(c); });
+    $('pkgDetailToggle').addEventListener('click', () => this.togglePkgActive(this.pkgDetailCode, true));
+    $('pkgDetailTests').addEventListener('click', this.onPkgDetailTestClick);
+    $('pkgConfirmCancel').addEventListener('click', this.closePkgConfirm);
+    $('pkgConfirmRemove').addEventListener('click', this.confirmRemoveTest);
+    const pf = $('pkgFormModal');
+    pf.addEventListener('click', (e) => { if (e.target === pf) this.closePkgForm(); });
+    const pd = $('pkgDetailModal');
+    pd.addEventListener('click', (e) => { if (e.target === pd) this.closePkgDetail(); });
+
+    this.renderPackages();
+  }
+
+  /* lims-api.js loads from <helmet>, which can resolve after this mounts. */
+  whenApiReady = (fn) => {
+    if (window.LIMS) return fn();
+    let tries = 0;
+    const tick = () => {
+      if (window.LIMS) return fn();
+      if (tries++ < 100) setTimeout(tick, 50);
+    };
+    setTimeout(tick, 30);
+  };
+
+  money = (n) => '\u20B9 ' + Number(n || 0).toLocaleString('en-IN');
+  findTest = (code) => TEST_CATALOG.find(t => t.code === code);
+  pkgIndividual = (p) => p.tests.reduce((a, c) => { const t = this.findTest(c); return a + (t ? t.price : 0); }, 0);
+
+  switchTab = (tab) => {
+    const $ = (id) => document.getElementById(id);
+    const tests = false; /* tests moved to the Test List screen */
+    const packages = tab === 'PACKAGES';
+    const params = tab === 'PARAMS';
+    $('testsPane').style.display = tests ? 'block' : 'none';
+    $('packagesPane').style.display = packages ? 'block' : 'none';
+    $('paramsPane').style.display = params ? 'block' : 'none';
+    $('createBtn').style.display = tests ? 'inline-block' : 'none';
+    $('extractBtn').style.display = tests ? 'inline-block' : 'none';
+    $('addPkgBtn').style.display = packages ? 'inline-block' : 'none';
+    $('addParamBtn').style.display = params ? 'inline-block' : 'none';
+    $('addRangeBtn').style.display = params ? 'inline-block' : 'none';
+    const paint = (id, on) => {
+      $(id).style.borderBottomColor = on ? 'var(--blue)' : 'transparent';
+      $(id).style.color = on ? 'var(--blue)' : 'var(--text-2)';
+      $(id).style.fontWeight = on ? '700' : '600';
+    };
+    paint('tabTests', tests);
+    paint('tabPackages', packages);
+    paint('tabParams', params);
+  };
+
+  /* --------------------------------------------------------------- API-009 */
+  /* The test master in this prototype is configured in Pune Main Branch; a
+     screen row only carries a testId when it exists in that master. */
+  masterTestForRow = (row) => {
+    const name = row.cells[1].textContent.trim().toLowerCase();
+    const code = row.cells[0].textContent.trim().toUpperCase();
+    return LIMS.TESTS.find(t => t.testName.toLowerCase() === name)
+      || LIMS.TESTS.find(t => t.testCode.toUpperCase().indexOf(code) === 0)
+      || null;
+  };
+
+  statusMessage = (type, text) => {
+    const el = document.getElementById('statusMessage');
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  openStatus = (row) => {
+    const $ = (id) => document.getElementById(id);
+    this.statusRow = row;
+    const master = this.masterTestForRow(row);
+    const active = row.cells[4].textContent.trim().indexOf('Inactive') === -1;
+    $('statusTestLabel').textContent = row.cells[0].textContent.trim() + ' \u00b7 ' + row.cells[1].textContent.trim();
+    $('statusCurrent').textContent = active ? 'Active' : 'Inactive';
+    $('statusTestId').textContent = master ? master.id : 'Not issued \u2014 this test has no test master row';
+    $('statusValue').value = active ? 'false' : 'true';
+    $('statusBranch').value = LIMS.session.branchId;
+    $('statusMessage').style.display = 'none';
+    this.clearFieldError('statusValue');
+    $('statusModal').style.display = 'flex';
+  };
+
+  closeStatus = () => { this.statusRow = null; document.getElementById('statusModal').style.display = 'none'; };
+
+  submitStatus = async () => {
+    const $ = (id) => document.getElementById(id);
+    const row = this.statusRow;
+    if (!row) return;
+    const raw = $('statusValue').value;
+    const branchId = $('statusBranch').value;
+    this.clearFieldError('statusValue');
+    $('statusMessage').style.display = 'none';
+
+    if (raw === '') {
+      this.setFieldError('statusValue', 'isActive must be true or false');
+      return this.statusMessage('error', '400 Bad Request \u2014 Invalid status value');
+    }
+    const isActive = raw === 'true';
+    const master = this.masterTestForRow(row);
+    const code = row.cells[0].textContent.trim();
+
+    if (!master) {
+      return this.statusMessage('error', '404 Not Found \u2014 Test not found. ' + code + ' has no test master record in this organization and branch.');
+    }
+
+    const btn = $('submitStatusBtn');
+    btn.disabled = true; btn.style.opacity = '0.65'; btn.textContent = 'Updating\u2026';
+    try {
+      await LIMS.request('testStatus', {
+        contract: 'API-009',
+        params: { branchId: branchId, testId: master.id },
+        body: { isActive: isActive },
+        resolve: () => (branchId === LIMS.session.branchId
+          ? { status: 200, message: 'Test status updated successfully', data: { testId: master.id, isActive: isActive } }
+          : { status: 404, error: 'Test not found' })
+      });
+      row.cells[4].innerHTML = '<span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: ' + (isActive ? 'var(--green-soft)' : 'var(--grey-pill)') + '; color: ' + (isActive ? 'var(--green)' : 'var(--text-2)') + '; border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>' + (isActive ? 'Active' : 'Inactive') + '</span>';
+      this.statusMessage('success', '200 OK \u2014 Test status updated successfully');
+      setTimeout(() => { this.closeStatus(); this.toast('Test ' + code + ' is now ' + (isActive ? 'Active' : 'Inactive')); }, 900);
+    } catch (err) {
+      const scoped = LIMS.branchLabel(branchId);
+      this.statusMessage('error', (err.status ? err.status + ' \u2014 ' : '') + (err.message || 'Request failed')
+        + (err.status === 404 ? '. ' + code + ' is not configured in ' + scoped + '.' : ''));
+    } finally {
+      btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Update Status';
+    }
+  };
+
+  /* --------------------------------------------------------------- API-011 */
+  searchTests = () => {
+    const el = document.getElementById('searchError');
+    const q = document.getElementById('searchInput').value.trim();
+    if (!q) {
+      el.textContent = '\u2715  400 Bad Request \u2014 Search query is required. Enter a test code or test name.';
+      el.style.display = 'block';
+      return;
+    }
+    el.style.display = 'none';
+    this.filter();
+  };
+
+  pkgToast = (text) => {
+    const el = document.getElementById('pkgToast');
+    el.textContent = '\u2713  ' + text;
+    el.style.background = 'var(--green-soft)';
+    el.style.color = 'var(--green)';
+    el.style.borderLeftColor = 'var(--green)';
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3200);
+  };
+
+  applyPkgFilters = () => {
+    this.pkgFilters = {
+      q: document.getElementById('pkgSearchInput').value.trim().toLowerCase(),
+      cat: document.getElementById('pkgFilterCat').value,
+      status: document.getElementById('pkgFilterStatus').value
+    };
+    this.renderPackages();
+  };
+
+  clearPkgFilters = () => {
+    document.getElementById('pkgSearchInput').value = '';
+    document.getElementById('pkgFilterCat').value = '';
+    document.getElementById('pkgFilterStatus').value = '';
+    this.pkgFilters = { q: '', cat: '', status: '' };
+    this.renderPackages();
+  };
+
+  visiblePackages = () => {
+    const f = this.pkgFilters;
+    return this.packages.filter(p =>
+      (!f.q || (p.code + ' ' + p.name).toLowerCase().includes(f.q)) &&
+      (!f.cat || p.cat === f.cat) &&
+      (!f.status || (f.status === 'ACTIVE') === !!p.active)
+    );
+  };
+
+  renderPackages = () => {
+    const list = this.visiblePackages();
+    const cell = 'padding: 9px 16px;';
+    const btn = 'padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;';
+    document.getElementById('pkgBody').innerHTML = list.map((p) => {
+      const ind = this.pkgIndividual(p);
+      const save = ind - p.price;
+      return '<tr style="border-bottom: 1px solid var(--line-soft);">'
+        + '<td style="' + cell + ' font-family: ui-monospace, monospace; font-weight: 600;"><a href="#" data-view="' + p.code + '" style="color: var(--blue);">' + p.code + '</a></td>'
+        + '<td style="' + cell + ' font-weight: 600;">' + p.name + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + p.cat + '</td>'
+        + '<td style="' + cell + ' text-align: right; font-variant-numeric: tabular-nums;">' + p.tests.length + '</td>'
+        + '<td style="' + cell + ' text-align: right; font-weight: 700; font-variant-numeric: tabular-nums;">' + this.money(p.price) + '</td>'
+        + '<td style="' + cell + ' text-align: right; color: var(--text-2); font-variant-numeric: tabular-nums;">' + this.money(ind) + '</td>'
+        + '<td style="' + cell + ' text-align: right; font-weight: 700; color: ' + (save > 0 ? 'var(--green)' : 'var(--red)') + '; font-variant-numeric: tabular-nums;">' + this.money(save) + '</td>'
+        + '<td style="' + cell + '"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: ' + (p.active ? 'var(--green-soft)' : 'var(--grey-pill)') + '; color: ' + (p.active ? 'var(--green)' : 'var(--text-2)') + '; border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>' + (p.active ? 'Active' : 'Inactive') + '</span></td>'
+        + '<td style="' + cell + '"><div style="display: flex; gap: 6px;">'
+        + '<button type="button" data-view="' + p.code + '" style="' + btn + ' color: var(--text-2);">View</button>'
+        + '<button type="button" data-edit="' + p.code + '" style="' + btn + ' color: var(--text-2);">Edit</button>'
+        + '<button type="button" data-toggle="' + p.code + '" style="' + btn + ' color: ' + (p.active ? 'var(--red)' : 'var(--green)') + ';">' + (p.active ? 'Deactivate' : 'Activate') + '</button>'
+        + '</div></td></tr>';
+    }).join('');
+    document.getElementById('pkgCount').textContent = list.length;
+    document.getElementById('pkgEmptyState').style.display = list.length ? 'none' : 'block';
+  };
+
+  onPkgTableClick = (e) => {
+    const t = e.target.closest('[data-view], [data-edit], [data-toggle]');
+    if (!t) return;
+    e.preventDefault();
+    if (t.dataset.view) return this.openPkgDetail(t.dataset.view);
+    if (t.dataset.edit) return this.openPkgForm(t.dataset.edit);
+    if (t.dataset.toggle) return this.togglePkgActive(t.dataset.toggle, false);
+  };
+
+  togglePkgActive = (code, fromDetail) => {
+    const p = this.packages.find(x => x.code === code);
+    if (!p) return;
+    p.active = !p.active;
+    this.renderPackages();
+    if (fromDetail) this.openPkgDetail(code);
+    this.pkgToast(p.code + ' is now ' + (p.active ? 'Active' : 'Inactive') + (p.active ? '.' : ' and will not be offered during order or billing.'));
+  };
+
+  openPkgForm = (code) => {
+    const $ = (id) => document.getElementById(id);
+    this.pkgEditing = code || null;
+    const p = code ? this.packages.find(x => x.code === code) : null;
+    $('pkgFormTitle').textContent = p ? 'Edit Package · ' + p.code : 'Add Package';
+    $('submitPkgBtn').textContent = p ? 'Save Changes' : 'Save Package';
+    $('pkgCode').value = p ? p.code : '';
+    $('pkgCode').disabled = !!p;
+    $('pkgCode').style.background = p ? 'var(--head-bg)' : 'var(--bg)';
+    $('pkgName').value = p ? p.name : '';
+    $('pkgCat').value = p ? p.cat : '';
+    $('pkgDesc').value = p ? p.desc : '';
+    $('pkgPrice').value = p ? p.price : '';
+    $('pkgActive').checked = p ? !!p.active : true;
+    $('pkgTestSearch').value = '';
+    $('pkgTestDept').value = '';
+    $('pkgFormMessage').style.display = 'none';
+    this.pkgSel = {};
+    if (p) p.tests.forEach(c => { this.pkgSel[c] = true; });
+    this.renderPkgPicker();
+    $('pkgFormModal').style.display = 'flex';
+  };
+
+  closePkgForm = () => { document.getElementById('pkgFormModal').style.display = 'none'; };
+
+  pkgPickerList = () => {
+    const q = document.getElementById('pkgTestSearch').value.trim().toLowerCase();
+    const dept = document.getElementById('pkgTestDept').value;
+    return TEST_CATALOG.filter(t =>
+      (!q || (t.code + ' ' + t.name).toLowerCase().includes(q)) && (!dept || t.dept === dept)
+    );
+  };
+
+  renderPkgPicker = () => {
+    const list = this.pkgPickerList();
+    const cell = 'padding: 7px 10px; border-bottom: 1px solid var(--line-soft);';
+    document.getElementById('pkgTestBody').innerHTML = list.map((t) => {
+      const on = !!this.pkgSel[t.code];
+      return '<tr style="background: ' + (on ? '#f7f9fc' : 'transparent') + ';">'
+        + '<td style="' + cell + '"><input type="checkbox" data-pkgpick="' + t.code + '"' + (on ? ' checked' : '') + ' style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" /></td>'
+        + '<td style="' + cell + ' font-family: ui-monospace, monospace; font-weight: 600;">' + t.code + '</td>'
+        + '<td style="' + cell + ' font-weight: 600;">' + t.name + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + t.dept + '</td>'
+        + '<td style="' + cell + ' text-align: right; font-variant-numeric: tabular-nums;">' + this.money(t.price) + '</td>'
+        + '<td style="' + cell + '"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: ' + (t.active ? 'var(--green-soft)' : 'var(--grey-pill)') + '; color: ' + (t.active ? 'var(--green)' : 'var(--text-2)') + '; border-radius: 2px; font-size: 10.5px; font-weight: 700;">' + (t.active ? 'Active' : 'Inactive') + '</span></td>'
+        + '</tr>';
+    }).join('');
+    document.getElementById('pkgTestNoMatch').style.display = list.length ? 'none' : 'block';
+    document.getElementById('pkgTestAll').checked = list.length > 0 && list.every(t => this.pkgSel[t.code]);
+    this.updatePkgPricing();
+  };
+
+  onPkgTestAll = (e) => {
+    const on = e.target.checked;
+    this.pkgPickerList().forEach(t => { this.pkgSel[t.code] = on; });
+    this.renderPkgPicker();
+  };
+
+  onPkgTestPick = (e) => {
+    const code = e.target.dataset.pkgpick;
+    if (!code) return;
+    this.pkgSel[code] = e.target.checked;
+    this.renderPkgPicker();
+  };
+
+  selectedTestCodes = () => TEST_CATALOG.filter(t => this.pkgSel[t.code]).map(t => t.code);
+
+  updatePkgPricing = () => {
+    const codes = this.selectedTestCodes();
+    const ind = codes.reduce((a, c) => a + this.findTest(c).price, 0);
+    const price = Number(document.getElementById('pkgPrice').value) || 0;
+    const save = ind - price;
+    document.getElementById('pkgSelCount').textContent = 'Selected Tests: ' + codes.length;
+    document.getElementById('pkgSumIndividual').textContent = this.money(ind);
+    document.getElementById('pkgSumPrice').textContent = this.money(price);
+    const savEl = document.getElementById('pkgSumSavings');
+    savEl.textContent = this.money(save);
+    savEl.style.color = save >= 0 ? 'var(--green)' : 'var(--red)';
+    const warn = document.getElementById('pkgPriceWarning');
+    if (codes.length && price > ind) {
+      warn.textContent = 'Package price is higher than the individual test total (' + this.money(ind) + '). A package should not cost more than booking the tests separately.';
+      warn.style.display = 'block';
+    } else if (codes.length && price > 0 && save === 0) {
+      warn.textContent = 'Package price equals the individual test total — this package offers no savings.';
+      warn.style.background = 'var(--head-bg)';
+      warn.style.color = 'var(--text-2)';
+      warn.style.display = 'block';
+    } else {
+      warn.style.display = 'none';
+      warn.style.background = 'var(--red-soft)';
+      warn.style.color = 'var(--red)';
+    }
+  };
+
+  pkgFormMessage = (type, text) => {
+    const el = document.getElementById('pkgFormMessage');
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  savePackage = () => {
+    const $ = (id) => document.getElementById(id);
+    const code = $('pkgCode').value.trim().toUpperCase();
+    const name = $('pkgName').value.trim();
+    const cat = $('pkgCat').value;
+    const desc = $('pkgDesc').value.trim();
+    const price = Number($('pkgPrice').value) || 0;
+    const active = $('pkgActive').checked;
+    const codes = this.selectedTestCodes();
+    ['pkgCode', 'pkgName'].forEach(this.clearFieldError);
+
+    if (!code || !name || !cat || !price) return this.pkgFormMessage('error', '400 Validation error — Package code, name, category and price are required.');
+    if (!codes.length) return this.pkgFormMessage('error', 'Add at least one test to the package.');
+    /* API-123 — packageCode is unique within organization + branch */
+    if (!this.pkgEditing && this.packages.some(p => p.code === code)) {
+      this.setFieldError('pkgCode', 'Duplicate package code');
+      return this.pkgFormMessage('error', '409 Conflict — Duplicate package code');
+    }
+    /* API-124 — packageName is unique within organization + branch */
+    if (this.packages.some(p => p.name.toLowerCase() === name.toLowerCase() && p.code !== this.pkgEditing)) {
+      this.setFieldError('pkgName', 'Duplicate package name');
+      return this.pkgFormMessage('error', '409 Conflict — Duplicate package name');
+    }
+    const ind = codes.reduce((a, c) => a + this.findTest(c).price, 0);
+    if (price > ind) return this.pkgFormMessage('error', 'Package price cannot exceed the individual test total of ' + this.money(ind) + '.');
+
+    if (this.pkgEditing) {
+      const p = this.packages.find(x => x.code === this.pkgEditing);
+      Object.assign(p, { name, cat, desc, price, active, tests: codes });
+    } else {
+      this.packages.push({ code, name, cat, desc, price, active, tests: codes });
+    }
+    this.renderPackages();
+    this.pkgFormMessage('success', this.pkgEditing ? 'Package updated.' : 'Package created with ' + codes.length + ' tests.');
+    setTimeout(() => {
+      this.closePkgForm();
+      this.pkgToast(code + ' ' + (this.pkgEditing ? 'updated' : 'created') + ' \u00b7 ' + codes.length + ' tests, ' + this.money(price) + '.');
+      this.pkgEditing = null;
+    }, 900);
+  };
+
+  openPkgDetail = (code) => {
+    const p = this.packages.find(x => x.code === code);
+    if (!p) return;
+    this.pkgDetailCode = code;
+    const $ = (id) => document.getElementById(id);
+    $('pkgAddTestMessage').style.display = 'none';
+    $('pkgAddTestCode').value = '';
+    const ind = this.pkgIndividual(p);
+    const save = ind - p.price;
+    $('pkgDetailName').textContent = p.name;
+    $('pkgDetailSub').textContent = p.code + ' · ' + p.cat + ' · ' + p.tests.length + ' tests';
+    const field = (k, v) => '<div><div style="font-size: 11px; font-weight: 600; color: var(--text-2);">' + k + '</div><div style="font-size: 12.5px; font-weight: 600;">' + v + '</div></div>';
+    $('pkgDetailInfo').innerHTML = field('Package Code', p.code) + field('Package Name', p.name)
+      + field('Category', p.cat) + field('Package Price', this.money(p.price))
+      + field('Status', p.active ? 'Active' : 'Inactive')
+      + field('No. of Tests', String(p.tests.length))
+      + '<div style="grid-column: span 2;"><div style="font-size: 11px; font-weight: 600; color: var(--text-2);">Description</div><div style="font-size: 12.5px;">' + (p.desc || '—') + '</div></div>';
+
+    const cell = 'padding: 7px 12px; border-bottom: 1px solid var(--line-soft);';
+    $('pkgDetailTests').innerHTML = p.tests.map((c) => {
+      const t = this.findTest(c);
+      if (!t) return '';
+      return '<tr><td style="' + cell + ' font-family: ui-monospace, monospace; font-weight: 600;">' + t.code + '</td>'
+        + '<td style="' + cell + ' font-weight: 600;">' + t.name + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + t.dept + '</td>'
+        + '<td style="' + cell + ' text-align: right; font-variant-numeric: tabular-nums;">' + this.money(t.price) + '</td>'
+        + '<td style="' + cell + ' text-align: right;"><button type="button" data-remove="' + t.code + '" style="padding: 2px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--red); font-size: 11px; font-weight: 600; font-family: inherit; cursor: pointer;">Remove</button></td></tr>';
+    }).join('');
+
+    const row = (k, v, strong, color) => '<div style="display: flex; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); font-size: 12.5px;"><span style="color: var(--text-2); font-weight: 600;">' + k + '</span><span style="font-weight: ' + (strong ? '700' : '600') + '; color: ' + (color || 'var(--text)') + '; font-variant-numeric: tabular-nums;">' + v + '</span></div>';
+    $('pkgDetailPricing').innerHTML = row('Individual Total', this.money(ind))
+      + row('Package Price', this.money(p.price), true)
+      + row('Savings', this.money(save), true, save >= 0 ? 'var(--green)' : 'var(--red)');
+
+    $('pkgDetailToggle').textContent = p.active ? 'Deactivate' : 'Activate';
+    $('pkgDetailToggle').style.color = p.active ? 'var(--red)' : 'var(--green)';
+    $('pkgDetailModal').style.display = 'flex';
+  };
+
+  closePkgDetail = () => { document.getElementById('pkgDetailModal').style.display = 'none'; };
+
+  onPkgDetailTestClick = (e) => {
+    const btn = e.target.closest('[data-remove]');
+    if (!btn) return;
+    const p = this.packages.find(x => x.code === this.pkgDetailCode);
+    if (p && p.tests.length <= 1) return this.pkgToast('A package must contain at least one test.');
+    this.pkgRemoveTarget = btn.dataset.remove;
+    document.getElementById('pkgConfirmTarget').textContent = btn.dataset.remove;
+    document.getElementById('pkgConfirmModal').style.display = 'flex';
+  };
+
+  closePkgConfirm = () => { this.pkgRemoveTarget = null; document.getElementById('pkgConfirmModal').style.display = 'none'; };
+
+  confirmRemoveTest = () => {
+    const p = this.packages.find(x => x.code === this.pkgDetailCode);
+    const code = this.pkgRemoveTarget;
+    if (p && code) {
+      p.tests = p.tests.filter(c => c !== code);
+      const ind = this.pkgIndividual(p);
+      if (p.price > ind) p.price = ind;
+      this.renderPackages();
+    }
+    this.closePkgConfirm();
+    this.openPkgDetail(this.pkgDetailCode);
+    this.pkgToast(code + ' removed from ' + this.pkgDetailCode + '. Pricing recalculated.');
+  };
+
+  openExtract = () => {
+    this.extractSel = {}; this.dupMode = {}; this.extractBranch = '';
+    const $ = (id) => document.getElementById(id);
+    $('extractBranch').value = ''; $('extractSearch').value = ''; $('extractDept').value = ''; $('extractCat').value = '';
+    $('extractPanel').style.display = 'none';
+    $('extractEmptyState').style.display = 'block';
+    $('extractMessage').style.display = 'none';
+    $('extractSelectAll').checked = false;
+    this.updateExtractCount();
+    $('extractModal').style.display = 'flex';
+  };
+
+  closeExtract = () => { document.getElementById('extractModal').style.display = 'none'; };
+
+  onBranchChange = (e) => {
+    this.extractBranch = e.target.value;
+    this.extractSel = {}; this.dupMode = {};
+    const has = !!this.extractBranch;
+    document.getElementById('extractPanel').style.display = has ? 'block' : 'none';
+    document.getElementById('extractEmptyState').style.display = has ? 'none' : 'block';
+    document.getElementById('extractMessage').style.display = 'none';
+    document.getElementById('extractSelectAll').checked = false;
+    if (has) {
+      document.getElementById('extractBranchName').textContent = BRANCHES[this.extractBranch].name;
+      this.renderExtract();
+    }
+    this.updateExtractCount();
+  };
+
+  filteredExtract = () => {
+    if (!this.extractBranch) return [];
+    const q = document.getElementById('extractSearch').value.trim().toLowerCase();
+    const dept = document.getElementById('extractDept').value;
+    const cat = document.getElementById('extractCat').value;
+    return BRANCHES[this.extractBranch].tests.filter(t =>
+      (!q || (t.code + ' ' + t.name).toLowerCase().includes(q)) &&
+      (!dept || t.dept === dept) &&
+      (!cat || t.cat === cat)
+    );
+  };
+
+  renderExtract = () => {
+    const list = this.filteredExtract();
+    const existing = this.state.codes;
+    const cell = 'padding: 8px 12px; border-bottom: 1px solid var(--line-soft);';
+    const html = list.map((t) => {
+      const dup = existing.includes(t.code);
+      const mode = this.dupMode[t.code] || 'SKIP';
+      const checked = this.extractSel[t.code] ? ' checked' : '';
+      const statusCell = dup
+        ? '<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">'
+          + '<span style="padding: 1px 7px; background: var(--red-soft); color: var(--red); border-radius: 2px; font-size: 10.5px; font-weight: 700;">Test already exists</span>'
+          + '<span style="display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;">'
+          + '<label style="padding: 1px 7px; font-size: 10.5px; font-weight: 700; cursor: pointer; background: ' + (mode === 'SKIP' ? 'var(--head-bg)' : 'var(--bg)') + '; color: ' + (mode === 'SKIP' ? 'var(--text)' : 'var(--text-3)') + ';"><input type="radio" name="dup-' + t.code + '" data-dup="' + t.code + '" value="SKIP" style="display: none;"' + (mode === 'SKIP' ? ' checked' : '') + ' />Skip</label>'
+          + '<label style="padding: 1px 7px; font-size: 10.5px; font-weight: 700; cursor: pointer; border-left: 1px solid var(--line); background: ' + (mode === 'UPDATE' ? 'var(--head-bg)' : 'var(--bg)') + '; color: ' + (mode === 'UPDATE' ? 'var(--text)' : 'var(--text-3)') + ';"><input type="radio" name="dup-' + t.code + '" data-dup="' + t.code + '" value="UPDATE" style="display: none;"' + (mode === 'UPDATE' ? ' checked' : '') + ' />Update</label>'
+          + '</span></div>'
+        : '<span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: ' + (t.active ? 'var(--green-soft)' : 'var(--grey-pill)') + '; color: ' + (t.active ? 'var(--green)' : 'var(--text-2)') + '; border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>' + (t.active ? 'Active' : 'Inactive') + '</span>';
+      return '<tr style="background: ' + (dup ? '#fffbfb' : 'transparent') + ';">'
+        + '<td style="' + cell + '"><input type="checkbox" data-pick="' + t.code + '"' + checked + ' style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" /></td>'
+        + '<td style="' + cell + ' font-family: ui-monospace, monospace; font-weight: 600;">' + t.code + '</td>'
+        + '<td style="' + cell + ' font-weight: 600;">' + t.name + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + t.dept + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + t.cat + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + t.sample + '</td>'
+        + '<td style="' + cell + ' text-align: right; font-variant-numeric: tabular-nums;">₹ ' + t.price + '</td>'
+        + '<td style="' + cell + '">' + statusCell + '</td>'
+        + '</tr>';
+    }).join('');
+    document.getElementById('extractBody').innerHTML = html;
+    document.getElementById('extractNoMatch').style.display = list.length ? 'none' : 'block';
+    document.getElementById('extractAvailCount').textContent = '· ' + list.length + ' of ' + BRANCHES[this.extractBranch].tests.length + ' shown';
+    const codes = list.map(t => t.code);
+    document.getElementById('extractSelectAll').checked = codes.length > 0 && codes.every(c => this.extractSel[c]);
+    this.updateExtractCount();
+  };
+
+  onSelectAll = (e) => {
+    const on = e.target.checked;
+    this.filteredExtract().forEach(t => { this.extractSel[t.code] = on; });
+    this.renderExtract();
+  };
+
+  onExtractRowChange = (e) => {
+    const pick = e.target.dataset.pick;
+    if (pick) { this.extractSel[pick] = e.target.checked; this.renderExtract(); return; }
+    const dup = e.target.dataset.dup;
+    if (dup) { this.dupMode[dup] = e.target.value; this.renderExtract(); }
+  };
+
+  updateExtractCount = () => {
+    const picked = Object.keys(this.extractSel).filter(c => this.extractSel[c]);
+    const dups = picked.filter(c => this.state.codes.includes(c));
+    const skips = dups.filter(c => (this.dupMode[c] || 'SKIP') === 'SKIP');
+    document.getElementById('extractCount').textContent = picked.length + (picked.length === 1 ? ' test selected' : ' tests selected');
+    document.getElementById('extractDupNote').textContent = dups.length
+      ? '· ' + dups.length + ' already exist (' + skips.length + ' to skip, ' + (dups.length - skips.length) + ' to update)'
+      : '';
+  };
+
+  extractMessage = (type, text) => {
+    const el = document.getElementById('extractMessage');
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  rowHtml = (t) => {
+    const cell = 'padding: 9px 16px;';
+    const btn = 'padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;';
+    return '<tr class="data-row" data-search="' + (t.code + ' ' + t.name).toLowerCase() + '" data-price="' + t.price + '" data-dept="' + (DEPT_CODE[t.dept] || '') + '" data-type="' + t.type + '" style="border-bottom: 1px solid var(--line-soft);">'
+      + '<td style="' + cell + ' font-family: ui-monospace, monospace; font-weight: 600;">' + t.code + '</td>'
+      + '<td style="' + cell + ' font-weight: 600;">' + t.name + '</td>'
+      + '<td style="' + cell + ' color: var(--text-2);">' + (t.type === 'PANEL' ? 'Panel' : 'Test') + '</td>'
+      + '<td style="' + cell + ' color: var(--text-2);">' + t.dept + '</td>'
+      + '<td style="' + cell + '"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: ' + (t.active ? 'var(--green-soft)' : 'var(--grey-pill)') + '; color: ' + (t.active ? 'var(--green)' : 'var(--text-2)') + '; border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>' + (t.active ? 'Active' : 'Inactive') + '</span></td>'
+      + '<td style="' + cell + '"><div style="display: flex; gap: 6px;">'
+      + '<button type="button" class="edit-btn" style="' + btn + ' color: var(--text-2);">Edit</button>'
+      + '<button type="button" class="delete-btn" style="' + btn + ' color: var(--red);">Delete</button>'
+      + '</div></td></tr>';
+  };
+
+  runExtract = () => {
+    if (!this.extractBranch) return this.extractMessage('error', 'Select a source branch first.');
+    const picked = BRANCHES[this.extractBranch].tests.filter(t => this.extractSel[t.code]);
+    if (!picked.length) return this.extractMessage('error', 'Select at least one test to extract.');
+
+    const existing = this.state.codes;
+    const fresh = picked.filter(t => !existing.includes(t.code));
+    const dups = picked.filter(t => existing.includes(t.code));
+    const updates = dups.filter(t => (this.dupMode[t.code] || 'SKIP') === 'UPDATE');
+    const skipped = dups.length - updates.length;
+
+    const body = document.getElementById('tableBody');
+    body.insertAdjacentHTML('beforeend', fresh.map(this.rowHtml).join(''));
+    updates.forEach((t) => {
+      const row = Array.from(body.querySelectorAll('.data-row')).find(r => r.cells[0].textContent.trim() === t.code);
+      if (!row) return;
+      row.cells[1].textContent = t.name;
+      row.cells[3].textContent = t.dept;
+      row.setAttribute('data-dept', DEPT_CODE[t.dept] || '');
+      row.setAttribute('data-search', (t.code + ' ' + t.name).toLowerCase());
+    });
+
+    this.setState({ codes: [...existing, ...fresh.map(t => t.code)] });
+    const parts = [fresh.length + ' test' + (fresh.length === 1 ? '' : 's') + ' extracted successfully.'];
+    if (updates.length) parts.push(updates.length + ' existing test(s) updated.');
+    if (skipped) parts.push(skipped + ' skipped (already exist).');
+    this.extractMessage('success', parts.join(' '));
+    setTimeout(() => {
+      this.closeExtract();
+      this.filter();
+      this.toast(parts.join(' '));
+    }, 1100);
+  };
+
+  focusStyle = (el, on) => {
+    if (el.dataset.invalid === 'true') return;
+    el.style.borderColor = on ? 'var(--blue)' : 'var(--line)';
+    el.style.boxShadow = on ? '0 0 0 2px rgba(22, 104, 220, 0.14)' : 'none';
+  };
+
+  setFieldError = (id, msg) => {
+    const el = document.getElementById(id);
+    el.dataset.invalid = 'true';
+    el.style.borderColor = 'var(--red)';
+    el.style.boxShadow = '0 0 0 2px rgba(208, 52, 44, 0.12)';
+    el.setAttribute('aria-invalid', 'true');
+    const err = document.getElementById(id + 'Error');
+    if (err) { err.textContent = msg; err.style.display = 'block'; }
+  };
+
+  clearFieldError = (id) => {
+    const el = document.getElementById(id);
+    if (el.dataset.invalid !== 'true') return;
+    el.dataset.invalid = 'false';
+    el.style.borderColor = 'var(--line)';
+    el.style.boxShadow = 'none';
+    el.removeAttribute('aria-invalid');
+    const err = document.getElementById(id + 'Error');
+    if (err) err.style.display = 'none';
+  };
+
+  message = (type, text) => {
+    const el = document.getElementById('formMessage');
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  toast = (text) => {
+    const el = document.getElementById('pageToast');
+    el.textContent = '\u2713  ' + text;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3000);
+  };
+
+  openModal = () => {
+    this.editingRow = null;
+    const code = document.getElementById('testCode');
+    code.disabled = false;
+    code.style.background = 'var(--bg)';
+    code.style.color = 'var(--text)';
+    document.getElementById('modalTitle').textContent = 'Create Test';
+    document.getElementById('submitBtn').textContent = 'Create Test';
+    document.getElementById('createModal').style.display = 'flex';
+  };
+
+  openEdit = (row) => {
+    const $ = (id) => document.getElementById(id);
+    ['testCode', 'testName', 'testType', 'testDept', 'testPrice'].forEach(this.clearFieldError);
+    $('formMessage').style.display = 'none';
+    this.editingRow = row;
+    const code = row.cells[0].textContent.trim();
+    $('testCode').value = code;
+    $('testName').value = row.cells[1].textContent.trim();
+    $('testType').value = row.getAttribute('data-type') || '';
+    $('testDept').value = DEPT_CODE[row.cells[3].textContent.trim()] || '';
+    $('testPrice').value = row.getAttribute('data-price') || '';
+    $('testActive').checked = row.cells[4].textContent.trim().indexOf('Inactive') === -1;
+    const codeEl = $('testCode');
+    codeEl.disabled = true;
+    codeEl.style.background = 'var(--head-bg)';
+    codeEl.style.color = 'var(--text-2)';
+    $('modalTitle').textContent = 'Edit Test \u00b7 ' + code;
+    $('submitBtn').textContent = 'Save Changes';
+    $('createModal').style.display = 'flex';
+  };
+
+  closeModal = () => {
+    document.getElementById('createModal').style.display = 'none';
+    this.editingRow = null;
+    const codeEl = document.getElementById('testCode');
+    codeEl.disabled = false;
+    codeEl.style.background = 'var(--bg)';
+    codeEl.style.color = 'var(--text)';
+    document.getElementById('modalTitle').textContent = 'Create Test';
+    document.getElementById('submitBtn').textContent = 'Create Test';
+    ['testCode', 'testName', 'testType', 'testDept'].forEach((id) => { document.getElementById(id).value = ''; this.clearFieldError(id); });
+    document.getElementById('testActive').checked = true;
+    document.getElementById('testPrice').value = '';
+    this.clearFieldError('testPrice');
+    document.getElementById('formMessage').style.display = 'none';
+  };
+
+  submit = () => {
+    const code = document.getElementById('testCode').value.trim().toUpperCase();
+    const name = document.getElementById('testName').value.trim();
+    const type = document.getElementById('testType').value;
+    const dept = document.getElementById('testDept').value;
+    const price = document.getElementById('testPrice').value.trim();
+    const active = document.getElementById('testActive').checked;
+    const btn = document.getElementById('submitBtn');
+
+    ['testCode', 'testName', 'testType', 'testDept', 'testPrice'].forEach(this.clearFieldError);
+    document.getElementById('formMessage').style.display = 'none';
+
+    let bad = false;
+    if (!code) { this.setFieldError('testCode', 'Test code is required'); bad = true; }
+    if (!name) { this.setFieldError('testName', 'Test name is required'); bad = true; }
+    if (!type) { this.setFieldError('testType', 'Type is required'); bad = true; }
+    if (!dept) { this.setFieldError('testDept', 'Department is required'); bad = true; }
+    if (price === '') { this.setFieldError('testPrice', 'Price is required'); bad = true; }
+    else if (isNaN(Number(price)) || Number(price) < 0) { this.setFieldError('testPrice', 'Enter a valid amount'); bad = true; }
+    if (bad) return this.message('error', '400 Validation error \u2014 Required fields are missing');
+
+    if (this.editingRow) {
+      const row = this.editingRow;
+      btn.disabled = true; btn.style.opacity = '0.65'; btn.style.cursor = 'wait'; btn.textContent = 'Saving\u2026';
+      setTimeout(() => {
+        btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'Save Changes';
+        const deptName = Object.keys(DEPT_CODE).find(k => DEPT_CODE[k] === dept) || dept;
+        row.cells[1].textContent = name;
+        row.cells[2].textContent = type === 'PANEL' ? 'Panel' : 'Test';
+        row.cells[3].textContent = deptName;
+        row.cells[4].innerHTML = '<span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: ' + (active ? 'var(--green-soft)' : 'var(--grey-pill)') + '; color: ' + (active ? 'var(--green)' : 'var(--text-2)') + '; border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>' + (active ? 'Active' : 'Inactive') + '</span>';
+        row.setAttribute('data-type', type);
+        row.setAttribute('data-dept', dept);
+        row.setAttribute('data-price', String(Number(price)));
+        row.setAttribute('data-search', (code + ' ' + name).toLowerCase());
+        this.message('success', '200 OK \u2014 Test updated successfully');
+        setTimeout(() => { this.closeModal(); this.filter(); this.toast('Test ' + code + ' updated'); }, 1000);
+      }, 700);
+      return;
+    }
+
+    if (this.state.codes.includes(code)) {
+      this.setFieldError('testCode', 'Duplicate test code');
+      return this.message('error', '409 Conflict \u2014 Duplicate test code');
+    }
+
+    btn.disabled = true; btn.style.opacity = '0.65'; btn.style.cursor = 'wait'; btn.textContent = 'Creating\u2026';
+    setTimeout(() => {
+      btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'Create Test';
+      if (code === 'FAIL-500') return this.message('error', '500 Internal server error \u2014 Please try again');
+      if (code === 'FAIL-404') return this.message('error', '404 Not Found \u2014 Organization or branch not found');
+      this.setState({ codes: [...this.state.codes, code] });
+      this.message('success', '201 Created \u2014 Test created successfully');
+      setTimeout(() => { this.closeModal(); this.toast('Test ' + code + ' created'); }, 1200);
+    }, 900);
+  };
+
+  askDelete = (row) => { this.pendingRow = row; document.getElementById('deleteTarget').textContent = row.cells[0].textContent.trim(); document.getElementById('deleteModal').style.display = 'flex'; };
+  closeDelete = () => { this.pendingRow = null; document.getElementById('deleteModal').style.display = 'none'; };
+  confirmDelete = () => {
+    const row = this.pendingRow;
+    if (!row) return this.closeDelete();
+    const code = row.cells[0].textContent.trim();
+    row.remove();
+    this.setState({ codes: this.state.codes.filter((c) => c !== code) });
+    this.closeDelete();
+    this.filter();
+    this.toast('Test ' + code + ' deleted');
+  };
+
+  filter = () => {
+    document.getElementById('searchError').style.display = 'none';
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const dept = document.getElementById('filterDept').value;
+    const type = document.getElementById('filterType').value;
+    let visible = 0;
+    document.querySelectorAll('.data-row').forEach((row) => {
+      const match = (row.getAttribute('data-search').includes(q) || q === '') && 
+                    (!dept || row.getAttribute('data-dept') === dept) && 
+                    (!type || row.getAttribute('data-type') === type);
+      row.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('resultCount').textContent = visible;
+  };
+
+  /* ------------------------------------------- API-111 / API-112 / API-113 */
+  paramToast = (text) => {
+    const el = document.getElementById('paramToast');
+    el.textContent = '\u2713  ' + text;
+    el.style.background = 'var(--green-soft)';
+    el.style.color = 'var(--green)';
+    el.style.borderLeftColor = 'var(--green)';
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3200);
+  };
+
+  scopedParams = () => LIMS.PARAMETERS.filter(p => !p.branchId || p.branchId === LIMS.session.branchId);
+
+  rangesFor = (parameterId) => LIMS.REFERENCE_RANGES.filter(r => r.parameterId === parameterId);
+
+  bandText = (r) => Number(r.ageMin) + ' \u2013 ' + Number(r.ageMax) + ' ' + String(r.ageUnit || 'YEARS').toLowerCase();
+
+  boundsText = (r) => {
+    if (r.referenceMin === null && r.referenceMax === null) return r.referenceRange || '\u2014';
+    const lo = r.referenceMin === null || r.referenceMin === undefined ? '\u2014' : r.referenceMin;
+    const hi = r.referenceMax === null || r.referenceMax === undefined ? '\u2014' : r.referenceMax;
+    return lo + ' \u2013 ' + hi + (r.unit ? ' ' + r.unit : '');
+  };
+
+  renderParams = () => {
+    const cell = 'padding: 9px 16px;';
+    const btn = 'padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;';
+    const params = this.scopedParams();
+    document.getElementById('paramBody').innerHTML = params.map((p) => {
+      const bands = this.rangesFor(p.id).length;
+      return '<tr style="border-bottom: 1px solid var(--line-soft);">'
+        + '<td style="' + cell + ' font-family: ui-monospace, monospace; font-weight: 600;">' + p.parameterCode + '</td>'
+        + '<td style="' + cell + ' font-weight: 600;">' + p.parameterName + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + (p.unit || '\u2014') + '</td>'
+        + '<td style="' + cell + ' color: var(--text-2);">' + (p.defaultReferenceRange || '\u2014') + '</td>'
+        + '<td style="' + cell + ' text-align: right; font-variant-numeric: tabular-nums;">' + bands + '</td>'
+        + '<td style="' + cell + '"><button type="button" data-addrange="' + p.parameterCode + '" style="' + btn + ' color: var(--text-2);">Add Range</button></td>'
+        + '</tr>';
+    }).join('');
+    document.getElementById('paramCount').textContent = params.length;
+
+    const rows = [];
+    params.forEach((p) => {
+      this.rangesFor(p.id).forEach((r) => {
+        rows.push('<tr style="border-bottom: 1px solid var(--line-soft);">'
+          + '<td style="' + cell + ' font-family: ui-monospace, monospace; font-weight: 600;">' + p.parameterCode + '</td>'
+          + '<td style="' + cell + ' color: var(--text-2);">' + (r.gender || 'ANY') + '</td>'
+          + '<td style="' + cell + ' color: var(--text-2);">' + this.bandText(r) + '</td>'
+          + '<td style="' + cell + ' color: var(--text-2);">' + (r.pregnancyFlag ? 'Yes' : 'No') + '</td>'
+          + '<td style="' + cell + ' font-variant-numeric: tabular-nums;">' + this.boundsText(r) + '</td>'
+          + '<td style="' + cell + ' color: var(--text-2);">' + (r.effectiveFrom || '\u2014') + ' \u2192 ' + (r.effectiveTo || 'open') + '</td>'
+          + '</tr>');
+      });
+    });
+    document.getElementById('rangeBody').innerHTML = rows.join('');
+    document.getElementById('rangeCount').textContent = rows.length;
+  };
+
+  onParamTableClick = (e) => {
+    const t = e.target.closest('[data-addrange]');
+    if (!t) return;
+    this.openRange(t.dataset.addrange);
+  };
+
+  paramMessage = (elId, type, text) => {
+    const el = document.getElementById(elId);
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  openParam = () => {
+    ['paramCode', 'paramName', 'paramUnit', 'paramDefault'].forEach((id) => { document.getElementById(id).value = ''; });
+    ['paramCode', 'paramName'].forEach(this.clearFieldError);
+    document.getElementById('paramMessage').style.display = 'none';
+    document.getElementById('paramModal').style.display = 'flex';
+  };
+
+  closeParam = () => { document.getElementById('paramModal').style.display = 'none'; };
+
+  submitParam = async () => {
+    const $ = (id) => document.getElementById(id);
+    const code = $('paramCode').value.trim().toUpperCase();
+    const name = $('paramName').value.trim();
+    const unit = $('paramUnit').value.trim();
+    const def = $('paramDefault').value.trim();
+    ['paramCode', 'paramName'].forEach(this.clearFieldError);
+    $('paramMessage').style.display = 'none';
+
+    let bad = false;
+    if (!code) { this.setFieldError('paramCode', 'Parameter code is required'); bad = true; }
+    if (!name) { this.setFieldError('paramName', 'Parameter name is required'); bad = true; }
+    if (bad) return this.paramMessage('paramMessage', 'error', '400 Validation error \u2014 Required fields are missing');
+
+    if (LIMS.parameterByCode(code, LIMS.session.organizationId, LIMS.session.branchId)) {
+      this.setFieldError('paramCode', 'Duplicate parameter code');
+      return this.paramMessage('paramMessage', 'error', '409 Conflict \u2014 Duplicate parameter code');
+    }
+
+    const btn = $('submitParamBtn');
+    btn.disabled = true; btn.style.opacity = '0.65'; btn.textContent = 'Creating\u2026';
+    try {
+      const res = await LIMS.request('createParameter', {
+        contract: 'API-111',
+        body: {
+          organizationId: LIMS.session.organizationId,
+          branchId: LIMS.session.branchId,
+          parameterCode: code,
+          parameterName: name,
+          unit: unit || null,
+          defaultReferenceRange: def || null
+        },
+        resolve: () => ({ status: 201, message: 'Parameter created successfully', data: { id: LIMS.newId() } })
+      });
+      LIMS.PARAMETERS.push({
+        id: (res.data && res.data.id) || LIMS.newId(),
+        organizationId: LIMS.session.organizationId,
+        branchId: LIMS.session.branchId,
+        testId: null,
+        parameterCode: code,
+        parameterName: name,
+        unit: unit || '',
+        defaultReferenceRange: def || ''
+      });
+      this.renderParams();
+      this.paramMessage('paramMessage', 'success', '201 Created \u2014 Parameter created successfully');
+      setTimeout(() => { this.closeParam(); this.paramToast('Parameter ' + code + ' created.'); }, 900);
+    } catch (err) {
+      this.paramMessage('paramMessage', 'error', (err.status ? err.status + ' \u2014 ' : '') + (err.message || 'Request failed'));
+    } finally {
+      btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Create Parameter';
+    }
+  };
+
+  openRange = (code) => {
+    const $ = (id) => document.getElementById(id);
+    $('rngParam').value = typeof code === 'string' ? code : '';
+    $('rngGender').value = 'ANY';
+    $('rngAgeMin').value = '0';
+    $('rngAgeMax').value = '150';
+    $('rngAgeUnit').value = 'YEARS';
+    $('rngRefMin').value = '';
+    $('rngRefMax').value = '';
+    $('rngCritLow').value = '';
+    $('rngCritHigh').value = '';
+    $('rngText').value = '';
+    $('rngPreg').checked = false;
+    $('rngFrom').value = new Date().toISOString().slice(0, 10);
+    $('rngTo').value = '';
+    ['rngParam', 'rngAge', 'rngBounds', 'rngDate'].forEach((id) => { const e = $(id + 'Error'); if (e) e.style.display = 'none'; });
+    $('rangeMessage').style.display = 'none';
+    $('rangeModal').style.display = 'flex';
+  };
+
+  closeRange = () => { document.getElementById('rangeModal').style.display = 'none'; };
+
+  submitRange = async () => {
+    const $ = (id) => document.getElementById(id);
+    const err = (id, msg) => { const e = $(id); e.textContent = msg; e.style.display = 'block'; };
+    ['rngParamError', 'rngAgeError', 'rngBoundsError', 'rngDateError'].forEach((id) => { $(id).style.display = 'none'; });
+    $('rangeMessage').style.display = 'none';
+
+    const code = $('rngParam').value.trim().toUpperCase();
+    const param = LIMS.parameterByCode(code, LIMS.session.organizationId, LIMS.session.branchId);
+    const gender = $('rngGender').value;
+    const ageMin = Number($('rngAgeMin').value || 0);
+    const ageMax = Number($('rngAgeMax').value || 150);
+    const ageUnit = $('rngAgeUnit').value;
+    const num = (id) => ($(id).value === '' ? null : Number($(id).value));
+    const referenceMin = num('rngRefMin');
+    const referenceMax = num('rngRefMax');
+    const effectiveFrom = $('rngFrom').value || null;
+    const effectiveTo = $('rngTo').value || null;
+    const pregnancyFlag = $('rngPreg').checked;
+
+    if (!code) { err('rngParamError', 'Parameter code is required'); return this.paramMessage('rangeMessage', 'error', '400 Validation error \u2014 Parameter is required'); }
+    if (!param) { err('rngParamError', 'Parameter not found in this organization and branch'); return this.paramMessage('rangeMessage', 'error', '404 Not Found \u2014 Parameter not found'); }
+    if (ageMax < ageMin) { err('rngAgeError', 'Age max must be greater than or equal to age min'); return this.paramMessage('rangeMessage', 'error', '400 Bad Request \u2014 Invalid age range'); }
+    if (effectiveFrom && effectiveTo && effectiveTo < effectiveFrom) { err('rngDateError', 'Effective to must be on or after effective from'); return this.paramMessage('rangeMessage', 'error', '400 Bad Request \u2014 Invalid effective date range'); }
+    if (referenceMin !== null && referenceMax !== null && referenceMax < referenceMin) { err('rngBoundsError', 'Reference max must be greater than or equal to reference min'); return this.paramMessage('rangeMessage', 'error', '400 Bad Request \u2014 Invalid reference bounds'); }
+
+    const candidate = { parameterId: param.id, gender, ageMin, ageMax, ageUnit, pregnancyFlag, effectiveFrom, effectiveTo };
+    const clash = LIMS.overlappingRange(candidate);
+    if (clash) {
+      return this.paramMessage('rangeMessage', 'error', '409 Conflict \u2014 Overlapping demographic band. An active band already covers '
+        + (clash.gender || 'ANY') + ' ' + this.bandText(clash) + ' from ' + (clash.effectiveFrom || 'open') + ' to ' + (clash.effectiveTo || 'open') + '.');
+    }
+
+    const btn = $('submitRangeBtn');
+    btn.disabled = true; btn.style.opacity = '0.65'; btn.textContent = 'Saving\u2026';
+    try {
+      const res = await LIMS.request('createReferenceRange', {
+        contract: 'API-112',
+        body: {
+          organizationId: LIMS.session.organizationId,
+          branchId: LIMS.session.branchId,
+          parameterId: param.id,
+          gender, ageMin, ageMax, ageUnit, pregnancyFlag,
+          referenceMin, referenceMax,
+          referenceRange: $('rngText').value.trim() || null,
+          criticalLow: num('rngCritLow'), criticalHigh: num('rngCritHigh'),
+          effectiveFrom, effectiveTo
+        },
+        resolve: () => ({ status: 201, message: 'Reference range created successfully', data: { id: LIMS.newId() } })
+      });
+      LIMS.REFERENCE_RANGES.push({
+        id: (res.data && res.data.id) || LIMS.newId(),
+        parameterId: param.id,
+        gender, ageMin, ageMax, ageUnit, pregnancyFlag,
+        referenceMin, referenceMax,
+        referenceRange: $('rngText').value.trim() || '',
+        criticalLow: num('rngCritLow'), criticalHigh: num('rngCritHigh'),
+        effectiveFrom, effectiveTo,
+        unit: param.unit || '',
+        ageMinYears: ageUnit === 'YEARS' ? ageMin : 0,
+        ageMaxYears: ageUnit === 'YEARS' ? ageMax : 150,
+        normalLow: referenceMin, normalHigh: referenceMax
+      });
+      this.renderParams();
+      this.paramMessage('rangeMessage', 'success', '201 Created \u2014 Reference range created successfully');
+      setTimeout(() => { this.closeRange(); this.paramToast('Reference range added for ' + code + '.'); }, 900);
+    } catch (e2) {
+      this.paramMessage('rangeMessage', 'error', (e2.status ? e2.status + ' \u2014 ' : '') + (e2.message || 'Request failed'));
+    } finally {
+      btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Save Reference Range';
+    }
+  };
+
+  lookupRange = async () => {
+    const $ = (id) => document.getElementById(id);
+    const out = $('lkResult');
+    const code = $('lkParam').value.trim().toUpperCase();
+    const param = LIMS.parameterByCode(code, LIMS.session.organizationId, LIMS.session.branchId);
+    const age = $('lkAge').value;
+    const box = (tone, title, body) => {
+      out.innerHTML = '<div style="padding: 10px 12px; border-radius: var(--radius); border-left: 3px solid ' + tone[0] + '; background: ' + tone[1] + '; color: ' + tone[2] + ';">'
+        + '<div style="font-size: 12.5px; font-weight: 700;">' + title + '</div>'
+        + (body ? '<div style="font-size: 12.5px; margin-top: 3px;">' + body + '</div>' : '') + '</div>';
+      out.style.display = 'block';
+    };
+    const bad = ['var(--red)', 'var(--red-soft)', 'var(--red)'];
+
+    if (!code || age === '') return box(bad, '400 Bad Request \u2014 Parameter code, gender, age and age unit are required.', '');
+    if (!param) return box(bad, '404 Not Found \u2014 Parameter not found', code + ' is not a parameter in X46 Diagnostics \u00b7 Pune Main Branch.');
+
+    const query = {
+      parameterId: param.id,
+      gender: $('lkGender').value,
+      age: Number(age),
+      ageUnit: $('lkAgeUnit').value,
+      pregnancyFlag: $('lkPreg').checked,
+      asOfDate: $('lkAsOf').value || undefined
+    };
+    try {
+      const res = await LIMS.request('lookupReferenceRange', {
+        contract: 'API-113',
+        query,
+        resolve: () => {
+          const hit = LIMS.lookupRange(query);
+          return hit ? { status: 200, data: hit } : { status: 404, error: 'No matching reference range found' };
+        }
+      });
+      const r = res.data;
+      box(['var(--green)', 'var(--green-soft)', 'var(--green)'],
+        '200 OK \u2014 ' + param.parameterCode + ' \u00b7 ' + this.boundsText(r),
+        (r.gender || 'ANY') + ' \u00b7 ' + this.bandText(r) + ' \u00b7 pregnancy ' + (r.pregnancyFlag ? 'yes' : 'no')
+          + ' \u00b7 effective ' + (r.effectiveFrom || 'open') + ' \u2192 ' + (r.effectiveTo || 'open'));
+    } catch (e) {
+      box(bad, (e.status ? e.status + ' \u2014 ' : '') + (e.message || 'Lookup failed'),
+        e.status === 404 ? 'No band covers this gender, age and effective date for ' + code + '.' : '');
+    }
+  };
+
+  /* --------------------------------------------------------------- API-121 */
+  addTestToPackage = async () => {
+    const $ = (id) => document.getElementById(id);
+    const msg = $('pkgAddTestMessage');
+    const code = $('pkgAddTestCode').value.trim().toUpperCase();
+    const p = this.packages.find(x => x.code === this.pkgDetailCode);
+    const show = (type, text) => {
+      const ok = type === 'success';
+      msg.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+      msg.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+      msg.style.color = ok ? 'var(--green)' : 'var(--red)';
+      msg.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+      msg.style.display = 'block';
+    };
+    if (!p) return;
+    if (!code) return show('error', '400 Validation error \u2014 Test code is required');
+
+    const local = this.findTest(code);
+    if (!local) return show('error', '404 Not Found \u2014 Test not found. ' + code + ' is not in the test master for this organization and branch.');
+    if (p.tests.includes(code)) return show('error', '409 Conflict \u2014 Test already in package. ' + code + ' is already a member of ' + p.code + '.');
+
+    const master = LIMS.TESTS.find(t => t.testName.toLowerCase() === local.name.toLowerCase());
+    const pkgMaster = LIMS.TEST_PACKAGES.find(x => x.packageCode === p.code) || LIMS.TEST_PACKAGES[0];
+    try {
+      await LIMS.request('addTestToPackage', {
+        contract: 'API-121',
+        params: { packageId: pkgMaster.id },
+        body: { testId: master ? master.id : LIMS.newId(), displayOrder: p.tests.length + 1 },
+        resolve: () => (master
+          ? { status: 201, message: 'Test added to package successfully', data: { packageId: pkgMaster.id, testId: master.id } }
+          : { status: 404, error: 'Test not found' })
+      });
+      p.tests.push(code);
+      const ind = this.pkgIndividual(p);
+      if (p.price > ind) p.price = ind;
+      this.renderPackages();
+      $('pkgAddTestCode').value = '';
+      this.openPkgDetail(p.code);
+      show('success', '201 Created \u2014 ' + code + ' added to ' + p.code + '. Pricing recalculated.');
+    } catch (e) {
+      show('error', (e.status ? e.status + ' \u2014 ' : '') + (e.message || 'Request failed')
+        + (e.status === 404 ? '. ' + code + ' has no test master record in this organization and branch.' : ''));
+    }
+  };
+
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

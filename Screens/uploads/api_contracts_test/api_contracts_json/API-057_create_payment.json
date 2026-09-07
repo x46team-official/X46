@@ -1,0 +1,127 @@
+{
+  "functionality_id": "API-057",
+  "module": "Payment",
+  "functionality": "Create Payment",
+  "http_method": "POST",
+  "endpoint": "/api/payments",
+  "description": "Records a payment against a bill/accession/registration. Unlike other modules, organizationId and branchId are supplied in the request body rather than the path.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionId": "uuid, required - references accession_master.id",
+      "billingMasterId": "uuid, required - references billing_master.id",
+      "patientRegistrationId": "uuid, required - references patient_registrations.id",
+      "paymentMode": "enum, required - CASH | CARD | UPI | NET_BANKING | CHEQUE | WALLET | CORPORATE_CREDIT",
+      "amountPaid": "numeric(12,2), required",
+      "transactionReference": "string(100), optional",
+      "paymentStatus": "enum, optional - SUCCESS | PENDING | FAILED | PARTIAL, default SUCCESS",
+      "remarks": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "billingMasterId", "patientRegistrationId", "paymentMode", "amountPaid"],
+
+  "validation": [
+    "organization and branch must exist",
+    "accessionId must reference an existing accession (NOT NULL FK)",
+    "billingMasterId must reference an existing bill (NOT NULL FK)",
+    "patientRegistrationId must reference an existing registration (NOT NULL FK)",
+    "paymentMode must not be null and must reference a code in payment_mode_master for the same organization + branch (FK fk_payment_payment_mode)",
+    "amountPaid must not be null and must be >= 0 (CHECK) - see database_gap note regarding zero amounts",
+    "paymentStatus, if provided, must be one of SUCCESS, PENDING, FAILED, PARTIAL (CHECK)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Payment created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "accessionId": "uuid",
+        "billingMasterId": "uuid",
+        "patientRegistrationId": "uuid",
+        "paymentMode": "CASH",
+        "amountPaid": 350,
+        "transactionReference": "TXN-API-T116",
+        "paymentStatus": "SUCCESS"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "billingMasterId, accessionId, or patientRegistrationId does not reference an existing row",
+      "status_code": 404,
+      "response": { "success": false, "error": "Billing/accession/registration not found" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T120)",
+      "related_functionality_id": "API-061"
+    },
+    {
+      "condition": "paymentMode is not a valid code in payment_mode_master",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid payment mode" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T121)",
+      "related_functionality_id": "API-062"
+    },
+    {
+      "condition": "amountPaid is 0 or negative",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid payment amount" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T122)",
+      "related_functionality_id": "API-063",
+      "database_gap": true
+    },
+    {
+      "condition": "transactionReference duplicates an existing payment's transactionReference",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate transaction reference" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T123)",
+      "related_functionality_id": "API-064",
+      "database_gap": true
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["payment", "accession_master", "billing_master", "patient_registrations", "payment_mode_master"],
+    "relationships": [
+      "payment.accession_id -> accession_master.id",
+      "payment.billing_master_id -> billing_master.id",
+      "payment.patient_registration_id -> patient_registrations.id",
+      "payment.payment_mode -> payment_mode_master.payment_mode_code (organization_id, branch_id scoped, FK fk_payment_payment_mode)"
+    ],
+    "constraints": [
+      "accession_id NOT NULL",
+      "billing_master_id NOT NULL",
+      "patient_registration_id NOT NULL",
+      "payment_mode NOT NULL",
+      "amount_paid NOT NULL CHECK (amount_paid >= 0)",
+      "payment_status NOT NULL DEFAULT 'SUCCESS' CHECK IN (SUCCESS, PENDING, FAILED, PARTIAL)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/007_payment.sql",
+    "database/e2e-validation/017_payment_mode_master.sql",
+    "database/api_contracts_test/015_payment.sql"
+  ],
+
+  "test_ids": ["API-T116"],
+
+  "database_gap": true,
+  "notes": "DB GAP 1: amount_paid has CHECK (amount_paid >= 0), not > 0, so amountPaid = 0.00 is currently accepted by the database (database/api_contracts_test/015_payment.sql API-T122 confirms 'INSERT 0 1 — amount 0.00 accepted'). DB GAP 2: transaction_reference has no UNIQUE constraint or index anywhere in the schema, so duplicate transaction references are currently accepted (API-T123 confirms this). Per the task's DB GAP rule, the 400/409 error conditions above reflect the INTENDED API behavior, not what the database currently enforces - the database itself needs a CHECK (amount_paid > 0) and a UNIQUE constraint/index on (organization_id, branch_id, transaction_reference) to actually back these contracts. NOTE ON SOURCE DATA: docs/API_Contracts_and_Test_Results.xlsx has these two gap notes swapped between its API-T122 and API-T123 rows (the note text for the amount check is attached to the T123 row and vice versa) - this contract uses the corrected mapping, verified directly against database/api_contracts_test/015_payment.sql and database/schema/026_payment.sql."
+}

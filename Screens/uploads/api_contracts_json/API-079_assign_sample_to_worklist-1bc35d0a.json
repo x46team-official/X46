@@ -1,0 +1,111 @@
+{
+  "functionality_id": "API-079",
+  "module": "Worklist Management",
+  "functionality": "Assign Sample to Worklist",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accession-tests/{accessionTestId}/worklist",
+  "description": "Assigns an accession test line item to a worklist and worksheet for processing; advances sample_status to PROCESSING.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "accessionTestId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "worklistId": "uuid, required - references worklist_master.id",
+      "worksheetId": "uuid, required - references worksheet_master.id"
+    }
+  },
+  "required_fields": [
+    "organizationId",
+    "branchId",
+    "accessionTestId",
+    "worklistId",
+    "worksheetId"
+  ],
+  "validation": [
+    "accessionTestId must exist and belong to organization + branch",
+    "worklistId must reference an existing worklist_master row",
+    "worksheetId must reference an existing worksheet_master row"
+  ],
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Sample assigned to worklist successfully",
+      "data": {
+        "id": "uuid",
+        "worklistId": "uuid",
+        "worksheetId": "uuid",
+        "sampleStatus": "PROCESSING"
+      }
+    }
+  },
+  "errors": [
+    {
+      "condition": "accessionTestId not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Accession test not found"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T144)",
+      "related_functionality_id": "API-085"
+    },
+    {
+      "condition": "worklistId does not reference an existing worklist",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Worklist not found"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T145)",
+      "related_functionality_id": "API-086"
+    },
+    {
+      "condition": "worksheetId does not reference an existing worksheet",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Worksheet not found"
+      },
+      "source": "database/api_contracts_test/017_worklist.sql (API-T146)",
+      "related_functionality_id": "API-087"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": {
+        "success": false,
+        "error": "Internal server error"
+      }
+    }
+  ],
+  "database": {
+    "tables": [
+      "accession_tests",
+      "worklist_master",
+      "worksheet_master"
+    ],
+    "relationships": [
+      "accession_tests.worklist_id -> worklist_master.id",
+      "accession_tests.worksheet_id -> worksheet_master.id"
+    ],
+    "constraints": [
+      "worklist_id and worksheet_id are nullable FK columns on accession_tests"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/e2e-validation/009_worklist.sql",
+    "database/api_contracts_test/017_worklist.sql"
+  ],
+  "test_ids": [
+    "API-T138"
+  ]
+}

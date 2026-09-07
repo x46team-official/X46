@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12.5px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.4; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 8px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 3px; letter-spacing: .01em; }
+    .num { font-variant-numeric: tabular-nums; }
+    .card { background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; }
+    .chd { padding: 9px 13px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .api { font-size: 9.5px; font-weight: 700; letter-spacing: .04em; padding: 1px 6px; border-radius: 3px; background: var(--color-interactive-hover); color: var(--color-primary-deep); white-space: nowrap; }
+    .gap { font-size: 9.5px; font-weight: 700; letter-spacing: .04em; padding: 1px 6px; border-radius: 3px; background: #FEF3C7; color: #92400E; white-space: nowrap; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 190px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700;">X46</div>
+      <div style="font-size: 12.5px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 8px 14px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 11.5px; font-weight: 600; margin-top: 1px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 6px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <a href="Accession.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Accession</a>
+      <a href="Worklist.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist</a>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Price Quotation</a>
+      <div style="display: block; padding: 6px 14px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Finance Overview</div>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; position: sticky; top: 0; z-index: 6;">
+      <div>
+        <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Finance</div>
+        <h1 style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.01em;">Billing &amp; Collection Overview</h1>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px; border-right: 1px solid var(--color-border-light);">
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Prototype state</span>
+          <sc-for list="{{ stateTabs }}" as="st" hint-placeholder-count="4">
+            <button onClick="{{ st.onPick }}" style="padding: 4px 9px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid {{ st.border }}; background: {{ st.bg }}; color: {{ st.fg }};">{{ st.label }}</button>
+          </sc-for>
+        </div>
+        <a href="Finance Reports.dc.html" style="padding: 7px 13px; background: var(--color-primary-deep); color: #fff; border-radius: 4px; font-size: 11.5px; font-weight: 700;">Open Finance Reports</a>
+      </div>
+    </div>
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 10px 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 9px 10px; align-items: end;">
+      <div><label>From (bill_date)</label><input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" /></div>
+      <div><label>To (bill_date)</label><input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" /></div>
+      <div><label>Organization</label><select value="{{ org }}" onChange="{{ updateField }}" data-field="org"><sc-for list="{{ orgOptions }}" as="o" hint-placeholder-count="2"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></div>
+      <div><label>Branch</label><select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch"><sc-for list="{{ branchOptions }}" as="b" hint-placeholder-count="3"><option value="{{ b.value }}">{{ b.label }}</option></sc-for></select></div>
+      <div><label>User (created_by)</label><select value="{{ user }}" onChange="{{ updateField }}" data-field="user"><sc-for list="{{ userOptions }}" as="u" hint-placeholder-count="3"><option value="{{ u.value }}">{{ u.label }}</option></sc-for></select></div>
+      <div><label>Payment Type</label><select value="{{ mode }}" onChange="{{ updateField }}" data-field="mode"><sc-for list="{{ modeOptions }}" as="m" hint-placeholder-count="4"><option value="{{ m.value }}">{{ m.label }}</option></sc-for></select></div>
+      <div><label>Payment Status</label><select value="{{ status }}" onChange="{{ updateField }}" data-field="status"><sc-for list="{{ statusOptions }}" as="s" hint-placeholder-count="4"><option value="{{ s.value }}">{{ s.label }}</option></sc-for></select></div>
+      <div style="display: flex; gap: 6px; align-items: flex-end;">
+        <button onClick="{{ resetFilters }}" style="flex: 1; padding: 6px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Reset</button>
+      </div>
+    </div>
+
+
+    <div style="flex: 1; padding: 14px 18px 28px; display: flex; flex-direction: column; gap: 12px;">
+
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="border-color: #FCA5A5; background: #FEF2F2; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #991B1B;">Could not load finance data</div>
+            <div style="font-size: 11.5px; color: #991B1B;">The request failed. Filters were not applied and amounts are hidden.</div>
+          </div>
+          <button onClick="{{ retry }}" style="padding: 7px 14px; background: #fff; border: 1px solid #FCA5A5; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #991B1B; cursor: pointer;">Retry</button>
+        </div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(172px, 1fr)); gap: 12px;">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="7">
+          <div class="card" style="padding: 11px 13px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ k.label }}</div>
+            </div>
+            <div style="font-size: 21px; font-weight: 700; letter-spacing: -.01em; margin-top: 5px; color: {{ k.color }};" class="num">{{ k.value }}</div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ k.hint }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, 1fr); gap: 12px; align-items: start;">
+
+        <div class="card">
+          <div class="chd">
+            <span>Billing vs Collection · day-wise</span>
+          </div>
+          <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 16px 13px; display: flex; flex-direction: column; gap: 9px;">
+              <sc-for list="{{ skeletons }}" as="sk" hint-placeholder-count="5">
+                <div style="height: 14px; border-radius: 3px; background: linear-gradient(90deg, var(--color-gray-100), var(--color-gray-50), var(--color-gray-100)); width: {{ sk.w }};"></div>
+              </sc-for>
+              <div style="font-size: 11px; color: var(--color-text-tertiary);">Loading finance summary…</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ showChart }}" hint-placeholder-val="{{ true }}">
+            <div style="padding: 12px 13px;">
+              <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 10px; font-size: 11px; color: var(--color-text-secondary);">
+                <span style="display: flex; align-items: center; gap: 5px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: var(--color-primary-deep);"></span> Billing (payable_amount)</span>
+                <span style="display: flex; align-items: center; gap: 5px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: var(--color-secondary-green);"></span> Collection (amount_paid)</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat({{ dayCount }}, minmax(0, 1fr)); gap: 10px; align-items: end; height: 132px;">
+                <sc-for list="{{ days }}" as="d" hint-placeholder-count="6">
+                  <div style="display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; height: 100%;">
+                    <div style="display: flex; gap: 3px; align-items: flex-end; height: 100%;">
+                      <div style="flex: 1; background: var(--color-primary-deep); border-radius: 2px 2px 0 0; height: {{ d.billH }};" title="Billing"></div>
+                      <div style="flex: 1; background: var(--color-secondary-green); border-radius: 2px 2px 0 0; height: {{ d.payH }};" title="Collection"></div>
+                    </div>
+                    <div style="font-size: 9.5px; color: var(--color-text-tertiary); text-align: center;" class="num">{{ d.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: flex; gap: 16px; margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--color-border-light); font-size: 11.5px; color: var(--color-text-secondary); flex-wrap: wrap;">
+                <span>Collection rate <strong class="num">{{ collectionRate }}%</strong></span>
+                <span>Avg bill value <strong class="num">₹ {{ avgBill }}</strong></span>
+                <span>Cancelled bills excluded <strong class="num">{{ cancelledCount }}</strong></span>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 34px 16px; text-align: center;">
+              <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No bills in this range</div>
+              <div style="font-size: 11.5px; color: var(--color-text-tertiary);">No bills match the current filters. Widen the date range or clear branch/user filters.</div>
+              <button onClick="{{ resetFilters }}" style="margin-top: 10px; padding: 6px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Clear filters</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <div class="card">
+          <div class="chd"><span>Quick reports</span></div>
+          <div style="padding: 10px 13px; display: flex; flex-direction: column; gap: 6px;">
+            <sc-for list="{{ quickReports }}" as="r" hint-placeholder-count="5">
+              <a href="{{ r.href }}" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 10px; border: 1px solid var(--color-border-light); border-radius: 4px; font-size: 11.5px; font-weight: 600; color: var(--color-text-primary);" style-hover="border-color: var(--color-primary-bright); background: var(--color-interactive-hover);">
+                <span>{{ r.label }}</span>
+                <span style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ r.derivedFrom }}</span>
+              </a>
+            </sc-for>
+          </div>
+          <div style="padding: 9px 13px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50);">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary); margin-bottom: 5px;">Not available yet</div>
+            <div style="display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--color-text-secondary);">
+              <span>· Tax / GST breakup — not captured today</span>
+              <span>· Profitability &amp; cost per test — no cost data</span>
+              <span>· Credit-note / write-off ageing — not supported yet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, 1fr); gap: 12px; align-items: start;">
+
+        <div class="card">
+          <div class="chd">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <sc-for list="{{ listTabs }}" as="lt" hint-placeholder-count="2">
+                <button onClick="{{ lt.onPick }}" style="padding: 4px 10px; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; border: 1px solid {{ lt.border }}; background: {{ lt.bg }}; color: {{ lt.fg }};">{{ lt.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <sc-if value="{{ showBills }}" hint-placeholder-val="{{ true }}">
+            <div style="overflow-x: auto;">
+              <div style="min-width: 640px;">
+                <div style="display: grid; grid-template-columns: 96px 88px minmax(90px,1fr) 82px 82px 82px 84px; gap: 8px; padding: 7px 13px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+                  <div>Bill No.</div><div>Bill Date</div><div>Registration</div><div style="text-align: right;">Payable</div><div style="text-align: right;">Paid</div><div style="text-align: right;">Balance</div><div>Status</div>
+                </div>
+                <sc-for list="{{ bills }}" as="b" hint-placeholder-count="6">
+                  <div onClick="{{ b.onOpen }}" style="display: grid; grid-template-columns: 96px 88px minmax(90px,1fr) 82px 82px 82px 84px; gap: 8px; padding: 7px 13px; border-bottom: 1px solid var(--color-border-light); align-items: center; cursor: pointer;" style-hover="background: var(--color-interactive-hover);">
+                    <div style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);" class="num">{{ b.billNumber }}</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary);" class="num">{{ b.billDate }}</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="num">{{ b.regRef }}</div>
+                    <div style="font-size: 11.5px; font-weight: 600; text-align: right;" class="num">₹ {{ b.payable }}</div>
+                    <div style="font-size: 11.5px; text-align: right;" class="num">₹ {{ b.paid }}</div>
+                    <div style="font-size: 11.5px; font-weight: 700; text-align: right; color: {{ b.balColor }};" class="num">₹ {{ b.balance }}</div>
+                    <div><span style="padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ b.statusBg }}; color: {{ b.statusFg }};">{{ b.paymentStatus }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showPayments }}" hint-placeholder-val="{{ false }}">
+            <div style="overflow-x: auto;">
+              <div style="min-width: 640px;">
+                <div style="display: grid; grid-template-columns: 96px 96px 78px 88px minmax(90px,1fr) 84px; gap: 8px; padding: 7px 13px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+                  <div>Bill No.</div><div>Payment Date</div><div>Mode</div><div style="text-align: right;">Amount</div><div>Txn Reference</div><div>Status</div>
+                </div>
+                <sc-for list="{{ payments }}" as="p" hint-placeholder-count="6">
+                  <div onClick="{{ p.onOpen }}" style="display: grid; grid-template-columns: 96px 96px 78px 88px minmax(90px,1fr) 84px; gap: 8px; padding: 7px 13px; border-bottom: 1px solid var(--color-border-light); align-items: center; cursor: pointer;" style-hover="background: var(--color-interactive-hover);">
+                    <div style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);" class="num">{{ p.billNumber }}</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary);" class="num">{{ p.paymentDate }}</div>
+                    <div style="font-size: 11px;">{{ p.paymentMode }}</div>
+                    <div style="font-size: 11.5px; font-weight: 700; text-align: right;" class="num">₹ {{ p.amountPaid }}</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="num">{{ p.transactionReference }}</div>
+                    <div><span style="padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ p.statusBg }}; color: {{ p.statusFg }};">{{ p.paymentStatus }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 30px 16px; text-align: center;">
+              <div style="font-size: 12.5px; font-weight: 700; margin-bottom: 2px;">Nothing to show</div>
+              <div style="font-size: 11.5px; color: var(--color-text-tertiary);">No records match these filters.</div>
+            </div>
+          </sc-if>
+
+          <div style="padding: 8px 13px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); font-size: 11px; color: var(--color-text-secondary); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+            <span>{{ listFootLeft }}</span>
+            <span>{{ listFootRight }}</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="card">
+            <div class="chd"><span>Outstanding bills</span><span style="font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);">Balance pending</span></div>
+            <div>
+              <sc-for list="{{ dues }}" as="d" hint-placeholder-count="4">
+                <div onClick="{{ d.onOpen }}" style="padding: 8px 13px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer;" style-hover="background: var(--color-interactive-hover);">
+                  <div style="min-width: 0;">
+                    <div style="font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);" class="num">{{ d.billNumber }}</div>
+                    <div style="font-size: 10.5px; color: var(--color-text-tertiary);" class="num">{{ d.meta }}</div>
+                  </div>
+                  <div style="font-size: 12px; font-weight: 700; color: var(--color-error);" class="num">₹ {{ d.balance }}</div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ noDues }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 22px 13px; text-align: center; font-size: 11.5px; color: var(--color-text-tertiary);">No outstanding balance in this range.</div>
+              </sc-if>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="chd"><span>Top 10 tests billed</span></div>
+            <div style="padding: 4px 0;">
+              <sc-for list="{{ topTests }}" as="t" hint-placeholder-count="5">
+                <div style="padding: 5px 13px; display: grid; grid-template-columns: 18px minmax(0,1fr) 54px 64px; gap: 8px; align-items: center;">
+                  <div style="font-size: 10.5px; color: var(--color-text-tertiary);" class="num">{{ t.rank }}</div>
+                  <div style="font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ t.name }}</div>
+                  <div style="font-size: 11px; color: var(--color-text-secondary); text-align: right;" class="num">{{ t.count }} ×</div>
+                  <div style="font-size: 11.5px; font-weight: 700; text-align: right;" class="num">₹ {{ t.amount }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding: 8px 13px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); font-size: 10.5px; color: var(--color-text-secondary);">Counted from tests billed in the selected range.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 20; display: flex; justify-content: flex-end;">
+      <div style="width: 390px; max-width: 92vw; background: #fff; height: 100%; display: flex; flex-direction: column; box-shadow: -8px 0 24px rgba(17,24,39,.18);">
+        <div style="padding: 12px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ detailKind }}</div>
+            <div style="font-size: 15px; font-weight: 700;" class="num">{{ detailTitle }}</div>
+          </div>
+          <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 16px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;" style-hover="color: var(--color-error);">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 12px 16px; display: flex; flex-direction: column; gap: 7px;">
+          <sc-for list="{{ detailRows }}" as="r" hint-placeholder-count="6">
+            <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-light);">
+              <span style="color: var(--color-text-secondary);">{{ r.k }}</span>
+              <span style="font-weight: 600; text-align: right;" class="num">{{ r.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding: 11px 16px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px;">
+          <a href="Bill Details.dc.html" style="flex: 1; text-align: center; padding: 8px 12px; background: var(--color-primary-deep); color: #fff; border-radius: 4px; font-size: 11.5px; font-weight: 700;">Open full bill details</a>
+          <button onClick="{{ closeDetail }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const ORGS = [{ id: 'ORG-1', name: 'X46 Diagnostics' }, { id: 'ORG-2', name: 'Sanjeevani Labs' }];
+const BRANCHES = [
+  { id: 'BR-1', org: 'ORG-1', name: 'Pune Main' },
+  { id: 'BR-2', org: 'ORG-1', name: 'Baner' },
+  { id: 'BR-3', org: 'ORG-2', name: 'Nashik' }
+];
+const USERS = [
+  { id: 'U-1', name: 'A. Kulkarni' },
+  { id: 'U-2', name: 'S. Pawar' },
+  { id: 'U-3', name: 'R. Naik' }
+];
+const MODES = ['CASH', 'CARD', 'UPI', 'NET_BANKING', 'CHEQUE'];
+
+// Mock rows shaped exactly like billing_master / payment columns exposed by API-034 / API-058.
+const BILLS = [
+  { id: 'b1', billNumber: 'BILL0121', billDate: '2026-08-12', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004102', totalAmount: 2400, discountAmount: 100, concessionAmount: 0, additionalAmount: 0, payableAmount: 2300, paidAmount: 2300, paymentMode: 'UPI', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b2', billNumber: 'BILL0122', billDate: '2026-08-12', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004108', totalAmount: 1500, discountAmount: 0, concessionAmount: 75, additionalAmount: 0, payableAmount: 1425, paidAmount: 500, paymentMode: 'CASH', paymentStatus: 'Partial', isCancelled: false },
+  { id: 'b3', billNumber: 'BILL0123', billDate: '2026-08-13', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004115', totalAmount: 900, discountAmount: 0, concessionAmount: 0, additionalAmount: 50, payableAmount: 950, paidAmount: 0, paymentMode: null, paymentStatus: 'Pending', isCancelled: false },
+  { id: 'b4', billNumber: 'BILL0124', billDate: '2026-08-13', org: 'ORG-2', branch: 'BR-3', createdBy: 'U-3', reg: 'REG-2026-004121', totalAmount: 3600, discountAmount: 200, concessionAmount: 0, additionalAmount: 0, payableAmount: 3400, paidAmount: 3400, paymentMode: 'CARD', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b5', billNumber: 'BILL0125', billDate: '2026-08-14', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004130', totalAmount: 700, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 700, paidAmount: 700, paymentMode: 'CASH', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b6', billNumber: 'BILL0126', billDate: '2026-08-14', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004134', totalAmount: 2500, discountAmount: 0, concessionAmount: 125, additionalAmount: 0, payableAmount: 2375, paidAmount: 1000, paymentMode: 'UPI', paymentStatus: 'Partial', isCancelled: false },
+  { id: 'b7', billNumber: 'BILL0127', billDate: '2026-08-15', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004141', totalAmount: 1400, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 1400, paidAmount: 0, paymentMode: null, paymentStatus: 'Pending', isCancelled: false },
+  { id: 'b8', billNumber: 'BILL0128', billDate: '2026-08-15', org: 'ORG-2', branch: 'BR-3', createdBy: 'U-3', reg: 'REG-2026-004147', totalAmount: 1100, discountAmount: 100, concessionAmount: 0, additionalAmount: 0, payableAmount: 1000, paidAmount: 1000, paymentMode: 'NET_BANKING', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b9', billNumber: 'BILL0129', billDate: '2026-08-16', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004155', totalAmount: 4200, discountAmount: 300, concessionAmount: 0, additionalAmount: 0, payableAmount: 3900, paidAmount: 2000, paymentMode: 'CARD', paymentStatus: 'Partial', isCancelled: false },
+  { id: 'b10', billNumber: 'BILL0130', billDate: '2026-08-16', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-1', reg: 'REG-2026-004162', totalAmount: 600, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 600, paidAmount: 600, paymentMode: 'CASH', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b11', billNumber: 'BILL0131', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004170', totalAmount: 1800, discountAmount: 0, concessionAmount: 90, additionalAmount: 0, payableAmount: 1710, paidAmount: 1710, paymentMode: 'UPI', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b12', billNumber: 'BILL0132', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004176', totalAmount: 950, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 950, paidAmount: 0, paymentMode: null, paymentStatus: 'Pending', isCancelled: false },
+  { id: 'b13', billNumber: 'BILL0133', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004181', totalAmount: 1200, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 1200, paidAmount: 1200, paymentMode: 'CHEQUE', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b14', billNumber: 'BILL0134', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004184', totalAmount: 800, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 800, paidAmount: 0, paymentMode: null, paymentStatus: 'Pending', isCancelled: true }
+];
+
+const PAYMENTS = [
+  { id: 'p1', bill: 'b1', billNumber: 'BILL0121', paymentDate: '2026-08-12', paymentMode: 'UPI', amountPaid: 2300, paymentStatus: 'SUCCESS', transactionReference: 'TXN881201', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p2', bill: 'b2', billNumber: 'BILL0122', paymentDate: '2026-08-12', paymentMode: 'CASH', amountPaid: 500, paymentStatus: 'PARTIAL', transactionReference: 'RCPT-4410', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p3', bill: 'b4', billNumber: 'BILL0124', paymentDate: '2026-08-13', paymentMode: 'CARD', amountPaid: 3400, paymentStatus: 'SUCCESS', transactionReference: 'TXN881310', createdBy: 'U-3', org: 'ORG-2', branch: 'BR-3' },
+  { id: 'p4', bill: 'b5', billNumber: 'BILL0125', paymentDate: '2026-08-14', paymentMode: 'CASH', amountPaid: 700, paymentStatus: 'SUCCESS', transactionReference: 'RCPT-4418', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p5', bill: 'b6', billNumber: 'BILL0126', paymentDate: '2026-08-14', paymentMode: 'UPI', amountPaid: 1000, paymentStatus: 'PARTIAL', transactionReference: 'TXN881402', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p6', bill: 'b8', billNumber: 'BILL0128', paymentDate: '2026-08-15', paymentMode: 'NET_BANKING', amountPaid: 1000, paymentStatus: 'SUCCESS', transactionReference: 'NB-99120', createdBy: 'U-3', org: 'ORG-2', branch: 'BR-3' },
+  { id: 'p7', bill: 'b9', billNumber: 'BILL0129', paymentDate: '2026-08-16', paymentMode: 'CARD', amountPaid: 2000, paymentStatus: 'PARTIAL', transactionReference: 'TXN881601', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p8', bill: 'b10', billNumber: 'BILL0130', paymentDate: '2026-08-16', paymentMode: 'CASH', amountPaid: 600, paymentStatus: 'SUCCESS', transactionReference: 'RCPT-4431', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p9', bill: 'b11', billNumber: 'BILL0131', paymentDate: '2026-08-17', paymentMode: 'UPI', amountPaid: 1710, paymentStatus: 'SUCCESS', transactionReference: 'TXN881701', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p10', bill: 'b13', billNumber: 'BILL0133', paymentDate: '2026-08-17', paymentMode: 'CHEQUE', amountPaid: 1200, paymentStatus: 'SUCCESS', transactionReference: 'CHQ-30219', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-2' }
+];
+
+// billing_tests -> test_master rollup (schema-derivable)
+const TOP_TESTS = [
+  { name: 'Complete Blood Count', count: 42, amount: 14700 },
+  { name: 'Glycated Haemoglobin (HbA1c)', count: 28, amount: 16800 },
+  { name: 'Liver Function Panel', count: 19, amount: 17100 },
+  { name: 'Thyroid Stimulating Hormone', count: 18, amount: 7200 },
+  { name: 'Kidney Function Panel', count: 15, amount: 12750 },
+  { name: 'Lipid Profile', count: 14, amount: 9800 },
+  { name: 'Urine Routine', count: 12, amount: 2400 },
+  { name: 'Vitamin D (25-OH)', count: 9, amount: 12600 },
+  { name: 'Vitamin B12', count: 7, amount: 7700 },
+  { name: 'C-Reactive Protein', count: 6, amount: 3300 }
+];
+
+class Component extends DCLogic {
+  state = {
+    from: '2026-08-12', to: '2026-08-17',
+    org: 'ALL', branch: 'ALL', user: 'ALL', mode: 'ALL', status: 'ALL',
+    list: 'BILLS', view: 'DATA', detail: null
+  };
+
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    const patch = { [f]: e.target.value };
+    if (f === 'org') patch.branch = 'ALL';
+    this.setState(patch);
+  };
+  resetFilters = () => this.setState({ from: '2026-08-12', to: '2026-08-17', org: 'ALL', branch: 'ALL', user: 'ALL', mode: 'ALL', status: 'ALL', view: 'DATA' });
+  setList = (l) => () => this.setState({ list: l });
+  setView = (v) => () => this.setState({ view: v });
+  retry = () => this.setState({ view: 'DATA' });
+  closeDetail = () => this.setState({ detail: null });
+
+  openBill = (b) => () => this.setState({
+    detail: {
+      kind: 'Bill',
+      title: b.billNumber,
+      rows: [
+        ['bill_date', b.billDate],
+        ['branch', this.branchName(b.branch)],
+        ['patient_registration_id', b.reg],
+        ['total_amount', '₹ ' + this.money(b.totalAmount)],
+        ['discount_amount', '₹ ' + this.money(b.discountAmount)],
+        ['concession_amount', '₹ ' + this.money(b.concessionAmount)],
+        ['additional_amount', '₹ ' + this.money(b.additionalAmount)],
+        ['payable_amount', '₹ ' + this.money(b.payableAmount)],
+        ['paid_amount', '₹ ' + this.money(b.paidAmount)],
+        ['balance_amount', '₹ ' + this.money(b.payableAmount - b.paidAmount)],
+        ['payment_mode', b.paymentMode || '—'],
+        ['payment_status', b.paymentStatus],
+        ['created_by', this.userName(b.createdBy)],
+        ['is_cancelled', b.isCancelled ? 'true' : 'false'],
+        ['patient', 'open bill details for the patient record']
+      ]
+    }
+  });
+
+  openPayment = (p) => () => this.setState({
+    detail: {
+      kind: 'Payment',
+      title: p.transactionReference,
+      rows: [
+        ['bill_number', p.billNumber],
+        ['payment_date', p.paymentDate],
+        ['payment_mode', p.paymentMode],
+        ['amount_paid', '₹ ' + this.money(p.amountPaid)],
+        ['payment_status', p.paymentStatus],
+        ['transaction_reference', p.transactionReference],
+        ['branch', this.branchName(p.branch)],
+        ['created_by', this.userName(p.createdBy)],
+        ['accession', '—']
+      ]
+    }
+  });
+
+  branchName(id) { const b = BRANCHES.find(x => x.id === id); return b ? b.name : id; }
+  userName(id) { const u = USERS.find(x => x.id === id); return u ? u.name : id; }
+  money(n) { return Number(n || 0).toLocaleString('en-IN'); }
+
+  filteredBills() {
+    const s = this.state;
+    return BILLS.filter(b => !b.isCancelled
+      && b.billDate >= s.from && b.billDate <= s.to
+      && (s.org === 'ALL' || b.org === s.org)
+      && (s.branch === 'ALL' || b.branch === s.branch)
+      && (s.user === 'ALL' || b.createdBy === s.user)
+      && (s.mode === 'ALL' || b.paymentMode === s.mode)
+      && (s.status === 'ALL' || b.paymentStatus === s.status));
+  }
+
+  filteredPayments() {
+    const s = this.state;
+    return PAYMENTS.filter(p => p.paymentDate >= s.from && p.paymentDate <= s.to
+      && (s.org === 'ALL' || p.org === s.org)
+      && (s.branch === 'ALL' || p.branch === s.branch)
+      && (s.user === 'ALL' || p.createdBy === s.user)
+      && (s.mode === 'ALL' || p.paymentMode === s.mode));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const bills = this.filteredBills();
+    const payments = this.filteredPayments();
+
+    const billing = bills.reduce((a, b) => a + b.payableAmount, 0);
+    const collection = payments.reduce((a, p) => a + p.amountPaid, 0);
+    const due = bills.reduce((a, b) => a + Math.max(0, b.payableAmount - b.paidAmount), 0);
+    const cancelled = BILLS.filter(b => b.isCancelled && b.billDate >= s.from && b.billDate <= s.to).length;
+
+    const isLoading = s.view === 'LOADING';
+    const isError = s.view === 'ERROR';
+    const isEmpty = s.view === 'EMPTY' || (s.view === 'DATA' && bills.length === 0 && payments.length === 0);
+    const hasData = s.view === 'DATA' && !isEmpty;
+
+    const dayKey = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const dayKeys = [];
+    for (let d = new Date(s.from + 'T00:00:00'); d <= new Date(s.to + 'T00:00:00'); d.setDate(d.getDate() + 1)) {
+      dayKeys.push(dayKey(d));
+    }
+    const perDay = dayKeys.map(k => ({
+      key: k,
+      bill: bills.filter(b => b.billDate === k).reduce((a, b) => a + b.payableAmount, 0),
+      pay: payments.filter(p => p.paymentDate === k).reduce((a, p) => a + p.amountPaid, 0)
+    }));
+    const peak = Math.max(1, ...perDay.map(d => Math.max(d.bill, d.pay)));
+    const days = perDay.map(d => ({
+      label: d.key.slice(8) + '/' + d.key.slice(5, 7),
+      billH: Math.round((d.bill / peak) * 100) + '%',
+      payH: Math.round((d.pay / peak) * 100) + '%'
+    }));
+
+    const statusTone = (v) => ({
+      Paid: ['#DCFCE7', '#166534'], Partial: ['#DBEAFE', '#1E40AF'], Pending: ['#FEF3C7', '#92400E'],
+      SUCCESS: ['#DCFCE7', '#166534'], PARTIAL: ['#DBEAFE', '#1E40AF'], PENDING: ['#FEF3C7', '#92400E'], FAILED: ['#FEE2E2', '#991B1B']
+    }[v] || ['var(--color-gray-100)', 'var(--color-text-secondary)']);
+
+    // Patient-based metrics use unique patient registrations, not bill count.
+    const uniquePatients = new Set(bills.map(b => b.reg)).size;
+    const rangeDays = Math.max(1, dayKeys.length);
+    const avgRevenuePerPatient = uniquePatients ? Math.round(collection / uniquePatients) : 0;
+    const avgPatientsPerDay = Math.round((uniquePatients / rangeDays) * 10) / 10;
+
+    const mask = (v) => (isError ? '—' : v);
+    const kpis = [
+      { label: 'Total Billing', value: mask('₹ ' + this.money(billing)), hint: 'Cancelled bills excluded', color: 'var(--color-text-primary)' },
+      { label: 'Total Collection', value: mask('₹ ' + this.money(collection)), hint: 'Payments received in range', color: 'var(--color-text-primary)' },
+      { label: 'Pending / Due', value: mask('₹ ' + this.money(due)), hint: 'Outstanding on these bills', color: due > 0 ? 'var(--color-error)' : 'var(--color-text-primary)' },
+      { label: 'Bills', value: mask(String(bills.length)), hint: 'Bills raised in range', color: 'var(--color-text-primary)' },
+      { label: 'Payments', value: mask(String(payments.length)), hint: 'Payment transactions', color: 'var(--color-text-primary)' },
+      { label: 'Avg Revenue / Patient', value: mask('₹ ' + this.money(avgRevenuePerPatient)), hint: uniquePatients ? 'Collection ÷ ' + uniquePatients + ' unique patients' : 'Based on selected period', color: 'var(--color-text-primary)' },
+      { label: 'Avg Patients / Day', value: mask(String(avgPatientsPerDay)), hint: uniquePatients ? uniquePatients + ' patients ÷ ' + rangeDays + ' days' : 'Based on selected period', color: 'var(--color-text-primary)' }
+    ];
+
+    const branchList = BRANCHES.filter(b => s.org === 'ALL' || b.org === s.org);
+
+    const quickReports = [
+      ['Day-wise Billing', 'By bill date', 'DAY_BILLING'],
+      ['Day-wise Collection', 'By payment date', 'DAY_COLLECTION'],
+      ['Branch-wise Billing', 'Grouped by branch', 'BRANCH_BILLING'],
+      ['User-wise Billing', 'Grouped by user', 'USER_BILLING'],
+      ['Payment-type-wise Collection', 'Grouped by mode', 'MODE_COLLECTION']
+    ].map(([label, derivedFrom, key]) => ({ label, derivedFrom, href: 'Finance Reports.dc.html#' + key }));
+
+    const detail = s.detail;
+
+    return {
+      ...s,
+      kpis,
+      orgOptions: [{ value: 'ALL', label: 'All organizations' }].concat(ORGS.map(o => ({ value: o.id, label: o.name }))),
+      branchOptions: [{ value: 'ALL', label: 'All branches' }].concat(branchList.map(b => ({ value: b.id, label: b.name }))),
+      userOptions: [{ value: 'ALL', label: 'All users' }].concat(USERS.map(u => ({ value: u.id, label: u.name }))),
+      modeOptions: [{ value: 'ALL', label: 'All payment types' }].concat(MODES.map(m => ({ value: m, label: m.replace('_', ' ') }))),
+      statusOptions: [{ value: 'ALL', label: 'All statuses' }, { value: 'Paid', label: 'Paid' }, { value: 'Partial', label: 'Partial' }, { value: 'Pending', label: 'Pending' }],
+      updateField: this.updateField, resetFilters: this.resetFilters, retry: this.retry,
+      stateTabs: [['DATA', 'Data'], ['LOADING', 'Loading'], ['EMPTY', 'Empty'], ['ERROR', 'Error']].map(([k, label]) => {
+        const on = s.view === k;
+        return { label, onPick: this.setView(k), bg: on ? 'var(--color-primary-deep)' : '#fff', fg: on ? '#fff' : 'var(--color-text-secondary)', border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)' };
+      }),
+      isLoading, isError, isEmpty, showChart: hasData,
+      skeletons: [{ w: '92%' }, { w: '78%' }, { w: '84%' }, { w: '66%' }, { w: '88%' }],
+      days, dayCount: Math.max(1, days.length),
+      collectionRate: billing > 0 ? Math.round((collection / billing) * 100) : 0,
+      avgBill: bills.length ? this.money(Math.round(billing / bills.length)) : '0',
+      cancelledCount: cancelled,
+      quickReports,
+      listTabs: [['BILLS', 'Recent bills'], ['PAYMENTS', 'Recent payments']].map(([k, label]) => {
+        const on = s.list === k;
+        return { label, onPick: this.setList(k), bg: on ? 'var(--color-primary-deep)' : '#fff', fg: on ? '#fff' : 'var(--color-text-secondary)', border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)' };
+      }),
+      showBills: hasData && s.list === 'BILLS',
+      showPayments: hasData && s.list === 'PAYMENTS',
+      listFootLeft: s.list === 'BILLS' ? bills.length + ' bills · ₹ ' + this.money(billing) + ' billed' : payments.length + ' payments · ₹ ' + this.money(collection) + ' collected',
+      listFootRight: s.list === 'BILLS' ? 'Click a bill to see full details' : 'Click a payment to see the transaction',
+      bills: bills.slice().reverse().map(b => {
+        const bal = Math.max(0, b.payableAmount - b.paidAmount);
+        const tone = statusTone(b.paymentStatus);
+        return {
+          billNumber: b.billNumber, billDate: b.billDate.slice(8) + '/' + b.billDate.slice(5, 7), regRef: b.reg,
+          payable: this.money(b.payableAmount), paid: this.money(b.paidAmount), balance: this.money(bal),
+          balColor: bal > 0 ? 'var(--color-error)' : 'var(--color-text-primary)',
+          paymentStatus: b.paymentStatus, statusBg: tone[0], statusFg: tone[1],
+          onOpen: this.openBill(b)
+        };
+      }),
+      payments: payments.slice().reverse().map(p => {
+        const tone = statusTone(p.paymentStatus);
+        return {
+          billNumber: p.billNumber, paymentDate: p.paymentDate, paymentMode: p.paymentMode.replace('_', ' '),
+          amountPaid: this.money(p.amountPaid), transactionReference: p.transactionReference,
+          paymentStatus: p.paymentStatus, statusBg: tone[0], statusFg: tone[1],
+          onOpen: this.openPayment(p)
+        };
+      }),
+      dues: hasData ? bills.filter(b => b.payableAmount - b.paidAmount > 0).sort((a, b) => (b.payableAmount - b.paidAmount) - (a.payableAmount - a.paidAmount)).slice(0, 6).map(b => ({
+        billNumber: b.billNumber,
+        meta: b.billDate + ' · ' + this.branchName(b.branch) + ' · ' + b.paymentStatus,
+        balance: this.money(b.payableAmount - b.paidAmount),
+        onOpen: this.openBill(b)
+      })) : [],
+      noDues: hasData && bills.every(b => b.payableAmount - b.paidAmount <= 0),
+      topTests: isError ? [] : TOP_TESTS.map((t, i) => ({ rank: i + 1, name: t.name, count: t.count, amount: this.money(t.amount) })),
+      detail: detail ? true : false,
+      detailKind: detail ? detail.kind : '',
+      detailTitle: detail ? detail.title : '',
+      detailRows: detail ? detail.rows.map(([k, v]) => ({ k, v })) : [],
+      closeDetail: this.closeDetail
+    };
+  }
+}
+
+</script>
+</body>
+</html>

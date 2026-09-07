@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-071",
+  "module": "Sample Collection",
+  "functionality": "Invalid Collector",
+  "http_method": "POST",
+  "endpoint": "/api/sample-collections",
+  "description": "Documents the specific error scenario of API-069 (Create Sample Collection) where collectorId does not reference an existing user. Same endpoint as API-069, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "collectorId": "'00000000-0000-0000-0000-000000000000' - not an existing users row in this scenario" }
+  },
+
+  "required_fields": ["collectorId"],
+
+  "validation": ["collectorId, if provided, must reference an existing user (FK)"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-069 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "collectorId does not reference an existing user",
+      "status_code": 404,
+      "response": { "success": false, "error": "Collector not found" },
+      "source": "database/api_contracts_test/016_sample_collection.sql (API-T130)"
+    }
+  ],
+
+  "database": {
+    "tables": ["sample_collection", "users"],
+    "relationships": ["sample_collection.collector_id -> users.id"],
+    "constraints": ["collector_id REFERENCES users(id)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/016_sample_collection.sql (API-T130)"],
+
+  "test_ids": ["API-T130"]
+}

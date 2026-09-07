@@ -1,0 +1,46 @@
+{
+  "functionality_id": "API-064",
+  "module": "Payment",
+  "functionality": "Duplicate Transaction Reference",
+  "http_method": "POST",
+  "endpoint": "/api/payments",
+  "description": "Documents the specific error scenario of API-057 (Create Payment) where transactionReference duplicates an existing payment. Same endpoint as API-057, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering. This is a confirmed DB GAP.",
+
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": { "transactionReference": "'TXN0001' - duplicate of an existing payment's transactionReference in this scenario" }
+  },
+
+  "required_fields": ["transactionReference"],
+
+  "validation": ["transactionReference should be unique per the intended API contract"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-057 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "transactionReference already exists on another payment",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate transaction reference" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T123)",
+      "source_annotation": "E2E validation identifies DB GAP"
+    }
+  ],
+
+  "database": {
+    "tables": ["payment"],
+    "relationships": [],
+    "constraints": ["transaction_reference VARCHAR(100) - nullable, no UNIQUE constraint or index in the current schema"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T123)"],
+
+  "test_ids": ["API-T123"],
+
+  "database_gap": true,
+  "notes": "database/schema/026_payment.sql defines transaction_reference as a plain nullable VARCHAR(100) with no UNIQUE constraint or index anywhere in the schema (verified through database/schema/versions/v25.sql). database/api_contracts_test/015_payment.sql's API-T123 scenario confirms a second payment with the same transaction_reference ('TXN0001') is currently accepted by PostgreSQL, even though the intended API behavior is 409 Conflict. A UNIQUE constraint/index on (organization_id, branch_id, transaction_reference) - or a narrower scope if transaction references are meant to be globally unique across a payment gateway - would need to be added to actually enforce this at the DB layer; until then, duplicate detection must happen at the API layer only. This same missing constraint is also the root cause of the 'UPDATE 2' anomaly noted in API-059 and API-068."
+}

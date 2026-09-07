@@ -1,0 +1,40 @@
+/* Viewport-fit shell for X46 LIMS screens.
+   The page itself never scrolls: the sidebar and each screen's header stay put
+   and the content region scrolls inside its own box, with table headers pinned.
+   Guaranteed no page scroll at 1440x900 and above. */
+
+html, body { height: 100%; overflow: hidden; }
+
+/* The app shell fills the viewport exactly. */
+body x-dc > div { height: 100vh; overflow: hidden; }
+
+main {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Headers, filter bars and banners keep their natural height... */
+main > * { min-height: 0; flex-shrink: 0; }
+
+/* ...and the last region takes the remaining height and scrolls internally. */
+main > *:last-child { flex: 1 1 auto; overflow: auto; }
+
+/* Pages that stack several full screens as siblings: every screen owns its scroll. */
+main[data-fit="screens"] > * { flex: 1 1 auto; overflow: auto; }
+
+/* Inner boxes that pinned their own viewport height now defer to the shell. */
+main div[style*="calc(100vh"] { max-height: none !important; }
+
+/* Table headers stay visible while rows scroll. */
+main thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--head-bg, var(--color-gray-50));
+}
+
+/* Drawers and modals are viewport-fixed, so they must not inherit the clip. */
+main + div, main ~ div { min-height: 0; }

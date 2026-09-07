@@ -1,0 +1,75 @@
+{
+  "functionality_id": "API-131",
+  "module": "Result Entry",
+  "functionality": "View Result, Update/Save Result",
+  "description": "Covers reading a result entry and editing an already-recorded parameter value, on top of the already-existing create contracts.",
+
+  "reused_apis": [
+    { "functionality_id": "API-088", "functionality": "Create Result Entry", "note": "Already covers creating the result_entry header - not duplicated here." },
+    { "functionality_id": "API-089", "functionality": "Add Result Detail", "note": "Already covers recording the first value for a parameter (POST, fails with 409 if the parameter already has a value). Not duplicated here." }
+  ],
+
+  "operations": [
+    {
+      "operation": "View Result",
+      "http_method": "GET",
+      "endpoint": "/api/result-entries/{resultEntryId}",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "resultEntryId": "uuid, required" },
+        "query_parameters": {},
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "resultEntryId"],
+      "validation": ["resultEntryId must exist and belong to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Result entry fetched successfully",
+          "data": {
+            "id": "uuid", "accessionTestId": "uuid", "resultStatus": "IN_PROGRESS", "enteredAt": "timestamp with time zone", "enteredBy": "uuid",
+            "details": [ { "id": "uuid", "parameterId": "uuid", "resultValue": "10", "resultFlag": "NORMAL", "remarks": null } ]
+          }
+        }
+      },
+      "errors": [
+        { "condition": "resultEntryId not found / not in organization+branch scope", "status_code": 404, "response": { "success": false, "error": "Result entry not found" } }
+      ]
+    },
+    {
+      "operation": "Update/Save Result",
+      "http_method": "PATCH",
+      "endpoint": "/api/result-entries/{resultEntryId}/details/{detailId}",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "resultEntryId": "uuid, required", "detailId": "uuid, required - references result_entry_details.id" },
+        "query_parameters": {},
+        "body": { "resultValue": "string(255), optional", "resultFlag": "enum, optional - NORMAL | HIGH | LOW | CRITICAL | ABNORMAL", "remarks": "text, optional" }
+      },
+      "required_fields": ["organizationId", "branchId", "resultEntryId", "detailId"],
+      "validation": [
+        "detailId must exist and belong to resultEntryId",
+        "resultFlag, if provided, must be one of NORMAL, HIGH, LOW, CRITICAL, ABNORMAL (CHECK)"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": { "success": true, "message": "Result updated successfully", "data": { "id": "uuid", "resultValue": "12", "resultFlag": "HIGH" } }
+      },
+      "errors": [
+        { "condition": "resultFlag is not one of the allowed enum values", "status_code": 400, "response": { "success": false, "error": "Invalid result flag" } },
+        { "condition": "detailId not found / not in scope", "status_code": 404, "response": { "success": false, "error": "Result detail not found" } },
+        { "condition": "Unexpected server/database failure", "status_code": 500, "response": { "success": false, "error": "Internal server error" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["result_entry", "result_entry_details", "parameter_master"],
+    "relationships": ["result_entry_details.result_entry_id -> result_entry.id", "result_entry_details.parameter_id -> parameter_master.id"],
+    "constraints": ["result_flag CHECK IN (NORMAL, HIGH, LOW, CRITICAL, ABNORMAL)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet for these two operations."
+}

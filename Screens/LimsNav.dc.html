@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+</helmet>
+
+<nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; line-height: 1.45;">
+  <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+    <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+    <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+  </div>
+  <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+    <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+    <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+  </div>
+  <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="6">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">{{ g.name }}</div>
+      <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+        <sc-if value="{{ it.plain }}" hint-placeholder-val="{{ true }}">
+          <a href="{{ it.href }}" style="display: block; padding: 8px 16px; color: {{ it.color }}; background: {{ it.bg }}; font-weight: {{ it.weight }}; border-left: 3px solid {{ it.edge }};">{{ it.label }}</a>
+        </sc-if>
+        <sc-if value="{{ it.hasSub }}" hint-placeholder-val="{{ false }}">
+          <details open="{{ it.subOpen }}">
+            <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: {{ it.color }}; background: {{ it.bg }}; font-weight: {{ it.weight }}; border-left: 3px solid {{ it.edge }}; cursor: pointer;">
+              <a href="{{ it.href }}" style="color: inherit;">{{ it.label }}</a>
+              <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+            </summary>
+            <sc-for list="{{ it.sub }}" as="s" hint-placeholder-count="7">
+              <a href="{{ s.href }}" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: {{ s.color }}; background: {{ s.bg }}; font-weight: {{ s.weight }};">{{ s.label }}</a>
+            </sc-for>
+          </details>
+        </sc-if>
+      </sc-for>
+    </sc-for>
+  </div>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;active&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Patients&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;activeSub&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const NAV = [
+  ['Clinical', [
+    ['Patients', 'Patients.dc.html'],
+    ['Registration & Billing', 'Registration.dc.html']
+  ]],
+  ['Lab Ops', [
+    ['Accession', 'Accession.dc.html', [
+      ['Pending Collection', '#view=pending'], ['Collected', '#view=collected'],
+      ['Received in Lab', '#view=received'], ['Rejected / Recollect', '#view=rejected'],
+      ['All Samples', '#view=all'], ['Advanced Search', '#view=advanced'],
+      ['Accession Settings', '#view=settings']
+    ]],
+    ['Worklist', 'Worklist.dc.html', [
+      ['All Tests', '#queue=all'], ['Incomplete', '#queue=incomplete'],
+      ['In Progress', '#queue=progress'], ['Result Pending', '#queue=resultPending'],
+      ['Completed', '#queue=completed'], ['On Hold', '#queue=hold'],
+      ['Emergency Reports', '#queue=emergency'], ['Outsourced', '#queue=outsourced']
+    ]],
+    ['Worklist Processing', 'Worklist Processing.dc.html'],
+    ['Result Entry', 'Result Entry.dc.html'],
+    ['Result Validation', 'Result Validation.dc.html'],
+    ['Report & Dispatch', 'Report and Dispatch.dc.html'],
+    ['Report History', 'Report History.dc.html']
+  ]],
+  ['Analytics & MIS', [
+    ['Analytics', 'Analytics.dc.html'],
+    ['Test Count', 'Test Count.dc.html'],
+    ['TAT Analytics', 'TAT Analytics.dc.html'],
+    ['MIS / Data Export', 'MIS Data Export.dc.html']
+  ]],
+  ['Finance', [
+    ['Bill Details', 'Bill Details.dc.html'],
+    ['Price Quotation', 'Price Quotation.dc.html'],
+    ['Finance Overview', 'Finance.dc.html'],
+    ['Finance Reports', 'Finance Reports.dc.html'],
+    ['Billing Report', 'Billing Report.dc.html'],
+    ['Branch Wise Billing', 'Branch Wise Billing.dc.html'],
+    ['Organisation Wise Billing', 'Organisation Wise Billing.dc.html'],
+    ['Payment Mode Collection', 'Payment Mode Collection.dc.html'],
+    ['Payment Transactions', 'Payment Transactions.dc.html'],
+    ['User Wise Collection', 'User Wise Collection.dc.html']
+  ]],
+  ['Lab Setup', [
+    ['Performing Labs', 'Lab Master.dc.html'],
+    ['Test List', 'Test List.dc.html'],
+    ['Doctors', 'Doctor List.dc.html'],
+    ['Departments', 'Departments.dc.html'],
+    ['Branches', 'Branch Management.dc.html'],
+    ['Instruments', 'Instruments.dc.html'],
+    ['Outsource Centers', 'Outsource.dc.html'],
+    ['Report Formatting', 'Report Formatting.dc.html'],
+    ['Roles', 'Roles.dc.html'],
+    ['Users', 'Users.dc.html']
+  ]],
+  ['System', [
+    ['Create Organization', 'Create Organization.dc.html'],
+    ['System Error States', 'System Error States.dc.html'],
+    ['Login', 'Login.dc.html']
+  ]]
+];
+
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active || '';
+    const activeSub = this.props.activeSub || '';
+    return {
+      groups: NAV.map(([name, items]) => ({
+        name,
+        items: items.map(([label, href, sub]) => {
+          const on = label === active;
+          return {
+            label, href,
+            plain: !sub, hasSub: !!sub, subOpen: !!(sub && on),
+            bg: on ? 'var(--color-interactive-hover)' : 'transparent',
+            edge: on ? 'var(--color-primary-deep)' : 'transparent',
+            color: on ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)',
+            weight: on ? 700 : 400,
+            sub: (sub || []).map(([sl, sh]) => {
+              const son = on && sl === activeSub;
+              return {
+                label: sl, href: href + sh,
+                bg: son ? 'var(--color-interactive-hover)' : 'transparent',
+                color: son ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)',
+                weight: son ? 700 : 400
+              };
+            })
+          };
+        })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

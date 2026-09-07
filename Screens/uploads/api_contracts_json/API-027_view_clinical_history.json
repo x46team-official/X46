@@ -1,0 +1,67 @@
+{
+  "functionality_id": "API-027",
+  "module": "Clinical History",
+  "functionality": "View Clinical History",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/clinical-history",
+  "description": "Returns all clinical history records for a patient, scoped to organization and branch, ordered most recent first.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId"],
+
+  "validation": [
+    "organization and branch must exist",
+    "patient must exist and belong to organization + branch"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Clinical history fetched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "patientId": "uuid",
+          "registrationId": "uuid",
+          "clinicalId": "uuid",
+          "clinicalType": "SYMPTOM",
+          "clinicalCode": "SYM001",
+          "clinicalName": "Fever",
+          "diagnosedDate": null,
+          "severity": "MODERATE",
+          "durationValue": 5,
+          "durationUnit": "DAY",
+          "status": "ACTIVE",
+          "notes": "string"
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "patient does not exist / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_clinical_history", "clinical_master"],
+    "relationships": ["patient_clinical_history.clinical_id -> clinical_master.id"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/012_clinical_history.sql (API-T082, API-T090)"],
+
+  "test_ids": ["API-T082", "API-T090"]
+}

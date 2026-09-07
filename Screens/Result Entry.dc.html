@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 9px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input:disabled, textarea:disabled { background: var(--color-gray-50); color: var(--color-text-secondary); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Result Entry</div>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main data-fit="screens" style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+
+    <!-- ============ SCREEN 1 — RESULT ENTRY WORK QUEUE ============ -->
+    <sc-if value="{{ isQueue }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; min-height: 100vh;">
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Ops / Result Entry</div>
+          <h1 style="margin: 0 0 10px; font-size: 17px; font-weight: 700;">Result Entry</h1>
+
+          <div style="display: flex; gap: 8px; align-items: center; max-width: 720px;">
+            <input type="text" placeholder="Scan barcode or search Patient / MRN / Registration No / Accession No / Test" value="{{ query }}" onChange="{{ onQuery }}" style="padding: 9px 12px; font-size: 13px;" />
+            <button onClick="{{ search }}" style="padding: 9px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Search</button>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: flex-end; margin-top: 10px; flex-wrap: wrap;">
+            <div style="min-width: 134px;"><label>Date</label><input type="date" value="{{ date }}" onChange="{{ updateField }}" data-field="date" /></div>
+            <div style="min-width: 146px;"><label>Department</label><select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept"><option value="">All departments</option><option value="Hematology">Hematology</option><option value="Biochemistry">Biochemistry</option><option value="Immunoassay">Immunoassay</option><option value="Microbiology">Microbiology</option></select></div>
+            <div style="min-width: 110px;"><label>Priority</label><select value="{{ priority }}" onChange="{{ updateField }}" data-field="priority"><option value="">All</option><option value="NORMAL">Normal</option><option value="URGENT">Urgent</option><option value="STAT">STAT</option></select></div>
+            <div style="min-width: 150px;"><label>Sample Type</label><select value="{{ sampleTypeFilter }}" onChange="{{ updateField }}" data-field="sampleTypeFilter"><option value="">All sample types</option><option value="EDTA Whole Blood">EDTA Whole Blood</option><option value="Serum">Serum</option><option value="Fluoride Plasma">Fluoride Plasma</option><option value="Urine">Urine</option></select></div>
+            <div style="min-width: 144px;"><label>Result Status</label><select value="{{ statusFilter }}" onChange="{{ updateField }}" data-field="statusFilter"><option value="">All</option><option value="PENDING ENTRY">Pending Entry</option><option value="IN PROGRESS">In Progress</option><option value="SAVED DRAFT">Saved Draft</option><option value="RESULT ENTERED">Result Entered</option><option value="PENDING VALIDATION">Pending Validation</option></select></div>
+            <div style="min-width: 168px;"><label>Performing Lab</label><select value="{{ instrument }}" onChange="{{ updateField }}" data-field="instrument"><option value="">All</option><option value="Sysmex XN-550">Sysmex XN-550</option><option value="Mindray BS-240">Mindray BS-240</option><option value="Roche Cobas e411">Roche Cobas e411</option><option value="Manual bench">Manual bench</option><option value="Outsource · Metropolis">Outsource · Metropolis</option></select></div>
+            <button onClick="{{ clearFilters }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Clear Filters</button>
+          </div>
+        </div>
+
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 0 20px; display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onPick }}" style="padding: 10px 14px; background: none; border: none; border-bottom: 2px solid {{ t.border }}; color: {{ t.color }}; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">{{ t.label }} <span class="num" style="color: var(--color-text-tertiary); font-weight: 500;">{{ t.count }}</span></button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBorder }};">{{ banner }}</div>
+        </sc-if>
+
+        <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">Tests: {{ rowCount }}</div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Only tests received in the lab appear here</div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto; max-height: calc(100vh - 320px);">
+            <div style="min-width: 1000px;">
+              <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 82px 96px minmax(170px,1.4fr) 96px 132px 112px 132px 108px 120px; gap: 10px; padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <div>Priority</div><div>Accession No</div><div>Patient</div><div>Test</div><div>Sample Type</div><div>Received</div><div>Status</div><div>Assigned To</div><div>Action</div>
+              </div>
+
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+                <div style="display: grid; grid-template-columns: 82px 96px minmax(170px,1.4fr) 96px 132px 112px 132px 108px 120px; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center; box-shadow: inset 3px 0 0 0 {{ r.priorityEdge }};" style-hover="background: var(--color-gray-50);">
+                  <div><span style="display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: .03em; background: {{ r.priorityBg }}; color: {{ r.priorityFg }};">{{ r.priority }}</span></div>
+                  <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.accessionNo }}</div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patientName }}</div>
+                    <div class="mono" style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.mrn }} · {{ r.ageGender }}</div>
+                  </div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.testName }}">{{ r.short }}</div>
+                    <div class="mono" style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.testCode }}</div>
+                  </div>
+                  <div style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.sampleType }}</div>
+                  <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ r.receivedAt }}</div>
+                  <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.resultStatus }}</span></div>
+                  <div style="font-size: 11px; color: {{ r.assignedColor }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.assignedTo }}</div>
+                  <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <button onClick="{{ r.onOpen }}" style="padding: 5px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Open</button>
+                    <button onClick="{{ r.onEnter }}" style="padding: 5px 9px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap;" style-hover="background: var(--color-primary-bright);">Enter Result</button>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 56px 20px; text-align: center;">
+                  <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No tests await result entry in this view</div>
+                  <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Adjust the filters, or start processing tests in the Worklist.</div>
+                  <button onClick="{{ clearFilters }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Clear Filters</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ SCREEN 2 — RESULT ENTRY WORKSPACE ============ -->
+    <sc-if value="{{ isEntry }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; height: 100vh;">
+
+        <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 10px 20px; flex-shrink: 0;">
+          <button onClick="{{ backToQueue }}" style="background: none; border: none; padding: 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;">‹ Back to Result Entry</button>
+          <div style="display: flex; align-items: center; gap: 16px; margin-top: 6px; flex-wrap: wrap;">
+            <div>
+              <div style="font-size: 15px; font-weight: 700;">{{ dTestCode }} — {{ dTestName }}</div>
+              <div style="font-size: 11.5px; color: var(--color-text-secondary);"><span class="mono">{{ dAccession }}</span> · <span class="mono">{{ dBarcode }}</span> · {{ dSampleType }}</div>
+            </div>
+            <span style="padding: 3px 9px; border-radius: 3px; font-size: 10.5px; font-weight: 700; letter-spacing: .03em; background: {{ dPriorityBg }}; color: {{ dPriorityFg }};">{{ dPriority }}</span>
+            <span style="padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dStatusBg }}; color: {{ dStatusFg }};">{{ dStatus }}</span>
+            <div style="flex: 1;"></div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <button onClick="{{ calculate }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Calculate</button>
+              <button onClick="{{ pullFromAnalyser }}" title="Read values from the connected analyser" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Pull from analyser</button>
+              <sc-if value="{{ isLocked }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ editResult }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;" style-hover="background: var(--color-interactive-hover);">Edit Result</button>
+              </sc-if>
+              <sc-if value="{{ isLocked }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ printPreview }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Print Preview</button>
+              </sc-if>
+              <button onClick="{{ toggleSettings }}" title="Settings" style="padding: 7px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">⚙</button>
+            </div>
+          </div>
+          <sc-if value="{{ settingsOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 10px; padding: 10px 12px; border: 1px solid var(--color-border-light); border-radius: 4px; background: var(--color-gray-50); display: flex; gap: 18px; flex-wrap: wrap; align-items: center;">
+              <label style="display: flex; align-items: center; gap: 7px; margin: 0; font-size: 11.5px; font-weight: 500; color: var(--color-text-secondary);">
+                <input type="checkbox" checked="{{ showNormals }}" onChange="{{ toggleFlag }}" data-field="showNormals" style="width: auto; padding: 0; accent-color: var(--color-primary-deep);" /> Show NORMAL flags
+              </label>
+              <label style="display: flex; align-items: center; gap: 7px; margin: 0; font-size: 11.5px; font-weight: 500; color: var(--color-text-secondary);">
+                <input type="checkbox" checked="{{ showHistoryCol }}" onChange="{{ toggleFlag }}" data-field="showHistoryCol" style="width: auto; padding: 0; accent-color: var(--color-primary-deep);" /> Show History column
+              </label>
+              <label style="display: flex; align-items: center; gap: 7px; margin: 0; font-size: 11.5px; font-weight: 500; color: var(--color-text-secondary);">
+                <input type="checkbox" checked="{{ autoCalc }}" onChange="{{ toggleFlag }}" data-field="autoCalc" style="width: auto; padding: 0; accent-color: var(--color-primary-deep);" /> Auto-calculate derived indices
+              </label>
+            </div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ toastBg }}; color: {{ toastFg }}; border-bottom: 1px solid {{ toastBorder }}; flex-shrink: 0;">{{ toast }}</div>
+        </sc-if>
+
+        <div style="flex: 1; display: grid; grid-template-columns: minmax(220px, 250px) minmax(0, 1fr) minmax(250px, 288px); min-height: 0;">
+
+          <!-- LEFT — test queue -->
+          <aside style="background: #fff; border-right: 1px solid var(--color-border-light); overflow-y: auto;">
+            <div style="padding: 12px 14px; border-bottom: 1px solid var(--color-border-light);">
+              <div style="font-size: 13px; font-weight: 700;">{{ dPatient }}</div>
+              <div class="mono" style="font-size: 11px; color: var(--color-text-tertiary);">{{ dMrn }}</div>
+            </div>
+            <div style="padding: 10px 14px 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary);">Tests in this visit</div>
+            <sc-for list="{{ queueTests }}" as="q" hint-placeholder-count="3">
+              <button onClick="{{ q.onPick }}" style="display: block; width: 100%; text-align: left; padding: 10px 14px; background: {{ q.bg }}; border: none; border-left: 3px solid {{ q.edge }}; border-bottom: 1px solid var(--color-border-light); font-family: inherit; cursor: pointer;" style-hover="background: var(--color-gray-50);">
+                <div style="font-size: 12.5px; font-weight: {{ q.weight }}; color: {{ q.color }};">{{ q.short }} — {{ q.testName }}</div>
+                <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary); margin: 2px 0 5px;">{{ q.accessionNo }}</div>
+                <span style="display: inline-block; padding: 2px 6px; border-radius: 999px; font-size: 9.5px; font-weight: 700; background: {{ q.statusBg }}; color: {{ q.statusFg }};">{{ q.resultStatus }}</span>
+              </button>
+            </sc-for>
+          </aside>
+
+          <!-- CENTER — result table -->
+          <section style="overflow-y: auto; padding: 14px 18px 18px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto;">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 9px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <span>Parameters</span>
+                <span style="display: flex; align-items: center; gap: 8px; font-weight: 600; letter-spacing: 0; text-transform: none; font-size: 10.5px; color: var(--color-text-tertiary);">
+                  <span style="display: flex; align-items: center; gap: 3px;"><span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 3px; font-size: 9px; font-weight: 700; background: var(--color-gray-100); color: var(--color-text-secondary);">M</span>Manual</span>
+                  <span style="display: flex; align-items: center; gap: 3px;"><span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 3px; font-size: 9px; font-weight: 700; background: #EDE9FE; color: #5B21B6;">C</span>Calculated</span>
+                  <span style="display: flex; align-items: center; gap: 3px;"><span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 3px; font-size: 9px; font-weight: 700; background: #DBEAFE; color: #1E40AF;">A</span>Analyser</span>
+                </span>
+                <span class="num" style="font-weight: 600; letter-spacing: 0; text-transform: none; font-size: 11px; color: var(--color-text-tertiary);">{{ enteredCount }} of {{ mandatoryCount }} mandatory entered</span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: minmax(112px,1.4fr) 92px 56px 70px minmax(96px,1fr) 40px; gap: 8px; padding: 7px 14px; border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <div>Parameter</div><div>Result</div><div>Unit</div><div>Flag</div><div>Reference Range</div><div>History</div>
+              </div>
+
+              <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+                <div>
+                  <div style="padding: 7px 14px; background: var(--color-interactive-hover); border-bottom: 1px solid var(--color-border-light); font-size: 10.5px; font-weight: 700; color: var(--color-primary-deep); text-transform: uppercase; letter-spacing: .06em;">{{ g.title }}</div>
+                  <sc-for list="{{ g.params }}" as="p" hint-placeholder-count="4">
+                    <div style="display: grid; grid-template-columns: minmax(112px,1.4fr) 92px 56px 70px minmax(96px,1fr) 40px; gap: 8px; padding: 6px 14px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ p.rowBg }};">
+                      <div style="min-width: 0;">
+                        <div style="font-size: 12.5px; font-weight: 600;">{{ p.name }}<span style="color: var(--color-error);">{{ p.req }}</span></div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                          <span class="mono" style="font-size: 10px; color: var(--color-text-tertiary);">{{ p.code }}{{ p.calcNote }}</span>
+                          <sc-if value="{{ p.hasSource }}" hint-placeholder-val="{{ false }}">
+                            <span title="{{ p.sourceTitle }}" style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 3px; font-size: 9px; font-weight: 700; background: {{ p.sourceBg }}; color: {{ p.sourceFg }};">{{ p.source }}</span>
+                          </sc-if>
+                        </div>
+                      </div>
+                      <div><input type="text" value="{{ p.value }}" onChange="{{ p.onChange }}" disabled="{{ p.readOnly }}" placeholder="{{ p.placeholder }}" class="num" style="font-weight: 600; text-align: right; border-color: {{ p.inputBorder }};" /></div>
+                      <div style="font-size: 11px; color: var(--color-text-secondary);">{{ p.unit }}</div>
+                      <div>
+                        <sc-if value="{{ p.hasFlag }}" hint-placeholder-val="{{ false }}">
+                          <span style="display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-weight: 700; letter-spacing: .03em; background: {{ p.flagBg }}; color: {{ p.flagFg }};">{{ p.flag }}</span>
+                        </sc-if>
+                      </div>
+                      <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ p.range }}</div>
+                      <div>
+                        <button onClick="{{ p.onHistory }}" title="Previous results" style="padding: 3px 8px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 10.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">⟲</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+
+              <div style="padding: 12px 14px;">
+                <label>Impression / Advice</label>
+                <textarea rows="2" placeholder="Impression or advice (optional)" value="{{ testRemarks }}" onChange="{{ updateField }}" data-field="testRemarks" disabled="{{ isLocked }}" style="resize: vertical;"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <!-- RIGHT — patient / test info -->
+          <aside style="background: #fff; border-left: 1px solid var(--color-border-light); overflow-y: auto; padding: 14px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Patient</div>
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Patient Name</div><div style="font-size: 12.5px; font-weight: 700;">{{ dPatient }}</div></div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 9px;">
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Age</div><div style="font-size: 12.5px; font-weight: 600;">{{ dAge }}</div></div>
+                <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Gender</div><div style="font-size: 12.5px; font-weight: 600;">{{ dGender }}</div></div>
+              </div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">MRN</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dMrn }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Registration Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dRegistration }}</div></div>
+            </div>
+
+            <div style="height: 1px; background: var(--color-border-light); margin: 14px 0;"></div>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Order &amp; Sample</div>
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Accession Date</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dAccessionDate }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Bill Date</div><div class="num" style="font-size: 12.5px; font-weight: 600;">{{ dBillDate }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Bill Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dBillNumber }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Order Number</div><div class="mono" style="font-size: 12.5px; font-weight: 600;">{{ dOrderNumber }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Sample ID / Barcode</div><div class="mono" style="font-size: 12.5px; font-weight: 600; word-break: break-all;">{{ dBarcode }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Collected / Received</div><div class="num" style="font-size: 12px; font-weight: 600;">{{ dCollectedFull }}</div><div class="num" style="font-size: 12px; font-weight: 600;">{{ dReceivedFull }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Performing Lab</div><div style="font-size: 12.5px; font-weight: 600;">{{ dInstrument }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Organization</div><div style="font-size: 12.5px; font-weight: 600;">X46 Diagnostics · Pune Main</div></div>
+            </div>
+
+            <div style="height: 1px; background: var(--color-border-light); margin: 14px 0;"></div>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 10px;">Previous Reports</div>
+            <sc-for list="{{ previousReports }}" as="pr" hint-placeholder-count="3">
+              <div style="display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--color-border-light);">
+                <div>
+                  <div style="font-size: 12px; font-weight: 600;">{{ pr.test }}</div>
+                  <div class="num" style="font-size: 10px; color: var(--color-text-tertiary);">{{ pr.date }}</div>
+                </div>
+                <span style="font-size: 11px; font-weight: 600; color: var(--color-primary-deep); white-space: nowrap;">{{ pr.state }}</span>
+              </div>
+            </sc-for>
+            <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 10px;">{{ clinicalNote }}</div>
+          </aside>
+        </div>
+
+        <!-- STICKY ACTION BAR -->
+        <div style="background: #fff; border-top: 1px solid var(--color-border-light); padding: 10px 20px; display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+          <div style="font-size: 11.5px; color: var(--color-text-tertiary);">{{ actionHint }}</div>
+          <div style="flex: 1;"></div>
+          <button onClick="{{ clearResults }}" disabled="{{ isLocked }}" style="padding: 9px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-error); color: var(--color-error);">Clear</button>
+          <button onClick="{{ saveDraft }}" disabled="{{ isLocked }}" style="padding: 9px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Save Draft</button>
+          <button onClick="{{ saveResult }}" disabled="{{ isLocked }}" style="padding: 9px 16px; background: {{ saveBg }}; border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: {{ saveFg }}; cursor: {{ saveCursor }};">Save Result</button>
+          <button onClick="{{ submitValidation }}" disabled="{{ submitDisabled }}" style="padding: 9px 16px; background: {{ submitBg }}; border: 1px solid {{ submitBorder }}; border-radius: 4px; font-size: 12px; font-weight: 700; color: {{ submitFg }}; cursor: {{ submitCursor }};">Submit for Validation</button>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- History popover -->
+  <sc-if value="{{ historyOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeHistory }}">
+      <div onClick="{{ stop }}" style="width: 420px; background: #fff; border-radius: 6px; box-shadow: 0 20px 40px rgba(17,24,39,.2); overflow: hidden;">
+        <div style="padding: 12px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700;">{{ historyTitle }}</div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">{{ dPatient }} · {{ dMrn }}</div>
+          </div>
+          <button onClick="{{ closeHistory }}" style="background: none; border: none; font-size: 17px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="display: grid; grid-template-columns: 108px 84px minmax(96px,1fr) 96px; gap: 8px; padding: 8px 16px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+          <div>Date</div><div>Value</div><div>Reference</div><div>Source</div>
+        </div>
+        <div style="max-height: 260px; overflow-y: auto;">
+          <sc-for list="{{ historyRows }}" as="h" hint-placeholder-count="3">
+            <div style="display: grid; grid-template-columns: 108px 84px minmax(96px,1fr) 96px; gap: 8px; padding: 8px 16px; border-bottom: 1px solid var(--color-border-light); align-items: center;">
+              <div class="num" style="font-size: 11.5px;">{{ h.date }}</div>
+              <div class="num" style="font-size: 12px; font-weight: 700; color: {{ h.color }};">{{ h.value }}</div>
+              <div class="num" style="font-size: 11px; color: var(--color-text-secondary);">{{ h.range }}</div>
+              <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ h.source }}</div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ historyEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 28px 16px; text-align: center; font-size: 12px; color: var(--color-text-tertiary);">No previous results recorded for this parameter.</div>
+          </sc-if>
+        </div>
+        <div style="padding: 10px 16px; border-top: 1px solid var(--color-border-light); display: flex; justify-content: flex-end;">
+          <button onClick="{{ closeHistory }}" style="padding: 8px 14px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;">Close</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const PANELS = {
+  CBC001: [
+    { group: 'HB / RBC Indices', code: 'HB', name: 'Hemoglobin', unit: 'g/dL', low: 13, high: 18, range: '13.0 – 18.0', req: true },
+    { group: 'HB / RBC Indices', code: 'RBC', name: 'RBC Count', unit: 'mill/µL', low: 4.5, high: 5.9, range: '4.5 – 5.9', req: true },
+    { group: 'HB / RBC Indices', code: 'PCV', name: 'Packed Cell Volume', unit: '%', low: 40, high: 50, range: '40.0 – 50.0', req: true },
+    { group: 'HB / RBC Indices', code: 'MCV', name: 'MCV', unit: 'fL', low: 83, high: 101, range: '83 – 101', calc: true },
+    { group: 'HB / RBC Indices', code: 'MCH', name: 'MCH', unit: 'pg', low: 27, high: 32, range: '27 – 32', calc: true },
+    { group: 'HB / RBC Indices', code: 'MCHC', name: 'MCHC', unit: 'g/dL', low: 31.5, high: 34.5, range: '31.5 – 34.5', calc: true },
+    { group: 'HB / RBC Indices', code: 'RDW', name: 'RDW', unit: '%', low: 11.6, high: 14, range: '11.6 – 14.0' },
+    { group: 'WBC Indices', code: 'TLC', name: 'Total Leucocyte Count', unit: '/µL', low: 4000, high: 11000, range: '4,000 – 11,000', req: true },
+    { group: 'Differential Count', code: 'NEU', name: 'Neutrophils', unit: '%', low: 40, high: 80, range: '40 – 80', req: true },
+    { group: 'Differential Count', code: 'LYM', name: 'Lymphocytes', unit: '%', low: 20, high: 40, range: '20 – 40', req: true },
+    { group: 'Differential Count', code: 'MON', name: 'Monocytes', unit: '%', low: 2, high: 10, range: '2 – 10' },
+    { group: 'Differential Count', code: 'EOS', name: 'Eosinophils', unit: '%', low: 1, high: 6, range: '1 – 6' },
+    { group: 'Differential Count', code: 'BAS', name: 'Basophils', unit: '%', low: 0, high: 2, range: '0 – 2' },
+    { group: 'Platelet Indices', code: 'PLT', name: 'Platelet Count', unit: '/µL', low: 150000, high: 410000, range: '1,50,000 – 4,10,000', req: true },
+    { group: 'Platelet Indices', code: 'MPV', name: 'MPV', unit: 'fL', low: 6.5, high: 12, range: '6.5 – 12.0' },
+    { group: 'Platelet Indices', code: 'PDW', name: 'PDW', unit: '%', low: 9, high: 17, range: '9.0 – 17.0' },
+    { group: 'Platelet Indices', code: 'PCT', name: 'PCT', unit: '%', low: 0.19, high: 0.39, range: '0.19 – 0.39' },
+    { group: 'Peripheral Smear', code: 'RBCM', name: 'RBC Morphology', unit: '', text: true, range: 'Normocytic normochromic' },
+    { group: 'Peripheral Smear', code: 'WBCM', name: 'WBC Morphology', unit: '', text: true, range: 'Within normal limits' },
+    { group: 'Peripheral Smear', code: 'PLTM', name: 'Platelet Morphology', unit: '', text: true, range: 'Adequate on smear' }
+  ],
+  LFT001: [
+    { group: 'Bilirubin', code: 'TBIL', name: 'Total Bilirubin', unit: 'mg/dL', low: 0.3, high: 1.2, range: '0.3 – 1.2', req: true },
+    { group: 'Bilirubin', code: 'DBIL', name: 'Direct Bilirubin', unit: 'mg/dL', low: 0, high: 0.3, range: '0.0 – 0.3' },
+    { group: 'Enzymes', code: 'SGOT', name: 'AST (SGOT)', unit: 'U/L', low: 10, high: 40, range: '10 – 40', req: true },
+    { group: 'Enzymes', code: 'SGPT', name: 'ALT (SGPT)', unit: 'U/L', low: 10, high: 45, range: '10 – 45', req: true },
+    { group: 'Enzymes', code: 'ALP', name: 'Alkaline Phosphatase', unit: 'U/L', low: 40, high: 129, range: '40 – 129' },
+    { group: 'Proteins', code: 'TPROT', name: 'Total Protein', unit: 'g/dL', low: 6.4, high: 8.3, range: '6.4 – 8.3' },
+    { group: 'Proteins', code: 'ALB', name: 'Albumin', unit: 'g/dL', low: 3.5, high: 5.2, range: '3.5 – 5.2', req: true }
+  ],
+  HBA1C: [
+    { group: 'Glycemic Control', code: 'HBA1C', name: 'Glycated Haemoglobin', unit: '%', low: 4, high: 5.6, range: '4.0 – 5.6', req: true },
+    { group: 'Glycemic Control', code: 'EAG', name: 'Estimated Average Glucose', unit: 'mg/dL', low: 68, high: 114, range: '68 – 114', calc: true }
+  ],
+  TSH001: [
+    { group: 'Thyroid Profile', code: 'TSH', name: 'Thyroid Stimulating Hormone', unit: 'µIU/mL', low: 0.35, high: 4.94, range: '0.35 – 4.94', req: true }
+  ],
+  GLUPP: [
+    { group: 'Glucose', code: 'GLUPP', name: 'Blood Glucose (Post Prandial)', unit: 'mg/dL', low: 70, high: 140, range: '70 – 140', req: true }
+  ],
+  UR001: [
+    { group: 'Physical', code: 'UCOL', name: 'Colour', unit: '', text: true, range: 'Pale yellow', req: true },
+    { group: 'Physical', code: 'UPH', name: 'pH', unit: '', low: 5, high: 7.5, range: '5.0 – 7.5', req: true },
+    { group: 'Chemical', code: 'UPROT', name: 'Protein', unit: '', text: true, range: 'Absent' },
+    { group: 'Chemical', code: 'UGLU', name: 'Glucose', unit: '', text: true, range: 'Absent' },
+    { group: 'Microscopy', code: 'UPUS', name: 'Pus Cells', unit: '/hpf', low: 0, high: 5, range: '0 – 5' }
+  ]
+};
+
+const SEED = [
+  { id: 1, accessionNo: 'ACC0001', billNumber: 'BL-2026-009114', orderNumber: 'ORD-77412', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, testCode: 'CBC001', short: 'CBC', testName: 'Complete Blood Count', sampleType: 'EDTA Whole Blood', dept: 'Hematology', barcode: 'BC20260801160902496', priority: 'URGENT', collectedFull: 'Collected 18 Aug 2026, 08:55', receivedAt: '18 Aug, 10:30', receivedFull: 'Received 18 Aug 2026, 10:30', accessionDate: '18 Aug 2026', billDate: '18 Aug 2026', resultStatus: 'PENDING ENTRY', assignedTo: 'Admin', instrument: 'Sysmex XN-550' },
+  { id: 2, accessionNo: 'ACC0002', billNumber: 'BL-2026-009114', orderNumber: 'ORD-77412', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, testCode: 'LFT001', short: 'LFT', testName: 'Liver Function Test', sampleType: 'Serum', dept: 'Biochemistry', barcode: 'BC20260801160902497', priority: 'NORMAL', collectedFull: 'Collected 18 Aug 2026, 08:55', receivedAt: '18 Aug, 10:32', receivedFull: 'Received 18 Aug 2026, 10:32', accessionDate: '18 Aug 2026', billDate: '18 Aug 2026', resultStatus: 'PENDING ENTRY', assignedTo: 'Admin', instrument: 'Mindray BS-240' },
+  { id: 3, accessionNo: 'ACC0003', billNumber: 'BL-2026-009114', orderNumber: 'ORD-77412', registrationNumber: 'REG-2026-004182', patientName: 'Manas Gaikwad', mrn: 'MRN-TEST-001', sex: 'Male', age: 34, testCode: 'HBA1C', short: 'HbA1c', testName: 'Glycated Haemoglobin', sampleType: 'EDTA Whole Blood', dept: 'Biochemistry', barcode: 'BC20260801160902498', priority: 'NORMAL', collectedFull: 'Collected 18 Aug 2026, 08:55', receivedAt: '18 Aug, 10:33', receivedFull: 'Received 18 Aug 2026, 10:33', accessionDate: '18 Aug 2026', billDate: '18 Aug 2026', resultStatus: 'SAVED DRAFT', assignedTo: 'S. Rane', instrument: 'Mindray BS-240' },
+  { id: 4, accessionNo: 'ACC0004', billNumber: 'BL-2026-009102', orderNumber: 'ORD-77398', registrationNumber: 'REG-2026-004171', patientName: 'Saniya Shaikh', mrn: 'MRN-TEST-014', sex: 'Female', age: 29, testCode: 'UR001', short: 'URINE', testName: 'Urine Routine', sampleType: 'Urine', dept: 'Biochemistry', barcode: 'BC20260801160902512', priority: 'URGENT', collectedFull: 'Collected 18 Aug 2026, 08:32', receivedAt: '18 Aug, 08:50', receivedFull: 'Received 18 Aug 2026, 08:50', accessionDate: '18 Aug 2026', billDate: '18 Aug 2026', resultStatus: 'IN PROGRESS', assignedTo: 'N. Patil', instrument: 'Manual bench' },
+  { id: 5, accessionNo: 'ACC0005', billNumber: 'BL-2026-009090', orderNumber: 'ORD-77385', registrationNumber: 'REG-2026-004160', patientName: 'Zubeda Ismail Shaikh', mrn: 'MRN-TEST-030', sex: 'Female', age: 74, testCode: 'GLUPP', short: 'GLU-PP', testName: 'Blood Glucose (Post Prandial)', sampleType: 'Fluoride Plasma', dept: 'Biochemistry', barcode: 'BC20260801160902548', priority: 'STAT', collectedFull: 'Collected 18 Aug 2026, 07:55', receivedAt: '18 Aug, 08:12', receivedFull: 'Received 18 Aug 2026, 08:12', accessionDate: '18 Aug 2026', billDate: '18 Aug 2026', resultStatus: 'RESULT ENTERED', assignedTo: 'S. Rane', instrument: 'Mindray BS-240' },
+  { id: 6, accessionNo: 'ACC0007', billNumber: 'BL-2026-009076', orderNumber: 'ORD-77361', registrationNumber: 'REG-2026-004147', patientName: 'Meera Kulkarni', mrn: 'MRN-TEST-052', sex: 'Female', age: 36, testCode: 'TSH001', short: 'TSH', testName: 'Thyroid Stimulating Hormone', sampleType: 'Serum', dept: 'Immunoassay', barcode: 'BC20260801160902577', priority: 'NORMAL', collectedFull: 'Collected 17 Aug 2026, 15:40', receivedAt: '17 Aug, 16:05', receivedFull: 'Received 17 Aug 2026, 16:05', accessionDate: '17 Aug 2026', billDate: '17 Aug 2026', resultStatus: 'PENDING ENTRY', assignedTo: 'Unassigned', instrument: 'Roche Cobas e411' }
+];
+
+const DRAFTS = { 3: { HBA1C: '6.1' }, 4: { UCOL: 'Pale yellow', UPH: '6.0' }, 5: { GLUPP: '186' } };
+
+const HISTORY = {
+  HB: [{ date: '12 Aug 2026', value: '13.2', range: '13.0 – 18.0', source: 'CBC001' }, { date: '05 Aug 2026', value: '14.1', range: '13.0 – 18.0', source: 'CBC001' }, { date: '18 Jul 2026', value: '12.6', range: '13.0 – 18.0', source: 'CBC001', low: true }],
+  PLT: [{ date: '12 Aug 2026', value: '2,10,000', range: '1,50,000 – 4,10,000', source: 'CBC001' }, { date: '05 Aug 2026', value: '1,96,000', range: '1,50,000 – 4,10,000', source: 'CBC001' }],
+  TLC: [{ date: '12 Aug 2026', value: '8,400', range: '4,000 – 11,000', source: 'CBC001' }],
+  HBA1C: [{ date: '18 Feb 2026', value: '6.4', range: '4.0 – 5.6', source: 'HBA1C', high: true }],
+  GLUPP: [{ date: '10 Aug 2026', value: '172', range: '70 – 140', source: 'GLUPP', high: true }]
+};
+
+class Component extends DCLogic {
+  state = {
+    rows: SEED.map(r => ({ ...r })),
+    screen: 'queue', selectedId: null,
+    query: '', date: '2026-08-18', dept: '', priority: '', statusFilter: '', sampleTypeFilter: '', instrument: '',
+    tab: 'Pending', banner: '', bannerKind: 'info',
+    values: {}, sources: {}, testRemarks: '', unlocked: false,
+    settingsOpen: false, showNormals: true, showHistoryCol: true, autoCalc: true,
+    historyOpen: false, historyCode: '', historyName: '',
+    toast: '', toastKind: 'success'
+  };
+
+  onQuery = (e) => this.setState({ query: e.target.value });
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value });
+  toggleFlag = (e) => { const f = e.target.dataset.field; this.setState(s => ({ [f]: !s[f] })); };
+  clearFilters = () => this.setState({ query: '', dept: '', priority: '', statusFilter: '', sampleTypeFilter: '', instrument: '', banner: '' });
+  search = () => this.setState({ banner: this.state.query.trim() ? 'Showing matches for “' + this.state.query.trim() + '”.' : 'Showing all tests awaiting result entry.', bannerKind: 'info' });
+  setTab = (t) => () => this.setState({ tab: t });
+  stop = (e) => e.stopPropagation();
+  toggleSettings = () => this.setState(s => ({ settingsOpen: !s.settingsOpen }));
+
+  inTab(r, tab) {
+    if (tab === 'Pending') return r.resultStatus === 'PENDING ENTRY';
+    if (tab === 'In Progress') return r.resultStatus === 'IN PROGRESS';
+    if (tab === 'Saved Draft') return r.resultStatus === 'SAVED DRAFT';
+    if (tab === 'Completed') return r.resultStatus === 'RESULT ENTERED' || r.resultStatus === 'PENDING VALIDATION';
+    return true;
+  }
+
+  visible(s) {
+    const q = s.query.trim().toLowerCase();
+    return s.rows.filter(r =>
+      this.inTab(r, s.tab) &&
+      (!s.dept || r.dept === s.dept) &&
+      (!s.priority || r.priority === s.priority) &&
+      (!s.statusFilter || r.resultStatus === s.statusFilter) &&
+      (!s.sampleTypeFilter || r.sampleType === s.sampleTypeFilter) &&
+      (!s.instrument || r.instrument === s.instrument) &&
+      (!q || [r.patientName, r.mrn, r.registrationNumber, r.accessionNo, r.barcode, r.testCode, r.testName].join(' ').toLowerCase().includes(q))
+    );
+  }
+
+  open = (id) => () => {
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState({ screen: 'entry', selectedId: id, toast: '', unlocked: false, values: { ...(DRAFTS[id] || {}) }, sources: {}, testRemarks: r.testRemarks || '' });
+  };
+
+  pickTest = (id) => () => {
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState({ selectedId: id, toast: '', unlocked: false, values: { ...(DRAFTS[id] || {}) }, sources: {}, testRemarks: r.testRemarks || '' });
+  };
+
+  backToQueue = () => this.setState({ screen: 'queue', selectedId: null, toast: '' });
+  /* Entry source per parameter: M manual, C calculated, A analyser-captured. */
+  setValue = (code) => (e) => this.setState(s => ({
+    values: { ...s.values, [code]: e.target.value },
+    sources: { ...s.sources, [code]: 'M' }
+  }));
+
+  /* Values read off the connected analyser are marked A and stay A until edited. */
+  pullFromAnalyser = () => {
+    const s = this.state;
+    const r = s.rows.find(x => x.id === s.selectedId);
+    const defs = r ? (PARAMS[r.testCode] || []) : [];
+    const capable = defs.filter(p => !p.calc && !p.text);
+    if (!capable.length) return this.setState({ toast: 'No analyser-interfaced parameter on this test — enter values manually.', toastKind: 'warning' });
+    const values = { ...s.values };
+    const sources = { ...s.sources };
+    let read = 0;
+    capable.forEach(p => {
+      if (String(values[p.code] || '').trim()) return;
+      const lo = Number(p.low), hi = Number(p.high);
+      if (isNaN(lo) || isNaN(hi)) return;
+      const span = hi - lo;
+      const v = lo + span * (0.25 + Math.random() * 0.5);
+      values[p.code] = span >= 100 ? String(Math.round(v)) : v.toFixed(1);
+      sources[p.code] = 'A';
+      read++;
+    });
+    this.setState({
+      values, sources,
+      toast: read ? read + ' value(s) read from the connected analyser.' : 'Analyser values are already populated.',
+      toastKind: read ? 'success' : 'info'
+    });
+  };
+  clearResults = () => this.setState({ values: {}, sources: {}, testRemarks: '', toast: 'Entered values cleared. Nothing was saved.', toastKind: 'warning' });
+  editResult = () => this.setState({ unlocked: true, toast: 'Result unlocked for editing.', toastKind: 'info' });
+  printPreview = () => this.setState({ toast: 'Print preview generated for this result.', toastKind: 'info' });
+
+  calculate = () => {
+    const s = this.state;
+    const hb = parseFloat(s.values.HB), rbc = parseFloat(s.values.RBC), pcv = parseFloat(s.values.PCV), a1c = parseFloat(s.values.HBA1C);
+    const next = { ...s.values };
+    let done = 0;
+    if (!isNaN(pcv) && !isNaN(rbc) && rbc) { next.MCV = (pcv * 10 / rbc).toFixed(1); done++; }
+    if (!isNaN(hb) && !isNaN(rbc) && rbc) { next.MCH = (hb * 10 / rbc).toFixed(1); done++; }
+    if (!isNaN(hb) && !isNaN(pcv) && pcv) { next.MCHC = (hb * 100 / pcv).toFixed(1); done++; }
+    if (!isNaN(a1c)) { next.EAG = (28.7 * a1c - 46.7).toFixed(0); done++; }
+    const nextSources = { ...s.sources };
+    ['MCV', 'MCH', 'MCHC', 'EAG'].forEach(code => { if (next[code] !== undefined) nextSources[code] = 'C'; });
+    this.setState({ values: next, sources: nextSources, toast: done ? done + ' derived value(s) calculated.' : 'Enter the primary values first — nothing to calculate yet.', toastKind: done ? 'success' : 'warning' });
+  };
+
+  openHistory = (code, name) => () => this.setState({ historyOpen: true, historyCode: code, historyName: name });
+  closeHistory = () => this.setState({ historyOpen: false });
+
+  setStatus(status, toast, kind) {
+    const id = this.state.selectedId;
+    this.setState(s => ({
+      rows: s.rows.map(r => r.id === id ? { ...r, resultStatus: status, assignedTo: r.assignedTo === 'Unassigned' ? 'Admin' : r.assignedTo, testRemarks: s.testRemarks } : r),
+      unlocked: false, toast, toastKind: kind || 'success'
+    }));
+  }
+
+  saveDraft = () => this.setStatus('SAVED DRAFT', 'Draft saved — the result stays editable.', 'info');
+  saveResult = () => this.setStatus('RESULT ENTERED', 'Result saved. Status is now RESULT ENTERED.', 'success');
+  submitValidation = () => this.setStatus('PENDING VALIDATION', 'Result submitted for validation. Status is now PENDING VALIDATION.', 'success');
+
+  renderVals() {
+    const s = this.state;
+    const tone = { warning: ['#FFFBEB', '#92400E', '#FCD34D'], error: ['#FEF2F2', '#991B1B', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] };
+    const prio = { NORMAL: ['#F3F4F6', '#374151', 'transparent'], URGENT: ['#FEF3C7', '#92400E', 'var(--color-warning)'], STAT: ['#FEE2E2', '#991B1B', 'var(--color-error)'] };
+    const stat = {
+      'PENDING ENTRY': ['#F3F4F6', '#4B5563'], 'IN PROGRESS': ['#DBEAFE', '#1E40AF'],
+      'SAVED DRAFT': ['#FEF3C7', '#92400E'], 'RESULT ENTERED': ['#DCFCE7', '#166534'], 'PENDING VALIDATION': ['#EDE9FE', '#5B21B6']
+    };
+
+    const rows = this.visible(s).map(r => {
+      const p = prio[r.priority], t = stat[r.resultStatus];
+      return {
+        ...r,
+        ageGender: r.age + ' y · ' + (r.sex === 'Male' ? 'M' : 'F'),
+        priorityBg: p[0], priorityFg: p[1], priorityEdge: p[2],
+        statusBg: t[0], statusFg: t[1],
+        assignedColor: r.assignedTo === 'Unassigned' ? 'var(--color-text-tertiary)' : 'var(--color-text-primary)',
+        onOpen: this.open(r.id), onEnter: this.open(r.id)
+      };
+    });
+
+    const tabs = ['Pending', 'In Progress', 'Saved Draft', 'Completed'].map(label => ({
+      label, onPick: this.setTab(label),
+      count: s.rows.filter(r => this.inTab(r, label)).length,
+      border: s.tab === label ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.tab === label ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    const d = s.selectedId ? s.rows.find(r => r.id === s.selectedId) : null;
+    const dP = d ? prio[d.priority] : prio.NORMAL;
+    const panel = d ? (PANELS[d.testCode] || []) : [];
+
+    let entered = 0, mandatory = 0, mandatoryDone = 0;
+    const flat = panel.map(p => {
+      const raw = s.values[p.code] !== undefined ? s.values[p.code] : '';
+      const filled = String(raw).trim() !== '';
+      if (filled) entered += 1;
+      if (p.req) { mandatory += 1; if (filled) mandatoryDone += 1; }
+      const n = parseFloat(String(raw).replace(/,/g, ''));
+      let flag = '', flagBg = '', flagFg = '', rowBg = '#fff', inputBorder = 'var(--color-border-base)';
+      if (!p.text && p.low !== undefined && !isNaN(n)) {
+        const span = p.high - p.low;
+        if (n < p.low - span * 0.5 || n > p.high + span * 0.5) { flag = 'CRITICAL'; flagBg = '#FEE2E2'; flagFg = '#991B1B'; rowBg = '#FEF2F2'; inputBorder = 'var(--color-error)'; }
+        else if (n < p.low) { flag = 'LOW'; flagBg = '#DBEAFE'; flagFg = '#1E40AF'; rowBg = '#F8FAFF'; inputBorder = '#93C5FD'; }
+        else if (n > p.high) { flag = 'HIGH'; flagBg = '#FEF3C7'; flagFg = '#92400E'; rowBg = '#FFFDF5'; inputBorder = '#FCD34D'; }
+        else if (s.showNormals) { flag = 'NORMAL'; flagBg = '#DCFCE7'; flagFg = '#166534'; }
+      }
+      return {
+        ...p, value: raw,
+        req: p.req ? ' *' : '',
+        calcNote: p.calc ? ' · calculated' : '',
+        ...(() => {
+          const entered = String(raw || '').trim() !== '';
+          const src = !entered ? '' : (p.calc ? 'C' : (s.sources[p.code] || 'M'));
+          const tone = { M: ['var(--color-gray-100)', 'var(--color-text-secondary)', 'Manual entry'], C: ['#EDE9FE', '#5B21B6', 'Calculated from other parameters'], A: ['#DBEAFE', '#1E40AF', 'Captured from the connected analyser'] }[src] || ['', '', ''];
+          return { hasSource: !!src, source: src, sourceBg: tone[0], sourceFg: tone[1], sourceTitle: tone[2] };
+        })(),
+        placeholder: p.text ? 'Text or –' : '–',
+        hasFlag: flag !== '', flag, flagBg, flagFg, rowBg, inputBorder,
+        onChange: this.setValue(p.code),
+        onHistory: this.openHistory(p.code, p.name)
+      };
+    });
+
+    const groups = [];
+    flat.forEach(p => {
+      const g = groups[groups.length - 1];
+      if (g && g.title === p.group) g.params.push(p);
+      else groups.push({ title: p.group, params: [p] });
+    });
+
+    const completed = mandatory > 0 && mandatoryDone === mandatory;
+    const savedState = d && (d.resultStatus === 'RESULT ENTERED' || d.resultStatus === 'PENDING VALIDATION');
+    const locked = !!savedState && !s.unlocked;
+    const headerStatus = locked ? 'COMPLETED' : (d && d.resultStatus === 'SAVED DRAFT' ? 'DRAFT' : (completed ? 'COMPLETE — UNSAVED' : 'INCOMPLETE'));
+    const hTone = locked ? stat['RESULT ENTERED'] : (headerStatus === 'DRAFT' ? stat['SAVED DRAFT'] : (completed ? ['#DBEAFE', '#1E40AF'] : ['#F3F4F6', '#4B5563']));
+
+    const queueTests = d ? s.rows.filter(r => r.mrn === d.mrn).map(r => {
+      const on = r.id === d.id, t = stat[r.resultStatus];
+      return {
+        ...r, onPick: this.pickTest(r.id),
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        edge: on ? 'var(--color-primary-deep)' : 'transparent',
+        color: on ? 'var(--color-primary-deep)' : 'var(--color-text-primary)',
+        weight: on ? 700 : 500,
+        statusBg: t[0], statusFg: t[1]
+      };
+    }) : [];
+
+    const hist = (HISTORY[s.historyCode] || []).map(h => ({
+      ...h, color: h.high ? '#92400E' : (h.low ? '#1E40AF' : 'var(--color-text-primary)')
+    }));
+
+    const canSave = !locked && entered > 0;
+    const canSubmit = !locked && completed;
+    const tToast = tone[s.toastKind], tBanner = tone[s.bannerKind];
+
+    return {
+      ...s,
+      isQueue: s.screen === 'queue',
+      isEntry: s.screen === 'entry',
+      rows, tabs, groups, queueTests,
+      rowCount: rows.length,
+      isEmpty: rows.length === 0,
+      bannerBg: tBanner[0], bannerFg: tBanner[1], bannerBorder: tBanner[2],
+      toastBg: tToast[0], toastFg: tToast[1], toastBorder: tToast[2],
+      enteredCount: mandatoryDone, mandatoryCount: mandatory,
+      isLocked: locked,
+      dPatient: d ? d.patientName : '',
+      dMrn: d ? d.mrn : '',
+      dRegistration: d ? d.registrationNumber : '',
+      dAge: d ? d.age + ' years' : '',
+      dGender: d ? d.sex : '',
+      dAccession: d ? d.accessionNo : '',
+      dTestCode: d ? d.testCode : '',
+      dTestName: d ? d.testName : '',
+      dSampleType: d ? d.sampleType : '',
+      dBarcode: d ? d.barcode : '',
+      dPriority: d ? d.priority : '',
+      dPriorityBg: dP[0], dPriorityFg: dP[1],
+      dStatus: headerStatus, dStatusBg: hTone[0], dStatusFg: hTone[1],
+      dAccessionDate: d ? d.accessionDate : '',
+      dBillDate: d ? d.billDate : '',
+      dBillNumber: d ? d.billNumber : '',
+      dOrderNumber: d ? d.orderNumber : '',
+      dCollectedFull: d ? d.collectedFull : '',
+      dReceivedFull: d ? d.receivedFull : '',
+      dInstrument: d ? d.instrument : '',
+      previousReports: [
+        { test: 'Complete Blood Count', date: '12 Aug 2026', state: 'Reported' },
+        { test: 'Liver Function Test', date: '05 Aug 2026', state: 'Reported' },
+        { test: 'Glycated Haemoglobin', date: '18 Feb 2026', state: 'Reported' }
+      ],
+      clinicalNote: 'Clinical history: Type 2 Diabetes · on Metformin.',
+      historyRows: hist,
+      historyEmpty: hist.length === 0,
+      historyTitle: s.historyName ? s.historyName + ' — previous results' : '',
+      actionHint: locked ? 'Result is saved and read-only. Select Edit Result to change values.' : (completed ? 'All mandatory parameters entered — ready to save or submit.' : mandatory - mandatoryDone + ' mandatory parameter(s) still pending.'),
+      saveBg: canSave ? 'var(--color-primary-deep)' : 'var(--color-gray-100)',
+      saveFg: canSave ? '#fff' : 'var(--color-text-tertiary)',
+      saveCursor: canSave ? 'pointer' : 'not-allowed',
+      submitDisabled: !canSubmit,
+      submitBg: canSubmit ? 'var(--color-accent-teal)' : 'var(--color-gray-100)',
+      submitFg: canSubmit ? '#fff' : 'var(--color-text-tertiary)',
+      submitBorder: canSubmit ? 'var(--color-accent-teal)' : 'var(--color-border-base)',
+      submitCursor: canSubmit ? 'pointer' : 'not-allowed',
+      onQuery: this.onQuery, updateField: this.updateField, toggleFlag: this.toggleFlag,
+      clearFilters: this.clearFilters, search: this.search,
+      backToQueue: this.backToQueue, clearResults: this.clearResults,
+      saveDraft: this.saveDraft, saveResult: this.saveResult, submitValidation: this.submitValidation,
+      calculate: this.calculate, pullFromAnalyser: this.pullFromAnalyser, editResult: this.editResult, printPreview: this.printPreview,
+      toggleSettings: this.toggleSettings, closeHistory: this.closeHistory, stop: this.stop
+    };
+  }
+}
+</script>
+</body>
+</html>

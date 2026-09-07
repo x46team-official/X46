@@ -1,0 +1,57 @@
+{
+  "functionality_id": "API-095",
+  "module": "Result Entry",
+  "functionality": "Invalid Result Flag",
+  "http_method": "POST",
+  "endpoint": "/api/result-entries/{resultEntryId}/details",
+  "description": "Documents the specific error scenario of API-089 where the request fails this validation. Same endpoint as API-089, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "resultFlag": "'INVALID_FLAG' - not a valid result_flag value in this scenario"
+    }
+  },
+  "required_fields": [
+    "resultFlag"
+  ],
+  "validation": [
+    "resultFlag must be one of NORMAL, HIGH, LOW, CRITICAL, ABNORMAL (CHECK)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "resultFlag must be one of NORMAL, HIGH, LOW, CRITICAL, ABNORMAL (CHECK)",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid result flag"
+      },
+      "source": "database/api_contracts_test/018_result_entry.sql (API-T154)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "result_entry_details"
+    ],
+    "relationships": [],
+    "constraints": [
+      "result_flag CHECK IN (NORMAL, HIGH, LOW, CRITICAL, ABNORMAL)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/018_result_entry.sql (API-T154)"
+  ],
+  "test_ids": [
+    "API-T154"
+  ]
+}

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="fit-screen.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --line-soft: #eaedf1; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --green: #1f8a4c; --green-soft: #e9f6ee; --grey-pill: #eef0f3;
+      --amber: #92400e; --amber-soft: #fff8e6;
+      --radius: 3px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+    input, select, textarea { font-family: inherit; font-size: 12.5px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 6px 9px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 2px rgba(22,104,220,.14); }
+    input[type="checkbox"] { width: 14px; height: 14px; padding: 0; accent-color: var(--blue); cursor: pointer; }
+    select { cursor: pointer; }
+    tbody tr:hover { background: #f7f9fc; }
+  </style>
+</helmet>
+
+<div style="display: flex; min-height: 100vh; background: var(--page-bg);">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Registration Settings</div>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="padding: 16px 20px 0;">
+      <div style="max-width: 1180px;">
+
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+          <div>
+            <div style="font-size: 11.5px; color: var(--text-3);"><a href="Registration.dc.html">Registration &amp; Billing</a> / Registration Settings</div>
+            <h1 style="margin: 2px 0 2px; font-size: 16px; font-weight: 700;">Registration Settings</h1>
+            <p style="margin: 0; font-size: 12.5px; color: var(--text-2);">Configure how patient registration behaves for the selected organization and branch.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <sc-if value="{{ dirty }}" hint-placeholder-val="{{ false }}">
+              <span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; background: var(--amber-soft); color: var(--amber); border: 1px solid #f3d9a4; border-radius: 999px; font-size: 11.5px; font-weight: 700;">
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>Unsaved changes
+              </span>
+            </sc-if>
+            <button onClick="{{ reset }}" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap;" style-hover="background: var(--head-bg);">Reset</button>
+            <button onClick="{{ save }}" style="padding: 6px 14px; background: {{ saveBg }}; color: #fff; border: 1px solid {{ saveBg }}; border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: {{ saveCursor }}; white-space: nowrap;">Save Changes</button>
+          </div>
+        </div>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 14px; align-items: start;">
+          <div>
+            <label style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Organization</label>
+            <select value="{{ v.organization }}" onChange="{{ setField }}" data-field="organization">
+              <option value="X46 Diagnostics">X46 Diagnostics</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Branch</label>
+            <select value="{{ v.branch }}" onChange="{{ onBranch }}" data-field="branch">
+              <option value="Pune Main Branch">Pune Main Branch</option>
+              <option value="Mumbai Branch">Mumbai Branch</option>
+              <option value="Nashik Branch">Nashik Branch</option>
+              <option value="Pimpri Branch">Pimpri Branch</option>
+            </select>
+          </div>
+          <div style="font-size: 11.5px; color: var(--text-3); padding-bottom: 7px;">{{ scopeNote }}</div>
+        </div>
+
+        <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; font-weight: 600; margin-bottom: 12px; border-left: 3px solid {{ toastEdge }}; background: {{ toastBg }}; color: {{ toastFg }};">{{ toast }}</div>
+        </sc-if>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+          <div style="display: flex; gap: 2px; padding: 0 8px; border-bottom: 1px solid var(--line); overflow-x: auto;">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.onPick }}" style="padding: 10px 14px; background: none; border: none; border-bottom: 2px solid {{ t.border }}; font-family: inherit; font-size: 12.5px; font-weight: {{ t.weight }}; color: {{ t.color }}; cursor: pointer; white-space: nowrap;">{{ t.label }}</button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ isQuick }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="padding: 12px 16px 8px; border-bottom: 1px solid var(--line-soft); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Registration Defaults</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">Values pre-filled on the registration form for this branch.</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Default patient type</div><div style="font-size: 11.5px; color: var(--text-2);">Applied when the operator does not change it.</div></div>
+                <div style="width: 220px; flex-shrink: 0;"><select value="{{ v.patientType }}" onChange="{{ setField }}" data-field="patientType"><option value="OP">Out-patient (OP)</option><option value="IP">In-patient (IP)</option><option value="REFERRAL">Referral</option></select></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Default patient category</div><div style="font-size: 11.5px; color: var(--text-2);">Drives the price list picked at billing.</div></div>
+                <div style="width: 220px; flex-shrink: 0;"><select value="{{ v.patientCategory }}" onChange="{{ setField }}" data-field="patientCategory"><option value="GENERAL">General</option><option value="CORPORATE">Corporate</option><option value="INSURANCE">Insurance</option><option value="CAMP">Camp</option></select></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Default collection location</div><div style="font-size: 11.5px; color: var(--text-2);">Used for samples collected at this branch.</div></div>
+                <div style="width: 220px; flex-shrink: 0;"><select value="{{ v.collectionLocation }}" onChange="{{ setField }}" data-field="collectionLocation"><option value="Phlebotomy Room 1">Phlebotomy Room 1</option><option value="Phlebotomy Room 2">Phlebotomy Room 2</option><option value="Reception Desk">Reception Desk</option><option value="Home Collection">Home Collection</option></select></div>
+              </div>
+
+              <div style="padding: 12px 16px 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line-soft); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Numbering</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">MRN and registration number generation for this branch.</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Auto-generate MRN</div><div style="font-size: 11.5px; color: var(--text-2);">When off, the operator must enter an MRN manually.</div></div>
+                <div style="width: 220px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.autoMrn }}" onChange="{{ toggleField }}" data-field="autoMrn" /></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">MRN prefix</div><div style="font-size: 11.5px; color: var(--text-2);">Prepended to every generated MRN.</div></div>
+                <div style="width: 220px; flex-shrink: 0;"><input type="text" value="{{ v.mrnPrefix }}" onChange="{{ setField }}" data-field="mrnPrefix" maxlength="12" /></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Registration series reset</div><div style="font-size: 11.5px; color: var(--text-2);">When the registration number counter restarts.</div></div>
+                <div style="width: 220px; flex-shrink: 0;"><select value="{{ v.seriesReset }}" onChange="{{ setField }}" data-field="seriesReset"><option value="Daily">Daily</option><option value="Monthly">Monthly</option><option value="Yearly">Yearly</option><option value="Never">Never</option></select></div>
+              </div>
+
+              <div style="padding: 12px 16px 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line-soft); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Billing Handover</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">What happens once a registration is saved.</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Create bill on registration</div><div style="font-size: 11.5px; color: var(--text-2);">Opens the bill in the same flow instead of a separate step.</div></div>
+                <div style="width: 220px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.autoBill }}" onChange="{{ toggleField }}" data-field="autoBill" /></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Default payment mode</div><div style="font-size: 11.5px; color: var(--text-2);">Pre-selected on the payment panel.</div></div>
+                <div style="width: 220px; flex-shrink: 0;"><select value="{{ v.paymentMode }}" onChange="{{ setField }}" data-field="paymentMode"><option value="CASH">Cash</option><option value="UPI">UPI</option><option value="CARD">Card</option><option value="CREDIT">Credit</option></select></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px;">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Print receipt after registration</div><div style="font-size: 11.5px; color: var(--text-2);">Sends the receipt to the reception printer automatically.</div></div>
+                <div style="width: 220px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.printReceipt }}" onChange="{{ toggleField }}" data-field="printReceipt" /></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isDisplay }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="padding: 12px 16px 8px; border-bottom: 1px solid var(--line); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Display Fields</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">Choose which fields appear on the registration form and in the patient list.</div>
+              </div>
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; min-width: 720px; border-collapse: collapse; font-size: 12.5px;">
+                  <thead>
+                    <tr style="background: var(--head-bg);">
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line);">Field</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 190px;">Section</th>
+                      <th style="padding: 8px 16px; text-align: center; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 140px;">Show on form</th>
+                      <th style="padding: 8px 16px; text-align: center; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 140px;">Show in list</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ displayFields }}" as="f" hint-placeholder-count="8">
+                      <tr style="border-bottom: 1px solid var(--line-soft);">
+                        <td style="padding: 8px 16px; font-weight: 600;">{{ f.label }}</td>
+                        <td style="padding: 8px 16px; color: var(--text-2);">{{ f.section }}</td>
+                        <td style="padding: 8px 16px; text-align: center;"><input type="checkbox" checked="{{ f.form }}" onChange="{{ f.onForm }}" /></td>
+                        <td style="padding: 8px 16px; text-align: center;"><input type="checkbox" checked="{{ f.list }}" onChange="{{ f.onList }}" /></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+              <div style="padding: 10px 16px; font-size: 11.5px; color: var(--text-3); border-top: 1px solid var(--line);">Core identifiers (MRN, patient name, mobile) are always shown and cannot be hidden.</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isRequired }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="padding: 12px 16px 8px; border-bottom: 1px solid var(--line); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Required Fields</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">Fields the operator must complete before a registration can be saved.</div>
+              </div>
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 12.5px;">
+                  <thead>
+                    <tr style="background: var(--head-bg);">
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line);">Field</th>
+                      <th style="padding: 8px 16px; text-align: center; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 110px;">Required</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 260px;">Validation</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 150px;">Enforced from</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ requiredFields }}" as="f" hint-placeholder-count="8">
+                      <tr style="border-bottom: 1px solid var(--line-soft);">
+                        <td style="padding: 8px 16px; font-weight: 600;">{{ f.label }}<sc-if value="{{ f.locked }}" hint-placeholder-val="{{ false }}"><span style="margin-left: 7px; padding: 1px 6px; background: var(--grey-pill); color: var(--text-2); border-radius: 2px; font-size: 10.5px; font-weight: 700;">Mandatory</span></sc-if></td>
+                        <td style="padding: 8px 16px; text-align: center;"><input type="checkbox" checked="{{ f.required }}" onChange="{{ f.onRequired }}" disabled="{{ f.locked }}" /></td>
+                        <td style="padding: 8px 16px; color: var(--text-2);">{{ f.rule }}</td>
+                        <td style="padding: 8px 16px; color: var(--text-2);">{{ f.scope }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isAdvanced }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="padding: 12px 16px 8px; border-bottom: 1px solid var(--line-soft); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Duplicate Detection</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">How the system warns about an existing patient during registration.</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Match patients on</div><div style="font-size: 11.5px; color: var(--text-2);">Fields compared against existing patient records.</div></div>
+                <div style="width: 250px; flex-shrink: 0;"><select value="{{ v.duplicateRule }}" onChange="{{ setField }}" data-field="duplicateRule"><option value="MOBILE_NAME">Mobile + patient name</option><option value="MOBILE">Mobile only</option><option value="MRN">MRN only</option><option value="ID">Identifier (Aadhaar / passport)</option></select></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Warn on repeat registration within</div><div style="font-size: 11.5px; color: var(--text-2);">Shows a duplicate-visit warning inside this window.</div></div>
+                <div style="width: 250px; flex-shrink: 0; display: flex; align-items: center; gap: 8px;"><input type="number" min="0" value="{{ v.duplicateWindow }}" onChange="{{ setField }}" data-field="duplicateWindow" style="width: 90px;" /><span style="font-size: 12px; color: var(--text-2);">days</span></div>
+              </div>
+
+              <div style="padding: 12px 16px 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line-soft); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Edit &amp; Approval Controls</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">Who may change a registration after it has been billed.</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Allow editing after billing</div><div style="font-size: 11.5px; color: var(--text-2);">Applies until the sample is accessioned.</div></div>
+                <div style="width: 250px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.editAfterBilling }}" onChange="{{ toggleField }}" data-field="editAfterBilling" /></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Require reason for edit</div><div style="font-size: 11.5px; color: var(--text-2);">Reason is written to the registration audit trail.</div></div>
+                <div style="width: 250px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.reasonForEdit }}" onChange="{{ toggleField }}" data-field="reasonForEdit" /></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Allow backdated registration</div><div style="font-size: 11.5px; color: var(--text-2);">Permits an earlier registration date for camp and courier batches.</div></div>
+                <div style="width: 250px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.backdated }}" onChange="{{ toggleField }}" data-field="backdated" /></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Urgent registration needs approval</div><div style="font-size: 11.5px; color: var(--text-2);">STAT and urgent orders wait for a supervisor.</div></div>
+                <div style="width: 250px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.urgentApproval }}" onChange="{{ toggleField }}" data-field="urgentApproval" /></div>
+              </div>
+
+              <div style="padding: 12px 16px 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line-soft); background: var(--head-bg);">
+                <div style="font-size: 12.5px; font-weight: 700;">Consent &amp; Communication</div>
+                <div style="font-size: 11.5px; color: var(--text-2);">Defaults for patient contact captured at registration.</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-bottom: 1px solid var(--line-soft);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">WhatsApp consent on by default</div><div style="font-size: 11.5px; color: var(--text-2);">Operator can still clear it per patient.</div></div>
+                <div style="width: 250px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.whatsappConsent }}" onChange="{{ toggleField }}" data-field="whatsappConsent" /></div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px;">
+                <div><div style="font-size: 12.5px; font-weight: 600;">Send registration confirmation</div><div style="font-size: 11.5px; color: var(--text-2);">Confirmation message sent once the bill is saved.</div></div>
+                <div style="width: 250px; flex-shrink: 0;"><select value="{{ v.confirmationChannel }}" onChange="{{ setField }}" data-field="confirmationChannel"><option value="NONE">Do not send</option><option value="SMS">SMS</option><option value="WHATSAPP">WhatsApp</option><option value="BOTH">SMS + WhatsApp</option></select></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isForms }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="padding: 12px 16px 8px; border-bottom: 1px solid var(--line); background: var(--head-bg); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+                <div>
+                  <div style="font-size: 12.5px; font-weight: 700;">Lab Forms</div>
+                  <div style="font-size: 11.5px; color: var(--text-2);">Forms attached to or printed with a registration.</div>
+                </div>
+                <button onClick="{{ notImplemented }}" style="padding: 5px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="border-color: var(--blue); color: var(--blue);">Upload Form</button>
+              </div>
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; min-width: 800px; border-collapse: collapse; font-size: 12.5px;">
+                  <thead>
+                    <tr style="background: var(--head-bg);">
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line);">Form Name</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 130px;">Type</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 190px;">Applies To</th>
+                      <th style="padding: 8px 16px; text-align: center; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 130px;">Auto-print</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 100px;">Status</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 110px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ labForms }}" as="f" hint-placeholder-count="4">
+                      <tr style="border-bottom: 1px solid var(--line-soft);">
+                        <td style="padding: 8px 16px; font-weight: 600;">{{ f.name }}</td>
+                        <td style="padding: 8px 16px; color: var(--text-2);">{{ f.type }}</td>
+                        <td style="padding: 8px 16px; color: var(--text-2);">{{ f.applies }}</td>
+                        <td style="padding: 8px 16px; text-align: center;"><input type="checkbox" checked="{{ f.autoPrint }}" onChange="{{ f.onAutoPrint }}" /></td>
+                        <td style="padding: 8px 16px;"><span style="display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; background: {{ f.statusBg }}; color: {{ f.statusFg }}; border-radius: 2px; font-size: 11px; font-weight: 700;"><span style="width: 5px; height: 5px; border-radius: 50%; background: currentColor;"></span>{{ f.status }}</span></td>
+                        <td style="padding: 8px 16px;"><button onClick="{{ notImplemented }}" style="padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text-2); font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;">Configure</button></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 16px; border-top: 1px solid var(--line);">
+                <div><div style="font-size: 12.5px; font-weight: 600;">TRF mandatory for outsourced tests</div><div style="font-size: 11.5px; color: var(--text-2);">Blocks registration of outsource tests without a test request form.</div></div>
+                <div style="width: 250px; flex-shrink: 0; display: flex; justify-content: flex-end;"><input type="checkbox" checked="{{ v.trfMandatory }}" onChange="{{ toggleField }}" data-field="trfMandatory" /></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isPickLists }}" hint-placeholder-val="{{ false }}">
+            <div style="display: grid; grid-template-columns: 260px 1fr; min-height: 380px;">
+              <div style="border-right: 1px solid var(--line);">
+                <div style="padding: 12px 16px 8px; border-bottom: 1px solid var(--line); background: var(--head-bg);">
+                  <div style="font-size: 12.5px; font-weight: 700;">Pick Lists</div>
+                  <div style="font-size: 11.5px; color: var(--text-2);">Dropdown values used on the registration form.</div>
+                </div>
+                <sc-for list="{{ pickLists }}" as="p" hint-placeholder-count="6">
+                  <button onClick="{{ p.onPick }}" style="width: 100%; text-align: left; padding: 10px 16px; background: {{ p.bg }}; border: none; border-bottom: 1px solid var(--line-soft); border-left: 3px solid {{ p.edge }}; font-family: inherit; cursor: pointer;">
+                    <div style="font-size: 12.5px; font-weight: {{ p.weight }}; color: {{ p.color }};">{{ p.name }}</div>
+                    <div style="font-size: 11px; color: var(--text-3);">{{ p.count }} values</div>
+                  </button>
+                </sc-for>
+              </div>
+              <div>
+                <div style="padding: 12px 16px 8px; border-bottom: 1px solid var(--line); background: var(--head-bg); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+                  <div>
+                    <div style="font-size: 12.5px; font-weight: 700;">{{ activeListName }}</div>
+                    <div style="font-size: 11.5px; color: var(--text-2);">{{ activeListNote }}</div>
+                  </div>
+                  <button onClick="{{ notImplemented }}" style="padding: 5px 12px; background: var(--blue); border: 1px solid var(--blue); border-radius: var(--radius); color: #fff; font-size: 11.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--blue-hover);">+ Add Value</button>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+                  <thead>
+                    <tr style="background: var(--head-bg);">
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); width: 150px;">Value</th>
+                      <th style="padding: 8px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft);">Display Label</th>
+                      <th style="padding: 8px 16px; text-align: center; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 110px;">Active</th>
+                      <th style="padding: 8px 16px; text-align: center; font-weight: 700; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line-soft); width: 110px;">Default</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ activeListItems }}" as="i" hint-placeholder-count="5">
+                      <tr style="border-bottom: 1px solid var(--line-soft);">
+                        <td style="padding: 8px 16px; font-family: ui-monospace, monospace; font-weight: 600;">{{ i.value }}</td>
+                        <td style="padding: 8px 16px;">{{ i.label }}</td>
+                        <td style="padding: 8px 16px; text-align: center;"><input type="checkbox" checked="{{ i.active }}" onChange="{{ i.onActive }}" /></td>
+                        <td style="padding: 8px 16px; text-align: center;"><input type="radio" name="pickdefault" checked="{{ i.isDefault }}" onChange="{{ i.onDefault }}" style="width: 14px; height: 14px; accent-color: var(--blue); cursor: pointer;" /></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+                <div style="padding: 10px 16px; font-size: 11.5px; color: var(--text-3); border-top: 1px solid var(--line);">Deactivated values stay on historical registrations but are hidden from new ones.</div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="margin: 10px 0 24px; font-size: 11.5px; color: var(--text-3);">Settings apply to {{ scopeShort }}. This iteration builds the structure only — each section will be wired to the registration configuration API as it is finalized.</div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const DEFAULTS = {
+  organization: 'X46 Diagnostics', branch: 'Pune Main Branch',
+  patientType: 'OP', patientCategory: 'GENERAL', collectionLocation: 'Phlebotomy Room 1',
+  autoMrn: true, mrnPrefix: 'MRN-', seriesReset: 'Yearly',
+  autoBill: true, paymentMode: 'CASH', printReceipt: true,
+  duplicateRule: 'MOBILE_NAME', duplicateWindow: 7,
+  editAfterBilling: true, reasonForEdit: true, backdated: false, urgentApproval: false,
+  whatsappConsent: true, confirmationChannel: 'WHATSAPP', trfMandatory: true
+};
+
+const DISPLAY_FIELDS = [
+  { key: 'title', label: 'Title', section: 'Patient Details', form: true, list: false },
+  { key: 'middleName', label: 'Middle Name', section: 'Patient Details', form: true, list: false },
+  { key: 'dob', label: 'Date of Birth', section: 'Patient Details', form: false, list: false },
+  { key: 'email', label: 'Email', section: 'Patient Details', form: true, list: true },
+  { key: 'photo', label: 'Patient Photo', section: 'Patient Details', form: true, list: false },
+  { key: 'identifier', label: 'Identifier (Aadhaar / Passport)', section: 'Patient Details', form: false, list: false },
+  { key: 'address', label: 'Address', section: 'Address', form: true, list: false },
+  { key: 'city', label: 'City / District / State', section: 'Address', form: true, list: true },
+  { key: 'pincode', label: 'Pincode', section: 'Address', form: true, list: false },
+  { key: 'doctor', label: 'Referring Doctor', section: 'Clinical', form: true, list: true },
+  { key: 'clinical', label: 'Clinical History', section: 'Clinical', form: true, list: false },
+  { key: 'severity', label: 'Severity / Duration', section: 'Clinical', form: false, list: false },
+  { key: 'trf', label: 'TRF Upload', section: 'Clinical', form: true, list: false },
+  { key: 'org', label: 'Referring Organization', section: 'Billing', form: true, list: true },
+  { key: 'priceList', label: 'Price List', section: 'Billing', form: true, list: false },
+  { key: 'remarks', label: 'Remarks', section: 'Billing', form: true, list: false }
+];
+
+const REQUIRED_FIELDS = [
+  { key: 'mrn', label: 'MRN', required: true, rule: 'Unique within organization', scope: 'Organization', locked: true },
+  { key: 'name', label: 'Patient name (first name)', required: true, rule: 'Letters and spaces, 2–80 characters', scope: 'Organization', locked: true },
+  { key: 'gender', label: 'Gender', required: true, rule: 'From Genders pick list', scope: 'Branch' },
+  { key: 'age', label: 'Age or date of birth', required: true, rule: 'At least one of years / months / days', scope: 'Branch' },
+  { key: 'mobile', label: 'Mobile', required: true, rule: '10-digit Indian mobile number', scope: 'Branch' },
+  { key: 'email', label: 'Email', required: false, rule: 'Valid email format when entered', scope: 'Branch' },
+  { key: 'address', label: 'Address line', required: false, rule: 'Up to 255 characters', scope: 'Branch' },
+  { key: 'doctor', label: 'Referring doctor', required: false, rule: 'From Referral Sources pick list', scope: 'Branch' },
+  { key: 'clinical', label: 'Clinical history', required: false, rule: 'Free text, up to 500 characters', scope: 'Branch' },
+  { key: 'collectTime', label: 'Sample collection time', required: true, rule: 'Not later than the current time', scope: 'Branch' },
+  { key: 'consent', label: 'Consent acknowledgement', required: false, rule: 'Checkbox on the registration form', scope: 'Branch' }
+];
+
+const LAB_FORMS = [
+  { key: 'trf', name: 'Test Request Form (TRF)', type: 'TRF', applies: 'Outsourced tests', autoPrint: false, active: true },
+  { key: 'consent', name: 'General Consent Form', type: 'Consent', applies: 'All registrations', autoPrint: true, active: true },
+  { key: 'hiv', name: 'HIV / Serology Consent', type: 'Consent', applies: 'Serology tests', autoPrint: false, active: true },
+  { key: 'camp', name: 'Camp Registration Sheet', type: 'Camp', applies: 'Camp registrations', autoPrint: false, active: false },
+  { key: 'home', name: 'Home Collection Acknowledgement', type: 'Consent', applies: 'Home collection', autoPrint: false, active: false }
+];
+
+const PICK_LISTS = [
+  { key: 'titles', name: 'Titles', note: 'Salutation shown before the patient name.', items: [
+    { value: 'MR', label: 'Mr', active: true }, { value: 'MS', label: 'Ms', active: true },
+    { value: 'MRS', label: 'Mrs', active: true }, { value: 'MISS', label: 'Miss', active: true },
+    { value: 'DR', label: 'Dr', active: true },
+    { value: 'MASTER', label: 'Master', active: true }, { value: 'BABY', label: 'Baby', active: true }
+  ], def: 'MR' },
+  { key: 'genders', name: 'Genders', note: 'Values allowed in the gender field.', items: [
+    { value: 'MALE', label: 'Male', active: true }, { value: 'FEMALE', label: 'Female', active: true },
+    { value: 'OTHER', label: 'Other', active: true }
+  ], def: '' },
+  { key: 'patientTypes', name: 'Patient Types', note: 'Out-patient, in-patient and referral handling.', items: [
+    { value: 'OP', label: 'Out-patient', active: true }, { value: 'IP', label: 'In-patient', active: true },
+    { value: 'REFERRAL', label: 'Referral', active: true }, { value: 'CAMP', label: 'Camp', active: false }
+  ], def: 'OP' },
+  { key: 'idTypes', name: 'Identifier Types', note: 'Government or insurance identifiers captured at registration.', items: [
+    { value: 'AADHAAR', label: 'Aadhaar', active: true }, { value: 'PASSPORT', label: 'Passport', active: true },
+    { value: 'SRF', label: 'SRF ID', active: true }, { value: 'INSURANCE', label: 'Insurance card', active: false }
+  ], def: 'AADHAAR' },
+  { key: 'referral', name: 'Referral Sources', note: 'Where the patient or order came from.', items: [
+    { value: 'SELF', label: 'Self', active: true }, { value: 'DOCTOR', label: 'Referring doctor', active: true },
+    { value: 'PARTNER', label: 'Partner lab', active: true }, { value: 'CORPORATE', label: 'Corporate tie-up', active: true }
+  ], def: 'SELF' },
+  { key: 'locations', name: 'Collection Locations', note: 'Locations where samples can be collected for this branch.', items: [
+    { value: 'PHLEBO1', label: 'Phlebotomy Room 1', active: true }, { value: 'PHLEBO2', label: 'Phlebotomy Room 2', active: true },
+    { value: 'RECEPTION', label: 'Reception Desk', active: true }, { value: 'HOME', label: 'Home Collection', active: true }
+  ], def: 'PHLEBO1' }
+];
+
+const clone = (x) => JSON.parse(JSON.stringify(x));
+
+class Component extends DCLogic {
+  state = {
+    tab: 'QUICK',
+    v: clone(DEFAULTS),
+    displayFields: clone(DISPLAY_FIELDS),
+    requiredFields: clone(REQUIRED_FIELDS),
+    labForms: clone(LAB_FORMS),
+    pickLists: clone(PICK_LISTS),
+    activeList: 'titles',
+    saved: JSON.stringify({ v: DEFAULTS, displayFields: DISPLAY_FIELDS, requiredFields: REQUIRED_FIELDS, labForms: LAB_FORMS, pickLists: PICK_LISTS }),
+    toast: '', toastKind: 'info'
+  };
+
+  snapshot(s) {
+    return JSON.stringify({ v: s.v, displayFields: s.displayFields, requiredFields: s.requiredFields, labForms: s.labForms, pickLists: s.pickLists });
+  }
+
+  setTab = (t) => () => this.setState({ tab: t });
+  setActiveList = (k) => () => this.setState({ activeList: k });
+
+  setField = (e) => {
+    const f = e.target.dataset.field;
+    const raw = e.target.value;
+    const val = e.target.type === 'number' ? (raw === '' ? '' : Number(raw)) : raw;
+    this.setState(s => ({ v: { ...s.v, [f]: val }, toast: '' }));
+  };
+
+  toggleField = (e) => {
+    const f = e.target.dataset.field;
+    this.setState(s => ({ v: { ...s.v, [f]: !s.v[f] }, toast: '' }));
+  };
+
+  onBranch = (e) => {
+    const branch = e.target.value;
+    this.setState(s => ({ v: { ...s.v, branch }, toast: 'Loaded registration settings for ' + branch + '.', toastKind: 'info' }));
+  };
+
+  toggleRow = (listKey, key, prop) => () => this.setState(s => ({
+    [listKey]: s[listKey].map(r => r.key === key ? { ...r, [prop]: !r[prop] } : r), toast: ''
+  }));
+
+  togglePickItem = (listKey, value) => () => this.setState(s => ({
+    pickLists: s.pickLists.map(p => p.key === listKey ? { ...p, items: p.items.map(i => i.value === value ? { ...i, active: !i.active } : i) } : p),
+    toast: ''
+  }));
+
+  setPickDefault = (listKey, value) => () => this.setState(s => ({
+    pickLists: s.pickLists.map(p => p.key === listKey ? { ...p, def: value } : p), toast: ''
+  }));
+
+  save = () => this.setState(s => ({
+    saved: this.snapshot(s),
+    toast: 'Registration settings saved for ' + s.v.organization + ' · ' + s.v.branch + '.',
+    toastKind: 'success'
+  }));
+
+  reset = () => this.setState(s => {
+    const base = JSON.parse(s.saved);
+    return { ...base, toast: 'Changes discarded — settings restored to the last saved values.', toastKind: 'info' };
+  });
+
+  notImplemented = () => this.setState({ toast: 'Detailed configuration arrives in the next iteration — this iteration builds the structure.', toastKind: 'info' });
+
+  renderVals() {
+    const s = this.state;
+    const dirty = this.snapshot(s) !== s.saved;
+    const toastTone = { info: ['#eef4fe', '#1e40af', 'var(--blue)'], success: ['var(--green-soft)', 'var(--green)', 'var(--green)'] }[s.toastKind];
+
+    const tabs = [['QUICK', 'Quick Settings'], ['DISPLAY', 'Display Fields'], ['REQUIRED', 'Required Fields'], ['ADVANCED', 'Advanced Settings'], ['FORMS', 'Lab Forms'], ['PICKS', 'Pick Lists']].map(([k, label]) => {
+      const on = s.tab === k;
+      return {
+        label, onPick: this.setTab(k),
+        border: on ? 'var(--blue)' : 'transparent',
+        color: on ? 'var(--blue)' : 'var(--text-2)',
+        weight: on ? 700 : 600
+      };
+    });
+
+    const active = s.pickLists.find(p => p.key === s.activeList) || s.pickLists[0];
+
+    return {
+      ...s,
+      dirty,
+      tabs,
+      isQuick: s.tab === 'QUICK',
+      isDisplay: s.tab === 'DISPLAY',
+      isRequired: s.tab === 'REQUIRED',
+      isAdvanced: s.tab === 'ADVANCED',
+      isForms: s.tab === 'FORMS',
+      isPickLists: s.tab === 'PICKS',
+      saveBg: dirty ? 'var(--blue)' : '#9db8e4',
+      saveCursor: dirty ? 'pointer' : 'default',
+      scopeNote: 'These settings apply to ' + s.v.branch + ' only. Other branches of ' + s.v.organization + ' keep their own configuration.',
+      scopeShort: s.v.organization + ' · ' + s.v.branch,
+      hasToast: !!s.toast,
+      toastBg: toastTone[0], toastFg: toastTone[1], toastEdge: toastTone[2],
+      displayFields: s.displayFields.map(f => ({
+        ...f,
+        onForm: this.toggleRow('displayFields', f.key, 'form'),
+        onList: this.toggleRow('displayFields', f.key, 'list')
+      })),
+      requiredFields: s.requiredFields.map(f => ({
+        ...f, locked: !!f.locked,
+        onRequired: this.toggleRow('requiredFields', f.key, 'required')
+      })),
+      labForms: s.labForms.map(f => ({
+        ...f,
+        status: f.active ? 'Active' : 'Inactive',
+        statusBg: f.active ? 'var(--green-soft)' : 'var(--grey-pill)',
+        statusFg: f.active ? 'var(--green)' : 'var(--text-2)',
+        onAutoPrint: this.toggleRow('labForms', f.key, 'autoPrint')
+      })),
+      pickLists: s.pickLists.map(p => {
+        const on = p.key === s.activeList;
+        return {
+          name: p.name, count: p.items.length, onPick: this.setActiveList(p.key),
+          bg: on ? '#f2f7ff' : 'transparent',
+          edge: on ? 'var(--blue)' : 'transparent',
+          color: on ? 'var(--blue)' : 'var(--text)',
+          weight: on ? 700 : 600
+        };
+      }),
+      activeListName: active.name,
+      activeListNote: active.note,
+      activeListItems: active.items.map(i => ({
+        ...i,
+        isDefault: active.def === i.value,
+        onActive: this.togglePickItem(active.key, i.value),
+        onDefault: this.setPickDefault(active.key, i.value)
+      })),
+      setField: this.setField, toggleField: this.toggleField, onBranch: this.onBranch,
+      save: this.save, reset: this.reset, notImplemented: this.notImplemented
+    };
+  }
+}
+</script>
+</body>
+</html>

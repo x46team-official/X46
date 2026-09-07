@@ -1,0 +1,58 @@
+{
+  "functionality_id": "API-101",
+  "module": "Report Generation",
+  "functionality": "Invalid Accession",
+  "http_method": "POST",
+  "endpoint": "/api/reports",
+  "description": "Documents the specific error scenario of API-100 (Generate Report) where the request fails this validation. Same endpoint as API-100, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {},
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "accessionId": "'00000000-0000-0000-0000-000000000000' - not an existing accession_master row"
+    }
+  },
+  "required_fields": [
+    "accessionId"
+  ],
+  "validation": [
+    "accessionId must reference an existing accession"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "accessionId must reference an existing accession",
+      "status_code": 404,
+      "response": {
+        "success": false,
+        "error": "Accession not found"
+      },
+      "source": "database/api_contracts_test/020_report_generation.sql (API-T160)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_master",
+      "accession_master"
+    ],
+    "relationships": [
+      "report_master.accession_id -> accession_master.id"
+    ],
+    "constraints": []
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/020_report_generation.sql (API-T160)"
+  ],
+  "test_ids": [
+    "API-T160"
+  ]
+}

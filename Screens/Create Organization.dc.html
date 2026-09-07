@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="fit-screen.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1668dc; --blue-hover: #0f57bd;
+      --page-bg: #eef1f5; --bg: #ffffff;
+      --line: #dfe3e9; --line-soft: #eaedf1; --head-bg: #f4f6f9;
+      --text: #1b2430; --text-2: #5a6675; --text-3: #8b95a3;
+      --red: #d0342c; --red-soft: #fdecea; --green: #1f8a4c; --green-soft: #e9f6ee;
+      --radius: 3px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--text); background: var(--page-bg); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { color: var(--blue-hover); }
+    input:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="min-height: 100vh; background: var(--page-bg); display: flex; flex-direction: column;">
+  <div style="height: 52px; background: #16202b; display: flex; align-items: center; gap: 10px; padding: 0 20px; flex-shrink: 0;">
+    <div style="width: 22px; height: 22px; border-radius: 3px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700;">X46</div>
+    <div style="font-size: 14px; font-weight: 700; color: #fff;">LIMS</div>
+    <div style="margin-left: auto; font-size: 11.5px; color: #c7d1dc;">Not part of any organization yet</div>
+  </div>
+
+  <div style="flex: 1; display: flex; justify-content: center; padding: 32px 20px;">
+    <div style="max-width: 620px; width: 100%;">
+      <div style="font-size: 12px; color: var(--text-3); margin-bottom: 10px;"><a href="#">Organizations</a> <span>/</span> <span style="color: var(--text);">Create</span></div>
+
+      <div style="margin-bottom: 16px;">
+        <h1 style="margin: 0 0 4px; font-size: 20px; font-weight: 700; letter-spacing: -0.2px;">Create Organization</h1>
+        <p style="margin: 0; color: var(--text-2); font-size: 12.5px;">Create a new laboratory or healthcare organization.</p>
+      </div>
+
+      <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);">
+        <div style="padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--head-bg);">
+          <h2 style="margin: 0; font-size: 13px; font-weight: 700;">Organization Information</h2>
+        </div>
+
+        <div style="padding: 20px;">
+          <div id="orgMessage" style="display: none; padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; border-left: 3px solid var(--green); margin-bottom: 16px; font-weight: 600;"></div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <label for="orgName" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Organization Name <span style="color: var(--red);">*</span></label>
+              <input type="text" id="orgName" placeholder="X46 Diagnostics" maxlength="200" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);" />
+              <div style="display: flex; justify-content: space-between; margin-top: 4px; gap: 8px;">
+                <div id="orgNameError" style="display: none; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+                <div id="orgNameCount" style="font-size: 11.5px; color: var(--text-3); margin-left: auto;">0 / 200</div>
+              </div>
+            </div>
+
+            <div>
+              <label for="orgCode" style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--text-2);">Organization Code <span style="color: var(--red);">*</span></label>
+              <input type="text" id="orgCode" placeholder="X46-PUNE" maxlength="50" style="width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); text-transform: uppercase;" />
+              <div style="display: flex; justify-content: space-between; margin-top: 4px; gap: 8px;">
+                <div id="orgCodeError" style="display: none; font-size: 11.5px; color: var(--red); font-weight: 600;"></div>
+                <div id="orgCodeHelp" style="font-size: 11.5px; color: var(--text-3);">Must be unique across all organizations</div>
+                <div id="orgCodeCount" style="font-size: 11.5px; color: var(--text-3); margin-left: auto; white-space: nowrap;">0 / 50</div>
+              </div>
+            </div>
+
+            <label for="orgActive" style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--head-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;">
+              <input type="checkbox" id="orgActive" defaultChecked="{{ true }}" style="width: 14px; height: 14px; cursor: pointer; accent-color: var(--blue);" />
+              <span style="font-size: 12.5px; font-weight: 600;">Active — organization is usable immediately after creation</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--head-bg);">
+          <button type="button" id="cancelOrgBtn" style="padding: 6px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;" style-hover="background: var(--head-bg);">Cancel</button>
+          <button type="button" id="submitOrgBtn" style="padding: 6px 14px; background: var(--blue); color: #fff; border: 1px solid var(--blue); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; min-width: 150px;" style-hover="background: var(--blue-hover); border-color: var(--blue-hover);">Create Organization</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+class Component extends DCLogic {
+  state = {
+    existingOrgCodes: ['X46-PUNE', 'X46-MUM', 'X46-BNG'],
+    existingOrgNames: ['X46 Diagnostics Pune', 'X46 Diagnostics Mumbai', 'X46 Diagnostics Bengaluru']
+  };
+
+  // Server-side uniqueness ignores case, spacing and separator style.
+  normCode = (v) => String(v || '').trim().toUpperCase().replace(/[\s_]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  normName = (v) => String(v || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  isDupCode = (v) => { const c = this.normCode(v); return !!c && this.state.existingOrgCodes.some(x => this.normCode(x) === c); };
+  isDupName = (v) => { const n = this.normName(v); return !!n && this.state.existingOrgNames.some(x => this.normName(x) === n); };
+
+  liveCheck = (id) => {
+    const el = document.getElementById(id);
+    const dup = id === 'orgCode' ? this.isDupCode(el.value) : this.isDupName(el.value);
+    if (dup) this.setFieldError(id, id === 'orgCode' ? 'Duplicate organization code — already in use' : 'Duplicate organization name — already in use');
+    else this.clearFieldError(id);
+  };
+
+  componentDidMount() {
+    const $ = (id) => document.getElementById(id);
+    $('submitOrgBtn').addEventListener('click', this.submit);
+    $('cancelOrgBtn').addEventListener('click', this.reset);
+    ['orgName', 'orgCode'].forEach((id) => {
+      const el = $(id);
+      el.addEventListener('focus', () => this.focusStyle(el, true));
+      el.addEventListener('blur', () => this.focusStyle(el, false));
+      el.addEventListener('input', () => {
+        const max = id === 'orgName' ? 200 : 50;
+        $(id + 'Count').textContent = el.value.length + ' / ' + max;
+        this.clearFieldError(id);
+        this.liveCheck(id);
+      });
+    });
+    $('orgCodeHelp').textContent = 'Must be unique — in use: ' + this.state.existingOrgCodes.join(', ') + ' · FAIL-404 / FAIL-500 open the error screens';
+  }
+
+  focusStyle = (el, on) => {
+    if (el.dataset.invalid === 'true') return;
+    el.style.borderColor = on ? 'var(--blue)' : 'var(--line)';
+    el.style.boxShadow = on ? '0 0 0 2px rgba(22, 104, 220, 0.14)' : 'none';
+  };
+
+  setFieldError = (id, msg) => {
+    const el = document.getElementById(id);
+    el.dataset.invalid = 'true';
+    el.style.borderColor = 'var(--red)';
+    el.style.boxShadow = '0 0 0 2px rgba(208, 52, 44, 0.12)';
+    el.setAttribute('aria-invalid', 'true');
+    const err = document.getElementById(id + 'Error');
+    err.textContent = msg;
+    err.style.display = 'block';
+    if (id === 'orgCode') document.getElementById('orgCodeHelp').style.display = 'none';
+  };
+
+  clearFieldError = (id) => {
+    const el = document.getElementById(id);
+    if (el.dataset.invalid !== 'true') return;
+    el.dataset.invalid = 'false';
+    el.style.borderColor = 'var(--line)';
+    el.style.boxShadow = 'none';
+    el.removeAttribute('aria-invalid');
+    document.getElementById(id + 'Error').style.display = 'none';
+    if (id === 'orgCode') document.getElementById('orgCodeHelp').style.display = 'block';
+  };
+
+  gotoError = (code, endpoint) => {
+    const url = 'System Error States.dc.html?state=' + code
+      + '&from=' + encodeURIComponent('Create Organization.dc.html')
+      + '&endpoint=' + encodeURIComponent(endpoint);
+    setTimeout(() => { window.location.href = url; }, 1100);
+  };
+
+  message = (type, text) => {
+    const el = document.getElementById('orgMessage');
+    const ok = type === 'success';
+    el.textContent = (ok ? '\u2713  ' : '\u2715  ') + text;
+    el.style.background = ok ? 'var(--green-soft)' : 'var(--red-soft)';
+    el.style.color = ok ? 'var(--green)' : 'var(--red)';
+    el.style.borderLeftColor = ok ? 'var(--green)' : 'var(--red)';
+    el.style.display = 'block';
+  };
+
+  submit = () => {
+    const nameRaw = document.getElementById('orgName').value.trim();
+    const name = nameRaw;
+    const code = this.normCode(document.getElementById('orgCode').value);
+    const btn = document.getElementById('submitOrgBtn');
+
+    this.clearFieldError('orgName');
+    this.clearFieldError('orgCode');
+    document.getElementById('orgMessage').style.display = 'none';
+
+    let bad = false;
+    if (!name) { this.setFieldError('orgName', 'organizationName is required'); bad = true; }
+    if (!code) { this.setFieldError('orgCode', 'organizationCode is required'); bad = true; }
+    if (bad) return this.message('error', '400 Bad Request \u2014 Required fields are missing');
+
+    if (this.isDupCode(code)) {
+      this.setFieldError('orgCode', 'Duplicate organization code — already in use');
+      return this.message('error', '409 Conflict \u2014 Duplicate organization code');
+    }
+    if (this.isDupName(name)) {
+      this.setFieldError('orgName', 'Duplicate organization name — already in use');
+      return this.message('error', '409 Conflict \u2014 Duplicate organization name');
+    }
+
+    btn.disabled = true;
+    btn.style.opacity = '0.65';
+    btn.style.cursor = 'wait';
+    btn.textContent = 'Creating\u2026';
+
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      btn.textContent = 'Create Organization';
+
+      // Prototype hooks: FAIL-404 exercises the organization-reference failure, FAIL-500 the server failure.
+      if (/404/.test(code)) {
+        this.message('error', '404 Not Found \u2014 Organization not found');
+        return this.gotoError('404', 'POST /api/organizations/{organizationId}');
+      }
+      if (/FAIL|500/.test(code)) {
+        this.message('error', '500 Internal Server Error \u2014 Something went wrong on our side. Please try again.');
+        return this.gotoError('500', 'POST /api/organizations');
+      }
+
+      this.setState({
+        existingOrgCodes: [...this.state.existingOrgCodes, code],
+        existingOrgNames: [...this.state.existingOrgNames, name]
+      });
+      this.message('success', '201 Created \u2014 Organization created. Opening Branches\u2026');
+      setTimeout(() => { window.location.href = 'Branch Management.dc.html'; }, 1200);
+    }, 900);
+  };
+
+  reset = () => {
+    ['orgName', 'orgCode'].forEach((id) => {
+      document.getElementById(id).value = '';
+      this.clearFieldError(id);
+    });
+    document.getElementById('orgNameCount').textContent = '0 / 200';
+    document.getElementById('orgCodeCount').textContent = '0 / 50';
+    document.getElementById('orgActive').checked = true;
+    document.getElementById('orgMessage').style.display = 'none';
+  };
+
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

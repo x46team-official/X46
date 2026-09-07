@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12.5px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.4; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 8px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 3px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .card { background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; }
+    .chd { padding: 9px 13px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .api { font-size: 9.5px; font-weight: 700; letter-spacing: .04em; padding: 1px 6px; border-radius: 3px; background: var(--color-interactive-hover); color: var(--color-primary-deep); white-space: nowrap; }
+    @keyframes aiblink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+    .gap { font-size: 9.5px; font-weight: 700; letter-spacing: .04em; padding: 1px 6px; border-radius: 3px; background: #FEF3C7; color: #92400E; white-space: nowrap; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 190px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700;">X46</div>
+      <div style="font-size: 12.5px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 8px 14px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 11.5px; font-weight: 600; margin-top: 1px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 6px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <a href="Accession.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Accession</a>
+      <a href="Worklist.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist</a>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Overview</a>
+      <div style="display: block; padding: 6px 14px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Finance Reports</div>
+      <a href="Billing Report.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; position: sticky; top: 0; z-index: 6;">
+      <div>
+        <div style="font-size: 10.5px; color: var(--color-text-tertiary);"><a href="Finance.dc.html">Finance</a> / Reports</div>
+        <h1 style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.01em;">Finance Reports</h1>
+        <div style="font-size: 11px; color: var(--color-text-secondary);">Analyse financial performance · {{ reportTitle }} — {{ reportNote }}</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px; border-right: 1px solid var(--color-border-light);">
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Prototype state</span>
+          <sc-for list="{{ stateTabs }}" as="st" hint-placeholder-count="4">
+            <button onClick="{{ st.onPick }}" style="padding: 4px 9px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid {{ st.border }}; background: {{ st.bg }}; color: {{ st.fg }};">{{ st.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ openAi }}" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;" style-hover="background: var(--color-interactive-hover);">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z"></path><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2z"></path></svg>
+          Ask Finance AI
+        </button>
+        <button onClick="{{ exportCsv }}" style="padding: 7px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Export CSV</button>
+      </div>
+    </div>
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 10px 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 9px 10px; align-items: end;">
+      <div style="grid-column: span 2;"><label>Report Type</label><select value="{{ report }}" onChange="{{ updateField }}" data-field="report"><sc-for list="{{ reportOptions }}" as="r" hint-placeholder-count="8"><option value="{{ r.value }}">{{ r.label }}</option></sc-for></select></div>
+      <div><label>From</label><input type="date" value="{{ from }}" onChange="{{ updateField }}" data-field="from" /></div>
+      <div><label>To</label><input type="date" value="{{ to }}" onChange="{{ updateField }}" data-field="to" /></div>
+      <div><label>Organization</label><select value="{{ org }}" onChange="{{ updateField }}" data-field="org"><sc-for list="{{ orgOptions }}" as="o" hint-placeholder-count="2"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></div>
+      <div><label>Branch</label><select value="{{ branch }}" onChange="{{ updateField }}" data-field="branch"><sc-for list="{{ branchOptions }}" as="b" hint-placeholder-count="3"><option value="{{ b.value }}">{{ b.label }}</option></sc-for></select></div>
+      <div><label>User</label><select value="{{ user }}" onChange="{{ updateField }}" data-field="user"><sc-for list="{{ userOptions }}" as="u" hint-placeholder-count="3"><option value="{{ u.value }}">{{ u.label }}</option></sc-for></select></div>
+      <div><label>Payment Type</label><select value="{{ mode }}" onChange="{{ updateField }}" data-field="mode"><sc-for list="{{ modeOptions }}" as="m" hint-placeholder-count="4"><option value="{{ m.value }}">{{ m.label }}</option></sc-for></select></div>
+      <div><label>Payment Status</label><select value="{{ status }}" onChange="{{ updateField }}" data-field="status"><sc-for list="{{ statusOptions }}" as="s" hint-placeholder-count="4"><option value="{{ s.value }}">{{ s.label }}</option></sc-for></select></div>
+      <div><button onClick="{{ resetFilters }}" style="width: 100%; padding: 6px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="background: var(--color-gray-50);">Reset</button></div>
+    </div>
+
+    <div style="flex: 1; padding: 14px 18px 28px; display: flex; flex-direction: column; gap: 12px;">
+
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="border-color: #FCA5A5; background: #FEF2F2; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #991B1B;">Report could not be generated</div>
+            <div style="font-size: 11.5px; color: #991B1B;">The request failed. No cached rows are shown — the numbers would be stale.</div>
+          </div>
+          <button onClick="{{ retry }}" style="padding: 7px 14px; background: #fff; border: 1px solid #FCA5A5; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #991B1B; cursor: pointer;">Retry</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ badRange }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="border-color: #FDE68A; background: #FFFBEB; padding: 11px 14px; font-size: 11.5px; color: #92400E; font-weight: 600;">From date is after To date — adjust the range to run this report.</div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+        <sc-for list="{{ totals }}" as="t" hint-placeholder-count="4">
+          <div class="card" style="padding: 10px 13px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ t.label }}</div>
+            <div style="font-size: 19px; font-weight: 700; margin-top: 4px; color: {{ t.color }};" class="num">{{ t.value }}</div>
+            <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ t.hint }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ showChart }}" hint-placeholder-val="{{ true }}">
+        <div class="card">
+          <div class="chd">
+            <span>{{ chartTitle }}</span>
+            <span style="font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);">Top 10 groups</span>
+          </div>
+          <div style="padding: 14px 13px 10px; display: flex; align-items: flex-end; gap: 10px; height: 168px;">
+            <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="6">
+              <div style="flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 5px;">
+                <div style="font-size: 10px; color: var(--color-text-secondary); white-space: nowrap;" class="num">{{ b.valueLabel }}</div>
+                <div style="width: 100%; max-width: 54px; height: {{ b.h }}; background: var(--color-primary-deep); border-radius: 3px 3px 0 0;"></div>
+                <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">{{ b.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <div class="card">
+        <div class="chd">
+          <span>{{ tableTitle }}</span>
+          <span style="font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);">{{ rowCountLabel }}</span>
+        </div>
+
+        <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 14px 13px; display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{ skeletons }}" as="sk" hint-placeholder-count="6">
+              <div style="height: 15px; border-radius: 3px; background: linear-gradient(90deg, var(--color-gray-100), var(--color-gray-50), var(--color-gray-100)); width: {{ sk.w }};"></div>
+            </sc-for>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Running report…</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showGrouped }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="display: flex; gap: 10px; padding: 7px 13px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-secondary);">
+              <div style="flex: 1.6; min-width: 0;">{{ groupLabel }}</div>
+              <sc-for list="{{ groupCols }}" as="c" hint-placeholder-count="4">
+                <div style="flex: 1; min-width: 0; text-align: right;">{{ c.label }}</div>
+              </sc-for>
+              <div style="width: 96px; text-align: right;">Share</div>
+            </div>
+            <sc-for list="{{ groupRows }}" as="g" hint-placeholder-count="6">
+              <div style="display: flex; gap: 10px; padding: 8px 13px; border-bottom: 1px solid var(--color-border-light); align-items: center;">
+                <div style="flex: 1.6; min-width: 0; font-size: 11.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ g.key }}</div>
+                <sc-for list="{{ g.cells }}" as="c" hint-placeholder-count="4">
+                  <div style="flex: 1; min-width: 0; font-size: 11.5px; text-align: right;" class="num">{{ c.v }}</div>
+                </sc-for>
+                <div style="width: 96px; display: flex; align-items: center; gap: 6px; justify-content: flex-end;">
+                  <div style="flex: 1; max-width: 52px; height: 5px; border-radius: 3px; background: var(--color-gray-100); overflow: hidden;"><div style="height: 100%; width: {{ g.sharePct }}; background: var(--color-primary-deep);"></div></div>
+                  <span style="font-size: 11px; color: var(--color-text-secondary); width: 32px; text-align: right;" class="num">{{ g.share }}%</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 40px 16px; text-align: center;">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 3px;">No rows for this report</div>
+            <div style="font-size: 11.5px; color: var(--color-text-tertiary);">{{ emptyHint }}</div>
+            <button onClick="{{ resetFilters }}" style="margin-top: 10px; padding: 6px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Clear filters</button>
+          </div>
+        </sc-if>
+
+        <div style="padding: 8px 13px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: space-between; gap: 12px; font-size: 11px; color: var(--color-text-secondary); flex-wrap: wrap;">
+          <span>{{ footerSummary }}</span>
+          <span><a href="Billing Report.dc.html" style="font-weight: 600;">{{ footerHint }}</a></span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <sc-if value="{{ aiOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; width: 400px; max-width: 94vw; background: #fff; border-left: 1px solid var(--color-border-light); box-shadow: -10px 0 28px rgba(17,24,39,.14); z-index: 30; display: flex; flex-direction: column;">
+      <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+        <div style="display: flex; gap: 9px;">
+          <div style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 6px; background: var(--color-interactive-hover); color: var(--color-primary-deep); display: flex; align-items: center; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z"></path><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2z"></path></svg>
+          </div>
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700;">Finance AI Assistant</div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary); max-width: 250px;">Ask analytical questions about billing, collections and trends.</div>
+          </div>
+        </div>
+        <button onClick="{{ closeAi }}" style="background: none; border: none; font-size: 15px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;" style-hover="color: var(--color-error);">✕</button>
+      </div>
+
+      <div style="padding: 8px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light);">
+        <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Current context</div>
+        <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 5px;">
+          <sc-for list="{{ ctxChips }}" as="c" hint-placeholder-count="3">
+            <span style="font-size: 10.5px; padding: 2px 7px; border-radius: 3px; background: #fff; border: 1px solid var(--color-border-light); color: var(--color-text-secondary);"><span style="color: var(--color-text-tertiary);">{{ c.k }}:</span> <span style="font-weight: 600;">{{ c.v }}</span></span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div ref="{{ aiScrollRef }}" style="flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
+        <sc-for list="{{ aiMessages }}" as="m" hint-placeholder-count="0">
+          <div style="display: flex; justify-content: {{ m.align }};">
+            <div style="max-width: 88%; border-radius: 7px; padding: 9px 11px; background: {{ m.bg }}; border: 1px solid {{ m.border }}; color: {{ m.fg }};">
+              <sc-if value="{{ m.hasText }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size: 12px; line-height: 1.45;">{{ m.text }}</div>
+              </sc-if>
+              <sc-if value="{{ m.hasTitle }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">{{ m.title }}</div>
+              </sc-if>
+              <sc-if value="{{ m.hasHeadline }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size: 20px; font-weight: 700; margin-top: 2px; letter-spacing: -.01em;" class="num">{{ m.headline }}</div>
+              </sc-if>
+              <sc-if value="{{ m.hasRows }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 4px;">
+                  <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
+                    <div style="display: flex; justify-content: space-between; gap: 10px; font-size: 11.5px; padding-bottom: 3px; border-bottom: 1px solid var(--color-border-light);">
+                      <span style="color: var(--color-text-secondary);">{{ r.k }}</span>
+                      <span style="font-weight: 600;" class="num">{{ r.v }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.hasTable }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 9px; border: 1px solid var(--color-border-light); border-radius: 5px; overflow: hidden;">
+                  <div style="display: grid; grid-template-columns: {{ m.tableGrid }}; gap: 6px; padding: 5px 8px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light);">
+                    <sc-for list="{{ m.tableHead }}" as="h" hint-placeholder-count="3">
+                      <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--color-text-secondary); text-align: {{ h.align }};">{{ h.v }}</div>
+                    </sc-for>
+                  </div>
+                  <sc-for list="{{ m.tableRows }}" as="tr" hint-placeholder-count="3">
+                    <div style="display: grid; grid-template-columns: {{ m.tableGrid }}; gap: 6px; padding: 5px 8px; border-bottom: 1px solid var(--color-border-light);">
+                      <sc-for list="{{ tr.cells }}" as="c" hint-placeholder-count="3">
+                        <div style="font-size: 11px; text-align: {{ c.align }}; font-weight: {{ c.weight }}; color: {{ c.color }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="num">{{ c.v }}</div>
+                      </sc-for>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.hasPeriod }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 8px; font-size: 10.5px; color: var(--color-text-tertiary);">Period: <span style="font-weight: 600; color: var(--color-text-secondary);">{{ m.period }}</span></div>
+              </sc-if>
+              <sc-if value="{{ m.hasSuggestion }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 6px; font-size: 11.5px; color: var(--color-text-secondary);">{{ m.suggestion }}</div>
+              </sc-if>
+              <sc-if value="{{ m.hasActions }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 9px; display: flex; flex-wrap: wrap; gap: 6px;">
+                  <sc-for list="{{ m.actions }}" as="a" hint-placeholder-count="2">
+                    <button onClick="{{ a.onClick }}" style="padding: 5px 10px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer; background: {{ a.bg }}; color: {{ a.fg }}; border: 1px solid {{ a.border }};">{{ a.label }}</button>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.hasApi }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 8px; padding-top: 6px; border-top: 1px dashed var(--color-border-light); font-size: 9.5px; color: var(--color-text-tertiary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">{{ m.api }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ aiLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--color-text-tertiary);">
+            <span style="display: flex; gap: 3px;">
+              <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--color-primary-deep); animation: aiblink 1.2s infinite;"></span>
+              <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--color-primary-deep); animation: aiblink 1.2s infinite .18s;"></span>
+              <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--color-primary-deep); animation: aiblink 1.2s infinite .36s;"></span>
+            </span>
+            Querying finance API…
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showStarters }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary); margin-bottom: 6px;">Try asking</div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+              <sc-for list="{{ starters }}" as="s" hint-placeholder-count="6">
+                <button onClick="{{ s.onPick }}" style="text-align: left; padding: 7px 10px; background: #fff; border: 1px solid var(--color-border-light); border-radius: 5px; font-family: inherit; font-size: 11.5px; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">{{ s.q }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="padding: 10px 14px; border-top: 1px solid var(--color-border-light); display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; gap: 7px; align-items: flex-end;">
+          <input value="{{ aiInput }}" onChange="{{ onAiInput }}" onKeyDown="{{ onAiKey }}" placeholder="Ask about collections, billing, dues…" style="flex: 1;" />
+          <button onClick="{{ onAiSend }}" style="padding: 7px 13px; background: var(--color-primary-deep); border: 1px solid var(--color-primary-deep); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; color: #fff; cursor: pointer;">Send</button>
+        </div>
+        <div style="font-size: 9.5px; color: var(--color-text-tertiary);">Answers come from the Finance API within the filters above — no direct database access.</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 20; display: flex; justify-content: flex-end;">
+      <div style="width: 400px; max-width: 92vw; background: #fff; height: 100%; display: flex; flex-direction: column; box-shadow: -8px 0 24px rgba(17,24,39,.18);">
+        <div style="padding: 12px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary);">Bill</div>
+            <div style="font-size: 15px; font-weight: 700;" class="num">{{ detailTitle }}</div>
+          </div>
+          <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 16px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer;" style-hover="color: var(--color-error);">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 12px 16px;">
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <sc-for list="{{ detailFields }}" as="f" hint-placeholder-count="8">
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-light);">
+                <span style="color: var(--color-text-secondary);">{{ f.k }}</span>
+                <span style="font-weight: 600; text-align: right;" class="num">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 14px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-tertiary); margin-bottom: 6px;">Payments against this bill</div>
+            <sc-for list="{{ detailPayments }}" as="p" hint-placeholder-count="2">
+              <div style="display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--color-border-light); font-size: 11.5px;">
+                <span style="color: var(--color-text-secondary);" class="num">{{ p.when }} · {{ p.mode }}</span>
+                <span style="font-weight: 700;" class="num">₹ {{ p.amount }}</span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noDetailPayments }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size: 11.5px; color: var(--color-text-tertiary); padding: 6px 0;">No payments recorded against this bill yet.</div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="padding: 11px 16px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px;">
+          <a href="Bill Details.dc.html" style="flex: 1; text-align: center; padding: 8px 12px; background: var(--color-primary-deep); color: #fff; border-radius: 4px; font-size: 11.5px; font-weight: 700;">Open full bill details</a>
+          <button onClick="{{ closeDetail }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const ORGS = [{ id: 'ORG-1', name: 'X46 Diagnostics' }, { id: 'ORG-2', name: 'Sanjeevani Labs' }];
+const BRANCHES = [
+  { id: 'BR-1', org: 'ORG-1', name: 'Pune Main' },
+  { id: 'BR-2', org: 'ORG-1', name: 'Baner' },
+  { id: 'BR-3', org: 'ORG-2', name: 'Nashik' }
+];
+const USERS = [{ id: 'U-1', name: 'A. Kulkarni' }, { id: 'U-2', name: 'S. Pawar' }, { id: 'U-3', name: 'R. Naik' }];
+const MODES = ['CASH', 'CARD', 'UPI', 'NET_BANKING', 'CHEQUE'];
+
+const BILLS = [
+  { id: 'b1', billNumber: 'BILL0121', billDate: '2026-08-12', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004102', tests: 'CBC, HbA1c, LFT', totalAmount: 2400, discountAmount: 100, concessionAmount: 0, additionalAmount: 0, payableAmount: 2300, paidAmount: 2300, paymentMode: 'UPI', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b2', billNumber: 'BILL0122', billDate: '2026-08-12', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004108', tests: 'Lipid Profile, TSH', totalAmount: 1500, discountAmount: 0, concessionAmount: 75, additionalAmount: 0, payableAmount: 1425, paidAmount: 500, paymentMode: 'CASH', paymentStatus: 'Partial', isCancelled: false },
+  { id: 'b3', billNumber: 'BILL0123', billDate: '2026-08-13', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004115', tests: 'LFT', totalAmount: 900, discountAmount: 0, concessionAmount: 0, additionalAmount: 50, payableAmount: 950, paidAmount: 0, paymentMode: null, paymentStatus: 'Pending', isCancelled: false },
+  { id: 'b4', billNumber: 'BILL0124', billDate: '2026-08-13', org: 'ORG-2', branch: 'BR-3', createdBy: 'U-3', reg: 'REG-2026-004121', tests: 'Master Health panel tests', totalAmount: 3600, discountAmount: 200, concessionAmount: 0, additionalAmount: 0, payableAmount: 3400, paidAmount: 3400, paymentMode: 'CARD', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b5', billNumber: 'BILL0125', billDate: '2026-08-14', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004130', tests: 'Lipid Profile', totalAmount: 700, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 700, paidAmount: 700, paymentMode: 'CASH', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b6', billNumber: 'BILL0126', billDate: '2026-08-14', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004134', tests: 'Vitamin D, Vitamin B12, CBC', totalAmount: 2500, discountAmount: 0, concessionAmount: 125, additionalAmount: 0, payableAmount: 2375, paidAmount: 1000, paymentMode: 'UPI', paymentStatus: 'Partial', isCancelled: false },
+  { id: 'b7', billNumber: 'BILL0127', billDate: '2026-08-15', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004141', tests: 'HbA1c, Glucose PP', totalAmount: 1400, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 1400, paidAmount: 0, paymentMode: null, paymentStatus: 'Pending', isCancelled: false },
+  { id: 'b8', billNumber: 'BILL0128', billDate: '2026-08-15', org: 'ORG-2', branch: 'BR-3', createdBy: 'U-3', reg: 'REG-2026-004147', tests: 'CBC, ESR, CRP', totalAmount: 1100, discountAmount: 100, concessionAmount: 0, additionalAmount: 0, payableAmount: 1000, paidAmount: 1000, paymentMode: 'NET_BANKING', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b9', billNumber: 'BILL0129', billDate: '2026-08-16', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004155', tests: 'KFT, LFT, Uric Acid, TSH', totalAmount: 4200, discountAmount: 300, concessionAmount: 0, additionalAmount: 0, payableAmount: 3900, paidAmount: 2000, paymentMode: 'CARD', paymentStatus: 'Partial', isCancelled: false },
+  { id: 'b10', billNumber: 'BILL0130', billDate: '2026-08-16', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-1', reg: 'REG-2026-004162', tests: 'Urine Routine, CBC', totalAmount: 600, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 600, paidAmount: 600, paymentMode: 'CASH', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b11', billNumber: 'BILL0131', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-1', reg: 'REG-2026-004170', tests: 'Thyroid Profile Plus tests', totalAmount: 1800, discountAmount: 0, concessionAmount: 90, additionalAmount: 0, payableAmount: 1710, paidAmount: 1710, paymentMode: 'UPI', paymentStatus: 'Paid', isCancelled: false },
+  { id: 'b12', billNumber: 'BILL0132', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-1', createdBy: 'U-2', reg: 'REG-2026-004176', tests: 'LFT', totalAmount: 950, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 950, paidAmount: 0, paymentMode: null, paymentStatus: 'Pending', isCancelled: false },
+  { id: 'b13', billNumber: 'BILL0133', billDate: '2026-08-17', org: 'ORG-1', branch: 'BR-2', createdBy: 'U-2', reg: 'REG-2026-004181', tests: 'CBC, CRP', totalAmount: 1200, discountAmount: 0, concessionAmount: 0, additionalAmount: 0, payableAmount: 1200, paidAmount: 1200, paymentMode: 'CHEQUE', paymentStatus: 'Paid', isCancelled: false }
+];
+
+const PAYMENTS = [
+  { id: 'p1', bill: 'b1', billNumber: 'BILL0121', billDate: '2026-08-12', paymentDate: '2026-08-12', paymentMode: 'UPI', amountPaid: 2300, paymentStatus: 'SUCCESS', transactionReference: 'TXN881201', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p2', bill: 'b2', billNumber: 'BILL0122', billDate: '2026-08-12', paymentDate: '2026-08-12', paymentMode: 'CASH', amountPaid: 500, paymentStatus: 'PARTIAL', transactionReference: 'RCPT-4410', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p3', bill: 'b4', billNumber: 'BILL0124', billDate: '2026-08-13', paymentDate: '2026-08-13', paymentMode: 'CARD', amountPaid: 3400, paymentStatus: 'SUCCESS', transactionReference: 'TXN881310', createdBy: 'U-3', org: 'ORG-2', branch: 'BR-3' },
+  { id: 'p4', bill: 'b5', billNumber: 'BILL0125', billDate: '2026-08-14', paymentDate: '2026-08-14', paymentMode: 'CASH', amountPaid: 700, paymentStatus: 'SUCCESS', transactionReference: 'RCPT-4418', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p5', bill: 'b6', billNumber: 'BILL0126', billDate: '2026-08-14', paymentDate: '2026-08-14', paymentMode: 'UPI', amountPaid: 1000, paymentStatus: 'PARTIAL', transactionReference: 'TXN881402', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p6', bill: 'b8', billNumber: 'BILL0128', billDate: '2026-08-15', paymentDate: '2026-08-15', paymentMode: 'NET_BANKING', amountPaid: 1000, paymentStatus: 'SUCCESS', transactionReference: 'NB-99120', createdBy: 'U-3', org: 'ORG-2', branch: 'BR-3' },
+  { id: 'p7', bill: 'b9', billNumber: 'BILL0129', billDate: '2026-08-16', paymentDate: '2026-08-16', paymentMode: 'CARD', amountPaid: 2000, paymentStatus: 'PARTIAL', transactionReference: 'TXN881601', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p8', bill: 'b10', billNumber: 'BILL0130', billDate: '2026-08-16', paymentDate: '2026-08-16', paymentMode: 'CASH', amountPaid: 600, paymentStatus: 'SUCCESS', transactionReference: 'RCPT-4431', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p9', bill: 'b11', billNumber: 'BILL0131', billDate: '2026-08-17', paymentDate: '2026-08-17', paymentMode: 'UPI', amountPaid: 1710, paymentStatus: 'SUCCESS', transactionReference: 'TXN881701', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-1' },
+  { id: 'p10', bill: 'b13', billNumber: 'BILL0133', billDate: '2026-08-17', paymentDate: '2026-08-17', paymentMode: 'CHEQUE', amountPaid: 1200, paymentStatus: 'SUCCESS', transactionReference: 'CHQ-30219', createdBy: 'U-2', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p11', bill: 'b2', billNumber: 'BILL0122', billDate: '2026-08-12', paymentDate: '2026-08-16', paymentMode: 'UPI', amountPaid: 400, paymentStatus: 'PARTIAL', transactionReference: 'TXN881602', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-2' },
+  { id: 'p12', bill: 'b3', billNumber: 'BILL0123', billDate: '2026-08-13', paymentDate: '2026-08-17', paymentMode: 'CASH', amountPaid: 450, paymentStatus: 'PARTIAL', transactionReference: 'RCPT-4440', createdBy: 'U-1', org: 'ORG-1', branch: 'BR-1' }
+];
+
+// Every report here is an AGGREGATE view. Individual bill rows live on Billing Report.
+const REPORTS = [
+  { key: 'DAY_BILLING', label: 'Day-wise Billing', src: 'BILLS', keyOf: 'billDate', group: 'Date', primary: 'payable',
+    note: 'Billing raised per day.',
+    cols: [['Bills', g => String(g.count)], ['Billing Amount', (g, f) => '₹ ' + f(g.billing)], ['Discount', (g, f) => '₹ ' + f(g.discount)], ['Payable', (g, f) => '₹ ' + f(g.payable)]] },
+  { key: 'DAY_COLLECTION', label: 'Day-wise Collection', src: 'PAYMENTS', keyOf: 'paymentDate', group: 'Date', primary: 'collection',
+    note: 'Payments received per day.',
+    cols: [['Transactions', g => String(g.count)], ['Collection', (g, f) => '₹ ' + f(g.collection)], ['Avg / Txn', (g, f) => '₹ ' + f(Math.round(g.collection / Math.max(1, g.count)))]] },
+  { key: 'BRANCH_BILLING', label: 'Branch-wise Billing', src: 'BILLS', keyOf: 'branch', group: 'Branch', primary: 'payable',
+    note: 'Performance per branch.',
+    cols: [['Bills', g => String(g.count)], ['Billing', (g, f) => '₹ ' + f(g.payable)], ['Collection', (g, f) => '₹ ' + f(g.collection)], ['Due', (g, f) => '₹ ' + f(g.due)]] },
+  { key: 'ORG_BILLING', label: 'Organisation-wise Billing', src: 'BILLS', keyOf: 'org', group: 'Organisation', primary: 'payable',
+    note: 'Performance per referring organisation.',
+    cols: [['Bills', g => String(g.count)], ['Billing', (g, f) => '₹ ' + f(g.payable)], ['Collection', (g, f) => '₹ ' + f(g.collection)], ['Due', (g, f) => '₹ ' + f(g.due)]] },
+  { key: 'USER_COLLECTION', label: 'User-wise Collection', src: 'PAYMENTS', keyOf: 'user', group: 'User', primary: 'collection',
+    note: 'Collection per user who received payment.',
+    cols: [['Transactions', g => String(g.count)], ['Collection', (g, f) => '₹ ' + f(g.collection)], ['Average Collection', (g, f) => '₹ ' + f(Math.round(g.collection / Math.max(1, g.count)))]] },
+  { key: 'MODE_COLLECTION', label: 'Payment Mode-wise Collection', src: 'PAYMENTS', keyOf: 'mode', group: 'Payment Mode', primary: 'collection',
+    note: 'Collection split by payment mode.',
+    cols: [['Transactions', g => String(g.count)], ['Collection', (g, f) => '₹ ' + f(g.collection)], ['Percentage', (g, f, tot) => Math.round((g.collection / tot) * 100) + '%']] },
+  { key: 'PAY_TXN', label: 'Payment Transactions', src: 'PAYMENTS', keyOf: 'paymentDate', group: 'Payment Date', primary: 'collection',
+    note: 'Transaction volume and outcome per day.',
+    cols: [['Transactions', g => String(g.count)], ['Success', g => String(g.success)], ['Partial', g => String(g.partial)], ['Collection', (g, f) => '₹ ' + f(g.collection)]] },
+  { key: 'BILL_PAY_DETAILS', label: 'Bill-wise Payment Details', src: 'BILLS', keyOf: 'status', group: 'Payment Status', primary: 'payable',
+    note: 'Bills summarised by settlement status.',
+    cols: [['Bills', g => String(g.count)], ['Payable', (g, f) => '₹ ' + f(g.payable)], ['Paid', (g, f) => '₹ ' + f(g.collection)], ['Balance', (g, f) => '₹ ' + f(g.due)]] }
+];
+
+// Responses the assistant is allowed to use — each maps to an existing Finance API contract.
+// Nothing here is computed outside these contracts, and the assistant never queries the DB.
+const STARTERS = [
+  'What was the total collection this week?',
+  'Which branch had the highest collection?',
+  'Which payment mode generated the most collection?',
+  'Compare this month with last month.',
+  'What is the average revenue per patient?',
+  'Which day had the highest billing?'
+];
+// FIN-SUMMARY response for the previous period (Jul 2026), as the API would return it.
+const PREV_PERIOD = { label: 'Jul 2026', bills: 61, billing: 84200, collection: 79150, due: 5050 };
+// FIN-TEST-REVENUE response for the current period.
+const TEST_REVENUE = [
+  { test: 'CBC', count: 6, revenue: 4200 },
+  { test: 'LFT', count: 4, revenue: 3800 },
+  { test: 'HbA1c', count: 3, revenue: 2700 },
+  { test: 'Lipid Profile', count: 3, revenue: 2200 },
+  { test: 'TSH', count: 2, revenue: 1600 }
+];
+
+class Component extends DCLogic {
+  state = {
+    ai: { open: false, messages: [], loading: false, input: '' },
+    report: 'DAY_BILLING',
+    from: '2026-08-12', to: '2026-08-17',
+    org: 'ALL', branch: 'ALL', user: 'ALL', mode: 'ALL', status: 'ALL',
+    view: 'DATA', detail: null
+  };
+
+  componentDidMount() {
+    const key = (window.location.hash || '').replace('#', '');
+    if (key && REPORTS.some(r => r.key === key)) this.setState({ report: key });
+  }
+
+  updateField = (e) => {
+    const f = e.target.dataset.field;
+    const patch = { [f]: e.target.value };
+    if (f === 'org') patch.branch = 'ALL';
+    this.setState(patch);
+  };
+  resetFilters = () => this.setState({ from: '2026-08-12', to: '2026-08-17', org: 'ALL', branch: 'ALL', user: 'ALL', mode: 'ALL', status: 'ALL', view: 'DATA' });
+  setView = (v) => () => this.setState({ view: v });
+  retry = () => this.setState({ view: 'DATA' });
+  closeDetail = () => this.setState({ detail: null });
+  exportCsv = () => this.setState({ view: this.state.view });
+  openBill = (b) => () => this.setState({ detail: b.id });
+
+  branchName(id) { const b = BRANCHES.find(x => x.id === id); return b ? b.name : id; }
+  orgName(id) { const o = ORGS.find(x => x.id === id); return o ? o.name : id; }
+  userName(id) { const u = USERS.find(x => x.id === id); return u ? u.name : id; }
+  money(n) { return Number(n || 0).toLocaleString('en-IN'); }
+
+  bills() {
+    const s = this.state;
+    return BILLS.filter(b => b.billDate >= s.from && b.billDate <= s.to
+      && (s.org === 'ALL' || b.org === s.org)
+      && (s.branch === 'ALL' || b.branch === s.branch)
+      && (s.user === 'ALL' || b.createdBy === s.user)
+      && (s.mode === 'ALL' || b.paymentMode === s.mode)
+      && (s.status === 'ALL' || b.paymentStatus === s.status));
+  }
+
+  payments() {
+    const s = this.state;
+    return PAYMENTS.filter(p => p.paymentDate >= s.from && p.paymentDate <= s.to
+      && (s.org === 'ALL' || p.org === s.org)
+      && (s.branch === 'ALL' || p.branch === s.branch)
+      && (s.user === 'ALL' || p.createdBy === s.user)
+      && (s.mode === 'ALL' || p.paymentMode === s.mode));
+  }
+
+  statusTone(v) {
+    return ({
+      Paid: ['#DCFCE7', '#166534'], Partial: ['#DBEAFE', '#1E40AF'], Pending: ['#FEF3C7', '#92400E'],
+      SUCCESS: ['#DCFCE7', '#166534'], PARTIAL: ['#DBEAFE', '#1E40AF']
+    }[v] || ['var(--color-gray-100)', 'var(--color-text-secondary)']);
+  }
+
+  patchAi(patch) { this.setState(st => ({ ai: { ...st.ai, ...patch } })); }
+  openAi = () => this.patchAi({ open: true });
+  closeAi = () => this.patchAi({ open: false });
+  onAiInput = (e) => this.patchAi({ input: e.target.value });
+  onAiKey = (e) => { if (e.key === 'Enter') { e.preventDefault(); this.sendAi(); } };
+  ask = (q) => () => this.send(q);
+  sendAi = () => { const q = this.state.ai.input.trim(); if (q) this.send(q); };
+
+  send(q) {
+    this.setState(st => ({ ai: { ...st.ai, messages: st.ai.messages.concat([{ role: 'user', text: q }]), loading: true, input: '' } }));
+    clearTimeout(this._aiT);
+    this._aiT = setTimeout(() => {
+      const reply = this.answer(q);
+      this.setState(st => ({ ai: { ...st.ai, loading: false, messages: st.ai.messages.concat([reply]) } }));
+    }, 900);
+  }
+
+  componentDidUpdate() {
+    const el = this._aiScroll;
+    if (el) el.scrollTop = el.scrollHeight;
+  }
+  aiScrollRef = (el) => { this._aiScroll = el; };
+
+  runAction = (a) => () => {
+    if (a.kind === 'view') this.setState({ report: a.report, view: 'DATA' });
+    if (a.kind === 'filter') this.setState({ ...a.patch, view: 'DATA' });
+    if (a.kind === 'clear') this.resetFilters();
+    if (a.kind === 'export') this.exportCsv();
+    if (a.kind === 'link') { window.location.href = a.href; return; }
+    this.setState(st => ({ ai: { ...st.ai, messages: st.ai.messages.concat([{ role: 'ai', text: a.done }]) } }));
+  };
+
+  periodLabel() {
+    const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    return this.state.from === this.state.to ? fmt(this.state.from) : fmt(this.state.from) + ' – ' + fmt(this.state.to);
+  }
+
+  answer(q) {
+    const t = q.toLowerCase();
+    const s = this.state;
+    const bills = this.bills();
+    const pays = this.payments();
+    const period = this.periodLabel();
+    const rupee = (n) => '₹ ' + this.money(n);
+
+    if (!bills.length && !pays.length) return this.noData();
+
+    // Individual-bill lookups belong to Billing Report, not the analytical screen.
+    if (/bill ?no|bill number|bill0|mrn|invoice|receipt|patient name|find (a )?bill|search bill|this patient/.test(t)) {
+      return {
+        role: 'ai', text: 'Finance Reports answers aggregate questions. To find one bill, MRN or patient, use Billing Report — it has bill-level rows and search.',
+        suggestion: 'Ask me things like total collection, branch comparison, payment mode split or revenue per patient.',
+        api: 'FIN-LIST · GET /api/finance/bills (bill-level — Billing Report)',
+        actions: [{ kind: 'link', href: 'Billing Report.dc.html', label: 'Open Billing Report', done: '' }]
+      };
+    }
+
+    if (/revenue per patient|per patient|average revenue|avg revenue/.test(t)) {
+      const patientsSet = new Set(bills.map(b => b.reg));
+      const total = pays.reduce((a, p) => a + p.amountPaid, 0);
+      if (!patientsSet.size) return this.noData();
+      const days = Math.max(1, Math.round((new Date(s.to) - new Date(s.from)) / 86400000) + 1);
+      return {
+        role: 'ai', title: 'Average revenue per patient', headline: rupee(Math.round(total / patientsSet.size)), period,
+        rows: [
+          { k: 'Collection', v: rupee(total) },
+          { k: 'Unique patients', v: String(patientsSet.size) },
+          { k: 'Avg patients / day', v: String(Math.round((patientsSet.size / days) * 10) / 10) }
+        ],
+        api: 'FIN-SUMMARY · GET /api/finance/summary?metrics=patients',
+        actions: [{ kind: 'view', report: 'DAY_BILLING', label: 'View Report', done: 'Opened Day-wise Billing.' }]
+      };
+    }
+
+    if (/highest billing|biggest day|busiest day|which day/.test(t)) {
+      const map = new Map();
+      bills.forEach(b => map.set(b.billDate, (map.get(b.billDate) || 0) + b.payableAmount));
+      const rows = [...map.entries()].sort((a, b) => b[1] - a[1]);
+      if (!rows.length) return this.noData();
+      return {
+        role: 'ai', title: 'Highest billing day', headline: rows[0][0] + ' · ' + rupee(rows[0][1]), period,
+        tableGrid: '1fr 96px', tableHead: ['Date', 'Billing'],
+        tableRows: rows.slice(0, 6).map(r => [r[0], rupee(r[1])]),
+        api: 'FIN-SUMMARY · GET /api/finance/summary?groupBy=day',
+        actions: [{ kind: 'view', report: 'DAY_BILLING', label: 'View Report', done: 'Opened Day-wise Billing.' }]
+      };
+    }
+
+    if (/unpaid|due|pending|outstanding/.test(t)) {
+      const rows = bills.filter(b => b.payableAmount - b.paidAmount > 0);
+      if (!rows.length) return this.noData();
+      const due = rows.reduce((a, b) => a + (b.payableAmount - b.paidAmount), 0);
+      const byStatus = new Map();
+      rows.forEach(b => {
+        const g = byStatus.get(b.paymentStatus) || { n: 0, due: 0 };
+        g.n += 1; g.due += b.payableAmount - b.paidAmount;
+        byStatus.set(b.paymentStatus, g);
+      });
+      return {
+        role: 'ai', title: 'Outstanding due', headline: rupee(due), period,
+        rows: [{ k: 'Bills with balance', v: String(rows.length) }, { k: 'Billed on these', v: rupee(rows.reduce((a, b) => a + b.payableAmount, 0)) }],
+        tableGrid: '1fr 64px 90px', tableHead: ['Status', 'Bills', 'Due'],
+        tableRows: [...byStatus.entries()].map(([k, g]) => [k, String(g.n), rupee(g.due)]),
+        api: 'FIN-SUMMARY · GET /api/finance/summary?groupBy=paymentStatus',
+        actions: [
+          { kind: 'view', report: 'BILL_PAY_DETAILS', label: 'View Report', done: 'Opened Bill-wise Payment Details.' },
+          { kind: 'filter', patch: { status: 'Pending', report: 'BILL_PAY_DETAILS' }, label: 'Apply Filter: Pending', done: 'Applied Payment Status = Pending.' },
+          { kind: 'link', href: 'Billing Report.dc.html', label: 'See individual bills', done: '' }
+        ]
+      };
+    }
+
+    if (/compare|last month|previous month|vs/.test(t)) {
+      const billing = bills.reduce((a, b) => a + b.payableAmount, 0);
+      const collection = pays.reduce((a, p) => a + p.amountPaid, 0);
+      const due = bills.reduce((a, b) => a + Math.max(0, b.payableAmount - b.paidAmount), 0);
+      const delta = PREV_PERIOD.collection ? Math.round(((collection - PREV_PERIOD.collection) / PREV_PERIOD.collection) * 100) : 0;
+      return {
+        role: 'ai', title: 'Period comparison', headline: (delta >= 0 ? '+' : '') + delta + '% collection', period: period + ' vs ' + PREV_PERIOD.label,
+        tableGrid: '1fr 82px 82px', tableHead: ['Metric', 'Current', PREV_PERIOD.label],
+        tableRows: [
+          ['Bills', String(bills.length), String(PREV_PERIOD.bills)],
+          ['Billing', rupee(billing), rupee(PREV_PERIOD.billing)],
+          ['Collection', rupee(collection), rupee(PREV_PERIOD.collection)],
+          ['Due', rupee(due), rupee(PREV_PERIOD.due)]
+        ],
+        api: 'FIN-SUMMARY · GET /api/finance/summary?compare=previous',
+        actions: [
+          { kind: 'view', report: 'DAY_COLLECTION', label: 'View Report', done: 'Opened Day-wise Collection.' },
+          { kind: 'export', label: 'Export', done: 'Export queued for the current report.' }
+        ]
+      };
+    }
+
+    if (/branch/.test(t)) {
+      const map = new Map();
+      pays.forEach(p => { const k = this.branchName(p.branch); map.set(k, (map.get(k) || 0) + p.amountPaid); });
+      const rows = [...map.entries()].sort((a, b) => b[1] - a[1]);
+      if (!rows.length) return this.noData();
+      const top = rows[0];
+      const branchId = (BRANCHES.find(b => b.name === top[0]) || {}).id;
+      return {
+        role: 'ai', title: 'Highest collecting branch', headline: top[0] + ' · ' + rupee(top[1]), period,
+        tableGrid: '1fr 88px', tableHead: ['Branch', 'Collection'],
+        tableRows: rows.map(r => [r[0], rupee(r[1])]),
+        api: 'FIN-SUMMARY · GET /api/finance/summary?groupBy=branch',
+        actions: [
+          { kind: 'view', report: 'BRANCH_BILLING', label: 'View Report', done: 'Opened Branch-wise Billing.' },
+          { kind: 'filter', patch: { branch: branchId || 'ALL', report: 'BRANCH_BILLING' }, label: 'Apply Filter: ' + top[0], done: 'Filtered the report to ' + top[0] + '.' }
+        ]
+      };
+    }
+
+    if (/mode|cash|upi|card|cheque|net.?banking/.test(t)) {
+      const map = new Map();
+      pays.forEach(p => { const k = p.paymentMode.replace('_', ' '); map.set(k, (map.get(k) || 0) + p.amountPaid); });
+      const rows = [...map.entries()].sort((a, b) => b[1] - a[1]);
+      if (!rows.length) return this.noData();
+      return {
+        role: 'ai', title: 'Highest collecting payment mode', headline: rows[0][0] + ' · ' + rupee(rows[0][1]), period,
+        rows: rows.map(r => ({ k: r[0], v: rupee(r[1]) })),
+        api: 'FIN-SUMMARY · GET /api/finance/summary?groupBy=paymentMode',
+        actions: [
+          { kind: 'view', report: 'MODE_COLLECTION', label: 'View Report', done: 'Opened Payment Type-wise Collection.' },
+          { kind: 'filter', patch: { mode: rows[0][0].replace(' ', '_'), report: 'MODE_COLLECTION' }, label: 'Apply Filter: ' + rows[0][0], done: 'Filtered to ' + rows[0][0] + ' payments.' }
+        ]
+      };
+    }
+
+    if (/test|panel|profile/.test(t)) {
+      return {
+        role: 'ai', title: 'Top tests by revenue', headline: rupee(TEST_REVENUE.reduce((a, r) => a + r.revenue, 0)), period,
+        tableGrid: '1fr 52px 76px', tableHead: ['Test', 'Count', 'Revenue'],
+        tableRows: TEST_REVENUE.map(r => [r.test, String(r.count), rupee(r.revenue)]),
+        api: 'FIN-TEST-REVENUE · GET /api/finance/tests?groupBy=test',
+        actions: [{ kind: 'view', report: 'DAY_BILLING', label: 'View Report', done: 'Opened Day-wise Billing.' }]
+      };
+    }
+
+    if (/billing|summary|revenue|discount/.test(t)) {
+      const billing = bills.reduce((a, b) => a + b.payableAmount, 0);
+      const due = bills.reduce((a, b) => a + Math.max(0, b.payableAmount - b.paidAmount), 0);
+      const disc = bills.reduce((a, b) => a + b.discountAmount + b.concessionAmount, 0);
+      return {
+        role: 'ai', title: 'Billing summary', headline: rupee(billing), period,
+        rows: [
+          { k: 'Bills raised', v: String(bills.length) },
+          { k: 'Collected', v: rupee(pays.reduce((a, p) => a + p.amountPaid, 0)) },
+          { k: 'Due', v: rupee(due) },
+          { k: 'Discount + concession', v: rupee(disc) }
+        ],
+        api: 'FIN-SUMMARY · GET /api/finance/summary?groupBy=day',
+        actions: [
+          { kind: 'view', report: 'DAY_BILLING', label: 'View Report', done: 'Opened Day-wise Billing.' },
+          { kind: 'export', label: 'Export', done: 'Export queued for the current report.' }
+        ]
+      };
+    }
+
+    if (/collection|collect|today|total|received/.test(t)) {
+      const map = new Map();
+      pays.forEach(p => { const k = p.paymentMode.replace('_', ' '); map.set(k, (map.get(k) || 0) + p.amountPaid); });
+      const total = pays.reduce((a, p) => a + p.amountPaid, 0);
+      if (!total) return this.noData();
+      return {
+        role: 'ai', title: 'Collection', headline: rupee(total), period,
+        rows: [...map.entries()].sort((a, b) => b[1] - a[1]).map(r => ({ k: r[0], v: rupee(r[1]) })),
+        api: 'FIN-SUMMARY · GET /api/finance/collection?from=' + s.from + '&to=' + s.to,
+        actions: [
+          { kind: 'view', report: 'DAY_COLLECTION', label: 'View Collection Report', done: 'Opened Day-wise Collection.' },
+          { kind: 'export', label: 'Export', done: 'Export queued for the current report.' }
+        ]
+      };
+    }
+
+    return this.noData();
+  }
+
+  noData() {
+    return {
+      role: 'ai', text: "I couldn't find enough data for this request.",
+      suggestion: 'Try asking about billing trends, collections, branch or payment-mode comparisons. For a single bill, use Billing Report.',
+      actions: [{ kind: 'clear', label: 'Clear Filters', done: 'Filters reset to the default range.' }]
+    };
+  }
+
+  decorate(m) {
+    const base = {
+      align: 'flex-start', bg: '#fff', fg: 'var(--color-text-primary)', border: 'var(--color-border-light)',
+      hasText: false, text: '', hasTitle: false, title: '', hasHeadline: false, headline: '',
+      hasRows: false, rows: [], hasTable: false, tableGrid: '1fr', tableHead: [], tableRows: [],
+      hasPeriod: false, period: '', hasSuggestion: false, suggestion: '', hasActions: false, actions: [],
+      hasApi: false, api: ''
+    };
+    if (m.role === 'user') {
+      return { ...base, align: 'flex-end', bg: 'var(--color-primary-deep)', fg: '#fff', border: 'var(--color-primary-deep)', hasText: true, text: m.text };
+    }
+    const head = (m.tableHead || []).map((v, i) => ({ v, align: i === 0 ? 'left' : 'right' }));
+    return {
+      ...base,
+      hasText: !!m.text, text: m.text || '',
+      hasTitle: !!m.title, title: m.title || '',
+      hasHeadline: !!m.headline, headline: m.headline || '',
+      hasRows: !!(m.rows && m.rows.length), rows: m.rows || [],
+      hasTable: !!(m.tableRows && m.tableRows.length && m.tableHead), tableGrid: m.tableGrid || '1fr',
+      tableHead: head,
+      tableRows: (m.tableRows || []).map(cells => ({
+        cells: cells.map((v, i) => ({ v, align: i === 0 ? 'left' : 'right', weight: i === 0 ? '600' : '500', color: 'var(--color-text-primary)' }))
+      })),
+      hasPeriod: !!m.period, period: m.period || '',
+      hasSuggestion: !!m.suggestion, suggestion: m.suggestion || '',
+      hasActions: !!(m.actions && m.actions.length),
+      actions: (m.actions || []).map((a, i) => ({
+        label: a.label, onClick: this.runAction(a),
+        bg: i === 0 ? 'var(--color-primary-deep)' : '#fff',
+        fg: i === 0 ? '#fff' : 'var(--color-text-secondary)',
+        border: i === 0 ? 'var(--color-primary-deep)' : 'var(--color-border-base)'
+      })),
+      hasApi: !!m.api, api: m.api || ''
+    };
+  }
+
+  aiVals() {
+    const s = this.state;
+    const def = REPORTS.find(r => r.key === s.report);
+    return {
+      aiOpen: s.ai.open, openAi: this.openAi, closeAi: this.closeAi,
+      aiMessages: s.ai.messages.map(m => this.decorate(m)),
+      aiLoading: s.ai.loading,
+      showStarters: s.ai.messages.length === 0 && !s.ai.loading,
+      starters: STARTERS.map(q => ({ q, onPick: this.ask(q) })),
+      aiInput: s.ai.input, onAiInput: this.onAiInput, onAiKey: this.onAiKey, onAiSend: this.sendAi,
+      aiScrollRef: this.aiScrollRef,
+      ctxChips: [
+        { k: 'Branch', v: s.branch === 'ALL' ? 'All branches' : this.branchName(s.branch) },
+        { k: 'Date', v: this.periodLabel() },
+        { k: 'Report', v: def.label }
+      ].concat(s.mode === 'ALL' ? [] : [{ k: 'Mode', v: s.mode.replace('_', ' ') }])
+        .concat(s.status === 'ALL' ? [] : [{ k: 'Status', v: s.status }])
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const def = REPORTS.find(r => r.key === s.report);
+    const bills = this.bills();
+    const payments = this.payments();
+    const badRange = s.from > s.to;
+
+    const blank = (k) => ({ key: k, count: 0, billing: 0, payable: 0, discount: 0, collection: 0, due: 0, success: 0, partial: 0 });
+    const map = new Map();
+    if (def.src === 'BILLS') {
+      const keyFn = {
+        billDate: (b) => b.billDate,
+        branch: (b) => this.branchName(b.branch),
+        org: (b) => this.orgName(b.org),
+        status: (b) => b.paymentStatus
+      }[def.keyOf];
+      bills.forEach(b => {
+        const k = keyFn(b);
+        const g = map.get(k) || blank(k);
+        g.count += 1;
+        g.billing += b.totalAmount;
+        g.payable += b.payableAmount;
+        g.discount += b.discountAmount + b.concessionAmount;
+        g.collection += Math.min(b.paidAmount, b.payableAmount);
+        g.due += Math.max(0, b.payableAmount - b.paidAmount);
+        map.set(k, g);
+      });
+    } else {
+      const keyFn = {
+        paymentDate: (p) => p.paymentDate,
+        user: (p) => this.userName(p.createdBy),
+        mode: (p) => p.paymentMode.replace('_', ' ')
+      }[def.keyOf];
+      payments.forEach(p => {
+        const k = keyFn(p);
+        const g = map.get(k) || blank(k);
+        g.count += 1;
+        g.collection += p.amountPaid;
+        if (p.paymentStatus === 'SUCCESS') g.success += 1; else g.partial += 1;
+        const b = BILLS.find(x => x.id === p.bill);
+        if (b) { g.billing += b.totalAmount; g.payable += b.payableAmount; g.due += Math.max(0, b.payableAmount - b.paidAmount); }
+        map.set(k, g);
+      });
+    }
+    const dateKeyed = def.keyOf === 'billDate' || def.keyOf === 'paymentDate';
+    const groups = [...map.values()].sort((a, b) => dateKeyed
+      ? (a.key < b.key ? -1 : 1)
+      : (b[def.primary] - a[def.primary]));
+
+    const totalBilling = bills.reduce((a, b) => a + b.payableAmount, 0);
+    const totalCollection = payments.reduce((a, p) => a + p.amountPaid, 0);
+    const totalDue = bills.reduce((a, b) => a + Math.max(0, b.payableAmount - b.paidAmount), 0);
+    const totalDiscount = bills.reduce((a, b) => a + b.discountAmount + b.concessionAmount, 0);
+
+    const uniquePatients = new Set(bills.map(b => b.reg)).size;
+    const rangeDays = Math.max(1, Math.round((new Date(s.to) - new Date(s.from)) / 86400000) + 1);
+    const avgPerPatient = uniquePatients ? Math.round(totalCollection / uniquePatients) : 0;
+    const avgPatientsDay = Math.round((uniquePatients / rangeDays) * 10) / 10;
+
+    const rowCount = groups.length;
+    const isLoading = s.view === 'LOADING';
+    const isError = s.view === 'ERROR';
+    const isEmpty = !badRange && !isLoading && !isError && (s.view === 'EMPTY' || rowCount === 0);
+    const hasData = s.view === 'DATA' && !isEmpty && !badRange;
+
+    const groupMax = Math.max(1, ...groups.map(g => g[def.primary]));
+    const groupTotal = groups.reduce((a, g) => a + g[def.primary], 0) || 1;
+    const money = (n) => this.money(n);
+
+    const detailBill = s.detail ? BILLS.find(b => b.id === s.detail) : null;
+    const detailPays = detailBill ? PAYMENTS.filter(p => p.bill === detailBill.id) : [];
+
+    return {
+      ...s,
+      ...this.aiVals(),
+      reportOptions: REPORTS.map(r => ({ value: r.key, label: r.label })),
+      reportTitle: def.label,
+      orgOptions: [{ value: 'ALL', label: 'All organizations' }].concat(ORGS.map(o => ({ value: o.id, label: o.name }))),
+      branchOptions: [{ value: 'ALL', label: 'All branches' }].concat(BRANCHES.filter(b => s.org === 'ALL' || b.org === s.org).map(b => ({ value: b.id, label: b.name }))),
+      userOptions: [{ value: 'ALL', label: 'All users' }].concat(USERS.map(u => ({ value: u.id, label: u.name }))),
+      modeOptions: [{ value: 'ALL', label: 'All payment types' }].concat(MODES.map(m => ({ value: m, label: m.replace('_', ' ') }))),
+      statusOptions: [{ value: 'ALL', label: 'All statuses' }, { value: 'Paid', label: 'Paid' }, { value: 'Partial', label: 'Partial' }, { value: 'Pending', label: 'Pending' }],
+      updateField: this.updateField, resetFilters: this.resetFilters, retry: this.retry, exportCsv: this.exportCsv,
+      stateTabs: [['DATA', 'Data'], ['LOADING', 'Loading'], ['EMPTY', 'Empty'], ['ERROR', 'Error']].map(([k, label]) => {
+        const on = s.view === k;
+        return { label, onPick: this.setView(k), bg: on ? 'var(--color-primary-deep)' : '#fff', fg: on ? '#fff' : 'var(--color-text-secondary)', border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)' };
+      }),
+      isLoading, isError, isEmpty, badRange,
+      skeletons: [{ w: '96%' }, { w: '88%' }, { w: '92%' }, { w: '74%' }, { w: '84%' }, { w: '68%' }],
+      reportNote: def.note,
+      totals: [
+        { label: 'Total Billing', value: '₹ ' + this.money(totalBilling), hint: 'Payable raised', color: 'var(--color-text-primary)' },
+        { label: 'Total Collection', value: '₹ ' + this.money(totalCollection), hint: 'Amount received', color: 'var(--color-text-primary)' },
+        { label: 'Total Due', value: '₹ ' + this.money(totalDue), hint: 'Outstanding balance', color: totalDue > 0 ? 'var(--color-error)' : 'var(--color-text-primary)' },
+        { label: 'Discount / Concession', value: '₹ ' + this.money(totalDiscount), hint: 'Given on these bills', color: 'var(--color-text-primary)' },
+        { label: 'Avg Revenue / Patient', value: '₹ ' + this.money(avgPerPatient), hint: uniquePatients + ' unique patients', color: 'var(--color-text-primary)' },
+        { label: 'Avg Patients / Day', value: String(avgPatientsDay), hint: 'Over ' + rangeDays + ' days', color: 'var(--color-text-primary)' }
+      ],
+      tableTitle: def.group + '-wise summary',
+      rowCountLabel: rowCount + ' groups',
+      showGrouped: hasData,
+      showChart: hasData && groups.length > 1,
+      chartTitle: def.label + ' · ' + (def.primary === 'collection' ? 'collection' : 'billing') + ' by ' + def.group.toLowerCase(),
+      chartBars: groups.slice(0, 10).map(g => ({
+        label: dateKeyed ? g.key.slice(8) + '/' + g.key.slice(5, 7) : g.key,
+        valueLabel: '₹ ' + this.money(g[def.primary]),
+        h: Math.max(2, Math.round((g[def.primary] / groupMax) * 100)) + '%'
+      })),
+      groupLabel: def.group,
+      groupCols: def.cols.map(c => ({ label: c[0] })),
+      groupRows: groups.map(g => ({
+        key: g.key,
+        cells: def.cols.map(c => ({ v: c[1](g, money, groupTotal) })),
+        share: Math.round((g[def.primary] / groupTotal) * 100),
+        sharePct: Math.round((g[def.primary] / groupMax) * 100) + '%'
+      })),
+      emptyHint: badRange ? 'Fix the date range first.' : 'No bills or payments match this report and filter combination.',
+      footerSummary: rowCount + ' groups · Billing ₹ ' + this.money(totalBilling) + ' · Collection ₹ ' + this.money(totalCollection) + ' · Due ₹ ' + this.money(totalDue),
+      footerHint: 'Looking for one bill? Open Billing Report for bill-level rows.',
+      apiRows: [
+        { id: 'API-038', desc: 'Search Bills — GET billing/search?query= (bill_number only)', state: 'AVAILABLE' },
+        { id: 'API-034', desc: 'View Bill — bill detail drawer', state: 'AVAILABLE' },
+        { id: 'API-065', desc: 'Payment Search — GET /api/payments?billNumber=', state: 'AVAILABLE' },
+        { id: 'API-058', desc: 'View Payment — payment detail', state: 'AVAILABLE' },
+        { id: 'API-067', desc: 'Payment organization/branch scope enforcement', state: 'AVAILABLE' },
+        { id: 'FIN-LIST *', desc: 'List bills/payments by date range + branch + user + status + mode (paged)', state: 'MISSING' },
+        { id: 'FIN-SUMMARY *', desc: 'Aggregate totals per day / branch / user / payment mode', state: 'MISSING' }
+      ].map(a => ({ ...a, bg: a.state === 'AVAILABLE' ? '#DCFCE7' : '#FEF3C7', fg: a.state === 'AVAILABLE' ? '#166534' : '#92400E' })),
+      detail: detailBill ? true : false,
+      detailTitle: detailBill ? detailBill.billNumber : '',
+      detailFields: detailBill ? [
+        ['Bill date', detailBill.billDate],
+        ['Branch', this.branchName(detailBill.branch)],
+        ['Registration no.', detailBill.reg],
+        ['Tests billed', detailBill.tests],
+        ['Total amount', '₹ ' + this.money(detailBill.totalAmount)],
+        ['Discount', '₹ ' + this.money(detailBill.discountAmount)],
+        ['Concession', '₹ ' + this.money(detailBill.concessionAmount)],
+        ['Additional', '₹ ' + this.money(detailBill.additionalAmount)],
+        ['Payable', '₹ ' + this.money(detailBill.payableAmount)],
+        ['Paid', '₹ ' + this.money(detailBill.paidAmount)],
+        ['Balance', '₹ ' + this.money(Math.max(0, detailBill.payableAmount - detailBill.paidAmount))],
+        ['Payment status', detailBill.paymentStatus],
+        ['Raised by', this.userName(detailBill.createdBy)],
+        ['patient', 'see bill details screen']
+      ].map(([k, v]) => ({ k, v })) : [],
+      detailPayments: detailPays.map(p => ({ when: p.paymentDate, mode: p.paymentMode.replace('_', ' '), amount: this.money(p.amountPaid) })),
+      noDetailPayments: detailBill ? detailPays.length === 0 : false,
+      closeDetail: this.closeDetail
+    };
+  }
+}
+
+</script>
+</body>
+</html>

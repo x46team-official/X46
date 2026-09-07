@@ -1,0 +1,61 @@
+{
+  "functionality_id": "API-037",
+  "module": "Billing",
+  "functionality": "View Billing Tests",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/billing/{billingId}/tests",
+  "description": "Returns all test line items for a bill, ordered by creation time.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "billingId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "billingId"],
+
+  "validation": ["bill must exist and belong to organization + branch"],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Billing tests fetched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "billingId": "uuid",
+          "testId": "uuid",
+          "testCode": "CBC001",
+          "testName": "Complete Blood Count",
+          "quantity": 1,
+          "rate": 350,
+          "netAmount": 350,
+          "barcode": null,
+          "status": "Pending"
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "bill not found / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Bill not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["billing_tests", "test_master"],
+    "relationships": ["billing_tests.test_id -> test_master.id"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/013_billing.sql (API-T095)"],
+
+  "test_ids": ["API-T095"]
+}

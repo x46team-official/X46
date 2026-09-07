@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 7px 10px; width: 100%; }
+    input:focus, select:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Accession</div>
+      <sc-for list="{{ subNav }}" as="n" hint-placeholder-count="5">
+        <button onClick="{{ n.onPick }}" style="display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 16px 6px 28px; background: {{ n.navBg }}; border: none; border-left: 3px solid {{ n.navEdge }}; font-family: inherit; font-size: 12px; font-weight: {{ n.weight }}; color: {{ n.color }}; cursor: pointer; text-align: left;" style-hover="background: var(--color-gray-50);">
+          <span>{{ n.label }}</span>
+          <span style="font-size: 10px; color: var(--color-text-tertiary); font-variant-numeric: tabular-nums;">{{ n.count }}</span>
+        </button>
+      </sc-for>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Ops / Accession / {{ viewLabel }}</div>
+          <h1 style="margin: 0 0 8px; font-size: 17px; font-weight: 700;">{{ viewLabel }}</h1>
+          <div style="display: flex; gap: 8px; align-items: center; max-width: 620px;">
+            <input type="text" placeholder="Select by Patient Id / Name / Accession Number / National ID / DOB (DDMMYYYY)" value="{{ query }}" onChange="{{ onQuery }}" />
+            <button onClick="{{ scanMode }}" title="Scan Mode" style="padding: 7px 11px; background: {{ scanBg }}; border: 1px solid {{ scanBorder }}; border-radius: 4px; font-size: 12px; font-weight: 600; color: {{ scanFg }}; cursor: pointer; white-space: nowrap;">▮▯▮ Scan</button>
+          </div>
+        </div>
+        <div style="min-width: 250px;">
+          <label>Last Updated Date</label>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <input type="date" value="{{ fromDate }}" onChange="{{ updateField }}" data-field="fromDate" />
+            <span style="font-size: 11px; color: var(--color-text-tertiary);">to</span>
+            <input type="date" value="{{ toDate }}" onChange="{{ updateField }}" data-field="toDate" />
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px;">
+        <div style="min-width: 170px;"><select value="{{ dept }}" onChange="{{ updateField }}" data-field="dept"><option value="">All Departments</option><option value="Haematology">Haematology</option><option value="Biochemistry">Biochemistry</option><option value="Microbiology">Microbiology</option><option value="Immunoassay">Immunoassay</option></select></div>
+        <div style="flex: 1;"></div>
+        <button onClick="{{ toggleFilters }}" style="padding: 7px 12px; background: {{ filterBg }}; border: 1px solid {{ filterBorder }}; border-radius: 4px; font-size: 12px; font-weight: 600; color: {{ filterFg }}; cursor: pointer; white-space: nowrap;">{{ filterLabel }} ▼</button>
+        <button onClick="{{ bulkRecollect }}" disabled="{{ noSelection }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Recollect Sample</button>
+        <a href="Accession.dc.html" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); white-space: nowrap;">Work List</a>
+        <button onClick="{{ bulkReceive }}" disabled="{{ noSelection }}" style="padding: 7px 12px; background: {{ bulkBg }}; border: 1px solid {{ bulkBorder }}; border-radius: 4px; font-size: 12px; font-weight: 700; color: {{ bulkFg }}; cursor: pointer; white-space: nowrap;">Receive and Print All</button>
+        <button onClick="{{ bulkPrint }}" disabled="{{ noSelection }}" style="padding: 7px 12px; background: #fff; border: 1px solid {{ bulkBorder }}; border-radius: 4px; font-size: 12px; font-weight: 600; color: {{ bulkOutlineFg }}; cursor: pointer; white-space: nowrap;">Print All</button>
+      </div>
+
+      <sc-if value="{{ filtersOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top: 10px; padding: 12px; background: var(--color-gray-50); border: 1px solid var(--color-border-light); border-radius: 6px; display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+          <div style="min-width: 150px;"><label>Collection Status</label><select value="{{ collStatus }}" onChange="{{ updateField }}" data-field="collStatus"><option value="">All</option><option value="Pending">Pending</option><option value="Collected">Collected</option><option value="Rejected">Rejected</option></select></div>
+          <div style="min-width: 140px;"><label>Sample Status</label><select value="{{ sampStatus }}" onChange="{{ updateField }}" data-field="sampStatus"><option value="">All</option><option value="Pending">Pending</option><option value="Collected">Collected</option><option value="Received">Received</option><option value="Rejected">Rejected</option></select></div>
+          <div style="min-width: 130px;"><label>Priority</label><select value="{{ priority }}" onChange="{{ updateField }}" data-field="priority"><option value="">All</option><option value="Routine">Routine</option><option value="Urgent">Urgent</option><option value="STAT">STAT</option></select></div>
+          <div style="min-width: 160px;"><label>Sample Type</label><select value="{{ sampleTypeFilter }}" onChange="{{ updateField }}" data-field="sampleTypeFilter"><option value="">All</option><option value="EDTA Whole Blood">EDTA Whole Blood</option><option value="Serum">Serum</option><option value="Urine">Urine</option><option value="Fluoride Plasma">Fluoride Plasma</option></select></div>
+          <button onClick="{{ clearFilters }}" style="padding: 8px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;">Clear filters</button>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 8px 20px 0; display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+      <sc-for list="{{ subNav }}" as="n" hint-placeholder-count="6">
+        <button onClick="{{ n.onPick }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; margin-bottom: 8px; background: {{ n.bg }}; border: 1px solid {{ n.edge }}; border-radius: 999px; font-family: inherit; font-size: 12px; font-weight: {{ n.weight }}; color: {{ n.color }}; cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">
+          <span>{{ n.label }}</span>
+          <span style="font-size: 10.5px; color: var(--color-text-tertiary); font-variant-numeric: tabular-nums;">{{ n.count }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 0 20px; display: flex; gap: 4px; align-items: center;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+        <button onClick="{{ t.onPick }}" style="padding: 10px 14px; background: none; border: none; border-bottom: 2px solid {{ t.border }}; color: {{ t.color }}; font-size: 12px; font-weight: 600; cursor: pointer;">{{ t.label }} <span class="num" style="color: var(--color-text-tertiary); font-weight: 500;">{{ t.count }}</span></button>
+      </sc-for>
+      <div style="flex: 1;"></div>
+      <div style="display: flex; gap: 8px; align-items: center; padding: 8px 0;">
+        <span class="num" style="font-size: 12px; color: var(--color-text-secondary);">{{ selectedLabel }}</span>
+        <button onClick="{{ bulkCollect }}" disabled="{{ noSelection }}" style="padding: 7px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Collect Selected</button>
+      </div>
+    </div>
+
+    <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 9px 20px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border-bottom: 1px solid {{ bannerBorder }};">{{ banner }}</div>
+    </sc-if>
+
+    <div style="flex: 1; overflow: auto; padding: 14px 20px 28px;">
+      <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 18px; max-width: 720px;">
+          <div style="font-size: 14px; font-weight: 700; margin-bottom: 2px;">Accession Settings</div>
+          <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 16px;">Branch-level defaults applied when samples are collected and received.</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px;">
+            <div><label>Accession Number Prefix</label><input type="text" value="{{ setPrefix }}" onChange="{{ updateField }}" data-field="setPrefix" /></div>
+            <div><label>Numbering Reset</label><select value="{{ setReset }}" onChange="{{ updateField }}" data-field="setReset"><option value="Daily">Daily</option><option value="Monthly">Monthly</option><option value="Yearly">Yearly</option><option value="Never">Never</option></select></div>
+            <div><label>Barcode Generated On</label><select value="{{ setBarcodeOn }}" onChange="{{ updateField }}" data-field="setBarcodeOn"><option value="Collection">Collection</option><option value="Registration">Registration</option><option value="Receipt">Receipt</option></select></div>
+            <div><label>Default Collection Location</label><select value="{{ setLocation }}" onChange="{{ updateField }}" data-field="setLocation"><option value="Phlebotomy Room 1">Phlebotomy Room 1</option><option value="Phlebotomy Room 2">Phlebotomy Room 2</option><option value="Home Collection">Home Collection</option></select></div>
+            <div style="grid-column: span 2; display: flex; gap: 18px; padding-top: 4px;">
+              <label style="display: flex; align-items: center; gap: 7px; margin: 0;"><input type="checkbox" checked="{{ setAutoReceive }}" onChange="{{ toggleSetting }}" data-field="setAutoReceive" /> Auto-receive in-house collections</label>
+              <label style="display: flex; align-items: center; gap: 7px; margin: 0;"><input type="checkbox" checked="{{ setPrintOnCollect }}" onChange="{{ toggleSetting }}" data-field="setPrintOnCollect" /> Print label on collect</label>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+            <button onClick="{{ saveSettings }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Save settings</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAdvanced }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 18px; max-width: 860px;">
+          <div style="font-size: 14px; font-weight: 700; margin-bottom: 2px;">Advanced Search</div>
+          <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 16px;">Search accessions across all statuses and date ranges.</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px 16px;">
+            <div><label>Accession Number</label><input type="text" placeholder="ACC-2026-…" value="{{ advAccession }}" onChange="{{ updateField }}" data-field="advAccession" /></div>
+            <div><label>Bill Number</label><input type="text" placeholder="BL-2026-…" value="{{ advBill }}" onChange="{{ updateField }}" data-field="advBill" /></div>
+            <div><label>Registration Number</label><input type="text" placeholder="REG-2026-…" value="{{ advReg }}" onChange="{{ updateField }}" data-field="advReg" /></div>
+            <div><label>Patient Name / MRN</label><input type="text" value="{{ advPatient }}" onChange="{{ updateField }}" data-field="advPatient" /></div>
+            <div><label>Barcode</label><input type="text" placeholder="BC-…" value="{{ advBarcode }}" onChange="{{ updateField }}" data-field="advBarcode" /></div>
+            <div><label>Sample Status</label><select value="{{ sampStatus }}" onChange="{{ updateField }}" data-field="sampStatus"><option value="">All</option><option value="Pending">Pending</option><option value="Collected">Collected</option><option value="Received">Received</option><option value="Rejected">Rejected</option></select></div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+            <button onClick="{{ clearAdvanced }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Reset</button>
+            <button onClick="{{ runAdvanced }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Search</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-text-secondary);">Rows: {{ rowCount }}</div>
+        <div style="font-size: 11px; color: var(--color-text-tertiary);">Barcode is pre-generated for every ordered sample · Accession number on receipt</div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; overflow: auto; max-height: calc(100vh - 300px);">
+        <div style="min-width: 990px;">
+          <div style="position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 34px 88px minmax(160px,1.2fr) 130px 124px 96px 88px 112px 140px; gap: 12px; padding: 8px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+            <div><input type="checkbox" checked="{{ allSelected }}" onChange="{{ toggleAll }}" /></div>
+            <div>Accession No</div>
+            <div>Patient</div>
+            <div>Test / Sample</div>
+            <div>Barcode</div>
+            <div>Container / Qty</div>
+            <div>Priority</div>
+            <div>Status</div>
+            <div>Actions</div>
+          </div>
+
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+            <div style="display: grid; grid-template-columns: 34px 88px minmax(160px,1.2fr) 130px 124px 96px 88px 112px 140px; gap: 12px; padding: 9px 12px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ r.rowBg }}; box-shadow: inset 3px 0 0 0 {{ r.priorityEdge }};" style-hover="background: var(--color-gray-50);">
+              <div><input type="checkbox" checked="{{ r.selected }}" onChange="{{ r.onSelect }}" /></div>
+              <div style="min-width: 0;">
+                <div class="mono" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep); line-height: 1.25; word-break: break-all;">{{ r.accessionPrefix }}<br />{{ r.accessionSuffix }}</div>
+              </div>
+              <div style="min-width: 0;">
+                <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patientTitleName }}</div>
+                <div class="num" style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.patientMeta }}</div>
+              </div>
+              <div style="min-width: 0;">
+                <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.testName }}">{{ r.testShort }}</div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--color-text-tertiary);">
+                  <span style="width: 9px; height: 9px; border-radius: 999px; flex-shrink: 0; border: 1.5px solid {{ r.dotBorder }}; background: {{ r.dotFill }};"></span>
+                  <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.testMeta }}</span>
+                </div>
+              </div>
+              <div style="min-width: 0;">
+                <div class="mono" style="font-size: 11px; font-weight: 600; color: {{ r.barcodeColor }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.barcode }}</div>
+                <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.collectionNote }}</div>
+              </div>
+              <div style="min-width: 0;">
+                <div style="font-size: 11.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.container }}</div>
+                <div class="num" style="font-size: 10px; color: var(--color-text-tertiary);">{{ r.qtyLabel }}</div>
+              </div>
+              <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.priorityBg }}; color: {{ r.priorityFg }};">{{ r.priority }}</span></div>
+              <div><span style="display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.sampleBg }}; color: {{ r.sampleFg }};">{{ r.sampleStatus }}</span></div>
+              <div style="display: flex; flex-direction: column; align-items: stretch; gap: 4px;">
+                <sc-for list="{{ r.actions }}" as="a" hint-placeholder-count="2">
+                  <button onClick="{{ a.onClick }}" style="padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1px solid {{ a.border }}; background: {{ a.bg }}; color: {{ a.fg }};">{{ a.label }}</button>
+                </sc-for>
+                <button onClick="{{ r.onDetails }}" title="Details" style="background: none; border: none; font-size: 15px; line-height: 1; color: var(--color-text-tertiary); cursor: pointer; padding: 2px 4px;" style-hover="color: var(--color-primary-deep);">⋮</button>
+              </div>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 56px 20px; text-align: center;">
+              <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">No samples match these filters</div>
+              <div style="font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 14px;">Clear the filters or widen the search to see pending collections.</div>
+              <button onClick="{{ clearFilters }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">Clear filters</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 40; display: flex; justify-content: flex-end;" onClick="{{ closeDetail }}">
+      <div onClick="{{ stop }}" style="width: 520px; background: #fff; height: 100%; box-shadow: -8px 0 24px rgba(17,24,39,.14); display: flex; flex-direction: column;">
+        <div style="padding: 14px 18px; border-bottom: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">Sample collection · accession detail</div>
+            <div class="mono" style="font-size: 15px; font-weight: 700;">{{ detailAccession }}</div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="padding: 3px 9px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ dSampleBg }}; color: {{ dSampleFg }};">{{ dSampleStatus }}</span>
+            <button onClick="{{ closeDetail }}" style="background: none; border: none; font-size: 18px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+          </div>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 16px;">
+
+          <div style="border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Patient</div>
+            <div style="padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Patient Name</div><div style="font-size: 12px; font-weight: 600;">{{ dPatientName }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">MRN</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dMrn }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Registration No</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dRegistration }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Age / Gender</div><div style="font-size: 12px; font-weight: 600;">{{ dAgeGender }}</div></div>
+            </div>
+          </div>
+
+          <div style="border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Order</div>
+            <div style="padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Bill Number</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dBill }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Accession Number</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dAccessionNo }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Test</div><div style="font-size: 12px; font-weight: 600;">{{ dTest }}</div></div>
+              <div>
+                <label>Priority</label>
+                <select value="{{ fPriority }}" onChange="{{ updateForm }}" data-field="fPriority"><option value="Routine">Routine</option><option value="Urgent">Urgent</option><option value="STAT">STAT</option></select>
+              </div>
+            </div>
+          </div>
+
+          <div style="border: 1px solid var(--color-border-light); border-radius: 6px;">
+            <div style="padding: 9px 12px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-light); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary);">Sample</div>
+            <div style="padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;">
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Sample Type</div><div style="font-size: 12px; font-weight: 600;">{{ dSampleType }}</div></div>
+              <div><div style="font-size: 10px; color: var(--color-text-tertiary); font-weight: 600;">Barcode</div><div class="mono" style="font-size: 12px; font-weight: 600; color: {{ dBarcodeColor }};">{{ dBarcode }}</div></div>
+              <div>
+                <label>Collection Location</label>
+                <select value="{{ fLocation }}" onChange="{{ updateForm }}" data-field="fLocation"><option value="Phlebotomy Room 1">Phlebotomy Room 1</option><option value="Phlebotomy Room 2">Phlebotomy Room 2</option><option value="Ward 3B">Ward 3B</option><option value="ICU">ICU</option><option value="Home Collection">Home Collection</option><option value="Collection Camp">Collection Camp</option></select>
+              </div>
+              <div>
+                <label>Sample Condition</label>
+                <select value="{{ fCondition }}" onChange="{{ updateForm }}" data-field="fCondition"><option value="Adequate">Adequate</option><option value="Haemolysed">Haemolysed</option><option value="Clotted">Clotted</option><option value="Insufficient">Insufficient</option><option value="Lipaemic">Lipaemic</option></select>
+              </div>
+              <div>
+                <label>Quantity</label>
+                <input type="number" min="0" step="0.1" value="{{ fQuantity }}" onChange="{{ updateForm }}" data-field="fQuantity" class="num" />
+              </div>
+              <div>
+                <label>Unit</label>
+                <select value="{{ fUnit }}" onChange="{{ updateForm }}" data-field="fUnit"><option value="mL">mL</option><option value="µL">µL</option><option value="g">g</option><option value="Swab">Swab</option><option value="Slide">Slide</option></select>
+              </div>
+              <div>
+                <label>Collection Date / Time</label>
+                <input type="datetime-local" value="{{ fCollectedAt }}" onChange="{{ updateForm }}" data-field="fCollectedAt" />
+              </div>
+              <div>
+                <label>Collector</label>
+                <select value="{{ fCollector }}" onChange="{{ updateForm }}" data-field="fCollector"><option value="Anita D.">Anita D.</option><option value="N. Patil">N. Patil</option><option value="A. Joshi">A. Joshi</option><option value="S. Rane">S. Rane</option></select>
+              </div>
+              <div style="grid-column: span 2;">
+                <label>Remarks</label>
+                <input type="text" placeholder="Collection remarks (optional)" value="{{ fRemarks }}" onChange="{{ updateForm }}" data-field="fRemarks" />
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ drawerNote }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 9px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; background: #F0FDF4; color: #166534; border: 1px solid #86EFAC;">{{ drawerNote }}</div>
+          </sc-if>
+        </div>
+
+        <div style="padding: 12px 18px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;">
+          <button onClick="{{ closeDetail }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Close</button>
+          <button onClick="{{ drawerPrint }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Print Label</button>
+          <button onClick="{{ drawerCollect }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-primary-deep); border-radius: 4px; font-size: 12px; font-weight: 700; color: var(--color-primary-deep); cursor: pointer;" style-hover="background: var(--color-interactive-hover);">Collect</button>
+          <button onClick="{{ drawerReceive }}" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Receive</button>
+          <button onClick="{{ drawerReceivePrint }}" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;" style-hover="background: var(--color-primary-bright);">Receive &amp; Print</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const SEED = [
+  { id: 1, accessionNo: '—', billNumber: 'BL-2026-009114', registrationNumber: 'REG-2026-004182', patientName: 'Rohan Deshpande', mrn: 'PT-193210', sex: 'M', age: 42, testName: 'Complete Blood Count', testCode: 'CBC', sampleType: 'EDTA Whole Blood', dept: 'Haematology', container: 'Lavender EDTA', barcode: '', priority: 'Routine', sampleStatus: 'Pending', collectionStatus: 'Pending', collector: '—', collectedAt: '—', tab: 'sample' },
+  { id: 2, accessionNo: '—', billNumber: 'BL-2026-009114', registrationNumber: 'REG-2026-004182', patientName: 'Rohan Deshpande', mrn: 'PT-193210', sex: 'M', age: 42, testName: 'Glycated Haemoglobin (HbA1c)', testCode: 'HBA1C', sampleType: 'EDTA Whole Blood', dept: 'Biochemistry', container: 'Lavender EDTA', barcode: '', priority: 'Routine', sampleStatus: 'Pending', collectionStatus: 'Pending', collector: '—', collectedAt: '—', tab: 'sample' },
+  { id: 3, accessionNo: 'ACC-2026-11871', billNumber: 'BL-2026-009102', registrationNumber: 'REG-2026-004171', patientName: 'Saniya Shaikh', mrn: 'PT-194057', sex: 'F', age: 29, testName: 'Urine Routine', testCode: 'UR1', sampleType: 'Urine', dept: 'Biochemistry', container: 'Sterile Urine Cup', barcode: 'BC-8841903', priority: 'Urgent', sampleStatus: 'Collected', collectionStatus: 'Collected', collector: 'N. Patil', collectedAt: '17 Aug 2026, 09:11', tab: 'sample' },
+  { id: 4, accessionNo: 'ACC-2026-11866', billNumber: 'BL-2026-009098', registrationNumber: 'REG-2026-004166', patientName: 'Harishchandra Shinde', mrn: 'PT-194142', sex: 'M', age: 85, testName: 'HbsAg (Australian Antigen)', testCode: 'HBSAG', sampleType: 'Serum', dept: 'Immunoassay', container: 'Red Plain', barcode: 'BC-8841882', priority: 'STAT', sampleStatus: 'Collected', collectionStatus: 'Collected', collector: 'A. Joshi', collectedAt: '17 Aug 2026, 08:44', tab: 'emergency' },
+  { id: 5, accessionNo: 'ACC-2026-11860', billNumber: 'BL-2026-009090', registrationNumber: 'REG-2026-004160', patientName: 'Zubeda Ismail Shaikh', mrn: 'PT-174159', sex: 'F', age: 74, testName: 'Blood Glucose (PP)', testCode: 'GLUPP', sampleType: 'Fluoride Plasma', dept: 'Biochemistry', container: 'Grey Fluoride', barcode: 'BC-8841851', priority: 'STAT', sampleStatus: 'Received', collectionStatus: 'Collected', collector: 'N. Patil', collectedAt: '17 Aug 2026, 08:12', tab: 'emergency' },
+  { id: 6, accessionNo: 'ACC-2026-11852', billNumber: 'BL-2026-009081', registrationNumber: 'REG-2026-004152', patientName: 'Ibrahim Ahsan Qureshi', mrn: 'PT-084479', sex: 'M', age: 70, testName: 'Urine Culture &amp; Sensitivity', testCode: 'CULT', sampleType: 'Urine', dept: 'Microbiology', container: 'Sterile Urine Cup', barcode: 'BC-8841820', priority: 'Routine', sampleStatus: 'Rejected', collectionStatus: 'Rejected', collector: 'S. Rane', collectedAt: '16 Aug 2026, 18:02', tab: 'bill' },
+  { id: 7, accessionNo: '—', billNumber: 'BL-2026-009076', registrationNumber: 'REG-2026-004147', patientName: 'Meera Kulkarni', mrn: 'PT-190882', sex: 'F', age: 36, testName: 'Thyroid Stimulating Hormone', testCode: 'TSH', sampleType: 'Serum', dept: 'Immunoassay', container: 'Red Plain', barcode: '', priority: 'Routine', sampleStatus: 'Pending', collectionStatus: 'Pending', collector: '—', collectedAt: '—', tab: 'bill' }
+];
+
+const NOW = '17 Aug 2026, 10:20';
+
+const SHORT_SAMPLE = { 'EDTA Whole Blood': 'EDTA', 'Fluoride Plasma': 'Fl. Plasma', 'Sterile Urine Cup': 'Urine', Serum: 'Serum', Urine: 'Urine' };
+
+class Component extends DCLogic {
+  state = {
+    rows: SEED.map(r => ({ ...r, selected: false })),
+    query: '', dept: '', collStatus: '', sampStatus: '', priority: '', sampleTypeFilter: '',
+    colAccession: '', colPatient: '', colTest: '', colBarcode: '', colContainer: '',
+    view: 'pending', scan: false, filtersOpen: false,
+    fromDate: '2026-08-17', toDate: '2026-08-17',
+    setPrefix: 'ACC-2026-', setReset: 'Yearly', setBarcodeOn: 'Collection', setLocation: 'Phlebotomy Room 1',
+    setAutoReceive: true, setPrintOnCollect: true,
+    advAccession: '', advBill: '', advReg: '', advPatient: '', advBarcode: '',
+    tab: 'sample', detail: null, banner: '', bannerKind: 'info', drawerNote: '',
+    fPriority: 'Routine', fLocation: 'Phlebotomy Room 1', fCondition: 'Adequate',
+    fQuantity: 3, fUnit: 'mL', fCollectedAt: '2026-08-17T10:20', fCollector: 'Anita D.', fRemarks: ''
+  };
+
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value });
+
+  clearColFilters = () => this.setState({ colAccession: '', colPatient: '', colTest: '', colBarcode: '', colContainer: '', priority: '', sampStatus: '' });
+
+  updateForm = (e) => {
+    const f = e.target.dataset.field;
+    const v = e.target.type === 'number' ? (e.target.value === '' ? '' : Number(e.target.value)) : e.target.value;
+    this.setState({ [f]: v });
+  };
+  onQuery = (e) => this.setState({ query: e.target.value });
+  clearFilters = () => this.setState({ query: '', dept: '', collStatus: '', sampStatus: '', priority: '' });
+  setTab = (t) => () => this.setState({ tab: t });
+  stop = (e) => e.stopPropagation();
+
+  VIEWS = [
+    ['pending', 'Pending Collection'],
+    ['collected', 'Collected'],
+    ['received', 'Received in Lab'],
+    ['rejected', 'Rejected / Recollect'],
+    ['all', 'All Samples'],
+    ['advanced', 'Advanced Search'],
+    ['settings', 'Accession Settings']
+  ];
+  componentDidMount() {
+    const read = () => {
+      const m = /view=([A-Za-z-]+)/.exec(window.location.hash || '');
+      if (!m) return null;
+      const raw = m[1].toLowerCase();
+      const hit = this.VIEWS.find(([k]) => k.toLowerCase() === raw);
+      return hit ? hit[0] : null;
+    };
+    const k = read();
+    if (k) this.setState({ view: k });
+    this._onHash = () => { const v = read(); if (v) this.setState({ view: v, detail: null }); };
+    window.addEventListener('hashchange', this._onHash);
+  }
+  componentWillUnmount() { window.removeEventListener('hashchange', this._onHash); }
+  setView = (k) => () => {
+    if (window.history && window.history.replaceState) window.history.replaceState(null, '', '#view=' + k);
+    this.setState({ view: k, detail: null });
+  };
+  scanMode = () => this.setState(s => ({ scan: !s.scan, banner: s.scan ? '' : 'Scan mode on — scan a barcode to jump to that sample.', bannerKind: 'info' }));
+  toggleFilters = () => this.setState(s => ({ filtersOpen: !s.filtersOpen }));
+  toggleSetting = (e) => { const f = e.target.dataset.field; this.setState(s => ({ [f]: !s[f] })); };
+  saveSettings = () => this.setState({ banner: 'Accession settings saved for this branch.', bannerKind: 'success' });
+  clearAdvanced = () => this.setState({ advAccession: '', advBill: '', advReg: '', advPatient: '', advBarcode: '', sampStatus: '' });
+  runAdvanced = () => this.setState({ banner: 'Advanced search applied.', bannerKind: 'info' });
+
+  inStage(r, stage) {
+    if (stage === 'pending') return r.collectionStatus === 'Pending';
+    if (stage === 'collected') return r.sampleStatus === 'Collected';
+    if (stage === 'received') return r.sampleStatus === 'Received';
+    if (stage === 'rejected') return r.sampleStatus === 'Rejected';
+    return true;
+  }
+
+  visible(s) {
+    const q = s.query.trim().toLowerCase();
+    return s.rows.filter(r =>
+      r.tab === s.tab &&
+      this.inStage(r, s.view) &&
+      (!s.dept || r.dept === s.dept) &&
+      (!s.sampleTypeFilter || r.sampleType === s.sampleTypeFilter) &&
+      (!s.colAccession || r.accessionNo.toLowerCase().includes(s.colAccession.toLowerCase())) &&
+      (!s.colPatient || (r.patientName + ' ' + r.mrn).toLowerCase().includes(s.colPatient.toLowerCase())) &&
+      (!s.colTest || (r.testName + ' ' + r.testCode).toLowerCase().includes(s.colTest.toLowerCase())) &&
+      (!s.colBarcode || (r.barcode || '').toLowerCase().includes(s.colBarcode.toLowerCase())) &&
+      (!s.colContainer || r.container === s.colContainer) &&
+      (!s.advAccession || r.accessionNo.toLowerCase().includes(s.advAccession.toLowerCase())) &&
+      (!s.advBill || r.billNumber.toLowerCase().includes(s.advBill.toLowerCase())) &&
+      (!s.advReg || r.registrationNumber.toLowerCase().includes(s.advReg.toLowerCase())) &&
+      (!s.advPatient || (r.patientName + ' ' + r.mrn).toLowerCase().includes(s.advPatient.toLowerCase())) &&
+      (!s.advBarcode || (r.barcode || '').toLowerCase().includes(s.advBarcode.toLowerCase())) &&
+      (!s.collStatus || r.collectionStatus === s.collStatus) &&
+      (!s.sampStatus || r.sampleStatus === s.sampStatus) &&
+      (!s.priority || r.priority === s.priority) &&
+      (!q || [r.patientName, r.mrn, r.accessionNo, r.billNumber, r.registrationNumber, r.barcode, r.testName, r.testCode].join(' ').toLowerCase().includes(q))
+    );
+  }
+
+  patch(ids, fn, banner, kind) {
+    this.setState(s => ({
+      rows: s.rows.map(r => (ids.includes(r.id) ? fn(r) : r)),
+      banner, bannerKind: kind || 'success'
+    }));
+  }
+
+  collect = (id, print) => () => this.patch([id], r => ({
+    ...r, collectionStatus: 'Collected', sampleStatus: 'Collected',
+    barcode: r.barcode || 'BC-' + (8842000 + r.id), collector: 'Anita D.', collectedAt: NOW
+  }), print ? 'Sample collected and barcode sent to printer.' : 'Sample collected. Barcode generated.');
+
+  receive = (id, print) => () => this.patch([id], r => ({
+    ...r, sampleStatus: 'Received', collectionStatus: 'Collected',
+    accessionNo: r.accessionNo === '—' ? 'ACC-2026-' + (11900 + r.id) : r.accessionNo,
+    barcode: r.barcode || 'BC-' + (8842000 + r.id), collector: r.collector === '—' ? 'Anita D.' : r.collector,
+    collectedAt: r.collectedAt === '—' ? NOW : r.collectedAt
+  }), print ? 'Sample received in lab and label printed.' : 'Sample received in lab and routed to worklist.');
+
+  reject = (id) => () => this.patch([id], r => ({ ...r, sampleStatus: 'Rejected', collectionStatus: 'Rejected' }), 'Sample marked rejected. Recollection required.', 'error');
+
+  toggleRow = (id) => () => this.setState(s => ({ rows: s.rows.map(r => r.id === id ? { ...r, selected: !r.selected } : r) }));
+
+  toggleAll = () => {
+    const vis = this.visible(this.state).map(r => r.id);
+    const all = vis.length > 0 && vis.every(id => this.state.rows.find(r => r.id === id).selected);
+    this.setState(s => ({ rows: s.rows.map(r => vis.includes(r.id) ? { ...r, selected: !all } : r) }));
+  };
+
+  selectedIds() { return this.state.rows.filter(r => r.selected).map(r => r.id); }
+
+  bulkCollect = () => {
+    const ids = this.selectedIds();
+    if (!ids.length) return;
+    this.patch(ids, r => ({ ...r, collectionStatus: 'Collected', sampleStatus: 'Collected', barcode: r.barcode || 'BC-' + (8842000 + r.id), collector: 'Anita D.', collectedAt: NOW }), ids.length + ' sample(s) collected.');
+  };
+
+  bulkRecollect = () => {
+    const ids = this.selectedIds();
+    if (!ids.length) return;
+    this.patch(ids, r => ({ ...r, sampleStatus: 'Pending', collectionStatus: 'Pending', barcode: '', collector: '—', collectedAt: '—' }), ids.length + ' sample(s) marked for recollection.', 'error');
+  };
+
+  bulkPrint = () => {
+    const ids = this.selectedIds();
+    if (!ids.length) return;
+    this.patch(ids, r => ({ ...r, barcode: r.barcode || 'BC-' + (8842000 + r.id) }), ids.length + ' label(s) sent to printer.');
+  };
+
+  bulkReceive = () => {
+    const ids = this.selectedIds();
+    if (!ids.length) return;
+    this.patch(ids, r => ({ ...r, sampleStatus: 'Received', collectionStatus: 'Collected', accessionNo: r.accessionNo === '—' ? 'ACC-2026-' + (11900 + r.id) : r.accessionNo, barcode: r.barcode || 'BC-' + (8842000 + r.id), collector: r.collector === '—' ? 'Anita D.' : r.collector, collectedAt: r.collectedAt === '—' ? NOW : r.collectedAt }), ids.length + ' sample(s) received and labels printed.');
+  };
+
+  openDetail = (id) => () => {
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState({
+      detail: id, drawerNote: '',
+      fPriority: r.priority,
+      fLocation: r.location || 'Phlebotomy Room 1',
+      fCondition: r.condition || 'Adequate',
+      fQuantity: r.quantity || 3,
+      fUnit: r.unit || 'mL',
+      fCollectedAt: r.collectedAtIso || '2026-08-17T10:20',
+      fCollector: r.collector === '—' ? 'Anita D.' : r.collector,
+      fRemarks: r.remarks || ''
+    });
+  };
+
+  closeDetail = () => this.setState({ detail: null, drawerNote: '' });
+
+  formPatch() {
+    const s = this.state;
+    const d = new Date(s.fCollectedAt);
+    const pretty = isNaN(d) ? s.fCollectedAt : d.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', ',');
+    return {
+      priority: s.fPriority, location: s.fLocation, condition: s.fCondition,
+      quantity: s.fQuantity, unit: s.fUnit, collector: s.fCollector,
+      remarks: s.fRemarks, collectedAtIso: s.fCollectedAt, collectedAt: pretty
+    };
+  }
+
+  drawerCollect = () => {
+    const id = this.state.detail;
+    this.patch([id], r => ({ ...r, ...this.formPatch(), collectionStatus: 'Collected', sampleStatus: 'Collected', barcode: r.barcode || 'BC-' + (8842000 + r.id) }), 'Sample collected.');
+    this.setState({ drawerNote: 'Sample marked Collected. Barcode generated — print the label next.' });
+  };
+
+  drawerPrint = () => {
+    const id = this.state.detail;
+    this.patch([id], r => ({ ...r, ...this.formPatch(), barcode: r.barcode || 'BC-' + (8842000 + r.id) }), 'Barcode label sent to printer.');
+    this.setState({ drawerNote: 'Label sent to the phlebotomy printer.' });
+  };
+
+  drawerReceive = (print) => () => {
+    const id = this.state.detail;
+    this.patch([id], r => ({
+      ...r, ...this.formPatch(), sampleStatus: 'Received', collectionStatus: 'Collected',
+      accessionNo: r.accessionNo === '—' ? 'ACC-2026-' + (11900 + r.id) : r.accessionNo,
+      barcode: r.barcode || 'BC-' + (8842000 + r.id)
+    }), print ? 'Sample received and label printed.' : 'Sample received in lab and routed to worklist.');
+    this.setState({ drawerNote: print ? 'Received in lab. Accession assigned and label printed.' : 'Received in lab. Accession assigned.' });
+  };
+
+  renderVals() {
+    const s = this.state;
+    const tone = { error: ['#FEF2F2', '#991B1B', '#FCA5A5'], success: ['#F0FDF4', '#166534', '#86EFAC'], info: ['#EFF6FF', '#1E40AF', '#93C5FD'] }[s.bannerKind];
+    const prio = { Routine: ['#F6F7F9', '#4B5563', 'transparent'], Urgent: ['#FFFBEB', '#92400E', '#FCD34D'], STAT: ['#FEF2F2', '#991B1B', '#FCA5A5'] };
+    const samp = { Pending: ['#F6F7F9', '#4B5563'], Collected: ['#EFF6FF', '#1E40AF'], Received: ['#F0FDF4', '#166534'], Rejected: ['#FEF2F2', '#991B1B'] };
+    const btn = (label, onClick, kind) => ({
+      label, onClick,
+      bg: kind === 'primary' ? 'var(--color-primary-deep)' : '#fff',
+      fg: kind === 'primary' ? '#fff' : (kind === 'danger' ? 'var(--color-error)' : 'var(--color-text-secondary)'),
+      border: kind === 'primary' ? 'var(--color-primary-deep)' : (kind === 'danger' ? '#FCA5A5' : 'var(--color-border-base)')
+    });
+
+    const vis = this.visible(s);
+    const rows = vis.map(r => {
+      const actions = [];
+      if (r.collectionStatus === 'Pending') {
+        actions.push(btn('Collect', this.openDetail(r.id)));
+        actions.push(btn('Collect & Print', this.collect(r.id, true), 'primary'));
+      } else if (r.sampleStatus === 'Collected') {
+        actions.push(btn('Receive', this.receive(r.id, false)));
+        actions.push(btn('Receive & Print', this.receive(r.id, true), 'primary'));
+        actions.push(btn('Reject', this.reject(r.id), 'danger'));
+      } else if (r.sampleStatus === 'Rejected') {
+        actions.push(btn('Recollect', this.collect(r.id, true), 'primary'));
+      }
+      if (!actions.length) actions.push(btn('Print Label', this.openDetail(r.id)));
+
+      const p = prio[r.priority];
+      const t = samp[r.sampleStatus];
+      return {
+        ...r,
+        patientMeta: r.mrn + ' · ' + r.sex + ' · ' + r.age + ' y',
+        patientTitleName: (r.sex === 'M' ? 'Mr. ' : 'Ms. ') + r.patientName,
+        organizationName: 'X46 Diagnostics · Pune Main',
+        testLines: [{ label: r.testName + ' (' + r.testCode + ')' }, { label: r.dept + ' · ' + r.container }],
+        billDate: r.billDate || '17 Aug 2026',
+        dotBorder: r.sampleStatus === 'Pending' ? 'var(--color-text-tertiary)' : 'var(--color-primary-deep)',
+        dotFill: r.sampleStatus === 'Pending' ? 'transparent' : 'var(--color-primary-deep)',
+        collectionNote: r.collectionStatus === 'Pending' ? 'Pre-generated · label not printed' : (r.sampleStatus === 'Rejected' ? 'Rejected · recollect required' : r.collector + ' · ' + r.collectedAt),
+        testShort: r.testCode,
+        accessionPrefix: r.accessionNo === '—' ? '—' : r.accessionNo.split('-').slice(0, 2).join('-'),
+        accessionSuffix: r.accessionNo === '—' ? '' : r.accessionNo.split('-').slice(2).join('-'),
+        testMeta: SHORT_SAMPLE[r.sampleType] || r.sampleType,
+        barcode: r.barcode || ('BC-' + (8842000 + r.id)),
+        barcodeColor: r.barcode ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+        location: r.location || (r.collectionStatus === 'Pending' ? 'Not collected' : 'Phlebotomy Room 1'),
+        qtyLabel: (r.quantity || 3) + ' ' + (r.unit || 'mL'),
+        condition: r.condition || 'Adequate',
+        priorityBg: p[0], priorityFg: p[1], priorityEdge: p[2],
+        sampleBg: t[0], sampleFg: t[1],
+        collFg: r.collectionStatus === 'Rejected' ? 'var(--color-error)' : (r.collectionStatus === 'Collected' ? 'var(--color-success)' : 'var(--color-text-secondary)'),
+        rowBg: r.selected ? 'var(--color-interactive-hover)' : (r.collectionStatus === 'Pending' ? '#F6F7F9' : '#fff'),
+        onSelect: this.toggleRow(r.id),
+        onDetails: this.openDetail(r.id),
+        actions
+      };
+    });
+
+    const counts = { sample: 0, bill: 0, emergency: 0 };
+    s.rows.forEach(r => { counts[r.tab] += 1; });
+    const tabs = [['sample', 'Sample Wise'], ['bill', 'Bill Wise'], ['emergency', 'Emergency']].map(([k, label]) => ({
+      label, count: counts[k], onPick: this.setTab(k),
+      border: s.tab === k ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.tab === k ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    const VIEWS = this.VIEWS;
+    const subNav = VIEWS.map(([k, label]) => {
+      const on = s.view === k;
+      return {
+        label, onPick: this.setView(k),
+        count: (k === 'advanced' || k === 'settings') ? '' : s.rows.filter(r => this.inStage(r, k)).length,
+        navBg: on ? 'var(--color-interactive-hover)' : 'transparent',
+        navEdge: on ? 'var(--color-primary-bright)' : 'transparent',
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        edge: on ? 'var(--color-primary-bright)' : 'var(--color-border-light)',
+        color: on ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)',
+        weight: on ? 700 : 500
+      };
+    });
+    const active = VIEWS.find(x => x[0] === s.view) || VIEWS[0];
+
+    const sel = s.rows.filter(r => r.selected);
+    const d = s.detail ? s.rows.find(r => r.id === s.detail) : null;
+    const dTone = d ? samp[d.sampleStatus] : ['#F3F4F6', '#4B5563'];
+
+    return {
+      ...s,
+      rows, tabs, subNav,
+      viewLabel: active[1],
+      isSettings: s.view === 'settings',
+      isAdvanced: s.view === 'advanced',
+      scanBg: s.scan ? 'var(--color-primary-deep)' : '#fff',
+      scanFg: s.scan ? '#fff' : 'var(--color-text-secondary)',
+      scanBorder: s.scan ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+      filterLabel: s.filtersOpen ? 'Hide Filters' : 'Filters',
+      filterBg: s.filtersOpen ? 'var(--color-interactive-hover)' : '#fff',
+      filterFg: s.filtersOpen ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)',
+      filterBorder: s.filtersOpen ? 'var(--color-primary-bright)' : 'var(--color-border-base)',
+      bulkBg: sel.length ? 'var(--color-primary-deep)' : 'var(--color-gray-100)',
+      bulkFg: sel.length ? '#fff' : 'var(--color-text-tertiary)',
+      bulkBorder: sel.length ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+      bulkOutlineFg: sel.length ? 'var(--color-primary-deep)' : 'var(--color-text-tertiary)',
+      rowCount: rows.length,
+      isEmpty: rows.length === 0,
+      allSelected: vis.length > 0 && vis.every(r => r.selected),
+      noSelection: sel.length === 0,
+      selectedLabel: sel.length ? sel.length + ' selected' : '',
+      detail: !!d,
+      detailAccession: d ? (d.accessionNo === '—' ? 'Pending accession' : d.accessionNo) : '',
+      dPatientName: d ? d.patientName : '',
+      dMrn: d ? d.mrn : '',
+      dRegistration: d ? d.registrationNumber : '',
+      dAgeGender: d ? d.age + ' y · ' + (d.sex === 'M' ? 'Male' : 'Female') : '',
+      dBill: d ? d.billNumber : '',
+      dAccessionNo: d ? d.accessionNo : '',
+      dTest: d ? d.testName + ' (' + d.testCode + ')' : '',
+      dSampleType: d ? d.sampleType + ' · ' + d.container : '',
+      dBarcode: d ? (d.barcode || ('BC-' + (8842000 + d.id))) : '',
+      dBarcodeColor: d && d.barcode ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+      dSampleStatus: d ? d.sampleStatus : '',
+      dSampleBg: dTone[0], dSampleFg: dTone[1],
+      bannerBg: tone[0], bannerFg: tone[1], bannerBorder: tone[2],
+      onQuery: this.onQuery, updateField: this.updateField, updateForm: this.updateForm, clearFilters: this.clearFilters,
+      toggleAll: this.toggleAll, bulkCollect: this.bulkCollect, bulkReceive: this.bulkReceive, clearColFilters: this.clearColFilters,
+      bulkRecollect: this.bulkRecollect, bulkPrint: this.bulkPrint,
+      scanMode: this.scanMode, toggleFilters: this.toggleFilters, toggleSetting: this.toggleSetting,
+      saveSettings: this.saveSettings, clearAdvanced: this.clearAdvanced, runAdvanced: this.runAdvanced,
+      closeDetail: this.closeDetail, stop: this.stop,
+      drawerCollect: this.drawerCollect, drawerPrint: this.drawerPrint,
+      drawerReceive: this.drawerReceive(false), drawerReceivePrint: this.drawerReceive(true)
+    };
+  }
+}
+</script>
+</body>
+</html>

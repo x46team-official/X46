@@ -1,0 +1,62 @@
+{
+  "functionality_id": "API-009",
+  "module": "Test Management",
+  "functionality": "Activate/Deactivate Test",
+  "http_method": "PATCH",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/tests/{testId}/status",
+  "description": "Toggles a test's is_active flag.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "testId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "isActive": "boolean, required" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "testId", "isActive"],
+
+  "validation": [
+    "test must exist and belong to organization + branch",
+    "isActive must be a boolean value"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Test status updated successfully",
+      "data": { "id": "uuid", "isActive": false }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "isActive missing or not a boolean",
+      "status_code": 400,
+      "response": { "success": false, "error": "Invalid status value" }
+    },
+    {
+      "condition": "testId does not exist / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Test not found" },
+      "source": "database/api_contracts_test/009_test_update_status.sql (API-T059)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["test_master"],
+    "relationships": [],
+    "constraints": ["is_active DEFAULT TRUE"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/009_test_update_status.sql"],
+
+  "test_ids": ["API-T047", "API-T055", "API-T056", "API-T057", "API-T058", "API-T059"]
+}

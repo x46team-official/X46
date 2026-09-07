@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 9px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input[type="checkbox"] { width: auto; padding: 0; accent-color: var(--color-primary-deep); }
+    select { cursor: pointer; }
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+    .btn { font-family: inherit; cursor: pointer; border-radius: 4px; }
+    .cap { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); }
+  </style>
+  <script src="lims-api.js"></script>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; height: 100vh; overflow: hidden;">
+  <nav style="width: 216px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700;">X46</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 10px 16px; border-bottom: 1px solid var(--color-border-light);">
+      <div class="cap">Branch</div>
+      <div style="font-size: 12px; font-weight: 600; margin-top: 2px;">X46 Diagnostics · Pune Main</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; padding: 12px 16px 4px;" class="cap">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; padding: 12px 16px 4px;" class="cap">Lab Ops</div>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Accession.dc.html" style="color: inherit;">Accession</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Accession.dc.html#view=pending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Pending Collection</a>
+      <a href="Accession.dc.html#view=collected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Collected</a>
+      <a href="Accession.dc.html#view=received" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Received in Lab</a>
+      <a href="Accession.dc.html#view=rejected" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Rejected / Recollect</a>
+      <a href="Accession.dc.html#view=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Samples</a>
+      <a href="Accession.dc.html#view=advanced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Advanced Search</a>
+      <a href="Accession.dc.html#view=settings" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Accession Settings</a>
+      </details>
+      <details>
+        <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; color: var(--color-text-secondary); cursor: pointer;">
+          <a href="Worklist.dc.html" style="color: inherit;">Worklist</a>
+          <span style="font-size: 9px; color: var(--color-text-tertiary);">▾</span>
+        </summary>
+      <a href="Worklist.dc.html#queue=all" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">All Tests</a>
+      <a href="Worklist.dc.html#queue=incomplete" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Incomplete</a>
+      <a href="Worklist.dc.html#queue=progress" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">In Progress</a>
+      <a href="Worklist.dc.html#queue=resultPending" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Result Pending</a>
+      <a href="Worklist.dc.html#queue=completed" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Completed</a>
+      <a href="Worklist.dc.html#queue=hold" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">On Hold</a>
+      <a href="Worklist.dc.html#queue=emergency" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Emergency Reports</a>
+      <a href="Worklist.dc.html#queue=outsourced" style="display: block; padding: 5px 16px 5px 28px; font-size: 12px; color: var(--color-text-secondary);">Outsourced</a>
+      </details>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Result Validation</a>
+      <div style="display: block; padding: 8px 16px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Report &amp; Dispatch</div>
+      <a href="Report History.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; padding: 12px 16px 4px;" class="cap">Finance</div>
+      <a href="Bill Details.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Bill Details</a>
+      <a href="Price Quotation.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Price Quotation</a>
+      <a href="Finance.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; padding: 12px 16px 4px;" class="cap">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; padding: 12px 16px 4px;" class="cap">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 8px 16px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; overflow: hidden; position: relative;">
+
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 11px 20px; flex-shrink: 0;">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+        <div>
+          <div style="font-size: 11px; color: var(--color-text-tertiary);">Lab Ops / Report &amp; Dispatch</div>
+          <h1 style="margin: 2px 0 0; font-size: 17px; font-weight: 700;">Report &amp; Dispatch</h1>
+          <div style="font-size: 11.5px; color: var(--color-text-secondary); margin-top: 2px;">Validated results → report generation → delivery to the patient, on one screen.</div>
+        </div>
+        <div style="display: flex; align-items: flex-end; gap: 8px;">
+          <div style="width: 132px;"><label>From</label><input type="date" value="{{ fromDate }}" onChange="{{ updateField }}" data-field="fromDate" /></div>
+          <div style="width: 132px;"><label>To</label><input type="date" value="{{ toDate }}" onChange="{{ updateField }}" data-field="toDate" /></div>
+          <button onClick="{{ refresh }}" class="btn" style="padding: 7px 13px; background: #fff; border: 1px solid var(--color-border-base); font-size: 12px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Refresh</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 14px 20px 26px;">
+
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+        <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c.onPick }}" class="btn" style="text-align: left; padding: 9px 12px; background: #fff; border: 1px solid {{ c.border }}; box-shadow: {{ c.shadow }};">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 6px; height: 6px; border-radius: 999px; background: {{ c.dot }};"></span>
+              <span class="cap" style="color: {{ c.labelFg }};">{{ c.label }}</span>
+            </div>
+            <div class="num" style="font-size: 21px; font-weight: 700; letter-spacing: -.02em; margin-top: 3px;">{{ c.value }}</div>
+            <div style="font-size: 11px; color: var(--color-text-tertiary);">{{ c.note }}</div>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; margin-top: 12px;">
+        <div style="padding: 9px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid {{ filterDivider }};">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button onClick="{{ toggleFilters }}" class="btn" style="background: none; border: none; padding: 0; font-size: 12px; font-weight: 700; color: var(--color-text-primary);">{{ filterCaret }} Search &amp; Filters</button>
+            <span style="font-size: 11px; color: var(--color-text-tertiary);">{{ activeFilterLabel }}</span>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button onClick="{{ clearFilters }}" class="btn" style="padding: 6px 12px; background: #fff; border: 1px solid var(--color-border-base); font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Reset</button>
+            <button onClick="{{ search }}" class="btn" style="padding: 6px 14px; background: var(--color-primary-deep); border: none; font-size: 11.5px; font-weight: 700; color: #fff;" style-hover="background: var(--color-primary-bright);">Search</button>
+          </div>
+        </div>
+        <sc-if value="{{ filtersOpen }}" hint-placeholder-val="{{ true }}">
+          <div style="padding: 12px 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(158px, 1fr)); gap: 10px 12px;">
+            <div><label>Patient ID / MRN</label><input type="text" placeholder="MRN-TEST-001" value="{{ fMrn }}" onChange="{{ updateField }}" data-field="fMrn" class="mono" /></div>
+            <div><label>Patient Name</label><input type="text" placeholder="Name contains" value="{{ fName }}" onChange="{{ updateField }}" data-field="fName" /></div>
+            <div><label>Accession Number</label><input type="text" placeholder="ACC0001" value="{{ fAccession }}" onChange="{{ updateField }}" data-field="fAccession" class="mono" /></div>
+            <div><label>Bill Number</label><input type="text" placeholder="BL-2026-…" value="{{ fBill }}" onChange="{{ updateField }}" data-field="fBill" class="mono" /></div>
+            <div><label>Test Name</label><input type="text" placeholder="Test or code" value="{{ fTest }}" onChange="{{ updateField }}" data-field="fTest" /></div>
+            <div><label>Department</label><select value="{{ fDept }}" onChange="{{ updateField }}" data-field="fDept"><option value="">All departments</option><option value="Hematology">Hematology</option><option value="Biochemistry">Biochemistry</option><option value="Immunoassay">Immunoassay</option><option value="Microbiology">Microbiology</option><option value="Clinical Pathology">Clinical Pathology</option></select></div>
+            <div><label>Report Status</label><select value="{{ fReport }}" onChange="{{ updateField }}" data-field="fReport"><option value="">All</option><option value="PENDING_VALIDATION">Pending validation</option><option value="VALIDATED">Validated</option><option value="READY">Report ready</option><option value="DISPATCHED">Dispatched</option></select></div>
+            <div><label>Dispatch Status</label><select value="{{ fDispatch }}" onChange="{{ updateField }}" data-field="fDispatch"><option value="">All</option><option value="NOT_DISPATCHED">Not dispatched</option><option value="PENDING">Pending</option><option value="DISPATCHED">Dispatched</option><option value="FAILED">Failed</option></select></div>
+            <div><label>Referring Doctor</label><select value="{{ fDoctor }}" onChange="{{ updateField }}" data-field="fDoctor"><option value="">All doctors</option><option value="Dr. Sharma">Dr. Sharma</option><option value="Dr. S. Kulkarni">Dr. S. Kulkarni</option><option value="Dr. A. Mehta">Dr. A. Mehta</option><option value="Self">Self</option></select></div>
+            <div><label>Priority</label><select value="{{ fPriority }}" onChange="{{ updateField }}" data-field="fPriority"><option value="">All</option><option value="NORMAL">Normal</option><option value="URGENT">Urgent</option><option value="STAT">STAT</option></select></div>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ hasBanner }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top: 12px; padding: 9px 13px; border-radius: 5px; font-size: 12px; font-weight: 600; background: {{ bannerBg }}; color: {{ bannerFg }}; border: 1px solid {{ bannerBorder }}; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <span>{{ banner }}</span>
+          <button onClick="{{ dismissBanner }}" class="btn" style="background: none; border: none; padding: 0 2px; font-size: 14px; line-height: 1; color: inherit; opacity: .6;">×</button>
+        </div>
+      </sc-if>
+
+      <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; margin-top: 12px;">
+        <div style="padding: 0 14px; display: flex; align-items: center; gap: 2px; border-bottom: 1px solid var(--color-border-light); flex-wrap: wrap;">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+            <button onClick="{{ t.onPick }}" class="btn" style="padding: 10px 12px; background: none; border: none; border-radius: 0; border-bottom: 2px solid {{ t.border }}; font-size: 12px; font-weight: 600; color: {{ t.color }};">{{ t.label }} <span class="num" style="color: var(--color-text-tertiary); font-weight: 500;">{{ t.count }}</span></button>
+          </sc-for>
+          <div style="flex: 1;"></div>
+          <div style="position: relative; padding: 6px 0;">
+            <button onClick="{{ toggleColumnMenu }}" class="btn" style="padding: 6px 11px; background: #fff; border: 1px solid {{ columnsBorder }}; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Columns · {{ visibleColumnCount }}</button>
+            <sc-if value="{{ columnMenuOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position: absolute; right: 0; top: 38px; z-index: 25; width: 214px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 5px; box-shadow: 0 12px 26px rgba(17,24,39,.16); padding: 6px 0;">
+                <div class="cap" style="padding: 6px 12px 4px;">Show columns</div>
+                <sc-for list="{{ columnToggles }}" as="c" hint-placeholder-count="6">
+                  <label style="display: flex; align-items: center; gap: 8px; padding: 5px 12px; margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary); cursor: pointer;">
+                    <input type="checkbox" checked="{{ c.on }}" onChange="{{ c.onToggle }}" /> {{ c.label }}
+                  </label>
+                </sc-for>
+                <div style="border-top: 1px solid var(--color-border-light); margin-top: 5px; padding: 6px 12px 2px; display: flex; gap: 8px;">
+                  <button onClick="{{ showAllColumns }}" class="btn" style="background: none; border: none; padding: 0; font-size: 11.5px; font-weight: 700; color: var(--color-primary-deep);">Show all</button>
+                  <button onClick="{{ compactColumns }}" class="btn" style="background: none; border: none; padding: 0; font-size: 11.5px; font-weight: 700; color: var(--color-text-secondary);">Compact view</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 8px 14px; background: var(--color-interactive-hover); border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span class="num" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ selectionLabel }}</span>
+            <span style="font-size: 11px; color: var(--color-text-secondary);">{{ selectionBreakdown }}</span>
+            <div style="flex: 1;"></div>
+            <button onClick="{{ bulkGenerate }}" disabled="{{ genDisabled }}" class="btn" style="padding: 6px 12px; background: #fff; border: 1px solid {{ genBorder }}; font-size: 11.5px; font-weight: 600; color: {{ genFg }}; cursor: {{ genCursor }};">Generate Reports</button>
+            <button onClick="{{ bulkPrint }}" disabled="{{ printDisabled }}" class="btn" style="padding: 6px 12px; background: #fff; border: 1px solid {{ printBorder }}; font-size: 11.5px; font-weight: 600; color: {{ printFg }}; cursor: {{ printCursor }};">Print Selected</button>
+            <button onClick="{{ bulkDispatch }}" disabled="{{ dispDisabled }}" class="btn" style="padding: 6px 14px; background: {{ dispBg }}; border: 1px solid {{ dispBg }}; font-size: 11.5px; font-weight: 700; color: {{ dispFg }}; cursor: {{ dispCursor }};">Dispatch Selected</button>
+            <button onClick="{{ clearSelection }}" class="btn" style="background: none; border: none; padding: 0 4px; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary);">Clear</button>
+          </div>
+        </sc-if>
+
+        <div style="overflow-x: auto;">
+          <div style="min-width: {{ tableMinWidth }};">
+            <div style="display: grid; grid-template-columns: {{ gridCols }}; gap: 9px; padding: 8px 14px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base);" class="cap">
+              <div><input type="checkbox" checked="{{ allSelected }}" onChange="{{ toggleAll }}" /></div>
+              <sc-if value="{{ colMrn }}" hint-placeholder-val="{{ true }}"><div>Patient ID</div></sc-if>
+              <div>Patient</div>
+              <sc-if value="{{ colAccession }}" hint-placeholder-val="{{ true }}"><div>Accession</div></sc-if>
+              <div>Test / Panel</div>
+              <sc-if value="{{ colDept }}" hint-placeholder-val="{{ true }}"><div>Department</div></sc-if>
+              <div>Report Status</div>
+              <sc-if value="{{ colValidation }}" hint-placeholder-val="{{ true }}"><div>Validation</div></sc-if>
+              <sc-if value="{{ colDate }}" hint-placeholder-val="{{ true }}"><div>Report Date</div></sc-if>
+              <sc-if value="{{ colDispatch }}" hint-placeholder-val="{{ true }}"><div>Dispatch</div></sc-if>
+              <div style="text-align: right;">Actions</div>
+            </div>
+
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7">
+              <div style="display: grid; grid-template-columns: {{ gridCols }}; gap: 9px; padding: 8px 14px; border-bottom: 1px solid var(--color-border-light); align-items: center; background: {{ r.rowBg }}; box-shadow: inset 3px 0 0 0 {{ r.priorityEdge }};" style-hover="background: var(--color-gray-50);">
+                <div><input type="checkbox" checked="{{ r.selected }}" onChange="{{ r.onSelect }}" /></div>
+                <sc-if value="{{ colMrn }}" hint-placeholder-val="{{ true }}">
+                  <div class="mono" style="font-size: 11px; color: var(--color-text-secondary); overflow: hidden; text-overflow: ellipsis;">{{ r.mrn }}</div>
+                </sc-if>
+                <div style="min-width: 0;">
+                  <div style="font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.patientName }}</div>
+                  <div style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ r.ageSex }} · {{ r.doctor }}</div>
+                </div>
+                <sc-if value="{{ colAccession }}" hint-placeholder-val="{{ true }}">
+                  <div class="mono" style="font-size: 11.5px; font-weight: 600; color: var(--color-primary-deep);">{{ r.accessionNo }}</div>
+                </sc-if>
+                <div style="min-width: 0;">
+                  <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.testName }}">{{ r.testName }}</div>
+                  <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary);">{{ r.testCode }}</div>
+                </div>
+                <sc-if value="{{ colDept }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-size: 11.5px; color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.dept }}</div>
+                </sc-if>
+                <div><span style="display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.reportBg }}; color: {{ r.reportFg }}; white-space: nowrap;">{{ r.reportLabel }}</span></div>
+                <sc-if value="{{ colValidation }}" hint-placeholder-val="{{ true }}">
+                  <div>
+                    <div style="font-size: 11.5px; font-weight: 600; color: {{ r.validationFg }};">{{ r.validationLabel }}</div>
+                    <div style="font-size: 10px; color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.authorizedBy }}</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ colDate }}" hint-placeholder-val="{{ true }}">
+                  <div class="num" style="font-size: 11.5px; color: var(--color-text-secondary);">{{ r.reportDate }}</div>
+                </sc-if>
+                <sc-if value="{{ colDispatch }}" hint-placeholder-val="{{ true }}">
+                  <div>
+                    <span style="display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.dispatchBg }}; color: {{ r.dispatchFg }}; white-space: nowrap;">{{ r.dispatchLabel }}</span>
+                    <sc-if value="{{ r.hasDispatchNote }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size: 10px; color: var(--color-text-tertiary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.dispatchNote }}</div>
+                    </sc-if>
+                    <sc-if value="{{ r.isFailed }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ r.onViewError }}" class="btn" style="background: none; border: none; padding: 0; margin-top: 1px; font-size: 10.5px; font-weight: 700; color: #B91C1C;">View reason</button>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <div style="display: flex; gap: 4px; justify-content: flex-end; flex-wrap: wrap;">
+                  <sc-if value="{{ r.canView }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ r.onView }}" class="btn" style="padding: 4px 8px; background: #fff; border: 1px solid var(--color-border-base); font-size: 11px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">View</button>
+                  </sc-if>
+                  <sc-if value="{{ r.canGenerate }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ r.onGenerate }}" class="btn" style="padding: 4px 8px; background: #fff; border: 1px solid var(--color-border-base); font-size: 11px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">{{ r.generateLabel }}</button>
+                  </sc-if>
+                  <sc-if value="{{ r.canPrint }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ r.onPrint }}" class="btn" style="padding: 4px 8px; background: #fff; border: 1px solid var(--color-border-base); font-size: 11px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Print</button>
+                  </sc-if>
+                  <sc-if value="{{ r.canDispatch }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ r.onDispatch }}" class="btn" style="padding: 4px 9px; background: {{ r.dispatchBtnBg }}; border: none; font-size: 11px; font-weight: 700; color: #fff;" style-hover="opacity: .9;">{{ r.dispatchBtnLabel }}</button>
+                  </sc-if>
+                  <button onClick="{{ r.onDetails }}" class="btn" style="padding: 4px 6px; background: none; border: none; font-size: 11px; font-weight: 600; color: var(--color-primary-deep);">Details</button>
+                </div>
+              </div>
+            </sc-for>
+
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 54px 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 700;">No reports match this view</div>
+                <div style="font-size: 12px; color: var(--color-text-tertiary); margin: 4px 0 14px;">Widen the date range or reset the filters.</div>
+                <button onClick="{{ clearFilters }}" class="btn" style="padding: 8px 16px; background: var(--color-primary-deep); border: none; color: #fff; font-size: 12px; font-weight: 700;">Reset Filters</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="padding: 8px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 11.5px; color: var(--color-text-secondary);">
+          <span class="num">Showing {{ rowCount }} of {{ totalCount }} reports</span>
+          <span style="color: var(--color-text-tertiary);">Reports can be dispatched once validated and generated.</span>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; z-index: 40; display: flex; justify-content: flex-end; background: rgba(17,24,39,.34);" onClick="{{ closeDrawer }}">
+        <div onClick="{{ stop }}" style="width: 620px; max-width: 100%; background: var(--color-surface-alt); border-left: 1px solid var(--color-border-base); display: flex; flex-direction: column; box-shadow: -14px 0 34px rgba(17,24,39,.16);">
+          <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 12px 16px; flex-shrink: 0;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+              <div>
+                <div style="font-size: 14.5px; font-weight: 700;">{{ dPatient }}</div>
+                <div class="mono" style="font-size: 11.5px; color: var(--color-text-secondary);">{{ dMrn }} · {{ dAccession }} · {{ dReportNumber }}</div>
+              </div>
+              <button onClick="{{ closeDrawer }}" class="btn" style="background: none; border: none; padding: 0 4px; font-size: 17px; line-height: 1; color: var(--color-text-tertiary);">×</button>
+            </div>
+            <div style="display: flex; gap: 6px; margin-top: 8px; align-items: center; flex-wrap: wrap;">
+              <span style="padding: 2px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dReportBg }}; color: {{ dReportFg }};">{{ dReportLabel }}</span>
+              <span style="padding: 2px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ dDispatchBg }}; color: {{ dDispatchFg }};">{{ dDispatchLabel }}</span>
+              <span style="font-size: 11px; color: var(--color-text-tertiary);">{{ dValidationLine }}</span>
+            </div>
+            <div style="display: flex; gap: 2px; margin: 9px -4px -12px;">
+              <sc-for list="{{ drawerTabs }}" as="t" hint-placeholder-count="2">
+                <button onClick="{{ t.onPick }}" class="btn" style="padding: 8px 12px; background: none; border: none; border-radius: 0; border-bottom: 2px solid {{ t.border }}; font-size: 12px; font-weight: 600; color: {{ t.color }};">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 14px 16px;">
+            <sc-if value="{{ drawerPreview }}" hint-placeholder-val="{{ true }}">
+              <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 16px 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--color-border-light); padding-bottom: 10px;">
+                  <div>
+                    <div style="font-size: 13px; font-weight: 700;">X46 Diagnostics · Pune Main</div>
+                    <div style="font-size: 10.5px; color: var(--color-text-tertiary);">NABL accredited · Laboratory Investigation Report</div>
+                  </div>
+                  <div class="mono" style="font-size: 10.5px; color: var(--color-text-tertiary); text-align: right;">{{ dReportNumber }}<br />{{ dReportDate }}</div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 14px; padding: 12px 0; border-bottom: 1px solid var(--color-border-light);">
+                  <div><div class="cap">Patient</div><div style="font-size: 12px; font-weight: 700;">{{ dPatient }}</div></div>
+                  <div><div class="cap">Age / Sex</div><div style="font-size: 12px; font-weight: 600;">{{ dAgeSex }}</div></div>
+                  <div><div class="cap">Patient ID</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dMrn }}</div></div>
+                  <div><div class="cap">Accession</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dAccession }}</div></div>
+                  <div><div class="cap">Bill Number</div><div class="mono" style="font-size: 12px; font-weight: 600;">{{ dBill }}</div></div>
+                  <div><div class="cap">Referred By</div><div style="font-size: 12px; font-weight: 600;">{{ dDoctor }}</div></div>
+                </div>
+                <div style="padding-top: 12px;">
+                  <div style="font-size: 12.5px; font-weight: 700;">{{ dTestName }}</div>
+                  <div style="font-size: 10.5px; color: var(--color-text-tertiary); margin-bottom: 8px;">{{ dDept }} · Sample: {{ dSample }}</div>
+                  <sc-if value="{{ dHasResults }}" hint-placeholder-val="{{ true }}">
+                    <div>
+                      <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) 88px 70px minmax(0, 1fr); gap: 8px; padding: 6px 0; border-top: 1px solid var(--color-border-base); border-bottom: 1px solid var(--color-border-base);" class="cap">
+                        <div>Investigation</div><div>Result</div><div>Unit</div><div>Reference</div>
+                      </div>
+                      <sc-for list="{{ dResults }}" as="x" hint-placeholder-count="5">
+                        <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) 88px 70px minmax(0, 1fr); gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--color-border-light); font-size: 12px;">
+                          <div>{{ x.analyte }}</div>
+                          <div class="num" style="font-weight: 700; color: {{ x.flagFg }};">{{ x.value }} {{ x.flag }}</div>
+                          <div style="color: var(--color-text-secondary);">{{ x.unit }}</div>
+                          <div class="num" style="color: var(--color-text-secondary);">{{ x.ref }}</div>
+                        </div>
+                      </sc-for>
+                      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div style="font-size: 11px; color: var(--color-text-tertiary); max-width: 300px;">{{ dInterpretation }}</div>
+                        <div style="text-align: right;">
+                          <div style="font-size: 12px; font-weight: 700;">{{ dAuthorizedBy }}</div>
+                          <div style="font-size: 10.5px; color: var(--color-text-tertiary);">Authorised signatory</div>
+                        </div>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ dNoResults }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding: 30px 16px; text-align: center; border: 1px dashed var(--color-border-base); border-radius: 5px;">
+                      <div style="font-size: 12.5px; font-weight: 700;">Report not generated yet</div>
+                      <div style="font-size: 11.5px; color: var(--color-text-tertiary); margin: 3px 0 12px;">{{ dGenerateHint }}</div>
+                      <sc-if value="{{ dCanGenerate }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ generateFromDrawer }}" class="btn" style="padding: 7px 14px; background: var(--color-primary-deep); border: none; color: #fff; font-size: 12px; font-weight: 700;">Generate Report</button>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ drawerDetails }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+                  <div class="cap" style="margin-bottom: 10px;">Report &amp; Dispatch Details</div>
+                  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px;">
+                    <sc-for list="{{ dFacts }}" as="f" hint-placeholder-count="8">
+                      <div><div class="cap">{{ f.k }}</div><div style="font-size: 12px; font-weight: 600; word-break: break-word;">{{ f.v }}</div></div>
+                    </sc-for>
+                  </div>
+                </div>
+                <sc-if value="{{ dIsFailed }}" hint-placeholder-val="{{ false }}">
+                  <div style="background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 6px; padding: 12px 14px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #991B1B;">Last dispatch failed</div>
+                    <div style="font-size: 11.5px; color: #991B1B; margin-top: 2px;">{{ dFailureReason }}</div>
+                    <button onClick="{{ dispatchFromDrawer }}" class="btn" style="margin-top: 9px; padding: 6px 13px; background: #B91C1C; border: none; color: #fff; font-size: 11.5px; font-weight: 700;">Retry Dispatch</button>
+                  </div>
+                </sc-if>
+                <div style="background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; padding: 14px;">
+                  <div class="cap" style="margin-bottom: 8px;">Delivery History</div>
+                  <sc-for list="{{ dHistory }}" as="h" hint-placeholder-count="2">
+                    <div style="padding: 7px 0; border-bottom: 1px solid var(--color-border-light);">
+                      <div style="display: flex; justify-content: space-between; gap: 10px; align-items: center;">
+                        <span style="font-size: 12px; font-weight: 700;">{{ h.method }}</span>
+                        <span style="padding: 2px 7px; border-radius: 999px; font-size: 9.5px; font-weight: 700; background: {{ h.bg }}; color: {{ h.fg }};">{{ h.status }}</span>
+                      </div>
+                      <div style="font-size: 11px; color: var(--color-text-secondary); word-break: break-all;">{{ h.recipient }}</div>
+                      <div class="num" style="font-size: 10px; color: var(--color-text-tertiary);">{{ h.when }} · {{ h.by }}</div>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ dHistoryEmpty }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size: 11.5px; color: var(--color-text-tertiary);">No dispatch attempts recorded yet.</div>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="background: #fff; border-top: 1px solid var(--color-border-light); padding: 10px 16px; display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+            <button onClick="{{ closeDrawer }}" class="btn" style="padding: 8px 13px; background: #fff; border: 1px solid var(--color-border-base); font-size: 12px; font-weight: 600; color: var(--color-text-secondary);">Close</button>
+            <div style="flex: 1;"></div>
+            <button onClick="{{ printFromDrawer }}" class="btn" style="padding: 8px 13px; background: #fff; border: 1px solid var(--color-border-base); font-size: 12px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Print</button>
+            <button onClick="{{ downloadFromDrawer }}" class="btn" style="padding: 8px 13px; background: #fff; border: 1px solid var(--color-border-base); font-size: 12px; font-weight: 600; color: var(--color-text-secondary);" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Download PDF</button>
+            <button onClick="{{ dispatchFromDrawer }}" disabled="{{ dDispatchDisabled }}" class="btn" style="padding: 8px 16px; background: {{ dDispatchBtnBg }}; border: none; font-size: 12px; font-weight: 700; color: {{ dDispatchBtnFg }}; cursor: {{ dDispatchCursor }};">{{ dDispatchBtnLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; z-index: 50; background: rgba(17,24,39,.42); display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeModal }}">
+        <div onClick="{{ stop }}" style="width: 470px; max-width: 100%; background: #fff; border-radius: 6px; box-shadow: 0 20px 44px rgba(17,24,39,.24); display: flex; flex-direction: column; max-height: 100%;">
+          <div style="padding: 13px 17px; border-bottom: 1px solid var(--color-border-light);">
+            <div style="font-size: 14px; font-weight: 700;">Dispatch Report</div>
+            <div style="font-size: 11.5px; color: var(--color-text-tertiary); margin-top: 1px;">{{ modalSubtitle }}</div>
+          </div>
+          <div style="padding: 14px 17px; overflow-y: auto;">
+            <div style="border: 1px solid var(--color-border-light); border-radius: 5px; margin-bottom: 14px;">
+              <sc-for list="{{ modalFacts }}" as="f" hint-placeholder-count="3">
+                <div style="display: flex; justify-content: space-between; gap: 12px; padding: 7px 11px; border-bottom: 1px solid var(--color-border-light); font-size: 12px;">
+                  <span style="color: var(--color-text-tertiary); font-weight: 600;">{{ f.k }}</span>
+                  <span style="font-weight: 600; text-align: right; word-break: break-word;">{{ f.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div class="cap" style="margin-bottom: 7px;">Delivery Method</div>
+            <div style="display: flex; flex-direction: column; gap: 7px;">
+              <sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+                <button onClick="{{ m.onToggle }}" class="btn" style="display: flex; align-items: flex-start; gap: 9px; text-align: left; padding: 9px 11px; border: 1px solid {{ m.border }}; background: {{ m.bg }};">
+                  <span style="width: 15px; height: 15px; border-radius: 3px; border: 1.5px solid {{ m.boxBorder }}; background: {{ m.boxBg }}; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">{{ m.mark }}</span>
+                  <span style="min-width: 0;">
+                    <span style="display: block; font-size: 12.5px; font-weight: 700; color: {{ m.color }};">{{ m.label }}</span>
+                    <span style="display: block; font-size: 11px; color: var(--color-text-tertiary);">{{ m.note }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 12px;">
+              <sc-if value="{{ needEmail }}" hint-placeholder-val="{{ false }}">
+                <div><label>Email Address</label><input type="text" placeholder="name@example.com" value="{{ email }}" onChange="{{ updateField }}" data-field="email" /></div>
+              </sc-if>
+              <sc-if value="{{ needPhone }}" hint-placeholder-val="{{ false }}">
+                <div><label>WhatsApp Number</label><input type="text" placeholder="+91" value="{{ phone }}" onChange="{{ updateField }}" data-field="phone" class="num" /></div>
+              </sc-if>
+              <sc-if value="{{ needPrinter }}" hint-placeholder-val="{{ false }}">
+                <div><label>Printer</label><select value="{{ printer }}" onChange="{{ updateField }}" data-field="printer"><option value="Lab Counter">Lab Counter</option><option value="Reception A4">Reception A4</option><option value="Pathology Desk">Pathology Desk</option></select></div>
+              </sc-if>
+              <div><label>Recipient Name</label><input type="text" value="{{ recipientName }}" onChange="{{ updateField }}" data-field="recipientName" /></div>
+            </div>
+
+            <label style="display: flex; align-items: flex-start; gap: 8px; margin: 13px 0 0; font-size: 11.5px; font-weight: 500; color: var(--color-text-secondary); cursor: pointer;">
+              <input type="checkbox" checked="{{ confirmed }}" onChange="{{ toggleConfirm }}" style="margin-top: 2px;" /> I confirm the report is validated and the recipient details above are correct.
+            </label>
+
+            <sc-if value="{{ modalError }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top: 10px; font-size: 11.5px; font-weight: 600; color: var(--color-error);">{{ modalError }}</div>
+            </sc-if>
+          </div>
+          <div style="padding: 11px 17px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; gap: 8px; justify-content: flex-end;">
+            <button onClick="{{ closeModal }}" class="btn" style="padding: 8px 14px; background: #fff; border: 1px solid var(--color-border-base); font-size: 12px; font-weight: 600; color: var(--color-text-secondary);">Cancel</button>
+            <button onClick="{{ confirmDispatch }}" class="btn" style="padding: 8px 17px; background: var(--color-primary-deep); border: none; font-size: 12px; font-weight: 700; color: #fff;" style-hover="background: var(--color-primary-bright);">{{ modalCta }}</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+/* Report and Dispatch — contract mapping
+   API-134 GET   …/patients/{patientRegistrationId}/reports → report queue
+   API-133 GET   /api/reports/{reportId}                    → report detail
+   API-104 PATCH /api/reports/{reportId}/status             → generate (PENDING → READY)
+   API-106 PATCH /api/reports/{reportId}/release            → release before dispatch
+   API-105 POST  /api/reports/{reportId}/deliveries         → single dispatch / print log
+   API-135 POST  /api/reports/deliveries/batch              → bulk dispatch
+   No PDF-download contract exists, so download is reported as unmapped
+   instead of faking a file. */
+
+const STAMP = () => new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+const MODE_LABEL = { EMAIL: 'Email', WHATSAPP: 'WhatsApp', PRINT: 'Print' };
+
+const METHODS = [
+  ['EMAIL', 'Email', 'Send the signed PDF to the recipient inbox'],
+  ['WHATSAPP', 'WhatsApp', 'Send a secure download link on WhatsApp'],
+  ['PRINT', 'Print', 'Print at the counter for hand-over']
+];
+
+const COLUMNS = [
+  ['colMrn', 'Patient ID / MRN', '104px'],
+  ['colAccession', 'Accession Number', '96px'],
+  ['colDept', 'Department', '112px'],
+  ['colValidation', 'Validation Status', '120px'],
+  ['colDate', 'Report Date', '96px'],
+  ['colDispatch', 'Dispatch Status', '132px']
+];
+
+const REPORT_TONE = {
+  PENDING_VALIDATION: ['#FEF3C7', '#92400E', 'Pending validation'],
+  VALIDATED: ['#DBEAFE', '#1E40AF', 'Validated'],
+  READY: ['#DCFCE7', '#166534', 'Report ready'],
+  DISPATCHED: ['#E0E7FF', '#3730A3', 'Dispatched']
+};
+const DISPATCH_TONE = {
+  NOT_DISPATCHED: ['#F3F4F6', '#4B5563', 'Not dispatched'],
+  PENDING: ['#FEF3C7', '#92400E', 'Pending'],
+  DISPATCHED: ['#DCFCE7', '#166534', 'Dispatched'],
+  FAILED: ['#FEE2E2', '#991B1B', 'Failed']
+};
+
+class Component extends DCLogic {
+  state = {
+    ready: false, loading: true, loadError: '', rows: [],
+    fromDate: '2026-08-17', toDate: '2026-08-18',
+    filtersOpen: true, columnMenuOpen: false,
+    fMrn: '', fName: '', fAccession: '', fBill: '', fTest: '', fDept: '', fReport: '', fDispatch: '', fDoctor: '', fPriority: '',
+    applied: null,
+    tab: 'ALL',
+    colMrn: true, colAccession: true, colDept: true, colValidation: true, colDate: true, colDispatch: true,
+    banner: '', bannerKind: 'info',
+    drawerOpen: false, drawerId: null, drawerTab: 'PREVIEW',
+    modalOpen: false, modalIds: [],
+    method: { EMAIL: true, WHATSAPP: false, PRINT: false },
+    email: '', phone: '', printer: 'Lab Counter', recipientName: '', confirmed: false, modalError: ''
+  };
+
+  componentDidMount() { this.waitForApi(); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  waitForApi = () => {
+    if (typeof LIMS === 'undefined') { this._t = setTimeout(this.waitForApi, 60); return; }
+    this.setState({ ready: true });
+    this.loadQueue();
+  };
+
+  errText = (err, fallback) => (err && err.message ? (err.status ? err.status + ' \u2014 ' : '') + err.message : fallback);
+
+  /* Maps one contract report record onto the row shape this screen renders. */
+  rowFromReport = (rep) => {
+    const acc = LIMS.accessionById(rep.accessionId);
+    const patient = acc ? LIMS.patientById(acc.patientId) : null;
+    const bill = LIMS.BILLS.filter((x) => x.patientRegistrationId === rep.patientRegistrationId)[0];
+    const accTests = acc ? LIMS.accessionTestsFor(acc.id) : [];
+    const at = accTests[0] || null;
+    const test = at ? LIMS.testById(at.testId) : null;
+
+    const results = [];
+    accTests.forEach((tst) => {
+      LIMS.RESULT_ENTRIES.filter((e) => e.accessionTestId === tst.id).forEach((e) => {
+        LIMS.resultDetailsFor(e.id).forEach((d) => {
+          const param = LIMS.parameterById(d.parameterId);
+          const rng = LIMS.rangeForParameter(d.parameterId, patient ? patient.gender : 'ALL');
+          results.push({
+            analyte: param ? param.parameterName : '\u2014',
+            value: d.resultValue,
+            unit: d.unit || '',
+            ref: rng ? rng.normalLow + ' \u2013 ' + rng.normalHigh : '\u2014',
+            flag: d.resultFlag === 'NORMAL' ? '' : (d.resultFlag === 'LOW' ? 'L' : 'H')
+          });
+        });
+      });
+    });
+
+    const history = LIMS.deliveriesFor(rep.id).map((d) => ({
+      when: d.deliveredAt ? new Date(d.deliveredAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '\u2014',
+      method: MODE_LABEL[d.deliveryMode] || d.deliveryMode,
+      recipient: d.recipient,
+      status: d.deliveryStatus === 'DELIVERED' ? 'SENT' : (d.deliveryStatus === 'PRINTED' ? 'PRINTED' : (d.deliveryStatus === 'FAILED' ? 'FAILED' : 'SENT')),
+      by: d.remarks || 'Reception'
+    }));
+    const lastDelivery = history[history.length - 1] || null;
+
+    const verified = rep.verificationStatus === 'VERIFIED';
+    const uiReportStatus = rep.dispatchStatus === 'DISPATCHED' ? 'DISPATCHED'
+      : (!verified ? 'PENDING_VALIDATION' : (rep.reportStatus === 'PENDING' ? 'VALIDATED' : 'READY'));
+    const uiDispatchStatus = rep.dispatchStatus === 'DISPATCHED' ? 'DISPATCHED'
+      : (lastDelivery && lastDelivery.status === 'FAILED' ? 'FAILED'
+        : (rep.reportStatus === 'READY' || rep.reportStatus === 'RELEASED' ? 'NOT_DISPATCHED' : 'PENDING'));
+
+    return {
+      id: rep.id,
+      reportNumber: rep.reportNumber,
+      accessionNo: acc ? acc.accessionNumber : '\u2014',
+      billNumber: bill ? bill.billNumber : '\u2014',
+      patientRegistrationId: rep.patientRegistrationId,
+      patientName: patient ? patient.firstName + ' ' + patient.lastName : '\u2014',
+      mrn: patient ? patient.mrn : '\u2014',
+      sex: patient ? (patient.gender === 'MALE' ? 'Male' : 'Female') : '\u2014',
+      age: patient ? patient.ageY : '\u2014',
+      email: patient ? patient.email : '',
+      phone: patient ? patient.phone : '',
+      doctor: patient ? patient.referringDoctor : '\u2014',
+      testCode: test ? test.testCode : '\u2014',
+      testName: test ? test.testName : '\u2014',
+      dept: '\u2014',
+      sample: '\u2014',
+      priority: acc ? acc.priority : 'ROUTINE',
+      reportStatus: uiReportStatus,
+      validated: verified,
+      authorizedBy: verified ? 'Authorised in Result Validation' : 'Awaiting authorisation',
+      reportDate: rep.generatedAt ? String(rep.generatedAt).slice(0, 10) : '\u2014',
+      dispatchStatus: uiDispatchStatus,
+      dispatchedAt: lastDelivery ? lastDelivery.when : '',
+      dispatchedBy: lastDelivery ? lastDelivery.by : '',
+      lastMethod: lastDelivery ? lastDelivery.method : '',
+      recipient: lastDelivery ? lastDelivery.recipient : '',
+      failureReason: lastDelivery && lastDelivery.status === 'FAILED' ? 'Last delivery attempt failed \u2014 retry dispatch.' : '',
+      results,
+      interpretation: '',
+      history,
+      selected: false
+    };
+  };
+
+  /* ------------------------------------------------------------- API-134 */
+  loadQueue = async () => {
+    this.setState({ loading: true, loadError: '' });
+    const keepSelected = this.state.rows.filter((r) => r.selected).map((r) => r.id);
+    const regs = [];
+    LIMS.REPORTS.forEach((rep) => {
+      const acc = LIMS.accessionById(rep.accessionId);
+      if (!acc || acc.organizationId !== LIMS.session.organizationId || acc.branchId !== LIMS.session.branchId) return;
+      if (regs.indexOf(rep.patientRegistrationId) < 0) regs.push(rep.patientRegistrationId);
+    });
+    try {
+      const batches = [];
+      for (const reg of regs) {
+        const res = await LIMS.request('patientReportHistory', {
+          contract: 'API-134',
+          params: { patientRegistrationId: reg },
+          resolve: () => ({
+            status: 200,
+            message: 'Reports fetched successfully',
+            data: LIMS.REPORTS.filter((r) => r.patientRegistrationId === reg).map((r) => Object.assign({}, r))
+          })
+        });
+        batches.push(res.data);
+      }
+      const rows = [].concat.apply([], batches)
+        .map(this.rowFromReport)
+        .map((r) => (keepSelected.indexOf(r.id) > -1 ? Object.assign(r, { selected: true }) : r))
+        .sort((x, y) => (x.reportNumber < y.reportNumber ? -1 : 1));
+      this.setState({ loading: false, rows });
+    } catch (err) {
+      this.setState({ loading: false, rows: [], loadError: this.errText(err, 'Unable to load the report queue.'), bannerKind: 'error', banner: this.errText(err, 'Unable to load the report queue.') });
+    }
+  };
+
+  updateField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, modalError: '' });
+  toggleColumn = (key) => () => this.setState(s => ({ [key]: !s[key] }));
+  toggleFilters = () => this.setState(s => ({ filtersOpen: !s.filtersOpen }));
+  toggleColumnMenu = () => this.setState(s => ({ columnMenuOpen: !s.columnMenuOpen }));
+  showAllColumns = () => this.setState({ colMrn: true, colAccession: true, colDept: true, colValidation: true, colDate: true, colDispatch: true });
+  compactColumns = () => this.setState({ colMrn: false, colAccession: true, colDept: false, colValidation: false, colDate: false, colDispatch: true });
+  setTab = (t) => () => this.setState({ tab: t, columnMenuOpen: false });
+  setDrawerTab = (t) => () => this.setState({ drawerTab: t });
+  stop = (e) => e.stopPropagation();
+  dismissBanner = () => this.setState({ banner: '' });
+  toggleConfirm = () => this.setState(s => ({ confirmed: !s.confirmed, modalError: '' }));
+
+  search = () => {
+    const s = this.state;
+    this.setState({
+      applied: { fMrn: s.fMrn, fName: s.fName, fAccession: s.fAccession, fBill: s.fBill, fTest: s.fTest, fDept: s.fDept, fReport: s.fReport, fDispatch: s.fDispatch, fDoctor: s.fDoctor, fPriority: s.fPriority },
+      bannerKind: 'info', banner: 'Filters applied to the report queue.'
+    });
+  };
+
+  clearFilters = () => this.setState({
+    fMrn: '', fName: '', fAccession: '', fBill: '', fTest: '', fDept: '', fReport: '', fDispatch: '', fDoctor: '', fPriority: '',
+    applied: null, tab: 'ALL', banner: ''
+  });
+
+  refresh = () => { this.setState({ bannerKind: 'info', banner: 'Report queue refreshed \u00b7 ' + STAMP() }); this.loadQueue(); };
+
+  inTab(r, tab) {
+    if (tab === 'PENDING') return r.reportStatus === 'PENDING_VALIDATION' || r.reportStatus === 'VALIDATED';
+    if (tab === 'READY') return r.reportStatus === 'READY' && r.dispatchStatus !== 'FAILED';
+    if (tab === 'DISPATCHED') return r.dispatchStatus === 'DISPATCHED';
+    if (tab === 'FAILED') return r.dispatchStatus === 'FAILED';
+    return true;
+  }
+
+  visible(s) {
+    const f = s.applied || {};
+    const has = (v) => v && String(v).trim();
+    const like = (a, b) => String(a || '').toLowerCase().includes(String(b).trim().toLowerCase());
+    return s.rows.filter(r =>
+      this.inTab(r, s.tab) &&
+      (!has(f.fMrn) || like(r.mrn, f.fMrn)) &&
+      (!has(f.fName) || like(r.patientName, f.fName)) &&
+      (!has(f.fAccession) || like(r.accessionNo, f.fAccession)) &&
+      (!has(f.fBill) || like(r.billNumber, f.fBill)) &&
+      (!has(f.fTest) || like(r.testName + ' ' + r.testCode, f.fTest)) &&
+      (!f.fDept || r.dept === f.fDept) &&
+      (!f.fReport || r.reportStatus === f.fReport) &&
+      (!f.fDispatch || r.dispatchStatus === f.fDispatch) &&
+      (!f.fDoctor || r.doctor === f.fDoctor) &&
+      (!f.fPriority || r.priority === f.fPriority)
+    );
+  }
+
+  canGenerate(r) { return r.reportStatus === 'VALIDATED'; }
+  canPrint(r) { return r.reportStatus === 'READY' || r.reportStatus === 'DISPATCHED'; }
+  canDispatch(r) { return (r.reportStatus === 'READY' || r.reportStatus === 'DISPATCHED') && r.dispatchStatus !== 'PENDING'; }
+
+  toggleRow = (id) => () => this.setState(s => ({ rows: s.rows.map(r => r.id === id ? { ...r, selected: !r.selected } : r) }));
+  clearSelection = () => this.setState(s => ({ rows: s.rows.map(r => ({ ...r, selected: false })) }));
+
+  toggleAll = () => {
+    const ids = this.visible(this.state).map(r => r.id);
+    const all = ids.length > 0 && ids.every(id => this.state.rows.find(r => r.id === id).selected);
+    this.setState(s => ({ rows: s.rows.map(r => ids.includes(r.id) ? { ...r, selected: !all } : r) }));
+  };
+
+  /* ------------------------------------------------------------- API-104 */
+  generate = async (ids) => {
+    const eligible = this.state.rows.filter(r => ids.includes(r.id) && this.canGenerate(r));
+    if (!eligible.length) { this.setState({ bannerKind: 'warning', banner: 'No selected report is validated and awaiting generation.' }); return; }
+    let ok = 0; let lastError = '';
+    for (const row of eligible) {
+      try {
+        await LIMS.request('reportRecordStatus', {
+          contract: 'API-104',
+          params: { reportId: row.id },
+          body: { reportStatus: 'READY' },
+          resolve: () => {
+            const record = LIMS.reportById(row.id);
+            if (!record) return { status: 404, error: 'Report not found' };
+            if (record.verificationStatus !== 'VERIFIED') return { status: 409, error: 'Report is not verified yet' };
+            record.reportStatus = 'READY';
+            record.generatedAt = new Date().toISOString();
+            return { status: 200, message: 'Report status updated successfully', data: { id: record.id, reportStatus: 'READY' } };
+          }
+        });
+        ok++;
+      } catch (err) { lastError = this.errText(err, 'Report status update failed.'); }
+    }
+    this.setState({
+      bannerKind: lastError ? 'error' : 'success',
+      banner: lastError ? lastError : ok + ' report(s) generated and ready to dispatch.'
+    });
+    await this.loadQueue();
+  };
+
+  generateOne = (id) => () => this.generate([id]);
+  bulkGenerate = () => this.generate(this.state.rows.filter(r => r.selected).map(r => r.id));
+
+  /* ------------------------------------------------------------- API-105 */
+  printIds = async (ids, printerName) => {
+    const eligible = this.state.rows.filter(r => ids.includes(r.id) && this.canPrint(r));
+    if (!eligible.length) { this.setState({ bannerKind: 'warning', banner: 'Only generated reports can be printed.' }); return; }
+    const target = printerName || 'Lab Counter';
+    let ok = 0; let lastError = '';
+    for (const row of eligible) {
+      try {
+        await LIMS.request('logDelivery', {
+          contract: 'API-105',
+          params: { reportId: row.id },
+          body: { deliveryMode: 'PRINT', recipient: target, deliveryStatus: 'PRINTED', remarks: 'Counter print' },
+          resolve: () => {
+            const record = LIMS.reportById(row.id);
+            if (!record) return { status: 404, error: 'Report not found' };
+            if (record.reportStatus === 'PENDING') return { status: 409, error: 'Report is not generated yet' };
+            const delivery = {
+              id: LIMS.newId(), reportId: row.id, deliveryMode: 'PRINT', recipient: target,
+              deliveryStatus: 'PRINTED', deliveredAt: new Date().toISOString(), remarks: 'Counter print'
+            };
+            LIMS.DELIVERIES.push(delivery);
+            return { status: 201, message: 'Delivery logged successfully', data: delivery };
+          }
+        });
+        ok++;
+      } catch (err) { lastError = this.errText(err, 'Delivery log failed.'); }
+    }
+    this.setState({
+      bannerKind: lastError ? 'error' : 'info',
+      banner: lastError ? lastError : ok + ' report(s) sent to ' + target + ' and logged in delivery history.'
+    });
+    await this.loadQueue();
+  };
+
+  printOne = (id) => () => this.printIds([id]);
+  bulkPrint = () => this.printIds(this.state.rows.filter(r => r.selected).map(r => r.id));
+
+  openDispatch = (ids) => {
+    const eligible = this.state.rows.filter(r => ids.includes(r.id) && this.canDispatch(r));
+    if (!eligible.length) { this.setState({ bannerKind: 'warning', banner: 'Selected reports are not eligible for dispatch — generate them first.' }); return; }
+    const first = eligible[0];
+    this.setState({
+      modalOpen: true, modalIds: eligible.map(r => r.id), confirmed: false, modalError: '',
+      method: { EMAIL: !!first.email, WHATSAPP: !first.email, PRINT: false },
+      email: eligible.length === 1 ? (first.email || '') : '',
+      phone: eligible.length === 1 ? (first.phone || '') : '',
+      printer: 'Lab Counter',
+      recipientName: eligible.length === 1 ? (first.doctor === 'Self' ? first.patientName : first.doctor) : (eligible.length + ' recipients')
+    });
+  };
+
+  dispatchOne = (id) => () => this.openDispatch([id]);
+  bulkDispatch = () => this.openDispatch(this.state.rows.filter(r => r.selected).map(r => r.id));
+  dispatchFromDrawer = () => this.openDispatch([this.state.drawerId]);
+  closeModal = () => this.setState({ modalOpen: false, modalError: '' });
+  toggleMethod = (key) => () => this.setState(s => ({ method: { ...s.method, [key]: !s.method[key] }, modalError: '' }));
+
+  /* ------------------------------------------- API-106 + API-105/API-135 */
+  confirmDispatch = async () => {
+    const s = this.state;
+    const picked = METHODS.filter(m => s.method[m[0]]).map(m => m[0]);
+    if (!picked.length) { this.setState({ modalError: 'Select at least one delivery method.' }); return; }
+    if (s.method.EMAIL && !s.email.trim() && s.modalIds.length === 1) { this.setState({ modalError: 'Enter an email address for email delivery.' }); return; }
+    if (s.method.WHATSAPP && !s.phone.trim() && s.modalIds.length === 1) { this.setState({ modalError: 'Enter a WhatsApp number for WhatsApp delivery.' }); return; }
+    if (!s.confirmed) { this.setState({ modalError: 'Tick the confirmation to dispatch this report.' }); return; }
+
+    const ids = s.modalIds;
+    const rows = ids.map(id => s.rows.find(r => r.id === id)).filter(Boolean);
+    const label = picked.map(m => MODE_LABEL[m]).join(', ');
+    const recipientFor = (row, mode) => {
+      if (mode === 'PRINT') return s.printer;
+      if (mode === 'EMAIL') return (ids.length === 1 ? s.email : '') || row.email;
+      return (ids.length === 1 ? s.phone : '') || row.phone;
+    };
+
+    const releaseReport = async (row) => LIMS.request('releaseReport', {
+      contract: 'API-106',
+      params: { reportId: row.id },
+      body: { releasedAt: new Date().toISOString() },
+      resolve: () => {
+        const record = LIMS.reportById(row.id);
+        if (!record) return { status: 404, error: 'Report not found' };
+        if (record.reportStatus === 'PENDING') return { status: 409, error: 'Report must be generated before release' };
+        record.reportStatus = 'RELEASED';
+        record.releasedAt = new Date().toISOString();
+        return { status: 200, message: 'Report released successfully', data: { id: record.id, reportStatus: 'RELEASED' } };
+      }
+    });
+
+    const logOne = async (row, mode) => LIMS.request('logDelivery', {
+      contract: 'API-105',
+      params: { reportId: row.id },
+      body: { deliveryMode: mode, recipient: recipientFor(row, mode), deliveryStatus: mode === 'PRINT' ? 'PRINTED' : 'DELIVERED', remarks: null },
+      resolve: () => {
+        const record = LIMS.reportById(row.id);
+        if (!record) return { status: 404, error: 'Report not found' };
+        const recipient = recipientFor(row, mode);
+        if (!recipient) return { status: 400, error: 'Recipient is required for ' + MODE_LABEL[mode] + ' delivery' };
+        const delivery = {
+          id: LIMS.newId(), reportId: row.id, deliveryMode: mode, recipient: recipient,
+          deliveryStatus: mode === 'PRINT' ? 'PRINTED' : 'DELIVERED', deliveredAt: new Date().toISOString(), remarks: null
+        };
+        LIMS.DELIVERIES.push(delivery);
+        record.dispatchStatus = 'DISPATCHED';
+        return { status: 201, message: 'Delivery logged successfully', data: delivery };
+      }
+    });
+
+    try {
+      for (const row of rows) await releaseReport(row);
+
+      if (rows.length > 1) {
+        const deliveries = [];
+        rows.forEach((row) => picked.forEach((mode) => deliveries.push({
+          reportId: row.id, deliveryMode: mode, recipient: recipientFor(row, mode),
+          deliveryStatus: mode === 'PRINT' ? 'PRINTED' : 'DELIVERED'
+        })));
+        await LIMS.request('batchDelivery', {
+          contract: 'API-135',
+          body: { deliveries },
+          resolve: () => {
+            const missing = deliveries.filter((d) => !d.recipient);
+            if (missing.length) return { status: 400, error: missing.length + ' report(s) have no recipient for the chosen delivery mode' };
+            deliveries.forEach((d) => {
+              LIMS.DELIVERIES.push({
+                id: LIMS.newId(), reportId: d.reportId, deliveryMode: d.deliveryMode, recipient: d.recipient,
+                deliveryStatus: d.deliveryStatus, deliveredAt: new Date().toISOString(), remarks: null
+              });
+              const record = LIMS.reportById(d.reportId);
+              if (record) record.dispatchStatus = 'DISPATCHED';
+            });
+            return { status: 201, message: deliveries.length + ' deliveries logged successfully', data: { count: deliveries.length } };
+          }
+        });
+      } else {
+        for (const mode of picked) await logOne(rows[0], mode);
+      }
+
+      this.setState({
+        modalOpen: false, confirmed: false, modalError: '',
+        rows: this.state.rows.map(r => ({ ...r, selected: false })),
+        bannerKind: 'success',
+        banner: (rows.length === 1 ? 'Report dispatched via ' + label + '.' : rows.length + ' reports dispatched via ' + label + '.') + ' Dispatch status updated.'
+      });
+      await this.loadQueue();
+    } catch (err) {
+      this.setState({ modalError: this.errText(err, 'Dispatch failed.') });
+    }
+  };
+
+  viewError = (id) => () => {
+    const r = this.state.rows.find(x => x.id === id);
+    this.setState({ bannerKind: 'error', banner: r.reportNumber + ' · ' + (r.failureReason || 'Delivery failed.') });
+  };
+
+  openDrawer = (id, tab) => () => this.setState({ drawerOpen: true, drawerId: id, drawerTab: tab, columnMenuOpen: false });
+  closeDrawer = () => this.setState({ drawerOpen: false });
+  printFromDrawer = () => this.printIds([this.state.drawerId]);
+  downloadFromDrawer = () => {
+    const r = this.state.rows.find(x => x.id === this.state.drawerId);
+    this.setState({ bannerKind: 'warning', banner: r.reportNumber + ' \u2014 no PDF download contract exists in the API set; use Print, which is logged via API-105.' });
+  };
+  generateFromDrawer = () => this.generate([this.state.drawerId]);
+
+  renderVals() {
+    const s = this.state;
+    if (!s.ready) return {};
+    const bannerTone = { info: ['#EFF6FF', '#1E40AF', '#93C5FD'], success: ['#F0FDF4', '#166534', '#86EFAC'], warning: ['#FFFBEB', '#92400E', '#FCD34D'], error: ['#FEF2F2', '#991B1B', '#FCA5A5'] }[s.bannerKind];
+    const prio = { NORMAL: 'transparent', URGENT: 'var(--color-warning)', STAT: 'var(--color-error)' };
+    const histTone = { SENT: ['#DCFCE7', '#166534'], PRINTED: ['#DBEAFE', '#1E40AF'], FAILED: ['#FEE2E2', '#991B1B'] };
+
+    const vis = this.visible(s);
+    const rows = vis.map(r => {
+      const rt = REPORT_TONE[r.reportStatus];
+      const dt = DISPATCH_TONE[r.dispatchStatus];
+      const failed = r.dispatchStatus === 'FAILED';
+      return {
+        ...r,
+        ageSex: r.age + 'y · ' + r.sex,
+        priorityEdge: prio[r.priority],
+        rowBg: r.selected ? 'var(--color-interactive-hover)' : (failed ? '#FFFBFB' : '#fff'),
+        reportBg: rt[0], reportFg: rt[1], reportLabel: rt[2],
+        dispatchBg: dt[0], dispatchFg: dt[1], dispatchLabel: dt[2],
+        validationLabel: r.validated ? 'Validated' : 'Pending',
+        validationFg: r.validated ? 'var(--color-success)' : 'var(--color-warning)',
+        hasDispatchNote: !!r.dispatchedAt,
+        dispatchNote: r.dispatchedAt ? (r.lastMethod || '') + ' · ' + r.dispatchedAt.split(', ')[1] : '',
+        isFailed: failed,
+        canView: r.reportStatus === 'READY' || r.reportStatus === 'DISPATCHED',
+        canGenerate: this.canGenerate(r),
+        generateLabel: 'Generate',
+        canPrint: this.canPrint(r),
+        canDispatch: this.canDispatch(r),
+        dispatchBtnLabel: failed ? 'Retry' : (r.dispatchStatus === 'DISPATCHED' ? 'Resend' : 'Dispatch'),
+        dispatchBtnBg: failed ? '#B91C1C' : 'var(--color-primary-deep)',
+        onSelect: this.toggleRow(r.id),
+        onView: this.openDrawer(r.id, 'PREVIEW'),
+        onDetails: this.openDrawer(r.id, 'DETAILS'),
+        onGenerate: this.generateOne(r.id),
+        onPrint: this.printOne(r.id),
+        onDispatch: this.dispatchOne(r.id),
+        onViewError: this.viewError(r.id)
+      };
+    });
+
+    const countIn = (tab) => s.rows.filter(r => this.inTab(r, tab)).length;
+    const tabs = [['ALL', 'All'], ['PENDING', 'Pending'], ['READY', 'Ready'], ['DISPATCHED', 'Dispatched'], ['FAILED', 'Failed']].map(([k, label]) => ({
+      label, count: countIn(k), onPick: this.setTab(k),
+      border: s.tab === k ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.tab === k ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    const cardDefs = [
+      ['PENDING', 'Pending Reports', 'Awaiting validation or generation', 'var(--color-warning)'],
+      ['READY', 'Ready Reports', 'Validated and generated', 'var(--color-success)'],
+      ['DISPATCHED', 'Dispatched', 'Delivered to patient or doctor', 'var(--color-primary-bright)'],
+      ['FAILED', 'Failed / Pending Dispatch', 'Needs retry or follow-up', 'var(--color-error)']
+    ];
+    const cards = cardDefs.map(([k, label, note, dot]) => {
+      const on = s.tab === k;
+      return {
+        label, note, dot, value: countIn(k), onPick: this.setTab(k),
+        border: on ? 'var(--color-primary-deep)' : 'var(--color-border-light)',
+        shadow: on ? '0 0 0 2px rgba(0,168,255,.14)' : 'none',
+        labelFg: on ? 'var(--color-primary-deep)' : 'var(--color-text-tertiary)'
+      };
+    });
+
+    const columnToggles = COLUMNS.map(([key, label]) => ({ label, on: s[key], onToggle: this.toggleColumn(key) }));
+    const widths = ['30px'];
+    if (s.colMrn) widths.push('104px');
+    widths.push('minmax(140px, 1.2fr)');
+    if (s.colAccession) widths.push('96px');
+    widths.push('minmax(150px, 1.4fr)');
+    if (s.colDept) widths.push('112px');
+    widths.push('116px');
+    if (s.colValidation) widths.push('120px');
+    if (s.colDate) widths.push('96px');
+    if (s.colDispatch) widths.push('132px');
+    widths.push('minmax(196px, auto)');
+    const fixed = widths.reduce((a, w) => {
+      const m = w.match(/(\d+)px/);
+      return a + (m ? parseInt(m[1], 10) : 0);
+    }, 0);
+
+    const sel = s.rows.filter(r => r.selected);
+    const genOk = sel.filter(r => this.canGenerate(r)).length;
+    const printOk = sel.filter(r => this.canPrint(r)).length;
+    const dispOk = sel.filter(r => this.canDispatch(r)).length;
+    const gate = (n) => ({
+      disabled: n === 0,
+      cursor: n === 0 ? 'not-allowed' : 'pointer',
+      fg: n === 0 ? 'var(--color-text-tertiary)' : 'var(--color-text-secondary)',
+      border: n === 0 ? 'var(--color-border-light)' : 'var(--color-border-base)'
+    });
+    const g = gate(genOk), p = gate(printOk);
+
+    const appliedCount = s.applied ? Object.keys(s.applied).filter(k => s.applied[k]).length : 0;
+
+    const d = s.drawerId ? s.rows.find(r => r.id === s.drawerId) : null;
+    const dRep = d ? REPORT_TONE[d.reportStatus] : REPORT_TONE.READY;
+    const dDisp = d ? DISPATCH_TONE[d.dispatchStatus] : DISPATCH_TONE.NOT_DISPATCHED;
+    const dCanDispatch = !!(d && this.canDispatch(d));
+    const dResults = d && (d.reportStatus === 'READY' || d.reportStatus === 'DISPATCHED') ? (d.results || []) : [];
+
+    const drawerTabs = [['PREVIEW', 'Report Preview'], ['DETAILS', 'Details & History']].map(([k, label]) => ({
+      label, onPick: this.setDrawerTab(k),
+      border: s.drawerTab === k ? 'var(--color-primary-deep)' : 'transparent',
+      color: s.drawerTab === k ? 'var(--color-primary-deep)' : 'var(--color-text-secondary)'
+    }));
+
+    const modalRows = s.modalIds.map(id => s.rows.find(r => r.id === id)).filter(Boolean);
+    const many = modalRows.length > 1;
+    const first = modalRows[0];
+    const methods = METHODS.map(([key, label, note]) => {
+      const on = !!s.method[key];
+      return {
+        label, note, onToggle: this.toggleMethod(key),
+        bg: on ? 'var(--color-interactive-hover)' : '#fff',
+        border: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+        boxBg: on ? 'var(--color-primary-deep)' : '#fff',
+        boxBorder: on ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+        mark: on ? '✓' : '',
+        color: on ? 'var(--color-primary-deep)' : 'var(--color-text-primary)'
+      };
+    });
+
+    return {
+      ...s,
+      rows, tabs, cards, columnToggles, methods, drawerTabs,
+      rowCount: rows.length, totalCount: s.rows.length, isEmpty: rows.length === 0,
+      gridCols: widths.join(' '),
+      tableMinWidth: Math.max(980, fixed + 60) + 'px',
+      visibleColumnCount: 5 + COLUMNS.filter(([k]) => s[k]).length,
+      columnsBorder: s.columnMenuOpen ? 'var(--color-primary-deep)' : 'var(--color-border-base)',
+      filterCaret: s.filtersOpen ? '▾' : '▸',
+      filterDivider: s.filtersOpen ? 'var(--color-border-light)' : 'transparent',
+      activeFilterLabel: appliedCount ? appliedCount + ' filter(s) applied' : 'No filters applied',
+      allSelected: vis.length > 0 && vis.every(r => r.selected),
+      hasSelection: sel.length > 0,
+      selectionLabel: sel.length + ' selected',
+      selectionBreakdown: genOk + ' can generate · ' + printOk + ' printable · ' + dispOk + ' dispatchable',
+      genDisabled: g.disabled, genCursor: g.cursor, genFg: g.fg, genBorder: g.border,
+      printDisabled: p.disabled, printCursor: p.cursor, printFg: p.fg, printBorder: p.border,
+      dispDisabled: dispOk === 0,
+      dispCursor: dispOk === 0 ? 'not-allowed' : 'pointer',
+      dispBg: dispOk === 0 ? 'var(--color-gray-100)' : 'var(--color-primary-deep)',
+      dispFg: dispOk === 0 ? 'var(--color-text-tertiary)' : '#fff',
+      hasBanner: !!s.banner,
+      bannerBg: bannerTone[0], bannerFg: bannerTone[1], bannerBorder: bannerTone[2],
+      drawerPreview: s.drawerTab === 'PREVIEW',
+      drawerDetails: s.drawerTab === 'DETAILS',
+      dPatient: d ? d.patientName : '',
+      dMrn: d ? d.mrn : '',
+      dAccession: d ? d.accessionNo : '',
+      dBill: d ? d.billNumber : '',
+      dReportNumber: d ? d.reportNumber : '',
+      dAgeSex: d ? d.age + ' years · ' + d.sex : '',
+      dDoctor: d ? d.doctor : '',
+      dTestName: d ? d.testCode + ' — ' + d.testName : '',
+      dDept: d ? d.dept : '',
+      dSample: d ? d.sample : '',
+      dReportDate: d ? d.reportDate : '',
+      dAuthorizedBy: d ? d.authorizedBy : '',
+      dReportBg: dRep[0], dReportFg: dRep[1], dReportLabel: dRep[2],
+      dDispatchBg: dDisp[0], dDispatchFg: dDisp[1], dDispatchLabel: dDisp[2],
+      dValidationLine: d ? (d.validated ? 'Validated by ' + d.authorizedBy : 'Validation pending · ' + d.authorizedBy) : '',
+      dResults: dResults.map(x => ({ ...x, flagFg: x.flag ? (x.flag === 'L' ? '#1E40AF' : '#B91C1C') : 'var(--color-text-primary)' })),
+      dHasResults: dResults.length > 0,
+      dNoResults: dResults.length === 0,
+      dInterpretation: d ? (d.interpretation || '') : '',
+      dGenerateHint: d ? (d.validated ? 'Results are validated. Generate the report to enable preview and dispatch.' : 'Results are still awaiting validation in Result Validation.') : '',
+      dCanGenerate: !!(d && this.canGenerate(d)),
+      dIsFailed: !!(d && d.dispatchStatus === 'FAILED'),
+      dFailureReason: d ? (d.failureReason || '') : '',
+      dHistory: (d ? (d.history || []) : []).map(h => {
+        const t = histTone[h.status] || histTone.SENT;
+        return { ...h, bg: t[0], fg: t[1] };
+      }),
+      dHistoryEmpty: !d || !(d.history || []).length,
+      dFacts: !d ? [] : [
+        { k: 'Report Number', v: d.reportNumber },
+        { k: 'Accession Number', v: d.accessionNo },
+        { k: 'Bill Number', v: d.billNumber },
+        { k: 'Priority', v: d.priority },
+        { k: 'Report Status', v: REPORT_TONE[d.reportStatus][2] },
+        { k: 'Dispatch Status', v: DISPATCH_TONE[d.dispatchStatus][2] },
+        { k: 'Report Date', v: d.reportDate },
+        { k: 'Authorised By', v: d.authorizedBy },
+        { k: 'Patient Email', v: d.email || '—' },
+        { k: 'Patient Mobile', v: d.phone || '—' },
+        { k: 'Dispatched At', v: d.dispatchedAt || 'Not dispatched' },
+        { k: 'Dispatched By', v: d.dispatchedBy || '—' }
+      ],
+      dDispatchDisabled: !dCanDispatch,
+      dDispatchCursor: dCanDispatch ? 'pointer' : 'not-allowed',
+      dDispatchBtnBg: dCanDispatch ? (d && d.dispatchStatus === 'FAILED' ? '#B91C1C' : 'var(--color-primary-deep)') : 'var(--color-gray-100)',
+      dDispatchBtnFg: dCanDispatch ? '#fff' : 'var(--color-text-tertiary)',
+      dDispatchBtnLabel: d && d.dispatchStatus === 'FAILED' ? 'Retry Dispatch' : (d && d.dispatchStatus === 'DISPATCHED' ? 'Resend Report' : 'Dispatch Report'),
+      needEmail: !!s.method.EMAIL,
+      needPhone: !!s.method.WHATSAPP,
+      needPrinter: !!s.method.PRINT,
+      modalSubtitle: many ? modalRows.length + ' reports selected for dispatch' : (first ? first.patientName + ' · ' + first.testName : ''),
+      modalCta: many ? 'Dispatch ' + modalRows.length + ' Reports' : 'Dispatch Report',
+      modalFacts: !first ? [] : (many ? [
+        { k: 'Reports', v: String(modalRows.length) },
+        { k: 'Patients', v: String(new Set(modalRows.map(r => r.mrn)).size) },
+        { k: 'Dispatch Status', v: 'Will be set to Dispatched' }
+      ] : [
+        { k: 'Patient', v: first.patientName + ' · ' + first.mrn },
+        { k: 'Report / Test', v: first.reportNumber + ' · ' + first.testName },
+        { k: 'Accession Number', v: first.accessionNo }
+      ]),
+      updateField: this.updateField, search: this.search, clearFilters: this.clearFilters, refresh: this.refresh,
+      toggleFilters: this.toggleFilters, toggleColumnMenu: this.toggleColumnMenu,
+      showAllColumns: this.showAllColumns, compactColumns: this.compactColumns,
+      toggleAll: this.toggleAll, clearSelection: this.clearSelection,
+      bulkGenerate: this.bulkGenerate, bulkPrint: this.bulkPrint, bulkDispatch: this.bulkDispatch,
+      closeDrawer: this.closeDrawer, printFromDrawer: this.printFromDrawer, downloadFromDrawer: this.downloadFromDrawer,
+      dispatchFromDrawer: this.dispatchFromDrawer, generateFromDrawer: this.generateFromDrawer,
+      closeModal: this.closeModal, confirmDispatch: this.confirmDispatch, toggleConfirm: this.toggleConfirm,
+      dismissBanner: this.dismissBanner, stop: this.stop
+    };
+  }
+}
+</script>
+</body>
+</html>

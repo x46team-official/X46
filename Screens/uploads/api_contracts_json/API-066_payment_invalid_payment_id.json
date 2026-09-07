@@ -1,0 +1,42 @@
+{
+  "functionality_id": "API-066",
+  "module": "Payment",
+  "functionality": "Invalid Payment ID",
+  "http_method": "GET",
+  "endpoint": "/api/payments/{paymentId}",
+  "description": "Documents the specific error scenario of API-058 (View Payment) where paymentId does not reference an existing record. Same endpoint as API-058, isolated here to preserve the original docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+
+  "request": {
+    "path_parameters": { "paymentId": "uuid - invalid/non-existent in this scenario" },
+    "query_parameters": {},
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["paymentId"],
+
+  "validation": ["paymentId must reference an existing payment"],
+
+  "success": { "status_code": 0, "response": {}, "status_definition": "N/A - this functionality ID documents only the failure path; see API-058 for the success contract" },
+
+  "errors": [
+    {
+      "condition": "paymentId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Payment not found" },
+      "source": "database/api_contracts_test/015_payment.sql (API-T125)"
+    }
+  ],
+
+  "database": {
+    "tables": ["payment"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/015_payment.sql (API-T125)"],
+
+  "test_ids": ["API-T125"]
+}

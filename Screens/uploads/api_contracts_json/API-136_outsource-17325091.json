@@ -1,0 +1,98 @@
+{
+  "functionality_id": "API-136",
+  "module": "Outsource",
+  "functionality": "Create Outsource Order, List/View Outsource Orders, Update Outsource Status",
+  "description": "Outsourcing an accession test to an external performing lab. IMPORTANT SCHEMA GAP: there is no dedicated 'outsource order' table and no outsource-specific status column anywhere in the schema. This contract is built entirely from existing columns (accession_tests.performing_lab_id, test_master.outsource_test/outsource_center_id, outsource_center_master) and explicitly flags where that is insufficient.",
+
+  "reused_apis": [
+    { "functionality_id": "API-047", "functionality": "List Accession Tests", "note": "The List/View operation below is the same accession_tests resource, filtered to outsourced rows - not a new table." }
+  ],
+
+  "operations": [
+    {
+      "operation": "Create Outsource Order (Assign to Outsource Lab)",
+      "http_method": "PATCH",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accession-tests/{accessionTestId}/outsource",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "accessionTestId": "uuid, required" },
+        "query_parameters": {},
+        "body": { "performingLabId": "uuid, required - references performing_lab_master.id", "remarks": "text, optional" }
+      },
+      "required_fields": ["organizationId", "branchId", "accessionTestId", "performingLabId"],
+      "validation": [
+        "accessionTestId must exist and belong to organization + branch",
+        "performingLabId must reference an existing performing_lab_master row"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": { "success": true, "message": "Accession test assigned to outsource lab successfully", "data": { "id": "uuid", "performingLabId": "uuid" } }
+      },
+      "errors": [
+        { "condition": "accessionTestId not found / not in organization+branch scope", "status_code": 404, "response": { "success": false, "error": "Accession test not found" } },
+        { "condition": "performingLabId does not reference an existing lab", "status_code": 404, "response": { "success": false, "error": "Performing lab not found" } }
+      ],
+      "schema_gap_note": "There is no FK linking accession_tests (or performing_lab_master) to outsource_center_master, and no accession_tests column marking a specific line item as 'sent outsource' distinct from a normal in-house performing_lab_id reassignment. This endpoint can only record which lab will perform the test, using the existing performing_lab_id column - it cannot record which outsource_center_master row the order was placed with, an order/reference number, dispatch date, or expected return date. DB/Schema confirmation required if that level of tracking is needed."
+    },
+    {
+      "operation": "List/View Outsource Orders",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/outsource/accession-tests",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": { "performingLabId": "uuid, optional" },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId"],
+      "validation": [
+        "organization and branch must exist",
+        "returns accession_tests rows where test_master.outsource_test = true OR accession_tests.performing_lab_id is set to a non-default lab"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Outsource orders fetched successfully",
+          "data": [
+            { "accessionTestId": "uuid", "accessionId": "uuid", "testId": "uuid", "testName": "Vitamin D Test", "performingLabId": "uuid", "performingLabName": "Reference Lab Pvt Ltd", "sampleStatus": "PROCESSING" }
+          ]
+        }
+      },
+      "errors": [
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    },
+    {
+      "operation": "Update Outsource Status",
+      "http_method": "PATCH",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accession-tests/{accessionTestId}/outsource-status",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "accessionTestId": "uuid, required" },
+        "query_parameters": {},
+        "body": { "outsourceStatus": "enum, required - intended values: SENT | RESULT_RECEIVED | CANCELLED (see schema_gap_note)" }
+      },
+      "required_fields": ["organizationId", "branchId", "accessionTestId", "outsourceStatus"],
+      "validation": ["NOT IMPLEMENTABLE - see schema_gap_note"],
+      "success": { "status_code": 0, "status_definition": "N/A - blocked pending schema change", "response": {} },
+      "errors": [
+        { "condition": "Not implementable as specified", "status_code": 409, "response": { "success": false, "error": "Outsource status tracking is not supported by the current schema" }, "database_gap": true }
+      ],
+      "database_gap": true,
+      "schema_gap_note": "No column anywhere (accession_tests, test_master, performing_lab_master, outsource_center_master) stores an outsource-specific status such as SENT / RESULT_RECEIVED. accession_tests.sample_status (PENDING, COLLECTED, RECEIVED, PROCESSING, COMPLETED, REJECTED, plus sample_status_master-driven IN_TRANSIT, RECOLLECTION_REQUESTED per API-047's notes) is the closest existing field and can be used as an interim proxy via the already-existing update-sample-status endpoint (API-048), but it does not distinguish an outsourced test from an in-house one. DB/Schema confirmation required: add an outsource_status column (or a dedicated outsource_order table) before this operation can be implemented as specified."
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_tests", "performing_lab_master", "test_master", "outsource_center_master"],
+    "relationships": [
+      "accession_tests.performing_lab_id -> performing_lab_master.id",
+      "test_master.performing_lab_id -> performing_lab_master.id",
+      "test_master.outsource_center_id -> outsource_center_master.id"
+    ],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet. outsource_center_master itself also has no create/list/view API of its own anywhere in the existing 001-127 range - only referenced here as a read-only join target."
+}

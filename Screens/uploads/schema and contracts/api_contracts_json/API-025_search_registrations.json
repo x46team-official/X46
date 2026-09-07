@@ -1,0 +1,55 @@
+{
+  "functionality_id": "API-025",
+  "module": "Patient Registration",
+  "functionality": "Search Registrations",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/registrations/search",
+  "description": "Searches registrations within an organization/branch by registration number.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": { "query": "string, required - matched against registration_number" },
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "query"],
+
+  "validation": [
+    "organization and branch must exist",
+    "query must not be empty",
+    "search is organization + branch scoped (tenant isolation)"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Registrations searched successfully",
+      "data": [
+        { "id": "uuid", "registrationNumber": "REG001", "registrationStatus": "REGISTERED", "patientId": "uuid" }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "query is missing or empty",
+      "status_code": 400,
+      "response": { "success": false, "error": "Search query is required" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_registrations"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/011_patient_registration.sql (API-T080)"],
+
+  "test_ids": ["API-T080"],
+  "notes": "docs/API_Contracts_and_Test_Results.xlsx describes this search as also matching 'patient identifiers' in addition to registration number, but the E2E script (API-T080) only queries by registration_number and organization/branch scope. Matching by patient identifier (MRN etc.) would require joining patient_identifiers and is not exercised by the source material for this endpoint."
+}

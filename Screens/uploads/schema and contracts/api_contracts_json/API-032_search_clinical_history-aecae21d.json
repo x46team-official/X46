@@ -1,0 +1,63 @@
+{
+  "functionality_id": "API-032",
+  "module": "Clinical History",
+  "functionality": "Search Clinical History",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/patients/{patientId}/clinical-history",
+  "description": "Returns a patient's clinical history filtered by clinical type (e.g. DISEASE, SYMPTOM, ALLERGY, CONDITION).",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "patientId": "uuid, required" },
+    "query_parameters": { "type": "string, optional - filters by clinical_master.clinical_type (DISEASE | SYMPTOM | ALLERGY | CONDITION)" },
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "patientId"],
+
+  "validation": [
+    "patient must exist and belong to organization + branch",
+    "type, if provided, filters joined clinical_master.clinical_type"
+  ],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Clinical history fetched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "patientId": "uuid",
+          "clinicalType": "DISEASE",
+          "clinicalCode": "string",
+          "clinicalName": "string",
+          "severity": "string",
+          "status": "string",
+          "notes": "string"
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "patient does not exist / not in organization+branch scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Patient not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["patient_clinical_history", "clinical_master"],
+    "relationships": ["patient_clinical_history.clinical_id -> clinical_master.id"],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/012_clinical_history.sql (API-T088)"],
+
+  "test_ids": ["API-T088", "API-T089"],
+  "notes": "clinical_master.clinical_type is a free-text VARCHAR(30) with no CHECK constraint restricting it to DISEASE/SYMPTOM/ALLERGY/CONDITION - those four values are documented as a comment in database/schema/003_patient_clinical_data.sql but are not enforced by the database."
+}

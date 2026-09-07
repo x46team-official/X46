@@ -1,0 +1,61 @@
+{
+  "functionality_id": "API-108",
+  "module": "Report Delivery",
+  "functionality": "Invalid Delivery Type",
+  "http_method": "POST",
+  "endpoint": "/api/reports/{reportId}/deliveries",
+  "description": "Documents the specific error scenario of API-105 where the request fails this validation. Same endpoint as API-105, isolated here to preserve the docs/API_Contracts_and_Test_Results.xlsx functionality numbering.",
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "reportId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "deliveryType": "'FAX' - not a valid delivery_type value in this scenario"
+    }
+  },
+  "required_fields": [
+    "deliveryType"
+  ],
+  "validation": [
+    "deliveryType must be one of PRINT, EMAIL, SMS, WHATSAPP, PORTAL (CHECK)"
+  ],
+  "success": {
+    "status_code": 0,
+    "response": {},
+    "status_definition": "N/A - this functionality ID documents only the failure path; see the primary create/update contract for the success response"
+  },
+  "errors": [
+    {
+      "condition": "deliveryType must be one of PRINT, EMAIL, SMS, WHATSAPP, PORTAL (CHECK)",
+      "status_code": 400,
+      "response": {
+        "success": false,
+        "error": "Invalid delivery type"
+      },
+      "source": "database/api_contracts_test/021_report_delivery.sql (API-T166)"
+    }
+  ],
+  "database": {
+    "tables": [
+      "report_delivery_log"
+    ],
+    "relationships": [],
+    "constraints": [
+      "delivery_type CHECK IN (PRINT, EMAIL, SMS, WHATSAPP, PORTAL)"
+    ]
+  },
+  "scope": {
+    "organization_required": true,
+    "branch_required": true
+  },
+  "e2e_reference": [
+    "database/api_contracts_test/021_report_delivery.sql (API-T166)"
+  ],
+  "test_ids": [
+    "API-T166"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "functionality_id": "API-056",
+  "module": "Accession",
+  "functionality": "Search Accessions",
+  "http_method": "GET",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/accessions/search",
+  "description": "Searches accessions within an organization/branch by accession number.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": { "query": "string, required - matched against accession_number" },
+    "headers": {},
+    "body": "None"
+  },
+
+  "required_fields": ["organizationId", "branchId", "query"],
+
+  "validation": ["query must not be empty", "search is organization + branch scoped"],
+
+  "success": {
+    "status_code": 200,
+    "response": {
+      "success": true,
+      "message": "Accessions searched successfully",
+      "data": [
+        {
+          "id": "uuid",
+          "accessionNumber": "ACC0001",
+          "priority": "NORMAL",
+          "status": "PENDING",
+          "billingId": "uuid",
+          "patientRegistrationId": "uuid"
+        }
+      ]
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "query is missing or empty",
+      "status_code": 400,
+      "response": { "success": false, "error": "Search query is required" }
+    },
+    {
+      "condition": "organizationId or branchId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" }
+    }
+  ],
+
+  "database": {
+    "tables": ["accession_master"],
+    "relationships": [],
+    "constraints": []
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": ["database/api_contracts_test/014_accession.sql (Search Accessions)"],
+
+  "test_ids": ["API-T114", "API-T115"]
+}

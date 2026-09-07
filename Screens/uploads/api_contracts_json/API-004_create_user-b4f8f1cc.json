@@ -1,0 +1,113 @@
+{
+  "functionality_id": "API-004",
+  "module": "User Management",
+  "functionality": "Create User",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/users",
+  "description": "Creates a new staff login identity scoped to an organization and branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "username": "string(100), required",
+      "email": "string(255), optional",
+      "password": "string, required - hashed server-side into password_hash",
+      "firstName": "string(100), required",
+      "lastName": "string(100), optional",
+      "isActive": "boolean, optional - defaults to true"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "username", "password", "firstName"],
+
+  "validation": [
+    "organizationId must reference an existing organization",
+    "branchId must reference an existing branch belonging to organizationId",
+    "username must not be null (NOT NULL)",
+    "password must not be null (stored as password_hash NOT NULL)",
+    "firstName must not be null (NOT NULL)",
+    "username must be unique within organization + branch (UNIQUE organization_id, branch_id, username)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "User created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "username": "test_user_001",
+        "email": "testuser001@x46.com",
+        "firstName": "Test",
+        "lastName": "User",
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "username is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "username is required" },
+      "source": "database/api_contracts_test/004_api_users.sql (API-004-T015)"
+    },
+    {
+      "condition": "password is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "password is required" },
+      "source": "database/api_contracts_test/004_api_users.sql (API-004-T016)"
+    },
+    {
+      "condition": "firstName is missing/null",
+      "status_code": 400,
+      "response": { "success": false, "error": "firstName is required" },
+      "source": "database/api_contracts_test/004_api_users.sql (API-004-T017)"
+    },
+    {
+      "condition": "organizationId or branchId does not exist / branch does not belong to organization",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" },
+      "source": "database/api_contracts_test/004_api_users.sql (API4-T019)"
+    },
+    {
+      "condition": "username already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate username" },
+      "source": "database/api_contracts_test/004_api_users.sql (API-004-T018)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["users", "organizations", "branches"],
+    "relationships": [
+      "users.organization_id -> organizations.id",
+      "users.branch_id -> branches.id"
+    ],
+    "constraints": [
+      "username NOT NULL",
+      "password_hash NOT NULL",
+      "first_name NOT NULL",
+      "UNIQUE (organization_id, branch_id, username)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/001_lab_setup.sql",
+    "database/api_contracts_test/004_api_users.sql"
+  ],
+
+  "test_ids": ["API-T014", "API-T015", "API-T016", "API-T017", "API-T018", "API-T019"],
+  "notes": "The schema column is email VARCHAR(255) with no NOT NULL and no UNIQUE constraint - email is not required and is not validated for uniqueness at the database level. password_hash is NOT NULL at the DB layer; actual password hashing is an application-layer concern not visible in the schema."
+}

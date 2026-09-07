@@ -1,0 +1,90 @@
+{
+  "functionality_id": "API-012",
+  "module": "Department Management",
+  "functionality": "Create Department",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/departments",
+  "description": "Creates a new department (department_master) under an organization/branch.",
+
+  "request": {
+    "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+    "query_parameters": {},
+    "headers": {},
+    "body": {
+      "departmentCode": "string(30), required at API layer (nullable at DB layer)",
+      "departmentName": "string(100), required",
+      "description": "text, optional"
+    }
+  },
+
+  "required_fields": ["organizationId", "branchId", "departmentCode", "departmentName"],
+
+  "validation": [
+    "organization and branch must exist",
+    "departmentName must not be null (NOT NULL)",
+    "departmentName must be unique within organization + branch (UNIQUE uq_department_org_name)",
+    "departmentCode, if provided, must be unique within organization + branch (UNIQUE uq_department_org_code)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "Department created successfully",
+      "data": {
+        "id": "uuid",
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "departmentCode": "BIO",
+        "departmentName": "Biochemistry",
+        "isActive": true
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "departmentCode or departmentName missing (API-layer required field)",
+      "status_code": 400,
+      "response": { "success": false, "error": "Validation error" }
+    },
+    {
+      "condition": "organizationId or branchId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" }
+    },
+    {
+      "condition": "departmentCode or departmentName already exists within organization + branch",
+      "status_code": 409,
+      "response": { "success": false, "error": "Duplicate department code/name" }
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["department_master", "organizations", "branches"],
+    "relationships": [
+      "department_master.organization_id -> organizations.id",
+      "department_master.branch_id -> branches.id"
+    ],
+    "constraints": [
+      "department_name NOT NULL",
+      "UNIQUE (organization_id, branch_id, department_name) -- uq_department_org_name",
+      "UNIQUE (organization_id, branch_id, department_code) -- uq_department_org_code"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/002_master_data.sql",
+    "database/dry-run/F007_department_master.sql"
+  ],
+
+  "test_ids": ["API-T187"],
+  "notes": "department_code has no NOT NULL constraint at the database level (only department_name is NOT NULL), but docs/API_Contracts_and_Test_Results.xlsx documents departmentCode as a required request field. This contract follows the documented API-level requirement (stricter than the DB) as intentional API validation, not a database gap - the DB still permits NULL department_code for other callers/migrations. No dedicated api_contracts_test SQL file existed yet for Department Management; API-T187-API-T190 are net-new IDs continuing the global sequence (previous max was API-T186) and still need a backing api_contracts_test script."
+}

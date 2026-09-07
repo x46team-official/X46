@@ -1,0 +1,85 @@
+{
+  "functionality_id": "API-135",
+  "module": "Report Delivery",
+  "functionality": "Batch Send Report, View Delivery Status",
+  "description": "Covers bulk delivery logging and delivery-status listing on top of the already-existing single-send contract.",
+
+  "reused_apis": [
+    { "functionality_id": "API-105", "functionality": "Log Report Delivery", "note": "Already covers 'Send report' (single delivery). Batch Send below reuses the exact same per-item validation, looped." }
+  ],
+
+  "operations": [
+    {
+      "operation": "Batch Send Report",
+      "http_method": "POST",
+      "endpoint": "/api/reports/deliveries/batch",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": {},
+        "body": {
+          "deliveries": "array, required, min 1 item - each item: { reportId: uuid required, deliveryType: enum required (PRINT|EMAIL|SMS|WHATSAPP|PORTAL), recipientType: enum required (PATIENT|DOCTOR|REFERRAL|COLLECTION_CENTER|LAB), recipientName: string optional, recipientContact: string optional }"
+        }
+      },
+      "required_fields": ["organizationId", "branchId", "deliveries"],
+      "validation": [
+        "deliveries must be a non-empty array",
+        "each item's reportId must reference an existing report (NOT NULL FK) - see API-105",
+        "each item's deliveryType/recipientType must be valid enum values - see API-105",
+        "a report-level failure does not abort the batch; failures are reported per-item in the response"
+      ],
+      "success": {
+        "status_code": 201,
+        "response": {
+          "success": true,
+          "message": "Batch report delivery processed",
+          "data": {
+            "results": [
+              { "reportId": "uuid", "success": true, "deliveryId": "uuid", "deliveryStatus": "DELIVERED" },
+              { "reportId": "uuid", "success": false, "error": "Report not found" }
+            ]
+          }
+        }
+      },
+      "errors": [
+        { "condition": "deliveries missing or empty", "status_code": 400, "response": { "success": false, "error": "deliveries must contain at least one item" } },
+        { "condition": "Unexpected server/database failure", "status_code": 500, "response": { "success": false, "error": "Internal server error" } }
+      ]
+    },
+    {
+      "operation": "View Delivery Status",
+      "http_method": "GET",
+      "endpoint": "/api/reports/{reportId}/deliveries",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "reportId": "uuid, required" },
+        "query_parameters": { "deliveryStatus": "enum, optional - PENDING | SENT | FAILED | DELIVERED" },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "reportId"],
+      "validation": ["reportId must exist and belong to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": {
+          "success": true,
+          "message": "Delivery status fetched successfully",
+          "data": [
+            { "id": "uuid", "deliveryType": "EMAIL", "recipientType": "PATIENT", "deliveryStatus": "DELIVERED", "deliveredAt": "timestamp with time zone" }
+          ]
+        }
+      },
+      "errors": [
+        { "condition": "reportId not found / not in organization+branch scope", "status_code": 404, "response": { "success": false, "error": "Report not found" } }
+      ]
+    }
+  ],
+
+  "database": {
+    "tables": ["report_delivery_log", "report_master"],
+    "relationships": ["report_delivery_log.report_id -> report_master.id (ON DELETE CASCADE)"],
+    "constraints": ["delivery_type CHECK IN (PRINT, EMAIL, SMS, WHATSAPP, PORTAL)", "recipient_type CHECK IN (PATIENT, DOCTOR, REFERRAL, COLLECTION_CENTER, LAB)"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet for these two operations."
+}

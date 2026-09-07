@@ -1,0 +1,111 @@
+{
+  "functionality_id": "API-129",
+  "module": "Role Management",
+  "functionality": "List / View / Update / Activate-Deactivate Role",
+  "description": "Covers the Role Management operations not already provided by API-003 (Create Role) and API-005 (Assign Role to User): listing, viewing, updating, and toggling role availability on `roles`.",
+
+  "reused_apis": [
+    { "functionality_id": "API-003", "functionality": "Create Role", "note": "Role creation is already covered - not duplicated here." },
+    { "functionality_id": "API-005", "functionality": "Assign Role to User", "note": "Already covers user<->role assignment." }
+  ],
+
+  "operations": [
+    {
+      "operation": "List Roles",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/roles",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required" },
+        "query_parameters": { "search": "string, optional - matched against role_code, role_name" },
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId"],
+      "validation": ["organization and branch must exist", "results are scoped to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": { "success": true, "message": "Roles fetched successfully", "data": [ { "id": "uuid", "roleCode": "ADMIN", "roleName": "Administrator" } ] }
+      },
+      "errors": [
+        { "condition": "organizationId or branchId does not exist", "status_code": 404, "response": { "success": false, "error": "Organization or branch not found" } }
+      ]
+    },
+    {
+      "operation": "View Role",
+      "http_method": "GET",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/roles/{roleId}",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "roleId": "uuid, required" },
+        "query_parameters": {},
+        "body": "None"
+      },
+      "required_fields": ["organizationId", "branchId", "roleId"],
+      "validation": ["role must exist and belong to organization + branch"],
+      "success": {
+        "status_code": 200,
+        "response": { "success": true, "message": "Role fetched successfully", "data": { "id": "uuid", "roleCode": "ADMIN", "roleName": "Administrator", "createdAt": "timestamp with time zone" } }
+      },
+      "errors": [
+        { "condition": "roleId not found / not in organization+branch scope", "status_code": 404, "response": { "success": false, "error": "Role not found" } }
+      ]
+    },
+    {
+      "operation": "Update Role",
+      "http_method": "PUT",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/roles/{roleId}",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "roleId": "uuid, required" },
+        "query_parameters": {},
+        "body": { "roleCode": "string(50), required", "roleName": "string(100), required" }
+      },
+      "required_fields": ["organizationId", "branchId", "roleId", "roleCode", "roleName"],
+      "validation": [
+        "role must exist and belong to organization + branch",
+        "roleCode/roleName must not be null (NOT NULL)",
+        "roleCode must remain unique within organization + branch (uq_roles_org_branch_code)"
+      ],
+      "success": {
+        "status_code": 200,
+        "response": { "success": true, "message": "Role updated successfully", "data": { "id": "uuid", "roleCode": "ADMIN", "roleName": "Administrator Updated" } }
+      },
+      "errors": [
+        { "condition": "roleCode or roleName missing", "status_code": 400, "response": { "success": false, "error": "Validation error" } },
+        { "condition": "roleId not found / not in scope", "status_code": 404, "response": { "success": false, "error": "Role not found" } },
+        { "condition": "roleCode collides with another role in the same organization + branch", "status_code": 409, "response": { "success": false, "error": "Duplicate role code" } },
+        { "condition": "Unexpected server/database failure", "status_code": 500, "response": { "success": false, "error": "Internal server error" } }
+      ]
+    },
+    {
+      "operation": "Activate/Deactivate Role",
+      "http_method": "PATCH",
+      "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/roles/{roleId}/status",
+      "request": {
+        "path_parameters": { "organizationId": "uuid, required", "branchId": "uuid, required", "roleId": "uuid, required" },
+        "query_parameters": {},
+        "body": { "isActive": "boolean, required" }
+      },
+      "required_fields": ["organizationId", "branchId", "roleId", "isActive"],
+      "validation": ["role must exist and belong to organization + branch"],
+      "success": {
+        "status_code": 0,
+        "status_definition": "N/A - blocked pending schema change, see schema_gap below",
+        "response": {}
+      },
+      "errors": [
+        { "condition": "Not implementable as specified", "status_code": 409, "response": { "success": false, "error": "Role activation/deactivation is not supported: roles has no is_active column" }, "database_gap": true }
+      ],
+      "database_gap": true,
+      "schema_gap_note": "database/schema/001_core_setup.sql defines `roles` with no is_active (or deleted_at) column - unlike users.is_active, department_master.is_active, and test_master.is_active, which all exist. There is currently no way to deactivate a role without deleting it (which would violate the roles.id FK from role_permission, menu_permission, user_roles). DB/Schema confirmation required: add `roles.is_active BOOLEAN NOT NULL DEFAULT TRUE` before this operation can be implemented. The contract above documents the intended request/response shape for when that column exists."
+    }
+  ],
+
+  "database": {
+    "tables": ["roles"],
+    "relationships": ["roles.organization_id -> organizations.id", "roles.branch_id -> branches.id"],
+    "constraints": ["UNIQUE (organization_id, branch_id, role_code) -- uq_roles_org_branch_code"]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [],
+  "notes": "Net-new contract; no e2e-validation or api_contracts_test coverage exists yet. Activate/Deactivate Role is blocked on a schema change - see schema_gap_note."
+}

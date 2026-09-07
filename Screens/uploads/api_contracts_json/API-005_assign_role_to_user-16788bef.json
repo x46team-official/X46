@@ -1,0 +1,100 @@
+{
+  "functionality_id": "API-005",
+  "module": "User Role Management",
+  "functionality": "Assign Role to User",
+  "http_method": "POST",
+  "endpoint": "/api/organizations/{organizationId}/branches/{branchId}/users/{userId}/roles",
+  "description": "Assigns a role to a user within the same organization and branch.",
+
+  "request": {
+    "path_parameters": {
+      "organizationId": "uuid, required",
+      "branchId": "uuid, required",
+      "userId": "uuid, required"
+    },
+    "query_parameters": {},
+    "headers": {},
+    "body": { "roleId": "uuid, required" }
+  },
+
+  "required_fields": ["organizationId", "branchId", "userId", "roleId"],
+
+  "validation": [
+    "organizationId, branchId must exist",
+    "userId must reference an existing user belonging to organizationId + branchId (user_id NOT NULL)",
+    "roleId must reference an existing role belonging to organizationId + branchId (role_id NOT NULL)",
+    "user and role must belong to the same organization + branch",
+    "(user_id, role_id) pair must not already exist (PRIMARY KEY user_id, role_id)"
+  ],
+
+  "success": {
+    "status_code": 201,
+    "response": {
+      "success": true,
+      "message": "User role assigned successfully",
+      "data": {
+        "organizationId": "uuid",
+        "branchId": "uuid",
+        "userId": "uuid",
+        "roleId": "uuid",
+        "assignedAt": "timestamp with time zone"
+      }
+    }
+  },
+
+  "errors": [
+    {
+      "condition": "userId is missing / does not reference an existing user in scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "User not found" },
+      "source": "database/api_contracts_test/005_api_user_roles.sql (API-T021)"
+    },
+    {
+      "condition": "roleId is missing / does not reference an existing role in scope",
+      "status_code": 404,
+      "response": { "success": false, "error": "Role not found" },
+      "source": "database/api_contracts_test/005_api_user_roles.sql (API-T022)"
+    },
+    {
+      "condition": "organizationId or branchId does not exist",
+      "status_code": 404,
+      "response": { "success": false, "error": "Organization or branch not found" },
+      "source": "database/api_contracts_test/005_api_user_roles.sql (API-T024)"
+    },
+    {
+      "condition": "(user_id, role_id) assignment already exists",
+      "status_code": 409,
+      "response": { "success": false, "error": "Role already assigned to user" },
+      "source": "database/api_contracts_test/005_api_user_roles.sql (API-T023)"
+    },
+    {
+      "condition": "Unexpected server/database failure",
+      "status_code": 500,
+      "response": { "success": false, "error": "Internal server error" }
+    }
+  ],
+
+  "database": {
+    "tables": ["user_roles", "users", "roles"],
+    "relationships": [
+      "user_roles.user_id -> users.id",
+      "user_roles.role_id -> roles.id",
+      "user_roles.organization_id -> organizations.id",
+      "user_roles.branch_id -> branches.id"
+    ],
+    "constraints": [
+      "user_id NOT NULL, role_id NOT NULL",
+      "PRIMARY KEY (user_id, role_id)"
+    ]
+  },
+
+  "scope": { "organization_required": true, "branch_required": true },
+
+  "e2e_reference": [
+    "database/e2e-validation/001_lab_setup.sql",
+    "database/api_contracts_test/005_api_user_roles.sql"
+  ],
+
+  "test_ids": ["API-T020", "API-T021", "API-T022", "API-T023", "API-T024"],
+  "notes": "The user_roles primary key is (user_id, role_id) only - it does not include organization_id/branch_id, so uniqueness of an assignment is enforced globally on the user/role pair rather than per-tenant. This matches the 'Duplicate user-role -> Primary key constraint rejected' result in the API Test Results sheet (API-T023) and requires no additional gap flag since the same user_id/role_id pair cannot legitimately exist in two different org/branch scopes anyway (users and roles are themselves org/branch-scoped)."
+}

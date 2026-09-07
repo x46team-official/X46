@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/tokens/transitions.css">
+  <link rel="stylesheet" href="_ds/x46-design-system-ba477643-041d-48de-b6f7-a9a49bc86d9a/styles.css">
+  <link rel="stylesheet" href="fit-screen.css">
+  <script src="lims-api.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12.5px; color: var(--color-text-primary); background: var(--color-surface-alt); line-height: 1.4; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary-deep); text-decoration: none; }
+    a:hover { color: var(--color-primary-bright); }
+    input, select, textarea { font-family: inherit; font-size: 12px; color: var(--color-text-primary); background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; padding: 6px 8px; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary-bright); box-shadow: 0 0 0 3px rgba(0,168,255,.18); }
+    input:disabled, select:disabled, textarea:disabled { background: var(--color-gray-50); color: var(--color-text-tertiary); cursor: not-allowed; }
+    select { cursor: pointer; }
+    label { display: block; font-size: 10px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 3px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .card { background: #fff; border: 1px solid var(--color-border-light); border-radius: 6px; }
+    .chd { padding: 9px 13px; border-bottom: 1px solid var(--color-border-light); font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .fk { font-size: 10px; font-weight: 600; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em; }
+    .fv { font-size: 12.5px; font-weight: 600; }
+    @keyframes shimmer { 0% { opacity: .45; } 50% { opacity: .9; } 100% { opacity: .45; } }
+    .skel { background: var(--color-gray-100); border-radius: 3px; animation: shimmer 1.1s ease-in-out infinite; }
+  </style>
+  <script src="table-settings.js"></script>
+</helmet>
+
+<div style="display: flex; min-height: 100vh;">
+  <nav style="width: 190px; background: #fff; border-right: 1px solid var(--color-border-light); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+    <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-border-light); display: flex; align-items: center; gap: 8px;">
+      <div style="width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, var(--color-primary-deep), var(--color-accent-teal)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700;">X46</div>
+      <div style="font-size: 12.5px; font-weight: 700; letter-spacing: .02em;">X46 LIMS</div>
+    </div>
+    <div style="padding: 8px 14px; border-bottom: 1px solid var(--color-border-light);">
+      <div style="font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em;">Branch</div>
+      <div style="font-size: 11.5px; font-weight: 600; margin-top: 1px;">{{ contextLabel }}</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 6px 0;">
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Clinical</div>
+      <a href="Patients.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Patients</a>
+      <a href="Registration.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Registration &amp; Billing</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Ops</div>
+      <a href="Accession.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Accession</a>
+      <a href="Worklist.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist</a>
+      <a href="Worklist Processing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Worklist Processing</a>
+      <a href="Result Entry.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Entry</a>
+      <a href="Result Validation.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Result Validation</a>
+      <a href="Report and Dispatch.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report &amp; Dispatch</a>
+      <a href="Report History.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report History</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); padding: 12px 16px 4px; text-transform: uppercase; letter-spacing: .06em;">Analytics &amp; MIS</div>
+      <a href="Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Analytics</a>
+      <a href="Test Count.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test Count</a>
+      <a href="TAT Analytics.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">TAT Analytics</a>
+      <a href="MIS Data Export.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">MIS / Data Export</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Finance</div>
+      <div style="display: block; padding: 6px 14px; color: var(--color-primary-deep); background: var(--color-interactive-hover); font-weight: 700; border-left: 3px solid var(--color-primary-deep);">Bill Details</div>
+      <a href="Finance.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Overview</a>
+      <a href="Finance Reports.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Finance Reports</a>
+      <a href="Billing Report.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Billing Report</a>
+      <a href="Branch Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branch Wise Billing</a>
+      <a href="Organisation Wise Billing.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Organisation Wise Billing</a>
+      <a href="Payment Mode Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Mode Collection</a>
+      <a href="Payment Transactions.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Payment Transactions</a>
+      <a href="User Wise Collection.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">User Wise Collection</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">Lab Setup</div>
+      <a href="Lab Master.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Performing Labs</a>
+      <a href="Test List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Test List</a>
+      <a href="Doctor List.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Doctors</a>
+      <a href="Departments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Departments</a>
+      <a href="Branch Management.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Branches</a>
+      <a href="Instruments.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Instruments</a>
+      <a href="Outsource.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Outsource Centers</a>
+      <a href="Report Formatting.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Report Formatting</a>
+      <a href="Roles.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Roles</a>
+      <a href="Users.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Users</a>
+      <div style="position: sticky; top: 0; z-index: 2; background: #fff; font-size: 9.5px; font-weight: 700; color: var(--color-text-tertiary); padding: 9px 14px 3px; text-transform: uppercase; letter-spacing: .06em;">System</div>
+      <a href="Create Organization.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Create Organization</a>
+      <a href="System Error States.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">System Error States</a>
+      <a href="Login.dc.html" style="display: block; padding: 6px 14px; color: var(--color-text-secondary);">Login</a>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="background: #fff; border-bottom: 1px solid var(--color-border-light); padding: 11px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; position: sticky; top: 0; z-index: 6;">
+      <div style="min-width: 240px;">
+        <div style="font-size: 10.5px; color: var(--color-text-tertiary);"><a href="Patients.dc.html">Clinical</a> / Bill Details</div>
+        <h1 style="margin: 2px 0 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em;">Billing</h1>
+        <div style="font-size: 11px; color: var(--color-text-secondary);">Manage patient bills, tests and payments</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; flex-shrink: 0;">
+        <div style="text-align: right;">
+          <div class="fk">Organization</div>
+          <div style="font-size: 11.5px; font-weight: 700;">{{ orgLabel }}</div>
+        </div>
+        <div style="width: 168px;">
+          <label for="branchPick">Branch</label>
+          <select id="branchPick" value="{{ branchId }}" onChange="{{ changeBranch }}">
+            <sc-for list="{{ branchChoices }}" as="b" hint-placeholder-count="3">
+              <option value="{{ b.value }}">{{ b.label }}</option>
+            </sc-for>
+          </select>
+        </div>
+        <div style="display: flex; align-items: center; gap: 7px; padding-left: 12px; border-left: 1px solid var(--color-border-light);">
+          <div style="width: 26px; height: 26px; border-radius: 999px; background: var(--color-interactive-hover); color: var(--color-primary-deep); display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 700;">AD</div>
+          <div>
+            <div style="font-size: 11.5px; font-weight: 700;">Anita Deshpande</div>
+            <div style="font-size: 10px; color: var(--color-text-tertiary);">Billing user</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex: 1; overflow-y: auto; padding: 14px 18px 30px; display: flex; flex-direction: column; gap: 14px;">
+
+      <sc-if value="{{ showList }}" hint-placeholder-val="{{ true }}">
+      <div class="card">
+        <div class="chd">
+          <span>Search Bills</span>
+          <span style="font-size: 10px; font-weight: 600; color: var(--color-text-tertiary);">{{ searchEndpoint }}</span>
+        </div>
+        <div style="padding: 12px 13px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;">
+            <div>
+              <label for="billQuery">Bill Number</label>
+              <input id="billQuery" type="text" placeholder="e.g. BILL0001" value="{{ query }}" onChange="{{ onQuery }}" onKeyDown="{{ onQueryKey }}" />
+            </div>
+            <div>
+              <label for="fBillingId">Billing ID</label>
+              <div style="display: flex; gap: 6px;">
+                <input id="fBillingId" type="text" placeholder="Open a bill by its billingId" value="{{ fBillingId }}" onChange="{{ onFilter }}" data-field="fBillingId" onKeyDown="{{ onBillingIdKey }}" />
+                <button onClick="{{ openByBillingId }}" style="padding: 7px 11px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;" style-hover="border-color: var(--color-primary-bright); color: var(--color-primary-deep);">Open</button>
+              </div>
+            </div>
+            <div>
+              <label for="fRegId">Patient Registration ID</label>
+              <input id="fRegId" type="text" placeholder="Full or partial UUID" value="{{ fRegId }}" onChange="{{ onFilter }}" data-field="fRegId" onKeyDown="{{ onQueryKey }}" />
+            </div>
+            <div>
+              <label for="fStatus">Payment Status</label>
+              <select id="fStatus" value="{{ fStatus }}" onChange="{{ onFilter }}" data-field="fStatus">
+                <option value="">Any status</option>
+                <option value="Pending">Pending</option>
+                <option value="Partial">Partial</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+            <div>
+              <label for="fMode">Payment Mode</label>
+              <select id="fMode" value="{{ fMode }}" onChange="{{ onFilter }}" data-field="fMode">
+                <option value="">Any mode</option>
+                <option value="__none">Not Paid</option>
+                <sc-for list="{{ paymentModeChoices }}" as="m" hint-placeholder-count="4">
+                  <option value="{{ m.value }}">{{ m.label }}</option>
+                </sc-for>
+              </select>
+            </div>
+            <div>
+              <label for="fFrom">Bill Date From</label>
+              <input id="fFrom" type="date" value="{{ fFrom }}" onChange="{{ onFilter }}" data-field="fFrom" />
+            </div>
+            <div>
+              <label for="fTo">Bill Date To</label>
+              <input id="fTo" type="date" value="{{ fTo }}" onChange="{{ onFilter }}" data-field="fTo" />
+            </div>
+            <div>
+              <label for="fBalance">Balance</label>
+              <select id="fBalance" value="{{ fBalance }}" onChange="{{ onFilter }}" data-field="fBalance">
+                <option value="">Any balance</option>
+                <option value="due">Balance due (&gt; 0)</option>
+                <option value="clear">Fully settled (0)</option>
+              </select>
+            </div>
+            <div>
+              <label for="fCancelled">Cancelled Bills</label>
+              <select id="fCancelled" value="{{ fCancelled }}" onChange="{{ onFilter }}" data-field="fCancelled">
+                <option value="include">Include</option>
+                <option value="exclude">Exclude</option>
+                <option value="only">Only cancelled</option>
+              </select>
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 8px;">
+              <button onClick="{{ runSearch }}" disabled="{{ searchBusy }}" style="flex: 1; padding: 7px 16px; background: {{ searchBtnBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ searchCursor }}; white-space: nowrap;">{{ searchLabel }}</button>
+              <button onClick="{{ resetFilters }}" style="padding: 7px 13px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;">Reset</button>
+            </div>
+          </div>
+
+          <sc-if value="{{ searchMessage }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid {{ searchMsgFg }}; background: {{ searchMsgBg }}; color: {{ searchMsgFg }};">{{ searchMessage }}</div>
+          </sc-if>
+
+          <sc-if value="{{ searching }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div class="skel" style="height: 26px;"></div>
+              <div class="skel" style="height: 26px;"></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
+            <div style="border: 1px solid var(--color-border-light); border-radius: 5px; overflow-x: auto;">
+            <div style="min-width: 790px;">
+              <div style="display: grid; grid-template-columns: 108px 92px 92px 88px 96px 96px 78px 68px; gap: 8px; padding: 7px 11px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 9.5px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                <div>Bill Number</div><div style="text-align: right;">Total</div><div style="text-align: right;">Payable</div><div style="text-align: right;">Paid</div><div style="text-align: right;">Balance</div><div>Payment</div><div>Cancelled</div><div>Action</div>
+              </div>
+              <sc-for list="{{ results }}" as="r" hint-placeholder-count="2">
+                <div style="display: grid; grid-template-columns: 108px 92px 92px 88px 96px 96px 78px 68px; gap: 8px; padding: 8px 11px; border-bottom: 1px solid var(--color-border-light); align-items: center;">
+                  <div class="num" style="font-size: 12px; font-weight: 700; color: var(--color-primary-deep);">{{ r.billNumber }}</div>
+                  <div class="num" style="font-size: 12px; text-align: right;">{{ r.total }}</div>
+                  <div class="num" style="font-size: 12px; text-align: right;">{{ r.payable }}</div>
+                  <div class="num" style="font-size: 12px; text-align: right;">{{ r.paid }}</div>
+                  <div class="num" style="font-size: 12px; font-weight: 700; text-align: right;">{{ r.balance }}</div>
+                  <div><span style="display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ r.statusBg }}; color: {{ r.statusFg }};">{{ r.paymentStatus }}</span></div>
+                  <div style="font-size: 11.5px; color: {{ r.cancelFg }}; font-weight: 600;">{{ r.cancelText }}</div>
+                  <div><button onClick="{{ r.onView }}" style="padding: 4px 10px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;" style-hover="border-color: var(--color-primary-bright);">View</button></div>
+                </div>
+              </sc-for>
+            </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ loadingBill }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="padding: 16px 14px; display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary);">Loading bill…</div>
+          <div class="skel" style="height: 22px; width: 220px;"></div>
+          <div class="skel" style="height: 64px;"></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ billError }}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="padding: 16px 14px; border-color: #FCA5A5; background: #FEF2F2;">
+          <div style="font-size: 12.5px; font-weight: 700; color: #B91C1C;">{{ billErrorTitle }}</div>
+          <div style="font-size: 11.5px; color: #B91C1C; margin-top: 2px;">{{ billError }}</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showEmptyPrompt }}" hint-placeholder-val="{{ true }}">
+        <div class="card" style="padding: 44px 20px; text-align: center;">
+          <div style="font-size: 13.5px; font-weight: 700;">No bill selected</div>
+          <div style="font-size: 11.5px; color: var(--color-text-tertiary); margin-top: 3px;">Choose View on any bill above to load its details, tests and amounts.</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasBill }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <button onClick="{{ backToList }}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 600; color: var(--color-primary-deep); cursor: pointer;" style-hover="border-color: var(--color-primary-bright);">&#8592; Back to bills</button>
+
+          <div class="card">
+            <div style="padding: 12px 14px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+              <div style="min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+                  <div class="num" style="font-size: 16px; font-weight: 700;">Bill #{{ billNumber }}</div>
+                  <span style="padding: 2px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: {{ statusBg }}; color: {{ statusFg }};">{{ paymentStatus }}</span>
+                  <sc-if value="{{ isCancelled }}" hint-placeholder-val="{{ false }}">
+                    <span style="padding: 2px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: #FEE2E2; color: #991B1B;">Cancelled</span>
+                  </sc-if>
+                </div>
+                <div style="display: flex; gap: 22px; margin-top: 9px; flex-wrap: wrap;">
+                  <div>
+                    <div class="fk">Bill Date</div>
+                    <div class="fv num">{{ billDate }}</div>
+                  </div>
+                  <div>
+                    <div class="fk">Patient Registration</div>
+                    <div class="fv num" style="font-family: ui-monospace, monospace; font-size: 11px;">{{ patientRegistrationId }}</div>
+                  </div>
+                  <div>
+                    <div class="fk">Payment Mode</div>
+                    <div class="fv">{{ paymentMode }}</div>
+                  </div>
+                  <div>
+                    <div class="fk">Remarks</div>
+                    <div class="fv">{{ remarks }}</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
+                <button onClick="{{ openAdd }}" disabled="{{ mutationsBlocked }}" style="padding: 7px 14px; background: {{ addBtnBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ addCursor }};">+ Add Test / Package</button>
+                <button onClick="{{ openEdit }}" disabled="{{ mutationsBlocked }}" style="padding: 7px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: {{ editFg }}; cursor: {{ editCursor }};">Edit Bill</button>
+                <sc-if value="{{ canCancel }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ openCancel }}" style="padding: 7px 14px; background: #fff; border: 1px solid #FCA5A5; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; color: #B91C1C; cursor: pointer;" style-hover="background: #FEF2F2;">Cancel Bill</button>
+                </sc-if>
+              </div>
+            </div>
+            <sc-if value="{{ isCancelled }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 8px 14px; border-top: 1px solid var(--color-border-light); background: #FEF2F2; font-size: 11.5px; font-weight: 600; color: #991B1B;">This bill is cancelled. Editing and adding tests are disabled.</div>
+            </sc-if>
+          </div>
+
+          <div class="card">
+            <div class="chd">
+              <span>Bill Summary</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--color-text-tertiary);">Payable and Balance are calculated by the backend</span>
+            </div>
+            <div style="padding: 12px 13px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;">
+              <sc-for list="{{ amountRows }}" as="a" hint-placeholder-count="4">
+                <div style="padding: 9px 11px; border: 1px solid {{ a.border }}; border-radius: 5px; background: {{ a.bg }};">
+                  <div class="fk">{{ a.k }}</div>
+                  <div class="num" style="font-size: {{ a.size }}; font-weight: 700; color: {{ a.fg }}; margin-top: 1px;">{{ a.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="chd">
+              <span>Billing Tests</span>
+              <button onClick="{{ openAdd }}" disabled="{{ mutationsBlocked }}" style="padding: 6px 13px; background: {{ addBtnBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: {{ addCursor }};">+ Add Test / Package</button>
+            </div>
+
+            <sc-if value="{{ loadingTests }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 12px 13px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="font-size: 11.5px; font-weight: 600; color: var(--color-text-secondary);">Loading tests…</div>
+                <div class="skel" style="height: 24px;"></div>
+                <div class="skel" style="height: 24px;"></div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ testsError }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 12px 13px; font-size: 11.5px; font-weight: 600; color: #B91C1C; background: #FEF2F2;">{{ testsError }}</div>
+            </sc-if>
+
+            <sc-if value="{{ hasTests }}" hint-placeholder-val="{{ true }}">
+              <div style="overflow-x: auto;">
+                <div style="min-width: 760px;">
+                  <div style="display: grid; grid-template-columns: 96px minmax(180px, 1fr) 56px 92px 104px 112px 88px 116px; gap: 8px; padding: 7px 13px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); font-size: 9.5px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em;">
+                    <div>Test Code</div><div>Test Name</div><div style="text-align: right;">Qty</div><div style="text-align: right;">Rate</div><div style="text-align: right;">Net Amount</div><div>Barcode</div><div>Status</div><div style="text-align: right;">Action</div>
+                  </div>
+                  <sc-for list="{{ testRows }}" as="t" hint-placeholder-count="2">
+                    <div style="display: grid; grid-template-columns: 96px minmax(180px, 1fr) 56px 92px 104px 112px 88px 116px; gap: 8px; padding: 9px 13px; border-bottom: 1px solid var(--color-border-light); align-items: center;">
+                      <div class="num" style="font-size: 12px; font-weight: 700; font-family: ui-monospace, monospace;">{{ t.testCode }}</div>
+                      <div style="font-size: 12px; font-weight: 600;">{{ t.testName }}</div>
+                      <div class="num" style="font-size: 12px; text-align: right;">{{ t.quantity }}</div>
+                      <div class="num" style="font-size: 12px; text-align: right;">{{ t.rate }}</div>
+                      <div class="num" style="font-size: 12px; font-weight: 700; text-align: right;">{{ t.netAmount }}</div>
+                      <div class="num" style="font-size: 11px; color: var(--color-text-tertiary); font-family: ui-monospace, monospace;">{{ t.barcode }}</div>
+                      <div><span style="display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; background: {{ t.bg }}; color: {{ t.fg }};">{{ t.status }}</span></div>
+                      <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                        <button onClick="{{ t.onEdit }}" disabled="{{ t.blocked }}" style="padding: 3px 9px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: {{ t.actionFg }}; cursor: {{ t.actionCursor }};" style-hover="border-color: var(--color-primary-bright);">Edit</button>
+                        <button onClick="{{ t.onRemove }}" disabled="{{ t.blocked }}" style="padding: 3px 9px; background: #fff; border: 1px solid {{ t.removeBorder }}; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; color: {{ t.removeFg }}; cursor: {{ t.actionCursor }};" style-hover="background: #FEF2F2;">Remove</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ testsEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 40px 20px; text-align: center;">
+                <div style="font-size: 12.5px; font-weight: 700;">No tests added to this bill yet.</div>
+                <button onClick="{{ openAdd }}" disabled="{{ mutationsBlocked }}" style="margin-top: 10px; padding: 7px 16px; background: {{ addBtnBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ addCursor }};">Add Test</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; right: 18px; bottom: 18px; z-index: 90; max-width: 340px; padding: 10px 14px; border-radius: 5px; border-left: 3px solid {{ toastFg }}; background: {{ toastBg }}; color: {{ toastFg }}; font-size: 12px; font-weight: 600; box-shadow: 0 8px 22px rgba(17,24,39,.16);">{{ toast }}</div>
+  </sc-if>
+
+  <sc-if value="{{ editOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeEdit }}">
+      <div onClick="{{ stop }}" class="card" style="width: 520px; max-width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div class="chd">
+          <div>
+            <div>Edit Bill</div>
+            <div style="font-size: 10px; font-weight: 600; color: var(--color-text-tertiary); font-family: ui-monospace, monospace;">{{ updateEndpoint }}</div>
+          </div>
+          <button onClick="{{ closeEdit }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 14px 14px; display: flex; flex-direction: column; gap: 12px;">
+          <sc-if value="{{ editError }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ editError }}</div>
+          </sc-if>
+          <div>
+            <label for="ePaymentMode">Payment Mode</label>
+            <select id="ePaymentMode" value="{{ ePaymentMode }}" onChange="{{ onEditField }}" data-field="ePaymentMode">
+              <option value="">Not Paid</option>
+              <sc-for list="{{ paymentModeChoices }}" as="m" hint-placeholder-count="4">
+                <option value="{{ m.value }}">{{ m.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label for="eTotal">Total Amount (&#8377;)</label>
+              <input id="eTotal" type="number" min="0" step="0.01" value="{{ eTotal }}" onChange="{{ onEditField }}" data-field="eTotal" class="num" />
+              <div style="margin-top: 3px; font-size: 10.5px; color: {{ eTotalHintFg }};">{{ eTotalHint }}</div>
+            </div>
+            <div>
+              <label for="eDiscount">Discount Amount (₹)</label>
+              <input id="eDiscount" type="number" min="0" step="0.01" value="{{ eDiscount }}" onChange="{{ onEditField }}" data-field="eDiscount" class="num" />
+            </div>
+            <div>
+              <label for="eConcession">Concession Amount (₹)</label>
+              <input id="eConcession" type="number" min="0" step="0.01" value="{{ eConcession }}" onChange="{{ onEditField }}" data-field="eConcession" class="num" />
+            </div>
+            <div>
+              <label for="eAdditional">Additional Amount (₹)</label>
+              <input id="eAdditional" type="number" min="0" step="0.01" value="{{ eAdditional }}" onChange="{{ onEditField }}" data-field="eAdditional" class="num" />
+            </div>
+          </div>
+          <div>
+            <label for="eRemarks">Remarks</label>
+            <textarea id="eRemarks" rows="2" placeholder="Optional" value="{{ eRemarks }}" onChange="{{ onEditField }}" data-field="eRemarks" style="resize: vertical;"></textarea>
+          </div>
+          <div style="padding: 10px 12px; border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50); display: flex; justify-content: space-between; gap: 14px;">
+            <div>
+              <div class="fk">Payable (calculated)</div>
+              <div class="num" style="font-size: 14px; font-weight: 700;">{{ ePayablePreview }}</div>
+            </div>
+            <div style="text-align: right;">
+              <div class="fk">Balance (calculated)</div>
+              <div class="num" style="font-size: 14px; font-weight: 700;">{{ eBalancePreview }}</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 11px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeEdit }}" style="padding: 7px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+          <button onClick="{{ saveEdit }}" disabled="{{ savingEdit }}" style="padding: 7px 16px; background: {{ saveBtnBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ saveCursor }}; min-width: 132px;">{{ saveLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ addOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeAdd }}">
+      <div onClick="{{ stop }}" class="card" style="width: 470px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div class="chd">
+          <div>
+            <div>{{ addTitle }}</div>
+            <div style="font-size: 10px; font-weight: 600; color: var(--color-text-tertiary); font-family: ui-monospace, monospace;">{{ addEndpoint }}</div>
+          </div>
+          <button onClick="{{ closeAdd }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">✕</button>
+        </div>
+        <div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;">
+          <sc-if value="{{ addError }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ addError }}</div>
+          </sc-if>
+          <div style="display: flex; gap: 6px; padding: 3px; border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50);">
+            <button onClick="{{ pickModeTest }}" style="flex: 1; padding: 6px 10px; border: none; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; background: {{ modeTestBg }}; color: {{ modeTestFg }};">Single Test</button>
+            <button onClick="{{ pickModePackage }}" style="flex: 1; padding: 6px 10px; border: none; border-radius: 4px; font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; background: {{ modePkgBg }}; color: {{ modePkgFg }};">Test Package</button>
+          </div>
+
+          <sc-if value="{{ addModeIsPackage }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div>
+                <label for="aPackage">Select Package <span style="color: var(--color-error);">*</span></label>
+                <select id="aPackage" value="{{ aPackageId }}" onChange="{{ onPickPackage }}">
+                  <option value="">Choose a package&#8230;</option>
+                  <sc-for list="{{ packageChoices }}" as="p" hint-placeholder-count="3">
+                    <option value="{{ p.value }}">{{ p.label }}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <sc-if value="{{ hasPackagePick }}" hint-placeholder-val="{{ false }}">
+                <div style="border: 1px solid var(--color-border-light); border-radius: 5px; overflow: hidden;">
+                  <div style="padding: 7px 11px; background: var(--color-gray-50); border-bottom: 1px solid var(--color-border-base); display: flex; justify-content: space-between; align-items: baseline;">
+                    <span class="fk">Included Tests</span>
+                    <span style="font-size: 10.5px; font-weight: 600; color: var(--color-text-tertiary);">{{ pkgListRate }}</span>
+                  </div>
+                  <sc-for list="{{ pkgTests }}" as="pt" hint-placeholder-count="3">
+                    <div style="display: flex; justify-content: space-between; gap: 10px; padding: 6px 11px; border-bottom: 1px solid var(--color-border-light); font-size: 11.5px;">
+                      <span><strong style="font-family: ui-monospace, monospace;">{{ pt.code }}</strong> &#183; {{ pt.name }}</span>
+                      <span class="num" style="font-weight: 600;">{{ pt.rate }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div>
+                  <label for="aPkgRate">Package Rate (&#8377;) <span style="color: var(--color-error);">*</span></label>
+                  <input id="aPkgRate" type="number" min="0" step="0.01" value="{{ aPkgRate }}" onChange="{{ onAddField }}" data-field="aPkgRate" class="num" />
+                  <div style="margin-top: 3px; font-size: 10.5px; color: var(--color-text-tertiary);">{{ pkgRateHint }}</div>
+                </div>
+                <div style="padding: 9px 12px; border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50); display: flex; justify-content: space-between;">
+                  <span class="fk">Rows Added to Bill</span>
+                  <span class="num" style="font-size: 13px; font-weight: 700;">{{ pkgRowSummary }}</span>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ addModeIsTest }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <label for="aTest">Select Test <span style="color: var(--color-error);">*</span></label>
+            <select id="aTest" value="{{ aTestId }}" onChange="{{ onPickTest }}">
+              <option value="">Choose a test…</option>
+              <sc-for list="{{ testChoices }}" as="c" hint-placeholder-count="4">
+                <option value="{{ c.value }}">{{ c.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label for="aQty">Quantity <span style="color: var(--color-error);">*</span></label>
+              <input id="aQty" type="number" min="1" step="1" value="{{ aQty }}" onChange="{{ onAddField }}" data-field="aQty" class="num" />
+            </div>
+            <div>
+              <label for="aRate">Rate (₹) <span style="color: var(--color-error);">*</span></label>
+              <input id="aRate" type="number" min="0" step="0.01" value="{{ aRate }}" onChange="{{ onAddField }}" data-field="aRate" class="num" />
+              <div style="margin-top: 3px; font-size: 10.5px; color: var(--color-text-tertiary);">{{ rateHint }}</div>
+            </div>
+          </div>
+          <div style="padding: 9px 12px; border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50); display: flex; justify-content: space-between;">
+            <span class="fk">Net Amount</span>
+            <span class="num" style="font-size: 13px; font-weight: 700;">{{ aNetPreview }}</span>
+          </div>
+          </sc-if>
+        </div>
+        <div style="padding: 11px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeAdd }}" style="padding: 7px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+          <button onClick="{{ submitAdd }}" disabled="{{ addingTest }}" style="padding: 7px 16px; background: {{ addSubmitBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ addSubmitCursor }}; min-width: 118px;">{{ addSubmitLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ tEditOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 82; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeTestEdit }}">
+      <div onClick="{{ stop }}" class="card" style="width: 450px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div class="chd">
+          <div>
+            <div>Edit Billing Test</div>
+            <div style="font-size: 10px; font-weight: 600; color: var(--color-text-tertiary); font-family: ui-monospace, monospace;">{{ tEditEndpoint }}</div>
+          </div>
+          <button onClick="{{ closeTestEdit }}" style="background: none; border: none; font-size: 16px; color: var(--color-text-tertiary); cursor: pointer;">&#10005;</button>
+        </div>
+        <div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;">
+          <sc-if value="{{ tEditError }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ tEditError }}</div>
+          </sc-if>
+          <div style="padding: 9px 12px; border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50);">
+            <div class="fk">Test</div>
+            <div class="fv">{{ tEditName }}</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label for="tQty">Quantity <span style="color: var(--color-error);">*</span></label>
+              <input id="tQty" type="number" min="1" step="1" value="{{ tQty }}" onChange="{{ onTestEditField }}" data-field="tQty" class="num" />
+            </div>
+            <div>
+              <label for="tRate">Rate (&#8377;) <span style="color: var(--color-error);">*</span></label>
+              <input id="tRate" type="number" min="0" step="0.01" value="{{ tRate }}" onChange="{{ onTestEditField }}" data-field="tRate" class="num" />
+            </div>
+          </div>
+          <div style="padding: 9px 12px; border: 1px solid var(--color-border-light); border-radius: 5px; background: var(--color-gray-50); display: flex; justify-content: space-between;">
+            <span class="fk">Net Amount</span>
+            <span class="num" style="font-size: 13px; font-weight: 700;">{{ tNetPreview }}</span>
+          </div>
+          <div style="font-size: 10.5px; color: var(--color-text-tertiary); text-wrap: pretty;">Saving recalculates the bill total, payable and balance from all billed tests.</div>
+        </div>
+        <div style="padding: 11px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeTestEdit }}" style="padding: 7px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); cursor: pointer;">Cancel</button>
+          <button onClick="{{ saveTestEdit }}" disabled="{{ tSaving }}" style="padding: 7px 16px; background: {{ tSaveBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ tSaveCursor }}; min-width: 118px;">{{ tSaveLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ tRemoveOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 84; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeTestRemove }}">
+      <div onClick="{{ stop }}" class="card" style="width: 410px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 16px 16px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">Remove test from bill?</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">{{ tRemoveName }} will be removed and the bill total recalculated.</div>
+          <sc-if value="{{ tRemoveError }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 10px; padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ tRemoveError }}</div>
+          </sc-if>
+        </div>
+        <div style="padding: 11px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeTestRemove }}" style="padding: 7px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep Test</button>
+          <button onClick="{{ confirmTestRemove }}" disabled="{{ tRemoving }}" style="padding: 7px 16px; background: {{ tRemoveBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ tRemoveCursor }}; min-width: 118px;">{{ tRemoveLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ cancelOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.46); z-index: 85; display: flex; align-items: center; justify-content: center; padding: 24px;" onClick="{{ closeCancel }}">
+      <div onClick="{{ stop }}" class="card" style="width: 430px; max-width: 100%; box-shadow: 0 16px 40px rgba(17,24,39,.24);">
+        <div style="padding: 16px 16px 12px;">
+          <div style="font-size: 13.5px; font-weight: 700;">Cancel Bill?</div>
+          <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">Are you sure you want to cancel <strong class="num">{{ billNumber }}</strong>? This action will mark the bill as cancelled. It is not a delete.</div>
+          <div style="margin-top: 12px;">
+            <label for="cRemarks">Cancellation Remarks</label>
+            <input id="cRemarks" type="text" placeholder="e.g. Cancelled by admin" value="{{ cRemarks }}" onChange="{{ onCancelRemarks }}" />
+          </div>
+          <sc-if value="{{ cancelError }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 10px; padding: 7px 11px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border-left: 3px solid #B91C1C; background: #FEF2F2; color: #B91C1C;">{{ cancelError }}</div>
+          </sc-if>
+        </div>
+        <div style="padding: 11px 14px; border-top: 1px solid var(--color-border-light); background: var(--color-gray-50); display: flex; justify-content: flex-end; gap: 8px;">
+          <button onClick="{{ closeCancel }}" style="padding: 7px 14px; background: #fff; border: 1px solid var(--color-border-base); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--color-text-primary); cursor: pointer;">Keep Bill</button>
+          <button onClick="{{ confirmCancel }}" disabled="{{ cancelling }}" style="padding: 7px 16px; background: {{ cancelBtnBg }}; color: #fff; border: none; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: {{ cancelCursor }}; min-width: 126px;">{{ cancelLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1440px&quot;,&quot;height&quot;:&quot;960px&quot;}}">
+const MONEY = (n) => '\u20b9 ' + Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+const STATUS_TONE = {
+  Pending: ['#FEF3C7', '#92400E'],
+  Partial: ['#DBEAFE', '#1E40AF'],
+  Paid: ['#DCFCE7', '#166534'],
+  Cancelled: ['#FEE2E2', '#991B1B']
+};
+
+const fmtDate = (iso) => {
+  if (!iso) return '\u2014';
+  const d = new Date(iso);
+  if (isNaN(d)) return String(iso);
+  const M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  return d.getDate() + ' ' + M[d.getMonth()] + ' ' + d.getFullYear() + ', ' + hh + ':' + mm;
+};
+
+class Component extends DCLogic {
+  state = {
+    branchId: typeof LIMS !== 'undefined' ? LIMS.session.branchId : null,
+    view: 'list',
+
+    query: '', searching: false, results: [], searchMessage: '', searchKind: 'info',
+    fRegId: '', fStatus: '', fMode: '', fFrom: '', fTo: '', fBalance: '', fCancelled: 'include', fBillingId: '',
+
+    billingId: null, bill: null, loadingBill: false, billError: '',
+    tests: null, loadingTests: false, testsError: '',
+
+    editOpen: false, savingEdit: false, editError: '',
+    eTotal: 0, eDiscount: 0, eConcession: 0, eAdditional: 0, eRemarks: '', ePaymentMode: '',
+
+    addOpen: false, addingTest: false, addError: '',
+    aTestId: '', aQty: 1, aRate: 0,
+    addMode: 'test', aPackageId: '', aPkgRate: 0,
+
+    cancelOpen: false, cancelling: false, cancelError: '', cRemarks: '',
+
+    tEditOpen: false, tSaving: false, tEditError: '', tEditRow: null, tQty: 1, tRate: 0,
+    tRemoveOpen: false, tRemoving: false, tRemoveError: '', tRemoveRow: null,
+
+    toast: '', toastKind: 'success'
+  };
+
+  stop = (e) => e.stopPropagation();
+
+  notify = (text, kind) => {
+    if (this._toastTimer) clearTimeout(this._toastTimer);
+    this.setState({ toast: text, toastKind: kind || 'success' });
+    this._toastTimer = setTimeout(() => this.setState({ toast: '' }), 4200);
+  };
+
+  /* Contract failures carry a status; anything else is a client-side fault. */
+  errText = (err, fallback) => {
+    if (err && err.status) return err.status + ' \u2014 ' + err.message;
+    if (err && err.message) return fallback + ' (' + err.message + ')';
+    return fallback;
+  };
+
+  changeBranch = (e) => {
+    const id = e.target.value;
+    LIMS.setBranch(id);
+    this.setState({ view: 'list', branchId: id, billingId: null, bill: null, tests: null, results: [], searchMessage: '', billError: '', query: '' });
+    this.bootstrap();
+  };
+
+  /* ------------------------------------------------------------ API-038 */
+  onQuery = (e) => this.setState({ query: e.target.value, searchMessage: '' });
+  onFilter = (e) => this.setState({ [e.target.dataset.field]: e.target.value, searchMessage: '' });
+  resetFilters = () => {
+    this.setState({ query: '', fRegId: '', fStatus: '', fMode: '', fFrom: '', fTo: '', fBalance: '', fCancelled: 'include', fBillingId: '' });
+    setTimeout(this.bootstrap, 0);
+  };
+  onQueryKey = (e) => { if (e.key === 'Enter') this.runSearch(); };
+  onBillingIdKey = (e) => { if (e.key === 'Enter') this.openByBillingId(); };
+
+  /* ------------------------------------------------------ API-034 / 042 */
+  /* Direct read by billingId; a value that is not a bill in this org+branch
+     returns 404 Bill not found rather than an empty result list. */
+  openByBillingId = async () => {
+    const id = String(this.state.fBillingId || '').trim();
+    if (!id) {
+      return this.setState({ searchKind: 'error', searchMessage: '400 Bad Request \u2014 Enter a billingId to open a bill directly.' });
+    }
+    if (!LIMS.isUuid(id)) {
+      return this.setState({ searchKind: 'error', searchMessage: '400 Bad Request \u2014 billingId must be a UUID. ' + id + ' is not a valid identifier.' });
+    }
+    this.setState({ searchKind: 'info', searchMessage: 'GET \u2026/billing/' + id });
+    try {
+      const res = await this.fetchBill(id);
+      this.setState({ searchKind: 'success', searchMessage: '200 OK \u2014 Bill ' + res.data.billNumber + ' loaded.' });
+      this.loadBill(id)();
+    } catch (err) {
+      this.setState({ searchKind: 'error', searchMessage: this.errText(err, 'Unable to fetch bill.') + ' Check the billingId and the branch context.' });
+    }
+  };
+
+  searchBills = async (query, filters) => LIMS.request('searchBills', {
+    contract: 'API-038',
+    query: Object.assign({ query }, filters || {}),
+    resolve: () => {
+      const f = filters || {};
+      const q = String(query || '').toLowerCase();
+      const reg = String(f.patientRegistrationId || '').toLowerCase();
+      const from = f.fromDate ? new Date(f.fromDate + 'T00:00:00').getTime() : null;
+      const to = f.toDate ? new Date(f.toDate + 'T23:59:59').getTime() : null;
+      const data = LIMS.BILLS
+        .filter((b) => b.branchId === LIMS.session.branchId && b.organizationId === LIMS.session.organizationId)
+        .filter((b) => b.billNumber.toLowerCase().indexOf(q) > -1)
+        .filter((b) => !reg || String(b.patientRegistrationId).toLowerCase().indexOf(reg) > -1)
+        .filter((b) => !f.paymentStatus || (!b.isCancelled && b.paymentStatus === f.paymentStatus))
+        .filter((b) => {
+          if (!f.paymentMode) return true;
+          if (f.paymentMode === '__none') return !b.paymentMode;
+          return b.paymentMode === f.paymentMode;
+        })
+        .filter((b) => {
+          const ts = new Date(b.billDate).getTime();
+          if (from !== null && ts < from) return false;
+          if (to !== null && ts > to) return false;
+          return true;
+        })
+        .filter((b) => {
+          if (f.balance === 'due') return Number(b.balanceAmount) > 0;
+          if (f.balance === 'clear') return Number(b.balanceAmount) <= 0;
+          return true;
+        })
+        .filter((b) => {
+          if (f.cancelled === 'exclude') return !b.isCancelled;
+          if (f.cancelled === 'only') return !!b.isCancelled;
+          return true;
+        })
+        .map((b) => ({
+          id: b.id, billNumber: b.billNumber, patientRegistrationId: b.patientRegistrationId,
+          totalAmount: b.totalAmount, payableAmount: b.payableAmount, paidAmount: b.paidAmount,
+          balanceAmount: b.balanceAmount, paymentStatus: b.isCancelled ? 'Cancelled' : b.paymentStatus,
+          paymentMode: b.paymentMode, billDate: b.billDate, isCancelled: b.isCancelled
+        }));
+      return { status: 200, message: 'Bills searched successfully', data };
+    }
+  });
+
+  filterPayload = () => {
+    const s = this.state;
+    return {
+      patientRegistrationId: String(s.fRegId).trim(),
+      paymentStatus: s.fStatus,
+      paymentMode: s.fMode,
+      fromDate: s.fFrom,
+      toDate: s.fTo,
+      balance: s.fBalance,
+      cancelled: s.fCancelled
+    };
+  };
+
+  runSearch = async () => {
+    if (this.state.searching) return;
+    const query = String(this.state.query).trim();
+    const f = this.filterPayload();
+    if (f.fromDate && f.toDate && f.fromDate > f.toDate) {
+      this.setState({ results: [], searchKind: 'error', searchMessage: '400 Bad Request \u2014 Bill Date From cannot be later than Bill Date To.' });
+      return;
+    }
+    this.setState({ searching: true, searchMessage: '', results: [] });
+    try {
+      const res = await this.searchBills(query, f);
+      this.setState({
+        searching: false, results: res.data,
+        searchKind: res.data.length ? 'success' : 'info',
+        searchMessage: '200 OK \u2014 ' + res.data.length + ' bill(s) match the current filters'
+      });
+    } catch (err) {
+      this.setState({ searching: false, searchKind: 'error', searchMessage: this.errText(err, 'Unable to search bills. Please retry.') });
+    }
+  };
+
+  /* ------------------------------------------------------------ API-034 */
+  fetchBill = async (billingId) => LIMS.request('viewBill', {
+    contract: 'API-034',
+    params: { billingId },
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      if (b.organizationId !== LIMS.session.organizationId || b.branchId !== LIMS.session.branchId) {
+        return { status: 404, error: 'Bill does not belong to this organization and branch' };
+      }
+      return { status: 200, message: 'Bill fetched successfully', data: Object.assign({}, b) };
+    }
+  });
+
+  backToList = () => this.setState({ view: 'list', bill: null, tests: null, billingId: null, billError: '' });
+
+  loadBill = (billingId) => async () => {
+    this.setState({ view: 'detail', billingId, loadingBill: true, billError: '', bill: null, tests: null, testsError: '' });
+    try {
+      const res = await this.fetchBill(billingId);
+      this.setState({ loadingBill: false, bill: res.data });
+      this.loadTests(billingId);
+    } catch (err) {
+      this.setState({ loadingBill: false, bill: null, billError: this.errText(err, 'Unable to fetch bill. Please check the bill ID and branch context.') });
+    }
+  };
+
+  refreshBill = async () => {
+    const id = this.state.billingId;
+    if (!id) return;
+    try {
+      const res = await this.fetchBill(id);
+      this.setState({ bill: res.data });
+    } catch (err) {
+      this.setState({ billError: this.errText(err, 'Unable to refresh bill.') });
+    }
+  };
+
+  /* ------------------------------------------------------------ API-037 */
+  fetchBillingTests = async (billingId) => LIMS.request('viewBillingTests', {
+    contract: 'API-037',
+    params: { billingId },
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      const data = LIMS.testsForBill(billingId).map((t) => {
+        const master = LIMS.testById(t.testId) || {};
+        return {
+          id: t.id, billingId: t.billingId, testId: t.testId,
+          testCode: master.testCode || '\u2014', testName: master.testName || '\u2014',
+          quantity: t.quantity, rate: t.rate, netAmount: t.netAmount,
+          barcode: t.barcode, status: t.status
+        };
+      });
+      return { status: 200, message: 'Billing tests fetched successfully', data };
+    }
+  });
+
+  loadTests = async (billingId) => {
+    this.setState({ loadingTests: true, testsError: '' });
+    try {
+      const res = await this.fetchBillingTests(billingId);
+      this.setState({ loadingTests: false, tests: res.data });
+    } catch (err) {
+      this.setState({ loadingTests: false, tests: null, testsError: this.errText(err, 'Unable to load billing tests.') });
+    }
+  };
+
+  /* ------------------------------------------------------------ API-035 */
+  openEdit = () => {
+    const b = this.state.bill;
+    if (!b || b.isCancelled) return;
+    this.setState({
+      editOpen: true, editError: '', savingEdit: false,
+      eTotal: b.totalAmount, eDiscount: b.discountAmount,
+      eConcession: b.concessionAmount, eAdditional: b.additionalAmount,
+      eRemarks: b.remarks || '', ePaymentMode: b.paymentMode || ''
+    });
+  };
+  closeEdit = () => { if (!this.state.savingEdit) this.setState({ editOpen: false, editError: '' }); };
+  onEditField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, editError: '' });
+
+  updateBill = async (billingId, body) => LIMS.request('updateBill', {
+    contract: 'API-035',
+    params: { billingId },
+    body,
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      if (b.organizationId !== LIMS.session.organizationId || b.branchId !== LIMS.session.branchId) {
+        return { status: 404, error: 'Bill does not belong to this organization and branch' };
+      }
+      b.totalAmount = body.totalAmount;
+      b.discountAmount = body.discountAmount;
+      b.concessionAmount = body.concessionAmount;
+      b.additionalAmount = body.additionalAmount;
+      b.paymentMode = body.paymentMode;
+      b.remarks = body.remarks;
+      LIMS.recalcBill(b);
+      return { status: 200, message: 'Bill updated successfully', data: Object.assign({}, b) };
+    }
+  });
+
+  numeric = (raw) => {
+    if (raw === '' || raw === null || raw === undefined) return null;
+    const n = Number(raw);
+    return isNaN(n) ? null : n;
+  };
+
+  saveEdit = async () => {
+    if (this.state.savingEdit) return;
+    const s = this.state;
+    const fields = [['eTotal', 'Total Amount'], ['eDiscount', 'Discount'], ['eConcession', 'Concession'], ['eAdditional', 'Additional']];
+    const vals = {};
+    for (const [key, label] of fields) {
+      const n = this.numeric(s[key]);
+      if (n === null) return this.setState({ editError: label + ' must be a number.' });
+      if (n < 0) return this.setState({ editError: label + ' cannot be negative.' });
+      vals[key] = n;
+    }
+    if (vals.eDiscount + vals.eConcession > vals.eTotal) {
+      return this.setState({ editError: 'Discount and concession together cannot exceed the total amount.' });
+    }
+
+    this.setState({ savingEdit: true, editError: '' });
+    try {
+      await this.updateBill(s.billingId, {
+        totalAmount: vals.eTotal,
+        discountAmount: vals.eDiscount,
+        concessionAmount: vals.eConcession,
+        additionalAmount: vals.eAdditional,
+        paymentMode: String(s.ePaymentMode).trim() || null,
+        remarks: String(s.eRemarks).trim() || null
+      });
+      this.setState({ savingEdit: false, editOpen: false });
+      await this.refreshBill();
+      await this.loadTests(s.billingId);
+      this.notify('Bill updated successfully', 'success');
+    } catch (err) {
+      this.setState({ savingEdit: false, editError: this.errText(err, 'Unable to update bill.') });
+    }
+  };
+
+  /* ------------------------------------------------------------ API-036 */
+  openAdd = () => {
+    const b = this.state.bill;
+    if (!b || b.isCancelled) return;
+    this.setState({ addOpen: true, addError: '', addingTest: false, addMode: 'test', aTestId: '', aQty: 1, aRate: 0, aPackageId: '', aPkgRate: 0 });
+  };
+  closeAdd = () => { if (!this.state.addingTest) this.setState({ addOpen: false, addError: '' }); };
+  onAddField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, addError: '' });
+
+  /* Rate is seeded from the selected test's master record, not hard-coded. */
+  pickModeTest = () => this.setState({ addMode: 'test', addError: '' });
+  pickModePackage = () => this.setState({ addMode: 'package', addError: '' });
+
+  /* Package rate is seeded from the package master; member tests are priced
+     pro-rata against their master rates so the rows sum to the package rate. */
+  onPickPackage = (e) => {
+    const id = e.target.value;
+    const pkg = LIMS.packageById(id);
+    this.setState({ aPackageId: id, aPkgRate: pkg ? pkg.packageRate : 0, addError: '' });
+  };
+
+  billTestPackage = async (billingId, body) => LIMS.request('billTestPackage', {
+    contract: 'API-122',
+    params: { billingId },
+    body,
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      const pkg = LIMS.packageById(body.packageId);
+      if (!pkg) return { status: 404, error: 'Test package not found' };
+      const members = pkg.testIds.map((id) => LIMS.testById(id)).filter(Boolean);
+      if (!members.length) return { status: 409, error: 'Test package has no tests configured' };
+      const listTotal = members.reduce((sum, m) => sum + m.rate, 0);
+      const rows = members.map((m, i) => {
+        const share = i === members.length - 1
+          ? Math.round((body.packageRate - members.slice(0, i).reduce((sum, x) => sum + Math.round(body.packageRate * x.rate / listTotal * 100) / 100, 0)) * 100) / 100
+          : Math.round(body.packageRate * m.rate / listTotal * 100) / 100;
+        const row = {
+          id: LIMS.newId(), billingId, testId: m.id, packageId: pkg.id,
+          quantity: 1, rate: share, netAmount: share, barcode: null, status: 'Pending'
+        };
+        LIMS.BILLING_TESTS.push(row);
+        return row;
+      });
+      b.totalAmount = LIMS.testsForBill(billingId).reduce((sum, r) => sum + r.netAmount, 0);
+      LIMS.recalcBill(b);
+      return { status: 201, message: 'Test package billed successfully', data: rows };
+    }
+  });
+
+  submitAddPackage = async () => {
+    const s = this.state;
+    if (!s.aPackageId) return this.setState({ addError: 'packageId is required \u2014 select a package.' });
+    const rate = this.numeric(s.aPkgRate);
+    if (rate === null || rate < 0) return this.setState({ addError: 'Package rate must be a number and cannot be negative.' });
+    this.setState({ addingTest: true, addError: '' });
+    try {
+      const res = await this.billTestPackage(s.billingId, { packageId: s.aPackageId, packageRate: rate });
+      this.setState({ addingTest: false, addOpen: false });
+      await this.loadTests(s.billingId);
+      await this.refreshBill();
+      this.notify('Package billed \u2014 ' + res.data.length + ' test(s) added', 'success');
+    } catch (err) {
+      this.setState({ addingTest: false, addError: this.errText(err, 'Unable to bill test package.') });
+    }
+  };
+
+  onPickTest = (e) => {
+    const id = e.target.value;
+    const master = LIMS.testById(id);
+    this.setState({ aTestId: id, aRate: master ? master.rate : 0, addError: '' });
+  };
+
+  addBillingTest = async (billingId, body) => LIMS.request('addTestToBill', {
+    contract: 'API-036',
+    params: { billingId },
+    body,
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      const master = LIMS.testById(body.testId);
+      if (!master) return { status: 404, error: 'Test not found in test master' };
+      const row = {
+        id: LIMS.newId(), billingId, testId: body.testId,
+        quantity: body.quantity, rate: body.rate,
+        netAmount: body.quantity * body.rate, barcode: null, status: 'Pending'
+      };
+      LIMS.BILLING_TESTS.push(row);
+      b.totalAmount = LIMS.testsForBill(billingId).reduce((sum, t) => sum + t.netAmount, 0);
+      LIMS.recalcBill(b);
+      return { status: 201, message: 'Billing test added successfully', data: row };
+    }
+  });
+
+  submitAdd = async () => {
+    if (this.state.addingTest) return;
+    if (this.state.addMode === 'package') return this.submitAddPackage();
+    const s = this.state;
+    if (!s.aTestId) return this.setState({ addError: 'testId is required \u2014 select a test.' });
+    const qty = this.numeric(s.aQty);
+    const rate = this.numeric(s.aRate);
+    if (qty === null || qty < 1 || Math.floor(qty) !== qty) return this.setState({ addError: 'Quantity must be a whole number of at least 1.' });
+    if (rate === null || rate < 0) return this.setState({ addError: 'Rate must be a number and cannot be negative.' });
+
+    this.setState({ addingTest: true, addError: '' });
+    try {
+      await this.addBillingTest(s.billingId, { testId: s.aTestId, quantity: qty, rate });
+      this.setState({ addingTest: false, addOpen: false });
+      await this.loadTests(s.billingId);
+      await this.refreshBill();
+      this.notify('Test added to bill', 'success');
+    } catch (err) {
+      this.setState({ addingTest: false, addError: this.errText(err, 'Unable to add test to bill.') });
+    }
+  };
+
+  /* --------------------------------- billing test edit / remove (proposed) */
+  openTestEdit = (row) => () => {
+    const b = this.state.bill;
+    if (!b || b.isCancelled) return;
+    this.setState({ tEditOpen: true, tEditError: '', tSaving: false, tEditRow: row, tQty: row.quantity, tRate: row.rate });
+  };
+  closeTestEdit = () => { if (!this.state.tSaving) this.setState({ tEditOpen: false, tEditError: '' }); };
+  onTestEditField = (e) => this.setState({ [e.target.dataset.field]: e.target.value, tEditError: '' });
+
+  updateBillingTest = async (billingId, billingTestId, body) => LIMS.request('updateBillingTest', {
+    contract: 'proposed',
+    params: { billingId, billingTestId },
+    body,
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      const row = LIMS.BILLING_TESTS.filter((r) => r.id === billingTestId)[0];
+      if (!row) return { status: 404, error: 'Billing test not found' };
+      row.quantity = body.quantity;
+      row.rate = body.rate;
+      row.netAmount = body.quantity * body.rate;
+      b.totalAmount = LIMS.testsForBill(billingId).reduce((sum, r) => sum + r.netAmount, 0);
+      LIMS.recalcBill(b);
+      return { status: 200, message: 'Billing test updated successfully', data: Object.assign({}, row) };
+    }
+  });
+
+  saveTestEdit = async () => {
+    if (this.state.tSaving) return;
+    const s = this.state;
+    const qty = this.numeric(s.tQty);
+    const rate = this.numeric(s.tRate);
+    if (qty === null || qty < 1 || Math.floor(qty) !== qty) return this.setState({ tEditError: 'Quantity must be a whole number of at least 1.' });
+    if (rate === null || rate < 0) return this.setState({ tEditError: 'Rate must be a number and cannot be negative.' });
+    this.setState({ tSaving: true, tEditError: '' });
+    try {
+      await this.updateBillingTest(s.billingId, s.tEditRow.id, { quantity: qty, rate });
+      this.setState({ tSaving: false, tEditOpen: false });
+      await this.loadTests(s.billingId);
+      await this.refreshBill();
+      this.notify('Billing test updated', 'success');
+    } catch (err) {
+      this.setState({ tSaving: false, tEditError: this.errText(err, 'Unable to update billing test.') });
+    }
+  };
+
+  openTestRemove = (row) => () => {
+    const b = this.state.bill;
+    if (!b || b.isCancelled) return;
+    this.setState({ tRemoveOpen: true, tRemoveError: '', tRemoving: false, tRemoveRow: row });
+  };
+  closeTestRemove = () => { if (!this.state.tRemoving) this.setState({ tRemoveOpen: false, tRemoveError: '' }); };
+
+  removeBillingTest = async (billingId, billingTestId) => LIMS.request('removeBillingTest', {
+    contract: 'proposed',
+    params: { billingId, billingTestId },
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      const i = LIMS.BILLING_TESTS.map((r) => r.id).indexOf(billingTestId);
+      if (i < 0) return { status: 404, error: 'Billing test not found' };
+      LIMS.BILLING_TESTS.splice(i, 1);
+      b.totalAmount = LIMS.testsForBill(billingId).reduce((sum, r) => sum + r.netAmount, 0);
+      LIMS.recalcBill(b);
+      return { status: 200, message: 'Billing test removed successfully', data: { id: billingTestId } };
+    }
+  });
+
+  confirmTestRemove = async () => {
+    if (this.state.tRemoving) return;
+    const s = this.state;
+    this.setState({ tRemoving: true, tRemoveError: '' });
+    try {
+      await this.removeBillingTest(s.billingId, s.tRemoveRow.id);
+      this.setState({ tRemoving: false, tRemoveOpen: false });
+      await this.loadTests(s.billingId);
+      await this.refreshBill();
+      this.notify('Billing test removed', 'success');
+    } catch (err) {
+      this.setState({ tRemoving: false, tRemoveError: this.errText(err, 'Unable to remove billing test.') });
+    }
+  };
+
+  /* ------------------------------------------------------------ API-039 */
+  openCancel = () => {
+    const b = this.state.bill;
+    if (!b || b.isCancelled) return;
+    this.setState({ cancelOpen: true, cancelError: '', cancelling: false, cRemarks: '' });
+  };
+  closeCancel = () => { if (!this.state.cancelling) this.setState({ cancelOpen: false, cancelError: '' }); };
+  onCancelRemarks = (e) => this.setState({ cRemarks: e.target.value, cancelError: '' });
+
+  cancelBill = async (billingId, remarks) => LIMS.request('cancelBill', {
+    contract: 'API-039',
+    params: { billingId },
+    body: { remarks: remarks || null },
+    resolve: () => {
+      const b = LIMS.billById(billingId);
+      if (!b) return { status: 404, error: 'Bill not found' };
+      if (b.isCancelled) return { status: 409, error: 'Bill is already cancelled' };
+      b.isCancelled = true;
+      b.remarks = remarks || b.remarks;
+      return { status: 200, message: 'Bill cancelled successfully', data: { id: b.id, billNumber: b.billNumber, isCancelled: true, remarks: b.remarks } };
+    }
+  });
+
+  confirmCancel = async () => {
+    if (this.state.cancelling) return;
+    const s = this.state;
+    this.setState({ cancelling: true, cancelError: '' });
+    try {
+      await this.cancelBill(s.billingId, String(s.cRemarks).trim());
+      this.setState({ cancelling: false, cancelOpen: false });
+      await this.refreshBill();
+      this.notify('Bill cancelled successfully', 'success');
+    } catch (err) {
+      this.setState({ cancelling: false, cancelError: this.errText(err, 'Unable to cancel bill.') });
+    }
+  };
+
+  componentDidMount() { this.waitForApi(); }
+  componentWillUnmount() { clearTimeout(this._apiTimer); }
+
+  /* lims-api.js loads from <helmet>; poll until the contract layer is available. */
+  waitForApi = () => {
+    if (typeof LIMS !== 'undefined') {
+      if (!this.state.branchId) this.setState({ branchId: LIMS.session.branchId });
+      this.bootstrap();
+      return;
+    }
+    this._apiTimer = setTimeout(this.waitForApi, 60);
+  };
+
+  /* Seed the screen with the branch's bills and open the first one, so the
+     page is populated on arrival instead of an empty search prompt. */
+  bootstrap = async () => {
+    this.setState({ searching: true });
+    try {
+      const res = await this.searchBills('', this.filterPayload());
+      this.setState({
+        searching: false, results: res.data,
+        searchKind: 'info',
+        searchMessage: '200 OK \u2014 showing ' + res.data.length + ' recent bill(s) in this branch'
+      });
+    } catch (err) {
+      this.setState({ searching: false, searchKind: 'error', searchMessage: this.errText(err, 'Unable to load recent bills.') });
+    }
+  };
+
+  renderVals() {
+    const s = this.state;
+    if (typeof LIMS === 'undefined' || !s.branchId) return {};
+    const b = s.bill;
+    const cancelled = !!(b && b.isCancelled);
+    const shownStatus = cancelled ? 'Cancelled' : (b ? b.paymentStatus : 'Pending');
+    const tone = STATUS_TONE[shownStatus] || STATUS_TONE.Pending;
+    const blocked = !b || cancelled;
+
+    const eTotal = Number(s.eTotal) || 0;
+    const ePayable = eTotal - (Number(s.eDiscount) || 0) - (Number(s.eConcession) || 0) + (Number(s.eAdditional) || 0);
+    const testsTotal = b ? (s.tests || []).reduce((sum, t) => sum + Number(t.netAmount || 0), 0) : 0;
+
+    const pkg = s.aPackageId ? LIMS.packageById(s.aPackageId) : null;
+    const pkgListTotal = pkg ? pkg.testIds.map((id) => LIMS.testById(id)).filter(Boolean).reduce((sum, m) => sum + m.rate, 0) : 0;
+
+    const msgTone = s.searchKind === 'error' ? ['#FEF2F2', '#B91C1C'] : s.searchKind === 'success' ? ['#F0FDF4', '#166534'] : ['#EFF6FF', '#1E40AF'];
+    const toastTone = s.toastKind === 'error' ? ['#FEF2F2', '#B91C1C'] : ['#F0FDF4', '#166534'];
+
+    return {
+      contextLabel: LIMS.orgLabel(LIMS.session.organizationId).split(' (')[0] + ' \u00b7 ' + LIMS.branchLabel(s.branchId).split(' (')[0],
+      orgLabel: LIMS.orgLabel(LIMS.session.organizationId),
+      branchId: s.branchId,
+      branchChoices: LIMS.branchOptions(),
+      changeBranch: this.changeBranch,
+
+      query: s.query, onQuery: this.onQuery, onQueryKey: this.onQueryKey, runSearch: this.runSearch,
+      onFilter: this.onFilter, resetFilters: this.resetFilters,
+      fRegId: s.fRegId, fStatus: s.fStatus, fMode: s.fMode, fFrom: s.fFrom, fTo: s.fTo,
+      fBillingId: s.fBillingId, openByBillingId: this.openByBillingId, onBillingIdKey: this.onBillingIdKey,
+      fBalance: s.fBalance, fCancelled: s.fCancelled,
+      searching: s.searching, searchBusy: s.searching,
+      searchLabel: s.searching ? 'Searching\u2026' : 'Search',
+      searchBtnBg: s.searching ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      searchCursor: s.searching ? 'wait' : 'pointer',
+      searchEndpoint: 'GET \u2026/billing/search',
+      searchMessage: s.searchMessage, searchMsgBg: msgTone[0], searchMsgFg: msgTone[1],
+      hasResults: !s.searching && s.results.length > 0,
+      results: s.results.map((r) => {
+        const t = STATUS_TONE[r.paymentStatus] || STATUS_TONE.Pending;
+        return {
+          billNumber: r.billNumber,
+          total: MONEY(r.totalAmount), payable: MONEY(r.payableAmount),
+          paid: MONEY(r.paidAmount), balance: MONEY(r.balanceAmount),
+          paymentStatus: r.paymentStatus, statusBg: t[0], statusFg: t[1],
+          cancelText: r.isCancelled ? 'Yes' : 'No',
+          cancelFg: r.isCancelled ? '#B91C1C' : 'var(--color-text-secondary)',
+          onView: this.loadBill(r.id)
+        };
+      }),
+
+      loadingBill: s.loadingBill,
+      billError: s.billError,
+      billErrorTitle: 'Bill could not be loaded',
+      showList: s.view === 'list',
+      backToList: this.backToList,
+      showEmptyPrompt: s.view === 'detail' && !s.loadingBill && !b && !s.billError,
+      hasBill: !!b,
+
+      billNumber: b ? b.billNumber : '',
+      billDate: b ? fmtDate(b.billDate) : '',
+      patientRegistrationId: b ? b.patientRegistrationId : '',
+      paymentMode: b ? (b.paymentMode || 'Not Paid') : '',
+      remarks: b ? (b.remarks || '\u2014') : '',
+      paymentStatus: shownStatus, statusBg: tone[0], statusFg: tone[1],
+      isCancelled: cancelled,
+      canCancel: !!b && !cancelled,
+      mutationsBlocked: blocked,
+      editFg: blocked ? 'var(--color-text-tertiary)' : 'var(--color-primary-deep)',
+      editCursor: blocked ? 'not-allowed' : 'pointer',
+      addBtnBg: blocked ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      addCursor: blocked ? 'not-allowed' : 'pointer',
+
+      amountRows: b ? [
+        { k: 'Total Amount', v: MONEY(b.totalAmount), size: '15px', fg: 'var(--color-text-primary)', bg: '#fff', border: 'var(--color-border-light)' },
+        { k: 'Discount', v: MONEY(b.discountAmount), size: '15px', fg: 'var(--color-text-primary)', bg: '#fff', border: 'var(--color-border-light)' },
+        { k: 'Concession', v: MONEY(b.concessionAmount), size: '15px', fg: 'var(--color-text-primary)', bg: '#fff', border: 'var(--color-border-light)' },
+        { k: 'Additional', v: MONEY(b.additionalAmount), size: '15px', fg: 'var(--color-text-primary)', bg: '#fff', border: 'var(--color-border-light)' },
+        { k: 'Payable Amount', v: MONEY(b.payableAmount), size: '16px', fg: 'var(--color-primary-deep)', bg: 'var(--color-interactive-hover)', border: 'var(--color-primary-bright)' },
+        { k: 'Paid Amount', v: MONEY(b.paidAmount), size: '16px', fg: '#166534', bg: '#F0FDF4', border: '#86EFAC' },
+        { k: 'Balance Amount', v: MONEY(b.balanceAmount), size: '20px', fg: b.balanceAmount > 0 ? '#B45309' : '#166534', bg: b.balanceAmount > 0 ? '#FFFBEB' : '#F0FDF4', border: b.balanceAmount > 0 ? '#FCD34D' : '#86EFAC' },
+        { k: 'Tests Billed', v: (s.tests ? s.tests.length : 0) + ' \u00b7 ' + MONEY(testsTotal), size: '15px', fg: 'var(--color-text-secondary)', bg: '#fff', border: 'var(--color-border-light)' }
+      ] : [],
+
+      loadingTests: s.loadingTests,
+      testsError: s.testsError,
+      hasTests: !s.loadingTests && !s.testsError && !!s.tests && s.tests.length > 0,
+      testsEmpty: !s.loadingTests && !s.testsError && !!s.tests && s.tests.length === 0,
+      testRows: (s.tests || []).map((t) => {
+        const tt = STATUS_TONE[t.status] || STATUS_TONE.Pending;
+        return {
+          testCode: t.testCode, testName: t.testName,
+          quantity: t.quantity, rate: MONEY(t.rate), netAmount: MONEY(t.netAmount),
+          barcode: t.barcode || '\u2014', status: t.status, bg: tt[0], fg: tt[1],
+          blocked,
+          actionFg: blocked ? 'var(--color-text-tertiary)' : 'var(--color-primary-deep)',
+          actionCursor: blocked ? 'not-allowed' : 'pointer',
+          removeFg: blocked ? 'var(--color-text-tertiary)' : '#B91C1C',
+          removeBorder: blocked ? 'var(--color-border-base)' : '#FCA5A5',
+          onEdit: this.openTestEdit(t),
+          onRemove: this.openTestRemove(t)
+        };
+      }),
+
+      tEditOpen: s.tEditOpen, closeTestEdit: this.closeTestEdit, onTestEditField: this.onTestEditField,
+      saveTestEdit: this.saveTestEdit, tEditError: s.tEditError, tSaving: s.tSaving,
+      tEditName: s.tEditRow ? s.tEditRow.testCode + ' \u2014 ' + s.tEditRow.testName : '',
+      tQty: s.tQty, tRate: s.tRate,
+      tNetPreview: MONEY((Number(s.tQty) || 0) * (Number(s.tRate) || 0)),
+      tSaveLabel: s.tSaving ? 'Saving\u2026' : 'Save Test',
+      tSaveBg: s.tSaving ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      tSaveCursor: s.tSaving ? 'wait' : 'pointer',
+      tEditEndpoint: 'PUT \u2026/billing/{billingId}/tests/{billingTestId}',
+
+      tRemoveOpen: s.tRemoveOpen, closeTestRemove: this.closeTestRemove, confirmTestRemove: this.confirmTestRemove,
+      tRemoveError: s.tRemoveError, tRemoving: s.tRemoving,
+      tRemoveName: s.tRemoveRow ? s.tRemoveRow.testCode + ' \u2014 ' + s.tRemoveRow.testName : '',
+      tRemoveLabel: s.tRemoving ? 'Removing\u2026' : 'Remove Test',
+      tRemoveBg: s.tRemoving ? 'var(--color-gray-300)' : '#B91C1C',
+      tRemoveCursor: s.tRemoving ? 'wait' : 'pointer',
+
+      editOpen: s.editOpen, closeEdit: this.closeEdit, openEdit: this.openEdit,
+      onEditField: this.onEditField, saveEdit: this.saveEdit,
+      editError: s.editError, savingEdit: s.savingEdit,
+      saveLabel: s.savingEdit ? 'Updating bill\u2026' : 'Save Changes',
+      saveBtnBg: s.savingEdit ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      saveCursor: s.savingEdit ? 'wait' : 'pointer',
+      eTotal: s.eTotal, eDiscount: s.eDiscount, eConcession: s.eConcession, eAdditional: s.eAdditional, eRemarks: s.eRemarks,
+      ePaymentMode: s.ePaymentMode,
+      paymentModeChoices: ['CASH', 'CARD', 'UPI', 'NETBANKING', 'CHEQUE', 'INSURANCE'].map((m) => ({ value: m, label: m })),
+      eTotalHint: b && Math.abs(testsTotal - eTotal) > 0.001 ? 'Tests on this bill sum to ' + MONEY(testsTotal) : 'Matches the sum of billed tests',
+      eTotalHintFg: b && Math.abs(testsTotal - eTotal) > 0.001 ? '#B45309' : 'var(--color-text-tertiary)',
+      ePayablePreview: MONEY(ePayable),
+      eBalancePreview: MONEY(ePayable - (b ? Number(b.paidAmount) : 0)),
+      updateEndpoint: 'PUT \u2026/billing/{billingId}',
+
+      addOpen: s.addOpen, openAdd: this.openAdd, closeAdd: this.closeAdd,
+      onAddField: this.onAddField, onPickTest: this.onPickTest, submitAdd: this.submitAdd,
+      addError: s.addError, addingTest: s.addingTest,
+      addSubmitLabel: s.addingTest ? (s.addMode === 'package' ? 'Billing package\u2026' : 'Adding test\u2026') : (s.addMode === 'package' ? 'Add Package' : 'Add Test'),
+      addSubmitBg: s.addingTest ? 'var(--color-gray-300)' : 'var(--color-primary-deep)',
+      addSubmitCursor: s.addingTest ? 'wait' : 'pointer',
+      aTestId: s.aTestId, aQty: s.aQty, aRate: s.aRate,
+      addTitle: s.addMode === 'package' ? 'Add Package to Bill' : 'Add Test to Bill',
+      addModeIsTest: s.addMode === 'test',
+      addModeIsPackage: s.addMode === 'package',
+      pickModeTest: this.pickModeTest, pickModePackage: this.pickModePackage,
+      modeTestBg: s.addMode === 'test' ? 'var(--color-primary-deep)' : 'transparent',
+      modeTestFg: s.addMode === 'test' ? '#fff' : 'var(--color-text-secondary)',
+      modePkgBg: s.addMode === 'package' ? 'var(--color-primary-deep)' : 'transparent',
+      modePkgFg: s.addMode === 'package' ? '#fff' : 'var(--color-text-secondary)',
+      aPackageId: s.aPackageId, aPkgRate: s.aPkgRate, onPickPackage: this.onPickPackage,
+      packageChoices: LIMS.TEST_PACKAGES.map((p) => ({ value: p.id, label: p.packageCode + ' \u2014 ' + p.packageName + ' (' + MONEY(p.packageRate) + ')' })),
+      hasPackagePick: !!pkg,
+      pkgTests: pkg ? pkg.testIds.map((id) => LIMS.testById(id)).filter(Boolean).map((m) => ({ code: m.testCode, name: m.testName, rate: MONEY(m.rate) })) : [],
+      pkgListRate: pkg ? 'List price ' + MONEY(pkgListTotal) : '',
+      pkgRateHint: pkg ? 'Package price vs list price \u2014 saving ' + MONEY(Math.max(0, pkgListTotal - (Number(s.aPkgRate) || 0))) : '',
+      pkgRowSummary: pkg ? pkg.testIds.length + ' row(s) \u00b7 ' + MONEY(Number(s.aPkgRate) || 0) : '',
+      testChoices: LIMS.TESTS.map((t) => ({ value: t.id, label: t.testCode + ' \u2014 ' + t.testName })),
+      rateHint: s.aTestId ? 'Seeded from the test master record' : 'Select a test to seed the rate',
+      aNetPreview: MONEY((Number(s.aQty) || 0) * (Number(s.aRate) || 0)),
+      addEndpoint: s.addMode === 'package' ? 'POST \u2026/billings/{billingId}/test-packages' : 'POST \u2026/billing/{billingId}/tests',
+
+      cancelOpen: s.cancelOpen, openCancel: this.openCancel, closeCancel: this.closeCancel,
+      confirmCancel: this.confirmCancel, onCancelRemarks: this.onCancelRemarks,
+      cRemarks: s.cRemarks, cancelError: s.cancelError, cancelling: s.cancelling,
+      cancelLabel: s.cancelling ? 'Cancelling bill\u2026' : 'Cancel Bill',
+      cancelBtnBg: s.cancelling ? 'var(--color-gray-300)' : '#B91C1C',
+      cancelCursor: s.cancelling ? 'wait' : 'pointer',
+
+      toast: s.toast, toastBg: toastTone[0], toastFg: toastTone[1],
+      stop: this.stop
+    };
+  }
+}
+</script>
+</body>
+</html>
