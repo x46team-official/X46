@@ -1,0 +1,31 @@
+-- Source: database/schema/alter-minor-changes.sql
+-- Original content (verbatim, for reference — NOT executed):
+--
+--   SELECT DISTINCT s.test_category
+--   FROM staging_livehealth_tests s
+--   WHERE s.test_category IS NOT NULL
+--     AND TRIM(s.test_category) <> ''
+--     AND NOT EXISTS (
+--         SELECT 1
+--         FROM test_category_master t
+--         WHERE LOWER(TRIM(t.category_name)) =
+--               LOWER(TRIM(s.test_category))
+--     );
+--
+--   SELECT DISTINCT s.test_category
+--   FROM staging_livehealth_tests s
+--   LEFT JOIN test_category_master t
+--   ON LOWER(TRIM(s.test_category)) = LOWER(TRIM(t.category_name))
+--   WHERE t.id IS NULL
+--     AND s.test_category IS NOT NULL
+--     AND TRIM(s.test_category) <> '';
+--
+-- This is a one-off diagnostic query (find test_category values present in the
+-- Livehealth import staging table but missing from test_category_master), not
+-- a schema change. staging_livehealth_tests is a throwaway table created ad hoc
+-- during the Livehealth data migration (database/Livehealth/*.sql) and is not
+-- part of this schema's cumulative DDL (001-040), so running these SELECTs here
+-- would fail with "relation staging_livehealth_tests does not exist". Applied
+-- as a no-op migration to preserve the V41 slot plan.md reserves for it.
+-- See backend/progress.md Log for 2026-09-07 / Chunk 0.1.
+SELECT 1;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ClaudeCodeEditorTabs">
+    <option name="activeSessionId" value="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" />
+    <option name="openSessionIds">
+      <list>
+        <option value="88c5302c-bdf4-4c1e-bf02-f8c04f8deb12" />
+        <option value="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" />
+      </list>
+    </option>
+    <option name="sessionPaths">
+      <map>
+        <entry key="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" value="/sessions/new" />
+        <entry key="88c5302c-bdf4-4c1e-bf02-f8c04f8deb12" value="/sessions/441fb3d5-d628-48ad-8aa7-aeb4a89a87ac" />
+      </map>
+    </option>
+    <option name="sessionTitles">
+      <map>
+        <entry key="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" value="Claude Code" />
+        <entry key="88c5302c-bdf4-4c1e-bf02-f8c04f8deb12" value="verbatim as a comment plus `SELECT 1;`, to satisfy" />
+      </map>
+    </option>
+  </component>
+</project>

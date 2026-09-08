@@ -1,0 +1,49 @@
+package com.x46.backend.security;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.util.List;
+import java.util.UUID;
+import org.junit.jupiter.api.Test;
+
+class JwtServiceTest {
+
+    private static final String SECRET = "test-secret-key-at-least-32-bytes-long!!";
+
+    private final JwtService jwtService = new JwtService(SECRET, 60);
+
+    @Test
+    void issuedTokenParsesBackToTheSamePrincipal() {
+        var principal = new JwtPrincipal(
+                UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), List.of(UUID.randomUUID()));
+
+        var issued = jwtService.issue(principal);
+        var parsed = jwtService.parse(issued.token());
+
+        assertThat(parsed).isEqualTo(principal);
+    }
+
+    @Test
+    void tamperedTokenIsRejected() {
+        var principal = new JwtPrincipal(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), List.of());
+        var issued = jwtService.issue(principal);
+        String tampered = issued.token().substring(0, issued.token().length() - 1) + "x";
+
+        assertThatThrownBy(() -> jwtService.parse(tampered)).isInstanceOf(JwtException.class);
+    }
+
+    @Test
+    void expiredTokenIsRejected() {
+        var alreadyExpired = new JwtService(SECRET, -1);
+        var principal = new JwtPrincipal(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), List.of());
+        var issued = alreadyExpired.issue(principal);
+
+        assertThatThrownBy(() -> alreadyExpired.parse(issued.token())).isInstanceOf(JwtException.class);
+    }
+
+    @Test
+    void malformedTokenIsRejected() {
+        assertThatThrownBy(() -> jwtService.parse("not-a-jwt")).isInstanceOf(JwtException.class);
+    }
+}
