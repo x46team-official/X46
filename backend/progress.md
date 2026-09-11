@@ -13,16 +13,16 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 | 0.1 | Flyway baseline + entity base classes | ✅ | ✅ | n/a |
 | 0.2 | API response envelope + exception handling | ✅ | ✅ | n/a |
 | 0.3 | JWT auth core (`/api/auth/login`) | ✅ | ✅ | ✅ |
-| 0.4 | RBAC permission evaluator | ⬜ | ⬜ | n/a |
-| 0.5 | Scope guard + audit log writer | ⬜ | ⬜ | n/a |
+| 0.4 | RBAC permission evaluator | ✅ | ✅ | n/a |
+| 0.5 | Scope guard + audit log writer | ✅ | ✅ | n/a |
 
 ## M1 — Organization, Branch & Identity
 
 | Chunk | Title | Status | Tests | Postman |
 |---|---|---|---|---|
-| 1.1 | Organization + bootstrap platform role | ⬜ | ⬜ | ⬜ |
-| 1.2 | Branch | ⬜ | ⬜ | ⬜ |
-| 1.3 | Roles (+ `roles.is_active` migration) | ⬜ | ⬜ | ⬜ |
+| 1.1 | Organization + bootstrap platform role | ✅ | ✅ | ✅ |
+| 1.2 | Branch | ✅ | ✅ | ✅ |
+| 1.3 | Roles (+ `roles.is_active` migration) | ✅ | ✅ | ✅ |
 | 1.4 | Users | ⬜ | ⬜ | ⬜ |
 | 1.5 | User-Role assignment | ⬜ | ⬜ | ⬜ |
 
@@ -131,6 +131,181 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-11, Chunk 1.3: **The plan's one schema migration lands as
+  `V43__add_roles_is_active.sql`**, not `V42` as plan.md's literal text
+  names it — Chunk 1.1's bootstrap seed claimed V42 first (flagged as a
+  pending sequencing decision in that chunk's log entry). `ALTER TABLE roles
+  ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT TRUE`, additive, matches
+  `API-129`'s `schema_gap_note` resolution verbatim.
+  `org.Role` (mirrors `Organization`/`Branch` — standalone entity, not
+  `AbstractTenantEntity`, since `roles` has no `updated_at` column) +
+  `RoleRepository` + `RoleService` (create/list/view/update/updateStatus) +
+  `RoleController` in the existing `org` package (no separate `identity`
+  package exists yet, and Role is scoped under org+branch exactly like
+  Branch, so no new package split was invented). First endpoints in the
+  codebase gated on the real `@perm.can('Role Management', <action>)` check
+  instead of `hasRole('PLATFORM_ADMIN')` — status toggle uses the `UPDATE`
+  action since `PermissionAction` has no dedicated status verb, same
+  reasoning as User/Test/Department status endpoints will presumably need
+  later.
+  **Per-operation response DTOs, not one shared `RoleResponse`**: `API-003`
+  (create) returns `id/organizationId/branchId/roleCode/roleName`, `API-129`
+  Update returns just `id/roleCode/roleName` (same shape as a List item, so
+  `RoleSummaryResponse` is reused for both — an actual shape match, not a
+  merge of two different endpoints), View adds `createdAt`
+  (`RoleDetailResponse`), and Status returns `id/isActive`
+  (`RoleStatusResponse`, mirroring `API-128`'s Activate/Deactivate User
+  shape since `API-129`'s own status response is only specified for its
+  blocked-409 state). Keeps every response body matching its contract
+  exactly instead of serializing unrequested fields.
+  Hit and fixed one real bug while writing `RoleIntegrationTest`: the List
+  Roles search query originally used a single JPQL
+  `(:search IS NULL OR LOWER(...) LIKE ...)` clause to make the `search`
+  query param optional, but Postgres can't infer a type for a bound `NULL`
+  parameter inside `LOWER(...)`, throwing `function lower(bytea) does not
+  exist` for every no-search-term request. Fixed by splitting into two
+  repository methods (`findByOrganizationIdAndBranchId` for no search,
+  `search` for a real term) selected in `RoleService`, avoiding the null
+  bind entirely rather than adding a cast/coalesce workaround.
+  `mvn test` green (90/90 — 59 from 0.1-1.2 + 17 `RoleServiceTest` Mockito
+  cases (4 operations × their own `errors[]` + success, plus the search-vs-list
+  branch) + 14 `RoleIntegrationTest` full-stack cases against the real
+  dockerized Postgres covering all 5 endpoints' success/error paths, a
+  `@perm.can`-driven 403, and a 401). Postman:
+  `backend/postman/01-org-identity.postman_collection.json` gained a
+  "Chunk 1.3 - Roles" folder with all 5 requests and their example responses
+  taken verbatim from `API-003`/`API-129`.
+- 2026-09-11, Chunk 1.2: `org.Branch` (mirrors `Organization` — standalone
+  entity, not `AbstractTenantEntity`, since that base class demands a
+  `branch_id` column and `branches` is the table `branch_id` points *at*) +
+  `BranchRepository` + `BranchService` (validation order matches
+  `API-002.errors[]`: branchCode, branchName, org-exists, then duplicate-code
+  409) + `BranchController` (`POST /api/organizations/{organizationId}/branches`,
+  same `hasRole('PLATFORM_ADMIN')` gate as 1.1 per plan.md — branch is still
+  pre-tenant bootstrap) in the existing `org` package.
+  **Extended `ScopeGuard`** (Chunk 0.5's shared infra) with
+  `requireOrg(UUID organizationId)` — the existing `requireOrgBranch(org, branch)`
+  needs both IDs and throws a combined "Organization or branch not found",
+  but `API-002` needs an org-only check with its own message
+  ("Organization not found"), since branchId doesn't exist yet at creation
+  time. This is reuse/extension of Module 0 infra per CLAUDE.md rule 4, not a
+  fork. `mvn test` green (59/59 — 43 from 0.1-1.1 + 7 `BranchServiceTest`
+  Mockito cases (missing code, missing name, unknown org propagated from a
+  mocked `ScopeGuard`, duplicate code, unexpected-failure propagation, success
+  defaulting `isActive` true, explicit `isActive=false`) + 2 new
+  `ScopeGuardIntegrationTest` cases for `requireOrg` + 7
+  `BranchIntegrationTest` full-stack cases against the real dockerized
+  Postgres: success, both 400s, 404, 409, 403 non-admin, 401 no token).
+  Postman: `backend/postman/01-org-identity.postman_collection.json` gained a
+  "Chunk 1.2 - Branch" folder with Create Branch and its 201/400×2/404/409
+  example responses, bodies taken verbatim from `API-002`'s contract.
+- 2026-09-10, Chunk 1.1: **M1 is now open — first entity actually persisted via
+  Spring Data JPA in this codebase.** `org.Organization` (id, organizationCode,
+  organizationName, isActive, createdAt/updatedAt set manually in the service
+  before save — no auditing annotation exists yet, so this is the simplest
+  fit, not a new pattern) + `OrganizationRepository` + `OrganizationService`
+  (validation order matches API-001.errors[]: name, then code, then
+  duplicate-code 409) + `OrganizationController` (`POST /api/organizations`,
+  `@PreAuthorize("hasRole('PLATFORM_ADMIN')")` per plan.md gap #6, not
+  `@perm.can(...)`) in a new `org` package.
+  **`V42__platform_bootstrap_seed.sql`** resolves Chunk 0.1's flagged
+  sequencing question: it takes V42 as a *data* seed (chained
+  `INSERT ... RETURNING` CTEs for organizations→branches→roles→users→
+  user_roles, no ALTER/CREATE), not the *schema* change CLAUDE.md reserves
+  V42 for — so Chunk 1.3's `roles.is_active` column now lands as **V43**
+  when that chunk is picked up. Seeds org `PLATFORM` / branch `PLATFORM-01` /
+  role `PLATFORM_ADMIN` / user `platform_admin` (password `Platform@123`,
+  bcrypt hash generated once via a throwaway test calling the app's own
+  `BCryptPasswordEncoder`, not hand-typed — dev-only credential, rotate
+  before prod). Updated `FlywayMigrationTest` (Chunk 0.1's file) from
+  expecting version "41" to "42" — a direct, required consequence of adding
+  V42, not an unrelated fix.
+  **Necessary infra extension beyond this chunk's own file list**: making
+  `hasRole('PLATFORM_ADMIN')` actually deny/allow anything required
+  `JwtAuthFilter` to grant real `GrantedAuthority`s instead of its Chunk 0.3
+  `List.of()` placeholder. Chose the smallest fix that doesn't ripple through
+  every existing `JwtPrincipal` call site: added
+  `AuthLookupRepository.findRoleCodes(roleIds)` (resolves the JWT's existing
+  `roleIds` claim to `role_code` per request) and had `JwtAuthFilter` map
+  those to `ROLE_<code>` authorities — `JwtPrincipal`/`JwtService`/their
+  tests are untouched. Considered embedding role codes directly as a new JWT
+  claim instead, but that would have changed `JwtPrincipal`'s record shape
+  and broken every test across `security` that constructs one directly;
+  resolving by ID per request follows the same no-caching precedent already
+  set by `ScopeGuard` and `PermissionEvaluatorService`.
+  `mvn test` green (43/43 — 31 from M0 + 1 `FlywayMigrationTest` version bump
+  + 5 `OrganizationServiceTest` Mockito cases (missing name, missing code,
+  duplicate code, unexpected-failure propagation, success with isActive
+  default) + 1 more for explicit `isActive=false` + 6
+  `OrganizationIntegrationTest` full-stack cases against the real dockerized
+  Postgres: success, both 400s, 409, 403 non-admin, 401 no token). Postman:
+  `backend/postman/01-org-identity.postman_collection.json` created with the
+  Create Organization request and 201/400×2/409/403 example responses.
+- 2026-09-09, Chunk 0.5: **M0 — Platform Foundation is now complete.**
+  `ScopeGuard` (`common/`) — org/branch existence via two `JdbcTemplate`
+  `EXISTS` queries (not JPA entities, same reasoning as Chunk 0.3: those
+  tables' real entities belong to Chunk 1.1/1.2), both branches throwing the
+  identical `"Organization or branch not found"` string per plan.md. The
+  branch check is scoped `WHERE id = ? AND organization_id = ?`, so a branch
+  that exists under a *different* org is correctly treated as not-found —
+  the multi-tenancy rule enforced by the query itself, covered by
+  `branchBelongingToAnotherOrganizationIsRejected`.
+  `AuditLogService` — placed in `security/`, not `common/`, despite being
+  grouped with `ScopeGuard` as shared Module 0 infra in `CLAUDE.md`: it needs
+  `JwtPrincipal` (org/branch/user of the current caller) off
+  `SecurityContextHolder`, and `JwtPrincipal` lives in `security`. Since
+  `common` is meant to be the dependency-free foundation everything else
+  builds on, having it reach into `security` would be a layering inversion;
+  `security` depending on its own `JwtPrincipal` (same pattern Chunk 0.4's
+  `PermissionEvaluatorService` already uses) is the actually-correct
+  simplest fix, not a fix. `record(actionType, entityType, entityId,
+  oldValues, newValues)` matches plan.md's literal 5-param signature exactly
+  because organizationId/branchId/userId are pulled from the JWT context
+  automatically rather than threaded through every future caller.
+  `old_values`/`new_values` (`jsonb` columns) are populated by serializing
+  the caller's object to a JSON string via a self-contained `JsonMapper`
+  (same technique as Chunk 0.3's `JwtService`) and passing it with an
+  explicit `?::jsonb` cast — sidesteps Hibernate's JSON type mapping
+  entirely, so no repeat of the Jackson-2-vs-3 question. `audit_logs` has no
+  `updated_at` column (unlike every other table so far), so it deliberately
+  does **not** extend `AbstractTenantEntity`. `mvn test` green (31/31 — 26
+  from 0.1-0.4 + 5 new: 4 `ScopeGuardIntegrationTest` + 1
+  `AuditLogServiceIntegrationTest` covering a create-then-update sequence
+  per plan.md, both against the real dockerized Postgres). Postman: n/a per
+  plan.md.
+- 2026-09-09, Chunk 0.4: `RolePermission` JPA entity (extends
+  `AbstractTenantEntity`, unlike Chunk 0.3's `JdbcTemplate` choice — no future
+  chunk owns `role_permission`, so a real entity is the right tool here) +
+  `RolePermissionRepository` (Spring Data derived query) +
+  `PermissionEvaluatorService` (bean name `perm`, required by
+  `@PreAuthorize("@perm.can(...)")` SpEL lookup) in `security/`.
+  `@EnableMethodSecurity` added to `SecurityConfig`. `can(moduleName, action)`
+  reads the `JwtPrincipal` off `SecurityContextHolder`, unions
+  `role_permission` rows across all the caller's roles, denies-by-default on
+  any unknown state (no auth, no roles, unrecognized action string).
+  Hit and fixed one real wiring bug: `@PreAuthorize` denials throw
+  `AccessDeniedException` *inside* the controller call, which
+  `GlobalExceptionHandler`'s catch-all `Exception` handler (Chunk 0.2)
+  intercepts before Spring Security's filter-level `accessDeniedHandler` ever
+  sees it — a known Spring Security + `@ControllerAdvice` interaction. Fixed
+  by adding an explicit `@ExceptionHandler(AccessDeniedException.class)` →
+  403 in `GlobalExceptionHandler` (same pattern as Chunk 0.3's
+  `UnauthorizedException` → 401) and removing the dead
+  `accessDeniedHandler(...)` from `SecurityConfig`, since it can now never
+  fire (no URL-pattern-based authorization rules exist, only method-level
+  `@PreAuthorize`). Also fixed a flaky assertion in Chunk 0.3's
+  `JwtServiceTest.tamperedTokenIsRejected` found while re-running the suite:
+  it mutated only the token's last character, which sometimes falls in the
+  "don't care" padding bits of a base64url-encoded 32-byte HMAC-SHA256
+  signature (32 isn't divisible by 3) and can decode back to identical
+  signature bytes ~1 time in 4 — not a `JwtService` bug, a test design bug.
+  Now mutates a header character instead, which is always signed and
+  guaranteed to change the outcome. `mvn test` green (26/26 — 20 from
+  0.1-0.3 + 6 new: 4 `PermissionEvaluatorServiceTest` Mockito/SecurityContext
+  scenarios per plan.md's list, 2 `PermissionEvaluatorIntegrationTest`
+  full-stack cases against a test-only `@PreAuthorize`-annotated controller
+  that exists only inside the test file). Postman: n/a per plan.md
+  (cross-cutting, no endpoint of its own).
 - 2026-09-08, Chunk 0.3: `AuthService`/`AuthController` (`POST /api/auth/login`),
   `JwtService` (hand-rolled HS256 issue/parse — JDK `Mac`+`Base64` only, no
   library added since jjwt's Jackson binding targets Jackson 2 and this app

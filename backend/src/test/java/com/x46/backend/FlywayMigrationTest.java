@@ -17,7 +17,7 @@ class FlywayMigrationTest {
     void migratesToLatestVersionCleanly() {
         var current = flyway.info().current();
         assertThat(current).isNotNull();
-        assertThat(current.getVersion().toString()).isEqualTo("41");
+        assertThat(current.getVersion().toString()).isEqualTo("43");
         assertThat(flyway.info().pending()).isEmpty();
     }
 }

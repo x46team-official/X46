@@ -28,7 +28,13 @@ class JwtServiceTest {
     void tamperedTokenIsRejected() {
         var principal = new JwtPrincipal(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), List.of());
         var issued = jwtService.issue(principal);
-        String tampered = issued.token().substring(0, issued.token().length() - 1) + "x";
+        // Flip a character near the start (part of the signed header), not the last
+        // character of the token: the tail of a base64url-encoded 32-byte HMAC-SHA256
+        // signature has a couple of "don't care" padding bits, so mutating exactly the
+        // last character sometimes decodes back to the same signature bytes.
+        char original = issued.token().charAt(0);
+        char replacement = original == 'e' ? 'f' : 'e';
+        String tampered = replacement + issued.token().substring(1);
 
         assertThatThrownBy(() -> jwtService.parse(tampered)).isInstanceOf(JwtException.class);
     }

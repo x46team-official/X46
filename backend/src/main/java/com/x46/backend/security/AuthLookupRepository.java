@@ -1,8 +1,10 @@
 package com.x46.backend.security;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -57,6 +59,23 @@ class AuthLookupRepository {
                 "SELECT role_id FROM user_roles WHERE user_id = ?",
                 (rs, rowNum) -> (UUID) rs.getObject("role_id"),
                 userId);
+    }
+
+    /**
+     * Resolves role IDs (as carried in the JWT's "roles" claim) to their
+     * role_code, so JwtAuthFilter can grant Spring Security ROLE_* authorities
+     * for hasRole(...) checks (e.g. Chunk 1.1's bootstrap PLATFORM_ADMIN gate)
+     * without duplicating the roles table as a JPA entity here.
+     */
+    List<String> findRoleCodes(Collection<UUID> roleIds) {
+        if (roleIds.isEmpty()) {
+            return List.of();
+        }
+        String placeholders = roleIds.stream().map(id -> "?").collect(Collectors.joining(","));
+        return jdbcTemplate.query(
+                "SELECT role_code FROM roles WHERE id IN (" + placeholders + ")",
+                (rs, rowNum) -> rs.getString("role_code"),
+                roleIds.toArray());
     }
 
     record AuthUserRow(UUID id, String passwordHash, boolean active) {

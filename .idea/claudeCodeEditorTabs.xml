@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ClaudeCodeEditorTabs">
-    <option name="activeSessionId" value="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" />
+    <option name="activeSessionId" value="2b8c74e9-3db5-4ee1-81ab-5f15b903804b" />
     <option name="openSessionIds">
       <list>
-        <option value="88c5302c-bdf4-4c1e-bf02-f8c04f8deb12" />
         <option value="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" />
+        <option value="213d5ddd-c1a9-4554-8099-ec5f037b3c00" />
+        <option value="8ebe59b3-7766-400d-8b57-6c97995804c3" />
+        <option value="06495f5d-138a-42c1-9a62-5b7ff626d2f7" />
+        <option value="ca5a5a51-1755-4afe-94d0-ba31f05b0d73" />
+        <option value="2b8c74e9-3db5-4ee1-81ab-5f15b903804b" />
       </list>
     </option>
     <option name="sessionPaths">
       <map>
+        <entry key="06495f5d-138a-42c1-9a62-5b7ff626d2f7" value="/sessions/new" />
+        <entry key="213d5ddd-c1a9-4554-8099-ec5f037b3c00" value="/sessions/new" />
+        <entry key="2b8c74e9-3db5-4ee1-81ab-5f15b903804b" value="/sessions/ba78e180-2586-4480-95cd-433c1ceac655" />
         <entry key="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" value="/sessions/new" />
-        <entry key="88c5302c-bdf4-4c1e-bf02-f8c04f8deb12" value="/sessions/441fb3d5-d628-48ad-8aa7-aeb4a89a87ac" />
+        <entry key="8ebe59b3-7766-400d-8b57-6c97995804c3" value="/sessions/441fb3d5-d628-48ad-8aa7-aeb4a89a87ac" />
+        <entry key="ca5a5a51-1755-4afe-94d0-ba31f05b0d73" value="/sessions/new" />
       </map>
     </option>
     <option name="sessionTitles">
       <map>
+        <entry key="06495f5d-138a-42c1-9a62-5b7ff626d2f7" value="Claude Code" />
+        <entry key="213d5ddd-c1a9-4554-8099-ec5f037b3c00" value="Claude Code" />
+        <entry key="2b8c74e9-3db5-4ee1-81ab-5f15b903804b" value="work on next chunk" />
         <entry key="6d644209-de7c-48dd-8ac5-fcaf0e47ee67" value="Claude Code" />
-        <entry key="88c5302c-bdf4-4c1e-bf02-f8c04f8deb12" value="verbatim as a comment plus `SELECT 1;`, to satisfy" />
+        <entry key="8ebe59b3-7766-400d-8b57-6c97995804c3" value="verbatim as a comment plus `SELECT 1;`, to satisfy" />
+        <entry key="ca5a5a51-1755-4afe-94d0-ba31f05b0d73" value="Claude Code" />
       </map>
     </option>
   </component>

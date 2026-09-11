@@ -1,0 +1,731 @@
+{
+  "info": {
+    "name": "X46 LIMS - Organization & Identity",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Chunk 1.1 - Organization + bootstrap platform role",
+      "item": [
+        {
+          "name": "Create Organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationName\": \"X46 Diagnostics\",\n  \"organizationCode\": \"ORG001\",\n  \"isActive\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Organization created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationName\": \"X46 Diagnostics\",\n  \"organizationCode\": \"ORG001\",\n  \"isActive\": true\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Organization created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationCode\": \"ORG001\",\n    \"organizationName\": \"X46 Diagnostics\",\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - organizationName missing",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationCode\": \"ORG001\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"organizationName is required\"\n}"
+            },
+            {
+              "name": "400 Bad Request - organizationCode missing",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationName\": \"X46 Diagnostics\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"organizationCode is required\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate organization code",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationName\": \"X46 Diagnostics\",\n  \"organizationCode\": \"ORG001\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate organization code\"\n}"
+            },
+            {
+              "name": "403 Forbidden - caller is not PLATFORM_ADMIN",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationName\": \"X46 Diagnostics\",\n  \"organizationCode\": \"ORG001\"\n}"
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Permission denied\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chunk 1.2 - Branch",
+      "item": [
+        {
+          "name": "Create Branch",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches"],
+              "variable": [{ "key": "organizationId", "value": "<uuid>" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branchCode\": \"PUNE-01\",\n  \"branchName\": \"Pune Main Branch\",\n  \"isActive\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Branch created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches"],
+                  "variable": [{ "key": "organizationId", "value": "<uuid>" }]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"branchCode\": \"PUNE-01\",\n  \"branchName\": \"Pune Main Branch\",\n  \"isActive\": true\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Branch created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchCode\": \"PUNE-01\",\n    \"branchName\": \"Pune Main Branch\",\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - branchCode missing",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches"],
+                  "variable": [{ "key": "organizationId", "value": "<uuid>" }]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"branchName\": \"Pune Main Branch\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"branchCode is required\"\n}"
+            },
+            {
+              "name": "400 Bad Request - branchName missing",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches"],
+                  "variable": [{ "key": "organizationId", "value": "<uuid>" }]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"branchCode\": \"PUNE-01\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"branchName is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - organizationId does not exist",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches"],
+                  "variable": [{ "key": "organizationId", "value": "<uuid>" }]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"branchCode\": \"PUNE-01\",\n  \"branchName\": \"Pune Main Branch\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate branch code",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches"],
+                  "variable": [{ "key": "organizationId", "value": "<uuid>" }]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"branchCode\": \"PUNE-01\",\n  \"branchName\": \"Pune Main Branch\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate branch code\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chunk 1.3 - Roles",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Role created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Role created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"roleCode\": \"ADMIN\",\n    \"roleName\": \"Administrator\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - roleCode missing",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleName\": \"Administrator\"\n}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"roleCode is required\"\n}"
+            },
+            {
+              "name": "400 Bad Request - roleName missing",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleCode\": \"ADMIN\"\n}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"roleName is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - organization or branch does not exist",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate role code",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate role code\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Roles",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles?search=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+              "query": [{ "key": "search", "value": "" }],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Roles fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Roles fetched successfully\",\n  \"data\": [\n    {\n      \"id\": \"<uuid>\",\n      \"roleCode\": \"ADMIN\",\n      \"roleName\": \"Administrator\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "404 Not Found - organization or branch does not exist",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "View Role",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" },
+                { "key": "roleId", "value": "<uuid>" }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Role fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Role fetched successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"roleCode\": \"ADMIN\",\n    \"roleName\": \"Administrator\",\n    \"createdAt\": \"<timestamp>\"\n  }\n}"
+            },
+            {
+              "name": "404 Not Found - Role not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Role not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" },
+                { "key": "roleId", "value": "<uuid>" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator Updated\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Role updated successfully",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator Updated\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Role updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"roleCode\": \"ADMIN\",\n    \"roleName\": \"Administrator Updated\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Validation error",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleCode\": \"\",\n  \"roleName\": \"\"\n}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Validation error\"\n}"
+            },
+            {
+              "name": "404 Not Found - Role not found",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator Updated\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Role not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate role code",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"roleCode\": \"ADMIN\",\n  \"roleName\": \"Administrator Updated\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate role code\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Activate/Deactivate Role",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId/status",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId", "status"
+              ],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" },
+                { "key": "roleId", "value": "<uuid>" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Role status updated successfully",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId", "status"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Role status updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"isActive\": false\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid status value",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId", "status"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid status value\"\n}"
+            },
+            {
+              "name": "404 Not Found - Role not found",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/roles/:roleId/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "roles", ":roleId", "status"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "roleId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Role not found\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
