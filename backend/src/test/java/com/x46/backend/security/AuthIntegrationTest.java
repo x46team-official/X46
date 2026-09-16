@@ -77,12 +77,49 @@ class AuthIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.token").isNotEmpty())
+                .andExpect(jsonPath("$.data.roleCodes[0]").value("TECH"))
                 .andReturn().getResponse().getContentAsString();
 
         String token = JsonPath.read(responseJson, "$.data.token");
 
         mockMvc.perform(get("/actuator/health").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void platformAdminLoginReturnsPlatformAdminRoleCode() throws Exception {
+        String loginBody = "{\"organizationCode\":\"PLATFORM\",\"branchCode\":\"PLATFORM-01\","
+                + "\"username\":\"platform_admin\",\"password\":\"Platform@123\"}";
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.roleCodes[0]").value("PLATFORM_ADMIN"));
+    }
+
+    @Test
+    void singleFieldLoginWithJustUsernameAndPasswordSucceeds() throws Exception {
+        String loginBody = "{\"username\":\"jdoe\",\"password\":\"secret123\"}";
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").isNotEmpty())
+                .andExpect(jsonPath("$.data.organizationId").value(orgId.toString()))
+                .andExpect(jsonPath("$.data.branchId").value(branchId.toString()));
+    }
+
+    @Test
+    void singleFieldLoginWithUnknownUsernameReturns401() throws Exception {
+        String loginBody = "{\"username\":\"nobody-like-this\",\"password\":\"secret123\"}";
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("Invalid credentials"));
     }
 
     @Test

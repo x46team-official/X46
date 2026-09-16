@@ -46,7 +46,7 @@
               "status": "OK",
               "code": 200,
               "header": [{ "key": "Content-Type", "value": "application/json" }],
-              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"token\": \"<jwt>\",\n    \"expiresAt\": \"2026-09-08T14:05:49Z\",\n    \"userId\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"roles\": [\"<uuid>\"]\n  }\n}"
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"token\": \"<jwt>\",\n    \"expiresAt\": \"2026-09-08T14:05:49Z\",\n    \"userId\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"roles\": [\"<uuid>\"],\n    \"roleCodes\": [\"<code>\"]\n  }\n}"
             },
             {
               "name": "401 Unauthorized - Invalid credentials",
@@ -60,6 +60,64 @@
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"organizationCode\": \"ORG001\",\n  \"branchCode\": \"BR001\",\n  \"username\": \"jdoe\",\n  \"password\": \"wrong\"\n}"
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid credentials\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login (single field - username only, gap #8)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ORG001-jdoe\",\n  \"password\": \"secret123\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Valid credentials, no org/branch code needed",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "auth", "login"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"ORG001-jdoe\",\n  \"password\": \"secret123\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"token\": \"<jwt>\",\n    \"expiresAt\": \"2026-09-08T14:05:49Z\",\n    \"userId\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"roles\": [\"<uuid>\"],\n    \"roleCodes\": [\"<code>\"]\n  }\n}"
+            },
+            {
+              "name": "401 Unauthorized - Unknown username",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "auth", "login"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"nobody-like-this\",\n  \"password\": \"secret123\"\n}"
                 }
               },
               "status": "Unauthorized",

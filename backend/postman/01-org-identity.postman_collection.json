@@ -388,7 +388,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Admin user bootstrapped successfully\",\n  \"data\": {\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"roleId\": \"<uuid>\",\n    \"roleCode\": \"ADMIN\",\n    \"userId\": \"<uuid>\",\n    \"username\": \"org_admin\"\n  }\n}"
+              "body": "{\n  \"success\": true,\n  \"message\": \"Admin user bootstrapped successfully\",\n  \"data\": {\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"roleId\": \"<uuid>\",\n    \"roleCode\": \"ADMIN\",\n    \"userId\": \"<uuid>\",\n    \"username\": \"ORG001-org_admin\"\n  }\n}"
             },
             {
               "name": "400 Bad Request - username is required",
@@ -1845,7 +1845,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"success\": true,\n  \"message\": \"User created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"username\": \"test_user_001\",\n    \"email\": \"testuser001@x46.com\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"isActive\": true\n  }\n}"
+              "body": "{\"success\":true,\"message\":\"User created successfully\",\"data\":{\"id\":\"<uuid>\",\"organizationId\":\"<uuid>\",\"branchId\":\"<uuid>\",\"username\":\"ORG001-test_user_001\",\"email\":\"testuser001@x46.com\",\"firstName\":\"Test\",\"lastName\":\"User\",\"isActive\":true}}"
             },
             {
               "name": "400 Bad Request - username is required",
@@ -2137,7 +2137,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Users fetched successfully\",\n  \"data\": [\n    {\n      \"id\": \"<uuid>\",\n      \"username\": \"test_user_001\",\n      \"email\": \"testuser001@x46.com\",\n      \"firstName\": \"Test\",\n      \"lastName\": \"User\",\n      \"isActive\": true\n    }\n  ]\n}"
+              "body": "{\"success\":true,\"message\":\"Users fetched successfully\",\"data\":[{\"id\":\"<uuid>\",\"username\":\"ORG001-test_user_001\",\"email\":\"testuser001@x46.com\",\"firstName\":\"Test\",\"lastName\":\"User\",\"isActive\":true}]}"
             },
             {
               "name": "404 Not Found - Organization or branch not found",
@@ -2263,7 +2263,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"success\": true,\n  \"message\": \"User fetched successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"username\": \"test_user_001\",\n    \"email\": \"testuser001@x46.com\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"isActive\": true,\n    \"roles\": [\n      { \"roleId\": \"<uuid>\", \"roleCode\": \"ADMIN\", \"roleName\": \"Administrator\", \"assignedAt\": \"<timestamp>\" }\n    ]\n  }\n}"
+              "body": "{\"success\":true,\"message\":\"User fetched successfully\",\"data\":{\"id\":\"<uuid>\",\"username\":\"ORG001-test_user_001\",\"email\":\"testuser001@x46.com\",\"firstName\":\"Test\",\"lastName\":\"User\",\"isActive\":true,\"roles\":[{\"roleId\":\"<uuid>\",\"roleCode\":\"ADMIN\",\"roleName\":\"Administrator\",\"assignedAt\":\"<timestamp>\"}]}}"
             },
             {
               "name": "404 Not Found - User not found",

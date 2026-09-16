@@ -109,7 +109,7 @@ class OrganizationBootstrapIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.roleCode").value("ADMIN"))
-                .andExpect(jsonPath("$.data.username").value("bootstrap-admin"))
+                .andExpect(jsonPath("$.data.username").value("BOOTSTRAPIT-bootstrap-admin"))
                 .andReturn().getResponse().getContentAsString();
 
         String roleId = JsonPath.read(response, "$.data.roleId");
@@ -117,9 +117,9 @@ class OrganizationBootstrapIntegrationTest {
                 "SELECT COUNT(*) FROM role_permission WHERE role_id = ?", Integer.class, UUID.fromString(roleId));
         assertThat(permissionCount).isEqualTo(25);
 
-        // the newly bootstrapped admin can actually log in
-        String loginBody = "{\"organizationCode\":\"BOOTSTRAPIT\",\"branchCode\":\"BR1\","
-                + "\"username\":\"bootstrap-admin\",\"password\":\"Secret@123\"}";
+        // the newly bootstrapped admin can actually log in with just the
+        // (auto-prefixed) username + password - no org/branch code needed
+        String loginBody = "{\"username\":\"BOOTSTRAPIT-bootstrap-admin\",\"password\":\"Secret@123\"}";
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginBody))

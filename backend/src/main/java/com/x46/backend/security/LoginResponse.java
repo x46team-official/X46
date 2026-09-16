@@ -10,5 +10,6 @@ public record LoginResponse(
         UUID userId,
         UUID organizationId,
         UUID branchId,
-        List<UUID> roles) {
+        List<UUID> roles,
+        List<String> roleCodes) {
 }

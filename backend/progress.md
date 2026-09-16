@@ -133,6 +133,55 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-16, Infra (not a plan.md chunk): **Single-field login (username +
+  password only) — plan.md gap #8, explicit user request**, cutting across
+  Chunk 0.3 (login), Chunk 1.4 (user creation), and a new schema migration —
+  wide enough that it's logged here rather than folded into either chunk's
+  own entry.
+  `V44__add_users_username_unique.sql` adds `UNIQUE (username)` globally
+  (only the V42 seed's `platform_admin` row existed at migration time, so no
+  backfill was needed or done — it's left unprefixed deliberately, see
+  plan.md gap #8). `UserService.create` now looks up its org's code via
+  `jdbcTemplate` and auto-prefixes every new username (`"jdoe"` → `"ACME-jdoe"`)
+  before the uniqueness check, which switched from
+  `UserRepository.existsByOrganizationIdAndBranchIdAndUsername` to the new
+  `existsByUsername` — global instead of org+branch-scoped, matching the new
+  constraint. `AuthService.login` branches on whether
+  `organizationCode`/`branchCode` are present: omitted → new
+  `AuthLookupRepository.findUserByUsername` (global, safe only because of
+  V44); present → the original org+branch-scoped path, byte-for-byte
+  unchanged, so no existing test needed to change its login calls. Frontend
+  now always uses the single-field path (`LoginForm`/`AdminLoginForm` both
+  just ask username + password).
+  `mvn test` green (164/164 — 157 from Chunk 1.7 + 3 new `AuthServiceTest`
+  cases for the global-lookup path (success, unknown username, wrong
+  password) + 2 new `AuthIntegrationTest` cases against the real dockerized
+  Postgres (single-field success, single-field unknown-username 401) + fixes
+  to 5 existing tests whose asserted username values needed the org-code
+  prefix: 3 `UserServiceTest` Mockito cases updated for the new
+  `jdbcTemplate.queryForObject` org-code lookup + `existsByUsername` mock,
+  2 `UserIntegrationTest` assertions updated to expect the prefixed value,
+  `FlywayMigrationTest` bumped to version "44"). Postman:
+  `backend/postman/00-auth.postman_collection.json` gained a "Login (single
+  field...)" request + `roleCodes` added to the existing Login response
+  example; `01-org-identity.postman_collection.json`'s Create User response
+  examples updated to show the prefixed username.
+- 2026-09-16, Infra (not a plan.md chunk): **`LoginResponse` gains
+  `roleCodes: List<String>`**, needed so the frontend can gate the new
+  platform-admin-only pages (Chunk 1.6/1.7) — the existing `roles` field is
+  `List<UUID>` (role IDs), not codes, and there's no other endpoint that
+  resolves them. Login isn't governed by any `API-XXX` contract (Chunk 0.3
+  built it straight from plan.md, gap #6), so this additive field isn't a
+  contract violation. `AuthService.login()` now also calls the already
+  existing `authLookupRepository.findRoleCodes(roleIds)` (the same method
+  `JwtAuthFilter` already uses to grant `ROLE_*` authorities) — no new query,
+  just reusing it a second time. Same "necessary infra extension beyond this
+  chunk's own file list" precedent as Chunk 1.1's `JwtAuthFilter` change, not
+  a new chunk of its own. `mvn test` green (159/159 — 157 from Chunk 1.7 + 2
+  new: `AuthServiceTest` now asserts `roleCodes` on both the empty-roles and
+  populated-roles paths, `AuthIntegrationTest` gained an assertion on the
+  existing login test plus a new `platformAdminLoginReturnsPlatformAdminRoleCode`
+  case against the real dockerized Postgres).
 - 2026-09-16, Chunk 1.7: **Net-new endpoint outside the 139 fixed contracts**,
   plan.md gap #7 (same user-approved addition as Chunk 1.6). Solves the real
   chicken-and-egg gap: `POST .../bootstrap-admin` gives a brand-new org (zero

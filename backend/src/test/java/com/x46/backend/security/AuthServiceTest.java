@@ -38,6 +38,10 @@ class AuthServiceTest {
         return new LoginRequest("ORG1", "BR1", "jdoe", password);
     }
 
+    private static LoginRequest singleFieldRequest(String username, String password) {
+        return new LoginRequest(null, null, username, password);
+    }
+
     @Test
     void validLoginReturnsToken() {
         when(authLookupRepository.findOrganizationId("ORG1")).thenReturn(Optional.of(ORG_ID));
@@ -45,6 +49,7 @@ class AuthServiceTest {
         when(authLookupRepository.findUser(ORG_ID, BRANCH_ID, "jdoe"))
                 .thenReturn(Optional.of(new AuthLookupRepository.AuthUserRow(USER_ID, passwordEncoder.encode("secret"), true)));
         when(authLookupRepository.findRoleIds(USER_ID)).thenReturn(List.of());
+        when(authLookupRepository.findRoleCodes(List.of())).thenReturn(List.of());
 
         LoginResponse response = authService.login(request("secret"));
 
@@ -52,6 +57,51 @@ class AuthServiceTest {
         assertThat(response.userId()).isEqualTo(USER_ID);
         assertThat(response.organizationId()).isEqualTo(ORG_ID);
         assertThat(response.branchId()).isEqualTo(BRANCH_ID);
+        assertThat(response.roleCodes()).isEmpty();
+    }
+
+    @Test
+    void loginResolvesRoleCodesForTheFrontendToGatePlatformAdminPages() {
+        UUID roleId = UUID.randomUUID();
+        when(authLookupRepository.findOrganizationId("ORG1")).thenReturn(Optional.of(ORG_ID));
+        when(authLookupRepository.findBranchId(ORG_ID, "BR1")).thenReturn(Optional.of(BRANCH_ID));
+        when(authLookupRepository.findUser(ORG_ID, BRANCH_ID, "jdoe"))
+                .thenReturn(Optional.of(new AuthLookupRepository.AuthUserRow(USER_ID, passwordEncoder.encode("secret"), true)));
+        when(authLookupRepository.findRoleIds(USER_ID)).thenReturn(List.of(roleId));
+        when(authLookupRepository.findRoleCodes(List.of(roleId))).thenReturn(List.of("PLATFORM_ADMIN"));
+
+        LoginResponse response = authService.login(request("secret"));
+
+        assertThat(response.roleCodes()).containsExactly("PLATFORM_ADMIN");
+    }
+
+    @Test
+    void singleFieldLoginResolvesUserByUsernameAlone() {
+        when(authLookupRepository.findUserByUsername("ACME-jdoe")).thenReturn(Optional.of(
+                new AuthLookupRepository.GlobalAuthUserRow(USER_ID, ORG_ID, BRANCH_ID, passwordEncoder.encode("secret"), true)));
+        when(authLookupRepository.findRoleIds(USER_ID)).thenReturn(List.of());
+        when(authLookupRepository.findRoleCodes(List.of())).thenReturn(List.of());
+
+        LoginResponse response = authService.login(singleFieldRequest("ACME-jdoe", "secret"));
+
+        assertThat(response.userId()).isEqualTo(USER_ID);
+        assertThat(response.organizationId()).isEqualTo(ORG_ID);
+        assertThat(response.branchId()).isEqualTo(BRANCH_ID);
+    }
+
+    @Test
+    void singleFieldLoginWithUnknownUsernameIsRejected() {
+        when(authLookupRepository.findUserByUsername("nobody")).thenReturn(Optional.empty());
+
+        assertInvalidCredentials(() -> authService.login(singleFieldRequest("nobody", "secret")));
+    }
+
+    @Test
+    void singleFieldLoginWithWrongPasswordIsRejected() {
+        when(authLookupRepository.findUserByUsername("ACME-jdoe")).thenReturn(Optional.of(
+                new AuthLookupRepository.GlobalAuthUserRow(USER_ID, ORG_ID, BRANCH_ID, passwordEncoder.encode("secret"), true)));
+
+        assertInvalidCredentials(() -> authService.login(singleFieldRequest("ACME-jdoe", "wrong")));
     }
 
     @Test

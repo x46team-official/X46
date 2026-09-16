@@ -54,6 +54,26 @@ class AuthLookupRepository {
                 .findFirst();
     }
 
+    /**
+     * Org/branch-free lookup (plan.md gap #8) - safe because V44 made
+     * users.username globally unique. Used when login omits
+     * organizationCode/branchCode (the single-field login the frontend now
+     * uses; org-scoped login above still works for callers that pass them).
+     */
+    Optional<GlobalAuthUserRow> findUserByUsername(String username) {
+        return jdbcTemplate.query(
+                        "SELECT id, organization_id, branch_id, password_hash, is_active FROM users WHERE username = ?",
+                        (rs, rowNum) -> new GlobalAuthUserRow(
+                                (UUID) rs.getObject("id"),
+                                (UUID) rs.getObject("organization_id"),
+                                (UUID) rs.getObject("branch_id"),
+                                rs.getString("password_hash"),
+                                rs.getBoolean("is_active")),
+                        username)
+                .stream()
+                .findFirst();
+    }
+
     List<UUID> findRoleIds(UUID userId) {
         return jdbcTemplate.query(
                 "SELECT role_id FROM user_roles WHERE user_id = ?",
@@ -79,5 +99,8 @@ class AuthLookupRepository {
     }
 
     record AuthUserRow(UUID id, String passwordHash, boolean active) {
+    }
+
+    record GlobalAuthUserRow(UUID id, UUID organizationId, UUID branchId, String passwordHash, boolean active) {
     }
 }

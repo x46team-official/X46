@@ -136,7 +136,7 @@ class UserIntegrationTest {
                 .andExpect(jsonPath("$.message").value("User created successfully"))
                 .andExpect(jsonPath("$.data.organizationId").value(orgId.toString()))
                 .andExpect(jsonPath("$.data.branchId").value(branchId.toString()))
-                .andExpect(jsonPath("$.data.username").value("newuser1"))
+                .andExpect(jsonPath("$.data.username").value("USERIT-newuser1"))
                 .andExpect(jsonPath("$.data.isActive").value(true));
     }
 
@@ -224,7 +224,7 @@ class UserIntegrationTest {
 
         mockMvc.perform(get(usersUrl() + "?search=findme7").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].username").value("findme7"));
+                .andExpect(jsonPath("$.data[0].username").value("USERIT-findme7"));
     }
 
     @Test

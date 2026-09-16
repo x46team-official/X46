@@ -51,14 +51,21 @@ public class UserService {
             throw new ValidationException("firstName is required");
         }
         scopeGuard.requireOrgBranch(organizationId, branchId);
-        if (userRepository.existsByOrganizationIdAndBranchIdAndUsername(organizationId, branchId, request.username())) {
+
+        // plan.md gap #8: usernames are globally unique (V44), auto-prefixed
+        // with their org's code (e.g. "ACME-jdoe") so a single-field login
+        // (username + password only, no org/branch code) can resolve them.
+        String organizationCode =
+                jdbcTemplate.queryForObject("SELECT organization_code FROM organizations WHERE id = ?", String.class, organizationId);
+        String prefixedUsername = organizationCode + "-" + request.username();
+        if (userRepository.existsByUsername(prefixedUsername)) {
             throw new ConflictException("Duplicate username");
         }
 
         User user = new User();
         user.setOrganizationId(organizationId);
         user.setBranchId(branchId);
-        user.setUsername(request.username());
+        user.setUsername(prefixedUsername);
         user.setEmail(request.email());
         user.setPasswordHash(passwordEncoder.encode(request.password()));
         user.setFirstName(request.firstName());

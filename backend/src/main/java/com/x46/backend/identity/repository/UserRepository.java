@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     boolean existsByOrganizationIdAndBranchIdAndUsername(UUID organizationId, UUID branchId, String username);
 
+    boolean existsByUsername(String username);
+
     Optional<User> findByIdAndOrganizationIdAndBranchId(UUID id, UUID organizationId, UUID branchId);
 
     List<User> findByOrganizationIdAndBranchId(UUID organizationId, UUID branchId);

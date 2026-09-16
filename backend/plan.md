@@ -121,6 +121,30 @@ that touches one references it instead of guessing:
    every one of Appendix A's 25 `module_name` rows, then a user, then the
    assignment — composed from the existing
    `RoleService`/`UserService`/`UserRoleService`, not duplicated logic.
+   `LoginResponse` also gains a `roleCodes` field (login isn't a contract
+   endpoint either — gap #6 built it from plan.md directly — so this is a safe
+   additive field) so the frontend can gate these platform-admin-only pages.
+8. **Single-field login (username + password only), explicit user request**:
+   deviates from `API-004`'s literal validation text ("username must be
+   unique within organization + branch") — usernames are now globally unique
+   instead, via `V44__add_users_username_unique.sql`
+   (`ALTER TABLE users ADD CONSTRAINT uq_users_username UNIQUE (username)`).
+   `UserService.create` (and therefore `OrganizationBootstrapService`, which
+   calls it) auto-prefixes every new username with its org's code (e.g.
+   `"jdoe"` submitted → `"ACME-jdoe"` stored), making cross-org collisions
+   practically impossible without the caller having to think about it.
+   `AuthService.login` now branches: if `organizationCode`/`branchCode` are
+   both omitted, it resolves the user by username alone
+   (`AuthLookupRepository.findUserByUsername`, safe only because of the V44
+   constraint); if they're present, the original org+branch-scoped lookup
+   still runs unchanged — kept for backward compatibility so existing tests
+   and integrations aren't forced to change. The frontend always uses the
+   single-field path now; `/admin/login` (X46 staff) and `/login` (org users)
+   both just ask for username + password, no different from each other in
+   shape. The V42 seed's `platform_admin` username is deliberately **not**
+   backfilled with a `PLATFORM-` prefix — it was already unique, and it's a
+   widely-referenced dev credential not worth renaming for a constraint that
+   doesn't need it; only usernames created from here on get prefixed.
 
 ---
 

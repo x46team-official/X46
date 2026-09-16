@@ -118,8 +118,9 @@ class UserServiceTest {
 
     @Test
     void createDuplicateUsernameIsRejected() {
-        when(userRepository.existsByOrganizationIdAndBranchIdAndUsername(organizationId, branchId, "jdoe"))
-                .thenReturn(true);
+        when(jdbcTemplate.queryForObject(any(String.class), org.mockito.ArgumentMatchers.eq(String.class), any(UUID.class)))
+                .thenReturn("ORG1");
+        when(userRepository.existsByUsername("ORG1-jdoe")).thenReturn(true);
         var request = new CreateUserRequest("jdoe", "e@x.com", "pass", "John", "Doe", null);
 
         assertThatThrownBy(() -> userService.create(organizationId, branchId, request))
@@ -129,8 +130,9 @@ class UserServiceTest {
 
     @Test
     void createSucceedsWithDefaultActiveTrue() {
-        when(userRepository.existsByOrganizationIdAndBranchIdAndUsername(organizationId, branchId, "jdoe"))
-                .thenReturn(false);
+        when(jdbcTemplate.queryForObject(any(String.class), org.mockito.ArgumentMatchers.eq(String.class), any(UUID.class)))
+                .thenReturn("ORG1");
+        when(userRepository.existsByUsername("ORG1-jdoe")).thenReturn(false);
         when(passwordEncoder.encode("pass")).thenReturn("hashed");
         when(userRepository.save(any())).thenAnswer(invocation -> {
             User user = invocation.getArgument(0);
@@ -144,14 +146,15 @@ class UserServiceTest {
         assertThat(response.id()).isEqualTo(userId);
         assertThat(response.organizationId()).isEqualTo(organizationId);
         assertThat(response.branchId()).isEqualTo(branchId);
-        assertThat(response.username()).isEqualTo("jdoe");
+        assertThat(response.username()).isEqualTo("ORG1-jdoe");
         assertThat(response.isActive()).isTrue();
     }
 
     @Test
     void createSucceedsWithExplicitActiveFalse() {
-        when(userRepository.existsByOrganizationIdAndBranchIdAndUsername(organizationId, branchId, "jdoe"))
-                .thenReturn(false);
+        when(jdbcTemplate.queryForObject(any(String.class), org.mockito.ArgumentMatchers.eq(String.class), any(UUID.class)))
+                .thenReturn("ORG1");
+        when(userRepository.existsByUsername("ORG1-jdoe")).thenReturn(false);
         when(passwordEncoder.encode("pass")).thenReturn("hashed");
         when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         var request = new CreateUserRequest("jdoe", "e@x.com", "pass", "John", "Doe", false);

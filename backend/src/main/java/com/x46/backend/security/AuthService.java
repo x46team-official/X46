@@ -22,23 +22,51 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequest request) {
-        UUID organizationId = authLookupRepository.findOrganizationId(request.organizationCode())
-                .orElseThrow(AuthService::invalidCredentials);
-        UUID branchId = authLookupRepository.findBranchId(organizationId, request.branchCode())
-                .orElseThrow(AuthService::invalidCredentials);
-        AuthLookupRepository.AuthUserRow user = authLookupRepository
-                .findUser(organizationId, branchId, request.username())
-                .orElseThrow(AuthService::invalidCredentials);
+        UUID organizationId;
+        UUID branchId;
+        UUID userId;
+        String passwordHash;
+        boolean active;
 
-        if (!user.active() || !passwordEncoder.matches(request.password(), user.passwordHash())) {
+        if (isBlank(request.organizationCode()) && isBlank(request.branchCode())) {
+            // Single-field login (plan.md gap #8): safe only because V44 made
+            // users.username globally unique.
+            AuthLookupRepository.GlobalAuthUserRow user = authLookupRepository
+                    .findUserByUsername(request.username())
+                    .orElseThrow(AuthService::invalidCredentials);
+            organizationId = user.organizationId();
+            branchId = user.branchId();
+            userId = user.id();
+            passwordHash = user.passwordHash();
+            active = user.active();
+        } else {
+            organizationId = authLookupRepository.findOrganizationId(request.organizationCode())
+                    .orElseThrow(AuthService::invalidCredentials);
+            branchId = authLookupRepository.findBranchId(organizationId, request.branchCode())
+                    .orElseThrow(AuthService::invalidCredentials);
+            AuthLookupRepository.AuthUserRow user = authLookupRepository
+                    .findUser(organizationId, branchId, request.username())
+                    .orElseThrow(AuthService::invalidCredentials);
+            userId = user.id();
+            passwordHash = user.passwordHash();
+            active = user.active();
+        }
+
+        if (!active || !passwordEncoder.matches(request.password(), passwordHash)) {
             throw invalidCredentials();
         }
 
-        List<UUID> roleIds = authLookupRepository.findRoleIds(user.id());
-        JwtPrincipal principal = new JwtPrincipal(user.id(), organizationId, branchId, roleIds);
+        List<UUID> roleIds = authLookupRepository.findRoleIds(userId);
+        JwtPrincipal principal = new JwtPrincipal(userId, organizationId, branchId, roleIds);
         JwtService.IssuedToken issued = jwtService.issue(principal);
+        List<String> roleCodes = authLookupRepository.findRoleCodes(roleIds);
 
-        return new LoginResponse(issued.token(), issued.expiresAt(), user.id(), organizationId, branchId, roleIds);
+        return new LoginResponse(
+                issued.token(), issued.expiresAt(), userId, organizationId, branchId, roleIds, roleCodes);
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.isBlank();
     }
 
     private static UnauthorizedException invalidCredentials() {
