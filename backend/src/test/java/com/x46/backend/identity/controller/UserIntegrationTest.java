@@ -1,5 +1,6 @@
 package com.x46.backend.identity.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,10 +41,12 @@ class UserIntegrationTest {
 
     private final UUID orgId = UUID.randomUUID();
     private final UUID branchId = UUID.randomUUID();
+    private final UUID branch2Id = UUID.randomUUID();
     private final UUID actorRoleId = UUID.randomUUID();
     private final UUID noPermRoleId = UUID.randomUUID();
     private final UUID actorUserId = UUID.randomUUID();
     private final UUID noPermUserId = UUID.randomUUID();
+    private final UUID branch2UserId = UUID.randomUUID();
 
     @BeforeEach
     void seed() {
@@ -53,6 +56,9 @@ class UserIntegrationTest {
         jdbcTemplate.update(
                 "INSERT INTO branches (id, organization_id, branch_code, branch_name) VALUES (?, ?, ?, ?)",
                 branchId, orgId, "BR1", "User IT Branch");
+        jdbcTemplate.update(
+                "INSERT INTO branches (id, organization_id, branch_code, branch_name) VALUES (?, ?, ?, ?)",
+                branch2Id, orgId, "BR2", "User IT Branch 2");
         jdbcTemplate.update(
                 "INSERT INTO roles (id, organization_id, branch_id, role_code, role_name) VALUES (?, ?, ?, ?, ?)",
                 actorRoleId, orgId, branchId, "ACTOR", "Actor Role");
@@ -78,6 +84,11 @@ class UserIntegrationTest {
         jdbcTemplate.update(
                 "INSERT INTO user_roles (organization_id, branch_id, user_id, role_id) VALUES (?, ?, ?, ?)",
                 orgId, branchId, noPermUserId, noPermRoleId);
+
+        jdbcTemplate.update(
+                "INSERT INTO users (id, organization_id, branch_id, username, password_hash, first_name, is_active) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, TRUE)",
+                branch2UserId, orgId, branch2Id, "user-branch2", passwordEncoder.encode("secret123"), "Branch2");
     }
 
     @AfterEach
@@ -96,6 +107,15 @@ class UserIntegrationTest {
 
     private String loginAsNoPermUser() throws Exception {
         return login("user-no-perm");
+    }
+
+    private String loginAsPlatformAdmin() throws Exception {
+        String body = "{\"username\":\"platform_admin\",\"password\":\"Platform@123\"}";
+        String response = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andReturn().getResponse().getContentAsString();
+        return JsonPath.read(response, "$.data.token");
     }
 
     private String login(String username) throws Exception {
@@ -225,6 +245,38 @@ class UserIntegrationTest {
         mockMvc.perform(get(usersUrl() + "?search=findme7").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].username").value("USERIT-findme7"));
+    }
+
+    @Test
+    void platformAdminCanListUsersAcrossAllBranchesOfAnOrganization() throws Exception {
+        String token = loginAsPlatformAdmin();
+
+        String response = mockMvc.perform(get("/api/organizations/" + orgId + "/users")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Users fetched successfully"))
+                .andReturn().getResponse().getContentAsString();
+
+        java.util.List<String> actorBranchCodes =
+                JsonPath.read(response, "$.data[?(@.username=='user-actor')].branchCode");
+        java.util.List<String> branch2BranchCodes =
+                JsonPath.read(response, "$.data[?(@.username=='user-branch2')].branchCode");
+        assertThat(actorBranchCodes).containsExactly("BR1");
+        assertThat(branch2BranchCodes).containsExactly("BR2");
+    }
+
+    @Test
+    void listUsersByOrganizationNonPlatformAdminCallerIsForbidden() throws Exception {
+        String token = loginAsActor();
+
+        mockMvc.perform(get("/api/organizations/" + orgId + "/users")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void listUsersByOrganizationMissingTokenIsUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/organizations/" + orgId + "/users")).andExpect(status().isUnauthorized());
     }
 
     @Test

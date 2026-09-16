@@ -5,6 +5,7 @@ import com.x46.backend.common.NotFoundException;
 import com.x46.backend.common.ScopeGuard;
 import com.x46.backend.common.ValidationException;
 import com.x46.backend.identity.dto.CreateUserRequest;
+import com.x46.backend.identity.dto.OrganizationUserResponse;
 import com.x46.backend.identity.dto.UpdateUserRequest;
 import com.x46.backend.identity.dto.UserDetailResponse;
 import com.x46.backend.identity.dto.UserResponse;
@@ -104,6 +105,25 @@ public class UserService {
                         user.getId(), user.getUsername(), user.getEmail(), user.getFirstName(), user.getLastName(),
                         user.isActive()))
                 .toList();
+    }
+
+    /** Cross-branch listing for the platform-admin dashboard (plan.md gap #7, Chunk 1.8). */
+    public List<OrganizationUserResponse> listByOrganization(UUID organizationId) {
+        scopeGuard.requireOrg(organizationId);
+        return jdbcTemplate.query(
+                "SELECT u.id, u.branch_id, b.branch_code, u.username, u.email, u.first_name, u.last_name, u.is_active "
+                        + "FROM users u JOIN branches b ON b.id = u.branch_id "
+                        + "WHERE u.organization_id = ? ORDER BY b.branch_code, u.username",
+                (rs, rowNum) -> new OrganizationUserResponse(
+                        (UUID) rs.getObject("id"),
+                        (UUID) rs.getObject("branch_id"),
+                        rs.getString("branch_code"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getBoolean("is_active")),
+                organizationId);
     }
 
     public UserDetailResponse view(UUID organizationId, UUID branchId, UUID userId) {

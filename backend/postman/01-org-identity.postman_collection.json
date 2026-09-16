@@ -567,6 +567,142 @@
       ]
     },
     {
+      "name": "Chunk 1.8 - List Organization Users (platform monitoring)",
+      "item": [
+        {
+          "name": "List Users by Organization",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "users"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Users fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "users"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Users fetched successfully\",\n  \"data\": [\n    {\n      \"id\": \"<uuid>\",\n      \"branchId\": \"<uuid>\",\n      \"branchCode\": \"PUNE-01\",\n      \"username\": \"ORG001-jdoe\",\n      \"email\": \"jdoe@x46.com\",\n      \"firstName\": \"John\",\n      \"lastName\": \"Doe\",\n      \"isActive\": true\n    }\n  ]\n}"
+            },
+            {
+              "name": "403 Forbidden - caller is not PLATFORM_ADMIN",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "users"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Permission denied\"\n}"
+            },
+            {
+              "name": "401 Unauthorized - missing token",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "users"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid or missing token\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Chunk 1.2 - Branch",
       "item": [
         {

@@ -13,6 +13,7 @@ import com.x46.backend.common.NotFoundException;
 import com.x46.backend.common.ScopeGuard;
 import com.x46.backend.common.ValidationException;
 import com.x46.backend.identity.dto.CreateUserRequest;
+import com.x46.backend.identity.dto.OrganizationUserResponse;
 import com.x46.backend.identity.dto.UpdateUserRequest;
 import com.x46.backend.identity.dto.UserDetailResponse;
 import com.x46.backend.identity.dto.UserResponse;
@@ -214,6 +215,29 @@ class UserServiceTest {
         List<UserSummaryResponse> response = userService.list(organizationId, branchId, true, "jd");
 
         assertThat(response).hasSize(1);
+    }
+
+    // --- listByOrganization (platform-admin dashboard, Chunk 1.8) ---
+
+    @Test
+    void listByOrganizationUnknownOrgIsRejected() {
+        doThrow(new NotFoundException("Organization not found")).when(scopeGuard).requireOrg(organizationId);
+
+        assertThatThrownBy(() -> userService.listByOrganization(organizationId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Organization not found");
+    }
+
+    @Test
+    void listByOrganizationReturnsRowsAcrossBranches() {
+        var expected = List.of(new OrganizationUserResponse(
+                userId, branchId, "BR1", "ORG1-jdoe", "jdoe@x46.com", "John", "Doe", true));
+        when(jdbcTemplate.query(any(String.class), any(org.springframework.jdbc.core.RowMapper.class), any(UUID.class)))
+                .thenReturn(expected);
+
+        List<OrganizationUserResponse> response = userService.listByOrganization(organizationId);
+
+        assertThat(response).isEqualTo(expected);
     }
 
     // --- view (API-128 op2) ---

@@ -108,15 +108,18 @@ that touches one references it instead of guessing:
    flagged, not hidden.
 7. **Platform-admin dashboard, outside the 139 contracts entirely**: the
    product needs a monitoring dashboard of every organization's branch/user
-   counts (`GET /api/organizations`, Chunk 1.6) and a way to create a new
-   org+branch+first-admin-login in one flow — neither exists in
+   counts (`GET /api/organizations`, Chunk 1.6, and drilling into one org's
+   users across all its branches, `GET /api/organizations/{organizationId}/users`,
+   Chunk 1.8 — `API-128` List Users is org+branch-scoped and there's no List
+   Branches contract to iterate first) and a way to create a new
+   org+branch+first-admin-login in one flow — none of this exists in
    `database/api_contracts_json/`. Explicitly requested and approved (not
    inferred): Chunk 1.7 adds
    `POST /api/organizations/{organizationId}/branches/{branchId}/bootstrap-admin`.
-   Both extend gap #6's precedent — `hasRole('PLATFORM_ADMIN')` instead of
-   `@perm.can(...)`, since list-all-orgs is cross-tenant (no single org's
-   `role_permission` scoping model applies) and bootstrap-admin is
-   pre-permission for a brand-new org (same chicken-and-egg as gap #6).
+   All three extend gap #6's precedent — `hasRole('PLATFORM_ADMIN')` instead of
+   `@perm.can(...)`, since cross-tenant/cross-branch platform data has no
+   single org's `role_permission` scoping model to check, and bootstrap-admin
+   is pre-permission for a brand-new org (same chicken-and-egg as gap #6).
    Bootstrap-admin seeds one `ADMIN` role with all 7 `can_*` flags true across
    every one of Appendix A's 25 `module_name` rows, then a user, then the
    assignment — composed from the existing
@@ -337,6 +340,27 @@ No API-XXX contracts (infra only). Everything downstream depends on this module.
   403 non-admin, 401 no token.
 - **Postman:** `backend/postman/01-org-identity.postman_collection.json`,
   folder "Chunk 1.6 - List Organizations (platform monitoring)".
+
+#### Chunk 1.8 — List Organization Users (platform monitoring, gap #7)
+- **Scope:** Not one of the 139 fixed contracts — same gap #7 extension as
+  Chunk 1.6. `API-128`'s List Users is org+branch-scoped, but the platform
+  dashboard needs every user across every branch of one org; there's also no
+  List Branches contract to fall back to per-branch calls, so this queries
+  across branches directly.
+- **Model/DTO:** `identity.dto.OrganizationUserResponse{id, branchId,
+  branchCode, username, email, firstName, lastName, isActive}`.
+- **Service & RBAC:** `UserService.listByOrganization()` — `ScopeGuard
+  .requireOrg()` then one `JdbcTemplate` query joining `users`+`branches`
+  (same non-JPA cross-entity pattern as `UserService.view()`'s roles read).
+  `@PreAuthorize("hasRole('PLATFORM_ADMIN')")`, same gap #6 reasoning
+  (cross-branch platform-level visibility, no single `role_permission` row
+  could authorize it).
+- **Controller:** `GET /api/organizations/{organizationId}/users` (added to
+  the existing `UserController`, distinct path template from the org+branch
+  List Users route, no conflict).
+- **Unit tests:** unknown-org 404, success across multiple branches.
+- **Postman:** same collection, folder "Chunk 1.8 - List Organization Users
+  (platform monitoring)".
 
 #### Chunk 1.7 — Bootstrap Admin (first login for a new org, gap #7)
 - **Scope:** Not one of the 139 fixed contracts — added per gap #7 so a

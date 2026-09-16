@@ -26,6 +26,7 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 | 1.4 | Users | ✅ | ✅ | ✅ |
 | 1.5 | User-Role assignment | ✅ | ✅ | ✅ |
 | 1.6 | List Organizations (platform monitoring, gap #7) | ✅ | ✅ | ✅ |
+| 1.8 | List Organization Users (platform monitoring, gap #7) | ✅ | ✅ | ✅ |
 | 1.7 | Bootstrap Admin (first login for a new org, gap #7) | ✅ | ✅ | ✅ |
 
 ## M2 — Master Data
@@ -133,6 +134,26 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-16, Chunk 1.8: **Net-new endpoint outside the 139 fixed
+  contracts**, plan.md gap #7 extension. Platform dashboard needed to drill
+  into one organization's users, but `API-128` List Users is org+branch
+  scoped and there's no List Branches contract to iterate branches first, so
+  `GET /api/organizations/{organizationId}/users` queries across all
+  branches of the org directly. New `identity.dto.OrganizationUserResponse`
+  (includes `branchCode` so the dashboard can show which branch each user
+  belongs to) + `UserService.listByOrganization()` (one `JdbcTemplate`
+  `users`+`branches` join, same pattern `UserService.view()` already uses
+  for its roles read) + a new `GET` mapping on the existing `UserController`
+  (distinct path template from the org+branch List Users route). Gated
+  `hasRole('PLATFORM_ADMIN')` per gap #6/#7's precedent. `mvn test` green
+  (169/169 — 164 from the single-field-login work + 2 `UserServiceTest`
+  Mockito cases (unknown-org 404, success across branches) + 3
+  `UserIntegrationTest` full-stack cases against the real dockerized
+  Postgres (success across two branches — asserted via
+  `com.jayway.jsonpath.JsonPath` filter reads, same fix as Chunk 1.6's
+  JsonPath-matcher quirk — 403 non-admin, 401 no token)). Postman:
+  `backend/postman/01-org-identity.postman_collection.json` gained a
+  "Chunk 1.8 - List Organization Users (platform monitoring)" folder.
 - 2026-09-16, Infra (not a plan.md chunk): **Single-field login (username +
   password only) — plan.md gap #8, explicit user request**, cutting across
   Chunk 0.3 (login), Chunk 1.4 (user creation), and a new schema migration —

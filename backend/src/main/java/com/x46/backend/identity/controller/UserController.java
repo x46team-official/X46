@@ -2,6 +2,7 @@ package com.x46.backend.identity.controller;
 
 import com.x46.backend.common.ApiResponse;
 import com.x46.backend.identity.dto.CreateUserRequest;
+import com.x46.backend.identity.dto.OrganizationUserResponse;
 import com.x46.backend.identity.dto.UpdateUserRequest;
 import com.x46.backend.identity.dto.UserDetailResponse;
 import com.x46.backend.identity.dto.UserResponse;
@@ -39,6 +40,14 @@ public class UserController {
             @PathVariable UUID organizationId, @PathVariable UUID branchId, @RequestBody CreateUserRequest request) {
         UserResponse response = userService.create(organizationId, branchId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok("User created successfully", response));
+    }
+
+    @GetMapping("/api/organizations/{organizationId}/users")
+    @PreAuthorize("hasRole('PLATFORM_ADMIN')")
+    public ResponseEntity<ApiResponse<List<OrganizationUserResponse>>> listByOrganization(
+            @PathVariable UUID organizationId) {
+        List<OrganizationUserResponse> response = userService.listByOrganization(organizationId);
+        return ResponseEntity.ok(ApiResponse.ok("Users fetched successfully", response));
     }
 
     @GetMapping("/api/organizations/{organizationId}/branches/{branchId}/users")
