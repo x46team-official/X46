@@ -23,8 +23,8 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 | 1.1 | Organization + bootstrap platform role | ✅ | ✅ | ✅ |
 | 1.2 | Branch | ✅ | ✅ | ✅ |
 | 1.3 | Roles (+ `roles.is_active` migration) | ✅ | ✅ | ✅ |
-| 1.4 | Users | ⬜ | ⬜ | ⬜ |
-| 1.5 | User-Role assignment | ⬜ | ⬜ | ⬜ |
+| 1.4 | Users | ✅ | ✅ | ✅ |
+| 1.5 | User-Role assignment | ✅ | ✅ | ✅ |
 
 ## M2 — Master Data
 
@@ -131,6 +131,82 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-15, Infra (not a plan.md chunk): Added CORS support to
+  `SecurityConfig` — a `CorsConfigurationSource` bean reading allowed
+  origins from a new `app.cors.allowed-origins` property (defaults to
+  `http://localhost:5173`, the Vite dev origin), wired into the filter chain
+  via `.cors(...)`. Required for the new `frontend/` React app (dev server
+  and, later, its deployed Vercel URL) to call this API at all — no
+  frontend request could previously reach the backend cross-origin. Not a
+  numbered chunk since it's cross-cutting security infra, not a contract
+  endpoint; logged here per CLAUDE.md's "notice something broken, log it,
+  don't fix it inline" rule applied to a genuine prerequisite gap instead.
+  `mvn test` green (140/140, unchanged) — this addition touches no existing
+  business logic.
+- 2026-09-15, Chunk 1.5: **M1 — Organization, Branch & Identity is now
+  complete.** `identity.UserRole` (composite `@IdClass(UserRoleId.class)`
+  entity — `user_roles`' PRIMARY KEY is `(user_id, role_id)` with no
+  generated `id` column, so it doesn't extend `AbstractTenantEntity` like
+  `Role`/`Organization`/`Branch` before it) + `UserRoleRepository`
+  (`existsByUserIdAndRoleId`) + `UserRoleService` + `UserRoleController`
+  (`POST .../users/{userId}/roles`) in `identity`.
+  Validation order follows the codebase's established convention
+  (`scopeGuard.requireOrgBranch` first) rather than `API-005.errors[]`'s
+  literal listing order (user → role → org/branch → duplicate) — every
+  prior M1 service checks org/branch scope before any entity-specific
+  lookup, and the contract's `errors[]` is an error catalog, not a mandated
+  sequence. Missing/unknown `roleId` needs no separate blank-check: passing
+  it straight to `RoleRepository.findByIdAndOrganizationIdAndBranchId`
+  naturally falls through to the same 404 "Role not found" the contract
+  specifies for both "missing" and "invalid" `roleId`.
+  `mvn test` green (140/140 — 128 from 0.1-1.4 + 5 `UserRoleServiceTest`
+  Mockito cases (org/branch 404, user 404, role 404, duplicate 409, success)
+  + 7 `UserRoleIntegrationTest` full-stack cases against the real dockerized
+  Postgres: success, user/role/branch 404s, duplicate 409, a
+  `@perm.can`-driven 403, and a 401). Postman:
+  `backend/postman/01-org-identity.postman_collection.json` gained a
+  "Chunk 1.5 - User Roles" folder with the Assign Role to User request and
+  its 201/404×3/409 example responses, bodies taken verbatim from
+  `API-005`.
+- 2026-09-15, Chunk 1.4: Picked up mid-flight: `org`/`identity` had already
+  been restructured (uncommitted, not part of this chunk's own work) into
+  `controller`/`dto`/`entity`/`repository`/`service` subpackages, with `Role`
+  moved from `org` into `identity` and `User`'s entity/repository/most DTOs
+  already scaffolded — that layout was reused as-is rather than redone.
+  Added the two missing pieces: `UserService` (create/list/view/update/
+  updateStatus) + `UserController` in `identity`, plus two response DTOs the
+  scaffold didn't have yet (`UserUpdateResponse` for `id/firstName/lastName/
+  email`, `UserStatusResponse` for `id/isActive` — neither matches an
+  existing DTO's exact field set, so no reuse was forced per the Role
+  precedent).
+  **List Users filtering** (`isActive`/`search`, both optional) needed 4
+  `UserRepository` methods instead of one nullable-param JPQL clause, same
+  fix as Chunk 1.3's `RoleRepository.search` (Postgres can't infer a type
+  for a bound `NULL` inside `LOWER(...)`).
+  **View User's `roles[]`** is read via a narrow `JdbcTemplate` join of
+  `user_roles`+`roles` inside `UserService` itself, not a new repository
+  class — `user_roles` has no owning entity until Chunk 1.5 (`UserRole`),
+  same reasoning `AuthLookupRepository` used for pre-entity tables in
+  Chunk 0.3.
+  **`updated_at` is set on every `User` update path** (`update`,
+  `updateStatus`) — `User` is the first entity in this codebase with both a
+  real `updated_at` column and an actual update operation exercising it
+  (Organization/Branch/Role either have no update op or no `updated_at`
+  column), so leaving it stale would've been a silent correctness gap, not
+  scope creep.
+  `mvn test` green (128/128 — 90 from 0.1-1.3 + 20 `UserServiceTest` Mockito
+  cases (3 create validations + org/branch 404 + duplicate 409 + 2 success
+  variants (default/explicit `isActive`) + 4 list filter combos + org/branch
+  404 + view 404/success + update 400/404/success + status 400/404/success)
+  + 18 `UserIntegrationTest` full-stack cases against the real dockerized
+  Postgres covering all 5 endpoints' success/error paths, a `@perm.can`-driven
+  403, and a 401). Postman: `backend/postman/01-org-identity.postman_collection.json`
+  gained a "Chunk 1.4 - Users" folder with all 5 requests and example
+  responses taken verbatim from `API-004`/`API-128`.
+  Docker Desktop / the `x46-postgres` container were down at the start of
+  this chunk (integration tests couldn't load their `ApplicationContext`
+  at all) — user confirmed and started Docker Desktop themselves before
+  `mvn test` was re-run.
 - 2026-09-11, Chunk 1.3: **The plan's one schema migration lands as
   `V43__add_roles_is_active.sql`**, not `V42` as plan.md's literal text
   names it — Chunk 1.1's bootstrap seed claimed V42 first (flagged as a

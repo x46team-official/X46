@@ -106,7 +106,6 @@ that touches one references it instead of guessing:
    gates these two endpoints on that role, instead of the normal
    `@perm.can(...)` check. This is an assumption the contracts don't state —
    flagged, not hidden.
-
 ---
 
 ## 3. Execution order

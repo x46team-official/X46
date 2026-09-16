@@ -726,6 +726,620 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Chunk 1.4 - Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test_user_001\",\n  \"email\": \"testuser001@x46.com\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"isActive\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - User created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"test_user_001\",\n  \"email\": \"testuser001@x46.com\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"isActive\": true\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"username\": \"test_user_001\",\n    \"email\": \"testuser001@x46.com\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - username is required",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Test\"\n}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"username is required\"\n}"
+            },
+            {
+              "name": "400 Bad Request - password is required",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"username\": \"test_user_001\",\n  \"firstName\": \"Test\"\n}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"password is required\"\n}"
+            },
+            {
+              "name": "400 Bad Request - firstName is required",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"username\": \"test_user_001\",\n  \"password\": \"Secret@123\"\n}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"firstName is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - Organization or branch not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"test_user_001\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Test\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate username",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"test_user_001\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Test\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate username\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Users fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Users fetched successfully\",\n  \"data\": [\n    {\n      \"id\": \"<uuid>\",\n      \"username\": \"test_user_001\",\n      \"email\": \"testuser001@x46.com\",\n      \"firstName\": \"Test\",\n      \"lastName\": \"User\",\n      \"isActive\": true\n    }\n  ]\n}"
+            },
+            {
+              "name": "404 Not Found - Organization or branch not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "View User",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId"],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" },
+                { "key": "userId", "value": "<uuid>" }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - User fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User fetched successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"username\": \"test_user_001\",\n    \"email\": \"testuser001@x46.com\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"isActive\": true,\n    \"roles\": [\n      { \"roleId\": \"<uuid>\", \"roleCode\": \"ADMIN\", \"roleName\": \"Administrator\", \"assignedAt\": \"<timestamp>\" }\n    ]\n  }\n}"
+            },
+            {
+              "name": "404 Not Found - User not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"User not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId"],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" },
+                { "key": "userId", "value": "<uuid>" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser001@x46.com\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User Updated\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - User updated successfully",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"testuser001@x46.com\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User Updated\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User Updated\",\n    \"email\": \"testuser001@x46.com\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - firstName is required",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"lastName\": \"User Updated\"\n}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"firstName is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - User not found",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId"],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstName\": \"Test\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"User not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Activate/Deactivate User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/status",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "status"
+              ],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" },
+                { "key": "userId", "value": "<uuid>" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - User status updated successfully",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "status"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User status updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"isActive\": false\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid status value",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "status"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{}" }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid status value\"\n}"
+            },
+            {
+              "name": "404 Not Found - User not found",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "status"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"User not found\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chunk 1.5 - User Roles",
+      "item": [
+        {
+          "name": "Assign Role to User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/roles",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "roles"
+              ],
+              "variable": [
+                { "key": "organizationId", "value": "<uuid>" },
+                { "key": "branchId", "value": "<uuid>" },
+                { "key": "userId", "value": "<uuid>" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"<uuid>\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - User role assigned successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "roles"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleId\": \"<uuid>\"\n}" }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User role assigned successfully\",\n  \"data\": {\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"userId\": \"<uuid>\",\n    \"roleId\": \"<uuid>\",\n    \"assignedAt\": \"<timestamp>\"\n  }\n}"
+            },
+            {
+              "name": "404 Not Found - User not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "roles"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleId\": \"<uuid>\"\n}" }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"User not found\"\n}"
+            },
+            {
+              "name": "404 Not Found - Role not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "roles"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleId\": \"<uuid>\"\n}" }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Role not found\"\n}"
+            },
+            {
+              "name": "404 Not Found - Organization or branch not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "roles"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleId\": \"<uuid>\"\n}" }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Role already assigned to user",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/users/:userId/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": [
+                    "api", "organizations", ":organizationId", "branches", ":branchId", "users", ":userId", "roles"
+                  ],
+                  "variable": [
+                    { "key": "organizationId", "value": "<uuid>" },
+                    { "key": "branchId", "value": "<uuid>" },
+                    { "key": "userId", "value": "<uuid>" }
+                  ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"roleId\": \"<uuid>\"\n}" }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Role already assigned to user\"\n}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
