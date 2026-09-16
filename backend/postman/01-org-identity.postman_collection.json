@@ -301,6 +301,272 @@
       ]
     },
     {
+      "name": "Chunk 1.7 - Bootstrap Admin (first login for a new org)",
+      "item": [
+        {
+          "name": "Bootstrap Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/bootstrap-admin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "bootstrap-admin"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"org_admin\",\n  \"email\": \"admin@x46.com\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Org\",\n  \"lastName\": \"Admin\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Admin user bootstrapped successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/bootstrap-admin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "bootstrap-admin"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"org_admin\",\n  \"email\": \"admin@x46.com\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Org\",\n  \"lastName\": \"Admin\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Admin user bootstrapped successfully\",\n  \"data\": {\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"roleId\": \"<uuid>\",\n    \"roleCode\": \"ADMIN\",\n    \"userId\": \"<uuid>\",\n    \"username\": \"org_admin\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - username is required",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/bootstrap-admin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "bootstrap-admin"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Org\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"username is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - Organization or branch not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/bootstrap-admin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "bootstrap-admin"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"org_admin\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Org\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate role code (org already bootstrapped)",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/bootstrap-admin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "bootstrap-admin"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"org_admin\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Org\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate role code\"\n}"
+            },
+            {
+              "name": "403 Forbidden - caller is not PLATFORM_ADMIN",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/bootstrap-admin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "bootstrap-admin"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"org_admin\",\n  \"password\": \"Secret@123\",\n  \"firstName\": \"Org\"\n}"
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Permission denied\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Chunk 1.2 - Branch",
       "item": [
         {

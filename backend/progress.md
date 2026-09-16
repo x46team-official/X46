@@ -26,6 +26,7 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 | 1.4 | Users | ✅ | ✅ | ✅ |
 | 1.5 | User-Role assignment | ✅ | ✅ | ✅ |
 | 1.6 | List Organizations (platform monitoring, gap #7) | ✅ | ✅ | ✅ |
+| 1.7 | Bootstrap Admin (first login for a new org, gap #7) | ✅ | ✅ | ✅ |
 
 ## M2 — Master Data
 
@@ -132,6 +133,35 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-16, Chunk 1.7: **Net-new endpoint outside the 139 fixed contracts**,
+  plan.md gap #7 (same user-approved addition as Chunk 1.6). Solves the real
+  chicken-and-egg gap: `POST .../bootstrap-admin` gives a brand-new org (zero
+  roles, zero `role_permission` rows) a working first login in one call,
+  instead of requiring a manual DB seed. `identity.service
+  .OrganizationBootstrapService` **composes** `RoleService.create`/
+  `UserService.create`/`UserRoleService.assign` rather than duplicating their
+  validation — the only genuinely new logic is granting all 7 `can_*` flags
+  across every one of Appendix A's 25 `module_name` rows for the new `ADMIN`
+  role. Marked `@Transactional`: without it, a duplicate-username 409 from
+  `UserService.create` (which only runs *after* the role is already created
+  and granted) would leave an orphaned fully-permissioned role behind with no
+  user — caught during test-writing, not shipped. **Widened
+  `security.RolePermissionRepository`** from package-private to `public
+  interface` — the smallest possible change, needed because
+  `OrganizationBootstrapService` (in `identity`) is now a second legitimate
+  caller; not a fork of Module 0 infra, just wider access to the same
+  repository. Gated `hasRole('PLATFORM_ADMIN')` per gap #6's precedent
+  (pre-permission for a brand-new org, same reasoning as Create
+  Organization/Branch). `mvn test` green (157/157 — 144 from 0.1-1.6 + 7
+  `OrganizationBootstrapServiceTest` Mockito cases (3 required-field 400s,
+  org/branch 404, duplicate-role 409, duplicate-username 409, success
+  asserting all 25 `role_permission` rows granted) + 6
+  `OrganizationBootstrapIntegrationTest` full-stack cases against the real
+  dockerized Postgres: success (verifies 25 `role_permission` rows persisted
+  *and* logs in as the newly bootstrapped admin to prove the login actually
+  works), 400, 404, double-bootstrap 409, 403 non-admin, 401 no token).
+  Postman: `backend/postman/01-org-identity.postman_collection.json` gained a
+  "Chunk 1.7 - Bootstrap Admin (first login for a new org)" folder.
 - 2026-09-16, Chunk 1.6: **Net-new endpoint outside the 139 fixed contracts**,
   logged as plan.md gap #7 with explicit user approval (needed to power a
   platform-admin monitoring dashboard the frontend is about to add).

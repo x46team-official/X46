@@ -106,13 +106,21 @@ that touches one references it instead of guessing:
    gates these two endpoints on that role, instead of the normal
    `@perm.can(...)` check. This is an assumption the contracts don't state —
    flagged, not hidden.
-7. **Platform-admin monitoring, outside the 139 contracts entirely**: the
+7. **Platform-admin dashboard, outside the 139 contracts entirely**: the
    product needs a monitoring dashboard of every organization's branch/user
-   counts — no such endpoint exists in `database/api_contracts_json/`.
-   Explicitly requested and approved (not inferred): adds
-   `GET /api/organizations` (Chunk 1.6), extending gap #6's precedent —
-   `hasRole('PLATFORM_ADMIN')` instead of `@perm.can(...)`, since list-all-orgs
-   is cross-tenant (no single org's `role_permission` scoping model applies).
+   counts (`GET /api/organizations`, Chunk 1.6) and a way to create a new
+   org+branch+first-admin-login in one flow — neither exists in
+   `database/api_contracts_json/`. Explicitly requested and approved (not
+   inferred): Chunk 1.7 adds
+   `POST /api/organizations/{organizationId}/branches/{branchId}/bootstrap-admin`.
+   Both extend gap #6's precedent — `hasRole('PLATFORM_ADMIN')` instead of
+   `@perm.can(...)`, since list-all-orgs is cross-tenant (no single org's
+   `role_permission` scoping model applies) and bootstrap-admin is
+   pre-permission for a brand-new org (same chicken-and-egg as gap #6).
+   Bootstrap-admin seeds one `ADMIN` role with all 7 `can_*` flags true across
+   every one of Appendix A's 25 `module_name` rows, then a user, then the
+   assignment — composed from the existing
+   `RoleService`/`UserService`/`UserRoleService`, not duplicated logic.
 
 ---
 
@@ -305,6 +313,31 @@ No API-XXX contracts (infra only). Everything downstream depends on this module.
   403 non-admin, 401 no token.
 - **Postman:** `backend/postman/01-org-identity.postman_collection.json`,
   folder "Chunk 1.6 - List Organizations (platform monitoring)".
+
+#### Chunk 1.7 — Bootstrap Admin (first login for a new org, gap #7)
+- **Scope:** Not one of the 139 fixed contracts — added per gap #7 so a
+  brand-new org (zero roles, zero `role_permission` rows) gets a working
+  first login without a manual DB seed. Composes existing services, doesn't
+  duplicate their validation.
+- **Model/DTO:** `identity.dto.BootstrapAdminRequest{username, email,
+  password, firstName, lastName}`, `identity.dto.BootstrapAdminResponse
+  {organizationId, branchId, roleId, roleCode, userId, username}`.
+- **Service & RBAC:** `identity.service.OrganizationBootstrapService`,
+  `@Transactional` (a duplicate-username 409 mid-flow must not leave an
+  orphaned ADMIN role behind): validates required fields → `ScopeGuard` →
+  `RoleService.create(orgId, branchId, {"ADMIN","Administrator"})` (its own
+  409 covers double-bootstrap) → grants all 7 `can_*` flags across every
+  Appendix A `module_name` (25 rows) via `RolePermissionRepository.saveAll`
+  (widened from package-private to `public` — a second legitimate caller now
+  exists outside `security`) → `UserService.create(...)` → `UserRoleService
+  .assign(...)`. `@PreAuthorize("hasRole('PLATFORM_ADMIN')")`, same gap #6
+  reasoning (pre-permission for a brand-new org).
+- **Controller:** `POST /api/organizations/{organizationId}/branches/{branchId}/bootstrap-admin`.
+- **Unit tests:** 3 required-field 400s, org/branch 404, duplicate-role 409
+  (bubbled from `RoleService`), duplicate-username 409 (bubbled from
+  `UserService`), success (asserts all 25 `role_permission` rows granted).
+- **Postman:** same collection, folder "Chunk 1.7 - Bootstrap Admin (first
+  login for a new org)".
 
 ---
 
