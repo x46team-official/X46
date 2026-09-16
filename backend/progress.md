@@ -25,6 +25,7 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 | 1.3 | Roles (+ `roles.is_active` migration) | ✅ | ✅ | ✅ |
 | 1.4 | Users | ✅ | ✅ | ✅ |
 | 1.5 | User-Role assignment | ✅ | ✅ | ✅ |
+| 1.6 | List Organizations (platform monitoring, gap #7) | ✅ | ✅ | ✅ |
 
 ## M2 — Master Data
 
@@ -131,6 +132,24 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-16, Chunk 1.6: **Net-new endpoint outside the 139 fixed contracts**,
+  logged as plan.md gap #7 with explicit user approval (needed to power a
+  platform-admin monitoring dashboard the frontend is about to add).
+  `GET /api/organizations`, gated `hasRole('PLATFORM_ADMIN')` per gap #6's
+  precedent (cross-tenant data — no single org's `role_permission` row could
+  ever authorize seeing every org's data, so `@perm.can(...)` doesn't apply
+  here either). New `org.dto.OrganizationSummaryResponse` (kept separate from
+  the contract-shaped `OrganizationResponse`, which must not gain fields) +
+  `OrganizationService.listWithCounts()` — one aggregate `JdbcTemplate` query
+  (`LEFT JOIN branches`/`users`, `GROUP BY`), same `JdbcTemplate`-injection
+  pattern `UserService` already uses for its own narrow non-JPA reads.
+  `mvn test` green (144/144 — 138 from 0.1-1.5 + 1 `OrganizationServiceTest`
+  Mockito case for `listWithCounts()` + 3 `OrganizationIntegrationTest` cases
+  against the real dockerized Postgres: success with real branch/user counts
+  read back via `com.jayway.jsonpath.JsonPath` filter expressions, 403
+  non-admin, 401 no token). Postman:
+  `backend/postman/01-org-identity.postman_collection.json` gained a
+  "Chunk 1.6 - List Organizations (platform monitoring)" folder.
 - 2026-09-15, Infra (not a plan.md chunk): Added CORS support to
   `SecurityConfig` — a `CorsConfigurationSource` bean reading allowed
   origins from a new `app.cors.allowed-origins` property (defaults to

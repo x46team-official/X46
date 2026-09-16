@@ -106,6 +106,14 @@ that touches one references it instead of guessing:
    gates these two endpoints on that role, instead of the normal
    `@perm.can(...)` check. This is an assumption the contracts don't state —
    flagged, not hidden.
+7. **Platform-admin monitoring, outside the 139 contracts entirely**: the
+   product needs a monitoring dashboard of every organization's branch/user
+   counts — no such endpoint exists in `database/api_contracts_json/`.
+   Explicitly requested and approved (not inferred): adds
+   `GET /api/organizations` (Chunk 1.6), extending gap #6's precedent —
+   `hasRole('PLATFORM_ADMIN')` instead of `@perm.can(...)`, since list-all-orgs
+   is cross-tenant (no single org's `role_permission` scoping model applies).
+
 ---
 
 ## 3. Execution order
@@ -280,6 +288,23 @@ No API-XXX contracts (infra only). Everything downstream depends on this module.
 - **Controller:** `POST .../users/{userId}/roles`.
 - **Unit tests:** per `API-005.errors[]` + success.
 - **Postman:** same collection, folder "User Roles".
+
+#### Chunk 1.6 — List Organizations (platform monitoring, gap #7)
+- **Scope:** Not one of the 139 fixed contracts — added per gap #7 to power a
+  platform-admin monitoring dashboard (how many organizations exist, each
+  one's branch/user counts). Read-only, cross-tenant.
+- **Model/DTO:** `OrganizationSummaryResponse{id, organizationCode,
+  organizationName, isActive, branchCount, userCount}` (separate from the
+  contract-shaped `OrganizationResponse`, which keeps its exact API-001 shape).
+- **Service & RBAC:** `OrganizationService.listWithCounts()` — one aggregate
+  `JdbcTemplate` query (`LEFT JOIN branches`/`users`, `GROUP BY`), same
+  reasoning as gap #6: cross-tenant data has no `role_permission` scoping
+  model to check, so `@PreAuthorize("hasRole('PLATFORM_ADMIN')")`.
+- **Controller:** `GET /api/organizations`.
+- **Unit tests:** success (multiple orgs incl. one with 0 branches/users),
+  403 non-admin, 401 no token.
+- **Postman:** `backend/postman/01-org-identity.postman_collection.json`,
+  folder "Chunk 1.6 - List Organizations (platform monitoring)".
 
 ---
 

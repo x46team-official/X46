@@ -1,5 +1,7 @@
 package com.x46.backend.org.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -176,5 +178,35 @@ class OrganizationIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void platformAdminCanListOrganizationsWithBranchAndUserCounts() throws Exception {
+        String token = loginAsPlatformAdmin();
+
+        String response = mockMvc.perform(get("/api/organizations").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andReturn().getResponse().getContentAsString();
+
+        java.util.List<Integer> branchCounts =
+                JsonPath.read(response, "$.data[?(@.organizationCode=='ORGIT')].branchCount");
+        java.util.List<Integer> userCounts =
+                JsonPath.read(response, "$.data[?(@.organizationCode=='ORGIT')].userCount");
+        assertThat(branchCounts).containsExactly(1);
+        assertThat(userCounts).containsExactly(1);
+    }
+
+    @Test
+    void listOrganizationsNonPlatformAdminCallerIsForbidden() throws Exception {
+        String token = loginAsNonAdmin();
+
+        mockMvc.perform(get("/api/organizations").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void listOrganizationsMissingTokenIsUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/organizations")).andExpect(status().isUnauthorized());
     }
 }

@@ -3,18 +3,23 @@ package com.x46.backend.org.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import com.x46.backend.common.ConflictException;
 import com.x46.backend.common.ValidationException;
 import com.x46.backend.org.dto.CreateOrganizationRequest;
 import com.x46.backend.org.dto.OrganizationResponse;
+import com.x46.backend.org.dto.OrganizationSummaryResponse;
 import com.x46.backend.org.repository.OrganizationRepository;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @ExtendWith(MockitoExtension.class)
 class OrganizationServiceTest {
@@ -22,11 +27,14 @@ class OrganizationServiceTest {
     @Mock
     private OrganizationRepository organizationRepository;
 
+    @Mock
+    private JdbcTemplate jdbcTemplate;
+
     private OrganizationService organizationService;
 
     @BeforeEach
     void setUp() {
-        organizationService = new OrganizationService(organizationRepository);
+        organizationService = new OrganizationService(organizationRepository, jdbcTemplate);
     }
 
     @Test
@@ -90,5 +98,18 @@ class OrganizationServiceTest {
         OrganizationResponse response = organizationService.create(request);
 
         assertThat(response.isActive()).isFalse();
+    }
+
+    @Test
+    void listWithCountsReturnsRowsFromTheAggregateQuery() {
+        var expected = List.of(
+                new OrganizationSummaryResponse(UUID.randomUUID(), "ORG001", "X46 Diagnostics", true, 2L, 5L),
+                new OrganizationSummaryResponse(UUID.randomUUID(), "ORG002", "Empty Org", true, 0L, 0L));
+        when(jdbcTemplate.query(anyString(), any(org.springframework.jdbc.core.RowMapper.class)))
+                .thenReturn(expected);
+
+        List<OrganizationSummaryResponse> response = organizationService.listWithCounts();
+
+        assertThat(response).isEqualTo(expected);
     }
 }
