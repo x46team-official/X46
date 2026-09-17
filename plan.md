@@ -1,4 +1,4 @@
-# X46 LIMS Backend — Implementation Plan
+# X46 LIMS — Implementation Plan
 
 Source of truth for every contract detail (request/response schema, validation
 rules, error catalog, DB tables) is `database/api_contracts_json/API-XXX_*.json`.
@@ -7,9 +7,16 @@ file(s) to read and what to build from them. Schema source of truth is
 `database/schema/001_*.sql` … `040_*.sql` (see Chunk 0.1).
 
 Stack: Spring Boot 4.1.1, Java 21, Spring Data JPA, Spring Security, Flyway,
-PostgreSQL 17 (`docker-compose.yml`, volume `x46-postgres-data`), Maven.
-`spring.jpa.hibernate.ddl-auto=validate` — Flyway owns the schema, JPA never
-creates or alters tables.
+PostgreSQL 17 (`docker-compose.yml`, volume `x46-postgres-data`), Maven, for
+the backend (`backend/`); Next.js 16 + TypeScript for the frontend
+(`frontend/`). `spring.jpa.hibernate.ddl-auto=validate` — Flyway owns the
+schema, JPA never creates or alters tables.
+
+**Backend and frontend are now built side by side, not backend-first.**
+`frontend/` used to be empty while every module below was backend-only; as of
+the platform-admin work (Chunk 1.6–1.8 + the login simplification), each new
+module's frontend screens are built in the same cycle as its backend chunks,
+not deferred until the whole backend plan is done. See § 3a.
 
 ---
 
@@ -158,6 +165,33 @@ that touches one references it instead of guessing:
 (M6 Payment is built after M7 Accession because `API-057` create-payment
 references `accessionId`; M6.2 Payment-Against-Bill only needs M5 Billing and
 could move earlier if the team prefers — noted in M6.)
+
+---
+
+## 3a. Frontend pairing
+
+`frontend/` (Next.js 16, App Router, TypeScript) is built alongside the
+backend from here on, not after it:
+
+- **When a module needs a UI, build it once that module's backend chunks are
+  ✅ and `mvn test` is green** — not speculatively ahead of the backend, and
+  not deferred to some later "frontend phase." Not every module needs a UI on
+  its own timeline; scope frontend work to what the product actually asks
+  for, same "no speculative work" rule the backend rules already apply.
+- **Convention, established by the platform-admin work (Chunk 1.6–1.8 + the
+  login simplification)**: one feature folder per module under
+  `frontend/src/features/<feature>/` (`api/`, `components/`, `hooks/`,
+  `schemas/`), consuming the backend's `ApiResponse<T>` envelope via the
+  shared `frontend/src/api/client/http-client.ts`. Don't invent a second
+  client or envelope-parsing convention per feature.
+- **Verification before calling frontend work done:** `npx tsc --noEmit` and
+  `npm run lint` clean, plus an actual exercised run against the real backend
+  (not just unit-level checks) — same "prove it end-to-end" bar
+  `CLAUDE.md`/`AGENTS.md` hold the backend to.
+- If a screen needs a backend capability the 139 fixed contracts don't cover
+  (the platform-admin dashboard needed several — see § 2 gap #7/#8), that's a
+  net-new backend chunk of its own first, logged as a gap, not a shortcut
+  taken on the frontend side.
 
 ---
 

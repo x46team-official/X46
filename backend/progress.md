@@ -34,7 +34,7 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 | Chunk | Title | Status | Tests | Postman |
 |---|---|---|---|---|
 | 2.1 | Test Master CRUD + status | ✅ | ✅ | ✅ |
-| 2.2 | Test list & search | ⬜ | ⬜ | ⬜ |
+| 2.2 | Test list & search | ✅ | ✅ | ✅ |
 | 2.3 | Department CRUD + status | ⬜ | ⬜ | ⬜ |
 | 2.4 | Parameters & Reference Ranges | ⬜ | ⬜ | ⬜ |
 | 2.5 | Test Packages | ⬜ | ⬜ | ⬜ |
@@ -134,6 +134,78 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-17, Infra (not a plan.md chunk): **CORS was never actually wired up
+  — the 2026-09-15 entry below is wrong.** That entry claims a
+  `CorsConfigurationSource` bean was added to `SecurityConfig` and "wired into
+  the filter chain via `.cors(...)`". It wasn't: `git log -S "cors" --
+  SecurityConfig.java` returns no commits, and `app.cors.allowed-origins` (in
+  `application.properties` since `31f9db5`) was an **orphaned property no Java
+  code read**. Net effect: every browser request from `frontend/` was blocked
+  — the preflight `OPTIONS /api/auth/login` hit
+  `.anyRequest().authenticated()` and came back `401` with no
+  `Access-Control-Allow-Origin`, so the browser never sent the real request
+  and the frontend showed its generic "Unable to reach the server" fallback
+  (`http-client.ts`). `curl` never caught it because curl ignores CORS, and
+  no test covered it, so the whole suite stayed green while the app was
+  unusable from a browser. Fixed for real this time: `corsConfigurationSource`
+  bean reading the existing property + `.cors(Customizer.withDefaults())` in
+  the chain, so Spring Security's `CorsFilter` answers preflights before the
+  authorization rules run. Deliberately **no `setAllowCredentials(true)`** —
+  auth is a Bearer header, not a cookie, so credentialed CORS isn't needed.
+  New `security.CorsIntegrationTest` (3 cases: preflight from an allowed
+  origin → 200 + header, real request carries the header, disallowed origin →
+  403 and no header) is the check that was missing the first time.
+  `mvn test` green (226/226 — 223 from 0.1-2.2 + 3 CORS cases).
+  **Follow-up for whoever is running the app:** a backend started before this
+  fix is still serving the old filter chain — it must be restarted for the
+  frontend to work.
+- 2026-09-17, Chunk 2.2: `TestService.list`/`search` + two `GET` mappings on
+  the existing `TestController`, plus `TestMasterRepository
+  .findByOrganizationIdAndBranchId` and a `search` `@Query` — the latter
+  copies `RoleRepository.search`'s `LOWER(...) LIKE LOWER(CONCAT('%',:query,'%'))`
+  shape verbatim. Safe from Chunk 1.3's Postgres null-bind bug
+  (`function lower(bytea) does not exist`) because `query` is **required**
+  here and is rejected with a 400 before the query ever runs, so no NULL is
+  ever bound — no need for 1.3's two-method split.
+  **Two spots where the contract overrides plan.md's shorthand**, resolved in
+  the contract's favour per CLAUDE.md rule 2: (1) plan.md says "search by `q`
+  param", but `API-011`'s `query_parameters` names it **`query`**; (2)
+  plan.md's unit-test line says "filter by `isActive`", but `API-010`
+  declares `"query_parameters": {}` — **no filter param exists in the
+  contract**, so none was added; the listing returns every test in scope and
+  `listIncludesInactiveTests` asserts an inactive row still comes back with
+  `isActive: false` instead (consistent with `API-007`'s note that inactivity
+  never hides a test).
+  **Per-endpoint response DTOs again** (`TestListItemResponse` has
+  `departmentId`/`sellingPrice`/`costPrice`, `TestSearchItemResponse` has only
+  `id`/`testCode`/`testName`/`isActive`) — the two contracts genuinely specify
+  different shapes, so no shared DTO, same reasoning as Chunk 1.3/2.1.
+  Both endpoints use Chunk 0.5's original combined-message
+  `ScopeGuard.requireOrgBranch` (both contracts say "Organization or branch
+  not found"), **not** the `requireBranch` added in 2.1 — that one exists for
+  API-006/007's branch-only message and is deliberately left unused here.
+  **Extended `GlobalExceptionHandler`** (Chunk 0.2's file) with
+  `MethodArgumentTypeMismatchException` → 400 `"Invalid request"`, which is
+  `API-010`'s second `errors[]` entry ("malformed path parameters"): a bad
+  UUID in the path previously fell through to the catch-all `Exception`
+  handler and surfaced as a 500. Same extend-shared-Module-0-infra precedent
+  as Chunk 0.3's 401 and Chunk 0.4's 403, and it fixes the same latent 500
+  for every other UUID-path endpoint in the app.
+  Route precedence between the new `GET .../tests/search` and Chunk 2.1's
+  `GET .../tests/{testId}` resolves in favour of the literal `search` segment
+  (Spring's `PathPatternParser` sorts literals above variables) — proven by
+  `searchTestsMatchesCodeOrName` (200 + real results) and
+  `searchTestsMissingQueryReturns400`, which returns "Search query is
+  required" rather than the "Invalid request" a `{testId}` UUID-parse
+  failure would now produce.
+  `mvn test` green (223/223 — 207 from 0.1-2.1 + 9 `TestServiceTest` Mockito
+  cases (list: org/branch 404, success, inactive-included, empty; search:
+  missing/blank query 400 ×2, org/branch 404, success, no-matches empty) + 7
+  `TestIntegrationTest` full-stack cases against the real dockerized Postgres
+  (list success/404/malformed-UUID-400, search success/empty/400/404)).
+  Postman: `backend/postman/02-master-data.postman_collection.json` gained a
+  "Chunk 2.2 - Test list & search" folder with both requests and their
+  example responses taken verbatim from `API-010`/`API-011`.
 - 2026-09-17, Chunk 2.1: **M2 — Master Data is now open.** New `master`
   package (mirrors `org`/`identity`'s controller/dto/entity/repository/service
   layout) — `TestMaster` extends `AbstractTenantEntity` (`test_master` has
