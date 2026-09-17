@@ -1,0 +1,1075 @@
+{
+  "info": {
+    "name": "X46 LIMS - Master Data",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Chunk 2.1 - Test Master CRUD + status",
+      "item": [
+        {
+          "name": "Create Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "tests"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test\",\n  \"sellingPrice\": 600,\n  \"costPrice\": 350\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Test created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test\",\n  \"sellingPrice\": 600,\n  \"costPrice\": 350\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Test created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"departmentId\": \"<uuid>\",\n    \"testCode\": \"LFT001\",\n    \"testName\": \"Liver Function Test\",\n    \"sellingPrice\": 600,\n    \"costPrice\": 350,\n    \"cprr\": 0,\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - testCode is required",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testName\": \"Liver Function Test\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"testCode is required\"\n}"
+            },
+            {
+              "name": "400 Bad Request - testName is required",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"testName is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - Branch not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Branch not found\"\n}"
+            },
+            {
+              "name": "404 Not Found - Department not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Department not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate test code",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate test code\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate test name",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT002\",\n  \"testName\": \"Liver Function Test\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate test name\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "View Test",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "tests",
+                ":testId"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "testId",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Test fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Test fetched successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"departmentId\": \"<uuid>\",\n    \"testCode\": \"LFT001\",\n    \"testName\": \"Liver Function Test\",\n    \"sellingPrice\": 600,\n    \"costPrice\": 350,\n    \"cprr\": 0,\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "404 Not Found - Test not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Test not found\"\n}"
+            },
+            {
+              "name": "404 Not Found - Organization not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization not found\"\n}"
+            },
+            {
+              "name": "404 Not Found - Branch not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Branch not found\"\n}"
+            },
+            {
+              "name": "404 Not Found - Test not accessible",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Test not accessible\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Test",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "tests",
+                ":testId"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "testId",
+                  "value": "<uuid>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test Updated\",\n  \"sellingPrice\": 650\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Test updated successfully",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test Updated\",\n  \"sellingPrice\": 650\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Test updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"testCode\": \"LFT001\",\n    \"testName\": \"Liver Function Test Updated\",\n    \"sellingPrice\": 650,\n    \"costPrice\": 350,\n    \"cprr\": 0,\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - testCode is required",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testName\": \"Liver Function Test Updated\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"testCode is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - Test not found",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Liver Function Test Updated\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Test not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate test name",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"<uuid>\",\n  \"testCode\": \"LFT001\",\n  \"testName\": \"Another Test's Name\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate test name\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Test Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "tests",
+                ":testId",
+                "status"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "testId",
+                  "value": "<uuid>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Test status updated successfully",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId",
+                    "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActive\": false\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Test status updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"isActive\": false\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid status value",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId",
+                    "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid status value\"\n}"
+            },
+            {
+              "name": "404 Not Found - Test not found",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/:testId/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    ":testId",
+                    "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "testId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActive\": false\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Test not found\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

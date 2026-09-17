@@ -29,6 +29,15 @@ public class ScopeGuard {
         }
     }
 
+    public void requireBranch(UUID organizationId, UUID branchId) {
+        Boolean branchExists = jdbcTemplate.queryForObject(
+                "SELECT EXISTS(SELECT 1 FROM branches WHERE id = ? AND organization_id = ?)",
+                Boolean.class, branchId, organizationId);
+        if (!Boolean.TRUE.equals(branchExists)) {
+            throw new NotFoundException("Branch not found");
+        }
+    }
+
     public void requireOrgBranch(UUID organizationId, UUID branchId) {
         Boolean organizationExists = jdbcTemplate.queryForObject(
                 "SELECT EXISTS(SELECT 1 FROM organizations WHERE id = ?)", Boolean.class, organizationId);

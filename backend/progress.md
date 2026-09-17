@@ -33,7 +33,7 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 
 | Chunk | Title | Status | Tests | Postman |
 |---|---|---|---|---|
-| 2.1 | Test Master CRUD + status | ⬜ | ⬜ | ⬜ |
+| 2.1 | Test Master CRUD + status | ✅ | ✅ | ✅ |
 | 2.2 | Test list & search | ⬜ | ⬜ | ⬜ |
 | 2.3 | Department CRUD + status | ⬜ | ⬜ | ⬜ |
 | 2.4 | Parameters & Reference Ranges | ⬜ | ⬜ | ⬜ |
@@ -134,6 +134,53 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-17, Chunk 2.1: **M2 — Master Data is now open.** New `master`
+  package (mirrors `org`/`identity`'s controller/dto/entity/repository/service
+  layout) — `TestMaster` extends `AbstractTenantEntity` (`test_master` has
+  org_id/branch_id/created_at/updated_at NOT NULL, same fit as `User`),
+  mapping every column the API-006–009 contracts actually read or write
+  (not the unused FK columns like `container_type_id`, already excluded by
+  API-006's own notes, or `worksheet_id`/`worklist_id`/etc. beyond what
+  create's request body lists). `TestMasterRepository` +`TestService` +
+  `TestController` (`@perm.can('Test Management', <action>)`).
+  **Extended `ScopeGuard`** with `requireBranch(organizationId, branchId)` →
+  `"Branch not found"` — API-006/API-007 need this exact message distinct
+  from `requireOrgBranch`'s combined `"Organization or branch not found"`;
+  same reuse-not-fork precedent as Chunk 1.2's `requireOrg`. View (API-007)
+  needed three distinct 404s (`Organization not found`/`Branch not found`/
+  `Test not accessible` vs `Test not found`), so it calls `requireOrg` +
+  `requireBranch` separately rather than the combined check, then
+  disambiguates "doesn't exist anywhere" from "exists but wrong org/branch"
+  by looking the test up by id alone first.
+  **Department existence is checked via a scoped `JdbcTemplate` query**
+  directly in `TestService` (no `Department` entity exists until Chunk 2.3)
+  — same precedent as `AuthLookupRepository`/`UserService`'s org-code lookup
+  for pre-entity tables.
+  **Three deviations beyond the literal `errors[]` catalog**, all justified
+  by the contracts' own `validation[]`/`required_fields` text rather than
+  invented: (1) Update (API-008) rejects a missing `departmentId` with 400
+  even though no such entry is in `errors[]` — `required_fields` lists it as
+  required, and letting a null hit the NOT NULL DB column would surface as
+  an ugly 500 instead. (2) Update also checks `departmentId` belongs to the
+  same org+branch (`"Department not found"` 404) — API-008's own
+  `validation[]` explicitly says "departmentId must belong to the same
+  organization + branch" even though `errors[]` never enumerates it. (3)
+  Update rejects a colliding `testCode` the same way Create does
+  (`"Duplicate test code"` 409, symmetric with the `uq_test_code` constraint
+  and the already-covered `testName` case) — `errors[]` only lists the
+  testName collision, but leaving testCode uncovered would let a real
+  UNIQUE-constraint violation fall through as a 500. All three have their
+  own unit test even though only two are contract-mandated.
+  `mvn test` green (207/207 — 169 from 0.1-1.8 + 23 `TestServiceTest`
+  Mockito cases (7 create validations/errors + success, 5 view scenarios, 7
+  update validations/errors + success, 3 status scenarios) + 15
+  `TestIntegrationTest` full-stack cases against the real dockerized
+  Postgres covering all 4 endpoints' success/error paths, a
+  `@perm.can`-driven 403, and a 401 — including API-007's note that an
+  inactive test is still returned at 200, not hidden). Postman:
+  `backend/postman/02-master-data.postman_collection.json` created with a
+  "Chunk 2.1 - Test Master CRUD + status" folder, all 4 requests and their
+  example responses taken verbatim from `API-006`/`API-007`/`API-008`/`API-009`.
 - 2026-09-16, Chunk 1.8: **Net-new endpoint outside the 139 fixed
   contracts**, plan.md gap #7 extension. Platform dashboard needed to drill
   into one organization's users, but `API-128` List Users is org+branch
