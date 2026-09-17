@@ -5,7 +5,9 @@ import com.x46.backend.common.NotFoundException;
 import com.x46.backend.common.ScopeGuard;
 import com.x46.backend.common.ValidationException;
 import com.x46.backend.master.dto.CreateTestRequest;
+import com.x46.backend.master.dto.TestListItemResponse;
 import com.x46.backend.master.dto.TestResponse;
+import com.x46.backend.master.dto.TestSearchItemResponse;
 import com.x46.backend.master.dto.TestStatusRequest;
 import com.x46.backend.master.dto.TestStatusResponse;
 import com.x46.backend.master.dto.TestUpdateResponse;
@@ -14,6 +16,7 @@ import com.x46.backend.master.entity.TestMaster;
 import com.x46.backend.master.repository.TestMasterRepository;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -92,6 +95,31 @@ public class TestService {
 
         TestMaster saved = testMasterRepository.save(test);
         return toResponse(saved);
+    }
+
+    public List<TestListItemResponse> list(UUID organizationId, UUID branchId) {
+        scopeGuard.requireOrgBranch(organizationId, branchId);
+        return testMasterRepository.findByOrganizationIdAndBranchId(organizationId, branchId).stream()
+                .map(test -> new TestListItemResponse(
+                        test.getId(),
+                        test.getTestCode(),
+                        test.getTestName(),
+                        test.getDepartmentId(),
+                        test.getSellingPrice(),
+                        test.getCostPrice(),
+                        test.isActive()))
+                .toList();
+    }
+
+    public List<TestSearchItemResponse> search(UUID organizationId, UUID branchId, String query) {
+        if (isBlank(query)) {
+            throw new ValidationException("Search query is required");
+        }
+        scopeGuard.requireOrgBranch(organizationId, branchId);
+        return testMasterRepository.search(organizationId, branchId, query).stream()
+                .map(test -> new TestSearchItemResponse(
+                        test.getId(), test.getTestCode(), test.getTestName(), test.isActive()))
+                .toList();
     }
 
     public TestResponse view(UUID organizationId, UUID branchId, UUID testId) {

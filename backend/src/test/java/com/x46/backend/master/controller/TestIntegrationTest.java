@@ -206,6 +206,81 @@ class TestIntegrationTest {
     }
 
     @Test
+    void listTestsReturnsTestsInScope() throws Exception {
+        String token = loginAsActor();
+        createTestReturningId(token, "LST001");
+
+        mockMvc.perform(get(testsUrl()).header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Tests fetched successfully"))
+                .andExpect(jsonPath("$.data[?(@.testCode == 'LST001')].departmentId")
+                        .value(departmentId.toString()))
+                .andExpect(jsonPath("$.data[?(@.testCode == 'LST001')].isActive").value(true));
+    }
+
+    @Test
+    void listTestsUnknownBranchReturns404() throws Exception {
+        String token = loginAsActor();
+
+        mockMvc.perform(get("/api/organizations/" + orgId + "/branches/" + UUID.randomUUID() + "/tests")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Organization or branch not found"));
+    }
+
+    @Test
+    void listTestsMalformedPathParameterReturns400() throws Exception {
+        String token = loginAsActor();
+
+        mockMvc.perform(get("/api/organizations/not-a-uuid/branches/" + branchId + "/tests")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Invalid request"));
+    }
+
+    @Test
+    void searchTestsMatchesCodeOrName() throws Exception {
+        String token = loginAsActor();
+        createTestReturningId(token, "SRC001");
+
+        mockMvc.perform(get(testsUrl() + "/search?query=src001")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Tests searched successfully"))
+                .andExpect(jsonPath("$.data[0].testCode").value("SRC001"))
+                .andExpect(jsonPath("$.data[0].testName").value("SRC001 Test"));
+    }
+
+    @Test
+    void searchTestsWithNoMatchesReturnsEmptyList() throws Exception {
+        String token = loginAsActor();
+
+        mockMvc.perform(get(testsUrl() + "/search?query=nosuchtestanywhere")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
+
+    @Test
+    void searchTestsMissingQueryReturns400() throws Exception {
+        String token = loginAsActor();
+
+        mockMvc.perform(get(testsUrl() + "/search").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Search query is required"));
+    }
+
+    @Test
+    void searchTestsUnknownBranchReturns404() throws Exception {
+        String token = loginAsActor();
+
+        mockMvc.perform(get("/api/organizations/" + orgId + "/branches/" + UUID.randomUUID() + "/tests/search?query=lft")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Organization or branch not found"));
+    }
+
+    @Test
     void viewTestReturns200() throws Exception {
         String token = loginAsActor();
         String testId = createTestReturningId(token, "LFT005");

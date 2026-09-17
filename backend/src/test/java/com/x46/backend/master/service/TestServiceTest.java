@@ -14,7 +14,9 @@ import com.x46.backend.common.NotFoundException;
 import com.x46.backend.common.ScopeGuard;
 import com.x46.backend.common.ValidationException;
 import com.x46.backend.master.dto.CreateTestRequest;
+import com.x46.backend.master.dto.TestListItemResponse;
 import com.x46.backend.master.dto.TestResponse;
+import com.x46.backend.master.dto.TestSearchItemResponse;
 import com.x46.backend.master.dto.TestStatusRequest;
 import com.x46.backend.master.dto.TestStatusResponse;
 import com.x46.backend.master.dto.TestUpdateResponse;
@@ -22,6 +24,7 @@ import com.x46.backend.master.dto.UpdateTestRequest;
 import com.x46.backend.master.entity.TestMaster;
 import com.x46.backend.master.repository.TestMasterRepository;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -184,6 +187,100 @@ class TestServiceTest {
         assertThat(response.testName()).isEqualTo("Liver Function Test");
         assertThat(response.sellingPrice()).isEqualByComparingTo(BigDecimal.ZERO);
         assertThat(response.isActive()).isTrue();
+    }
+
+    // --- list (API-010) ---
+
+    @Test
+    void listUnknownOrgOrBranchIsRejected() {
+        doThrow(new NotFoundException("Organization or branch not found"))
+                .when(scopeGuard).requireOrgBranch(organizationId, branchId);
+
+        assertThatThrownBy(() -> testService.list(organizationId, branchId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Organization or branch not found");
+    }
+
+    @Test
+    void listSucceeds() {
+        when(testMasterRepository.findByOrganizationIdAndBranchId(organizationId, branchId))
+                .thenReturn(List.of(existingTest()));
+
+        List<TestListItemResponse> response = testService.list(organizationId, branchId);
+
+        assertThat(response).hasSize(1);
+        assertThat(response.get(0).testCode()).isEqualTo("LFT001");
+        assertThat(response.get(0).departmentId()).isEqualTo(departmentId);
+        assertThat(response.get(0).sellingPrice()).isEqualByComparingTo(BigDecimal.valueOf(600));
+        assertThat(response.get(0).isActive()).isTrue();
+    }
+
+    @Test
+    void listIncludesInactiveTests() {
+        TestMaster inactive = existingTest();
+        inactive.setActive(false);
+        when(testMasterRepository.findByOrganizationIdAndBranchId(organizationId, branchId))
+                .thenReturn(List.of(inactive));
+
+        List<TestListItemResponse> response = testService.list(organizationId, branchId);
+
+        assertThat(response).hasSize(1);
+        assertThat(response.get(0).isActive()).isFalse();
+    }
+
+    @Test
+    void listWithNoTestsReturnsEmptyList() {
+        when(testMasterRepository.findByOrganizationIdAndBranchId(organizationId, branchId))
+                .thenReturn(List.of());
+
+        assertThat(testService.list(organizationId, branchId)).isEmpty();
+    }
+
+    // --- search (API-011) ---
+
+    @Test
+    void searchMissingQueryIsRejected() {
+        assertThatThrownBy(() -> testService.search(organizationId, branchId, null))
+                .isInstanceOf(ValidationException.class)
+                .hasMessage("Search query is required");
+        verifyNoInteractions(scopeGuard, testMasterRepository);
+    }
+
+    @Test
+    void searchBlankQueryIsRejected() {
+        assertThatThrownBy(() -> testService.search(organizationId, branchId, "   "))
+                .isInstanceOf(ValidationException.class)
+                .hasMessage("Search query is required");
+        verifyNoInteractions(scopeGuard, testMasterRepository);
+    }
+
+    @Test
+    void searchUnknownOrgOrBranchIsRejected() {
+        doThrow(new NotFoundException("Organization or branch not found"))
+                .when(scopeGuard).requireOrgBranch(organizationId, branchId);
+
+        assertThatThrownBy(() -> testService.search(organizationId, branchId, "lft"))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Organization or branch not found");
+    }
+
+    @Test
+    void searchSucceeds() {
+        when(testMasterRepository.search(organizationId, branchId, "lft")).thenReturn(List.of(existingTest()));
+
+        List<TestSearchItemResponse> response = testService.search(organizationId, branchId, "lft");
+
+        assertThat(response).hasSize(1);
+        assertThat(response.get(0).testCode()).isEqualTo("LFT001");
+        assertThat(response.get(0).testName()).isEqualTo("Liver Function Test");
+        assertThat(response.get(0).isActive()).isTrue();
+    }
+
+    @Test
+    void searchWithNoMatchesReturnsEmptyList() {
+        when(testMasterRepository.search(organizationId, branchId, "zzz")).thenReturn(List.of());
+
+        assertThat(testService.search(organizationId, branchId, "zzz")).isEmpty();
     }
 
     // --- view (API-007) ---

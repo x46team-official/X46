@@ -1070,6 +1070,343 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Chunk 2.2 - Test list & search",
+      "item": [
+        {
+          "name": "List Tests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "tests"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Tests fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Tests fetched successfully\",\n  \"data\": [\n    {\n      \"id\": \"<uuid>\",\n      \"testCode\": \"LFT001\",\n      \"testName\": \"Liver Function Test\",\n      \"departmentId\": \"<uuid>\",\n      \"sellingPrice\": 600,\n      \"costPrice\": 350,\n      \"isActive\": true\n    }\n  ]\n}"
+            },
+            {
+              "name": "404 Not Found - Organization or branch not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid request (malformed path parameter)",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "not-a-uuid"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid request\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search Tests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/search?query=CBC",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "tests",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "CBC"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Tests searched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/search?query=CBC",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "CBC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Tests searched successfully\",\n  \"data\": [\n    {\n      \"id\": \"<uuid>\",\n      \"testCode\": \"CBC001\",\n      \"testName\": \"Complete Blood Count\",\n      \"isActive\": true\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 Bad Request - Search query is required",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    "search"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Search query is required\"\n}"
+            },
+            {
+              "name": "404 Not Found - Organization or branch not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/tests/search?query=CBC",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "tests",
+                    "search"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "CBC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
