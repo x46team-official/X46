@@ -9,7 +9,7 @@ execution instructions) and `backend/CHUNK_PROMPT.md` (the per-chunk prompt).
 
 | What | Where |
 |---|---|
-| Implementation blueprint (13 modules, 53 chunks, all 139 API contracts) | `backend/plan.md` |
+| Implementation blueprint (13 modules, 53 chunks, all 139 API contracts) | `plan.md` |
 | Progress tracker | `backend/progress.md` |
 | Reusable per-chunk execution prompt | `backend/CHUNK_PROMPT.md` |
 | Agent standing instructions | `AGENTS.md` |
@@ -31,7 +31,7 @@ execution instructions) and `backend/CHUNK_PROMPT.md` (the per-chunk prompt).
 - **AuthN:** stateless JWT only. No sessions, no cookies.
 - **AuthZ:** `role_permission` via `@PreAuthorize("@perm.can('<ModuleName>','<ACTION>')")`.
   `module_name` values are exactly the contract `"module"` strings (see
-  `backend/plan.md` Appendix A) — never invent a new taxonomy. The only
+  `plan.md` Appendix A) — never invent a new taxonomy. The only
   endpoints gated on a hardcoded role instead of `@perm.can(...)` are the two
   bootstrap endpoints in Chunk 1.1/1.2 (`PLATFORM_ADMIN`), because no
   organization exists yet to key permissions on.
@@ -39,7 +39,7 @@ execution instructions) and `backend/CHUNK_PROMPT.md` (the per-chunk prompt).
   Hibernate never creates or alters tables. Migrations live in
   `backend/src/main/resources/db/migration/`. The only schema change the
   whole plan calls for is `roles.is_active` (Chunk 1.3, `V42__`) — do not add
-  others without updating `backend/plan.md` § 2 first.
+  others without updating `plan.md` § 2 first.
 - **Volume persistence:** Postgres always runs via the existing
   `docker-compose.yml` (`x46-postgres-data` named volume). Never substitute
   an in-memory/H2 database for anything beyond a throwaway local experiment —
@@ -49,7 +49,7 @@ execution instructions) and `backend/CHUNK_PROMPT.md` (the per-chunk prompt).
 ## Rules for LLM code generation
 
 1. **Strict scope enforcement.** Implement exactly one chunk from
-   `backend/plan.md` at a time. Touch only the files that chunk's scope
+   `plan.md` at a time. Touch only the files that chunk's scope
    names. Notice something broken in an earlier chunk? Log it in
    `progress.md`'s Log, don't fix it inline.
 2. **Contracts are the source of truth.** Read the referenced
@@ -57,7 +57,7 @@ execution instructions) and `backend/CHUNK_PROMPT.md` (the per-chunk prompt).
    request/response field the contract doesn't have.
 3. **No speculative schema.** If a contract carries a
    `database_gap`/`schema_gap_note`/`requires_confirmation`, follow the
-   resolution already recorded in `backend/plan.md` § 2 (Known gaps). Never
+   resolution already recorded in `plan.md` § 2 (Known gaps). Never
    add a table or column to solve it unilaterally.
 4. **No unrequested abstractions.** No interface with one implementation, no
    generic repository wrapper beyond Spring Data JPA's own, no config value
@@ -79,7 +79,7 @@ execution instructions) and `backend/CHUNK_PROMPT.md` (the per-chunk prompt).
 
 - **Unit tests:** service-layer logic — one test per contract `errors[]`
   entry plus the success path (already enumerated per chunk in
-  `backend/plan.md`).
+  `plan.md`).
 - **Integration tests:** `@SpringBootTest` against the dockerized Postgres
   for anything touching Flyway migrations or repositories.
 - **Security tests:** every RBAC-guarded endpoint gets at least one

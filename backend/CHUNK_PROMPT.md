@@ -9,7 +9,7 @@ context-window-safe chunking in the first place.
 ```
 Implement chunk <CHUNK_ID> of the X46 LIMS backend, and only that chunk.
 
-1. Read backend/plan.md and find chunk <CHUNK_ID>. Read backend/progress.md
+1. Read plan.md and find chunk <CHUNK_ID>. Read backend/progress.md
    to confirm every chunk it depends on is already ✅ — if not, stop and say
    so instead of implementing out of order.
 
@@ -21,7 +21,7 @@ Implement chunk <CHUNK_ID> of the X46 LIMS backend, and only that chunk.
 3. Implement only this chunk's scope:
    - Entities/DTOs/repositories, service logic (including every RBAC
      @PreAuthorize check the chunk specifies), controller endpoints.
-   - Reuse what backend/plan.md's M0 chunks already built (ApiResponse
+   - Reuse what plan.md's M0 chunks already built (ApiResponse
      envelope, GlobalExceptionHandler, ScopeGuard, PermissionEvaluatorService,
      AuditLogService) — do not re-implement or fork them.
    - Do not touch files outside this chunk's scope. Do not "improve" earlier

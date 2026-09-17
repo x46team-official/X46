@@ -3,13 +3,13 @@
 Standing instructions for any automated coding agent (Claude Code, a
 subagent, a CI bot) working in this repository. These apply automatically —
 no need to paste them per request. Pairs with `CLAUDE.md` (coding
-standards/architecture constraints), `backend/plan.md` (the chunk
+standards/architecture constraints), `plan.md` (the chunk
 blueprint), `backend/progress.md` (the tracker), and
 `backend/CHUNK_PROMPT.md` (the exact prompt used to kick off one chunk).
 
 ## Before starting any chunk
 
-1. Read `backend/plan.md` and find the chunk by ID.
+1. Read `plan.md` and find the chunk by ID.
 2. Read `backend/progress.md` and confirm every chunk this one depends on is
    `✅`. If not, **stop and report the blocker** instead of implementing out
    of order.

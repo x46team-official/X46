@@ -1,7 +1,7 @@
 # X46 LIMS Backend — Progress Tracker
 
 Update this file at the end of every chunk (the chunk execution prompt in
-`CHUNK_PROMPT.md` requires it). One row per chunk from `plan.md`. Do not
+`CHUNK_PROMPT.md` requires it). One row per chunk from `../plan.md`. Do not
 reopen a chunk marked ✅ — file a new chunk instead if something needs to change.
 
 Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 blocked`
