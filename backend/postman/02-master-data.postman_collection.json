@@ -2247,6 +2247,462 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Chunk 2.4 - Reference Ranges",
+      "item": [
+        {
+          "name": "Create Parameter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/parameters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "parameters"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterCode\": \"TBIL\",\n  \"parameterName\": \"Total Bilirubin\",\n  \"unit\": \"mg/dL\",\n  \"defaultReferenceRange\": \"0.3 - 1.2\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Parameter created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/parameters",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "parameters"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterCode\": \"TBIL\",\n  \"parameterName\": \"Total Bilirubin\",\n  \"unit\": \"mg/dL\",\n  \"defaultReferenceRange\": \"0.3 - 1.2\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Parameter created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"parameterCode\": \"TBIL\",\n    \"parameterName\": \"Total Bilirubin\",\n    \"unit\": \"mg/dL\",\n    \"defaultReferenceRange\": \"0.3 - 1.2\"\n  }\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate parameter code",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/parameters",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "parameters"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterCode\": \"TBIL\",\n  \"parameterName\": \"Total Bilirubin\",\n  \"unit\": \"mg/dL\",\n  \"defaultReferenceRange\": \"0.3 - 1.2\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate parameter code\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Reference Range",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reference-ranges",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reference-ranges"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterId\": \"<uuid>\",\n  \"gender\": \"MALE\",\n  \"ageMin\": 18,\n  \"ageMax\": 120,\n  \"ageUnit\": \"YEARS\",\n  \"pregnancyFlag\": false,\n  \"referenceMin\": 13.0,\n  \"referenceMax\": 17.0,\n  \"referenceRange\": \"13.0 - 17.0\",\n  \"criticalLow\": 7.0,\n  \"criticalHigh\": 20.0,\n  \"effectiveFrom\": \"2020-01-01\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Reference range created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterId\": \"<uuid>\",\n  \"gender\": \"MALE\",\n  \"ageMin\": 18,\n  \"ageMax\": 120,\n  \"ageUnit\": \"YEARS\",\n  \"pregnancyFlag\": false,\n  \"referenceMin\": 13.0,\n  \"referenceMax\": 17.0,\n  \"referenceRange\": \"13.0 - 17.0\",\n  \"criticalLow\": 7.0,\n  \"criticalHigh\": 20.0,\n  \"effectiveFrom\": \"2020-01-01\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Reference range created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"parameterId\": \"<uuid>\",\n    \"gender\": \"MALE\",\n    \"ageMin\": 18,\n    \"ageMax\": 120,\n    \"ageUnit\": \"YEARS\",\n    \"pregnancyFlag\": false,\n    \"referenceMin\": 13.0,\n    \"referenceMax\": 17.0,\n    \"effectiveFrom\": \"2020-01-01\"\n  }\n}"
+            },
+            {
+              "name": "404 Not Found - Parameter not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterId\": \"<uuid>\",\n  \"gender\": \"MALE\",\n  \"ageMin\": 18,\n  \"ageMax\": 120,\n  \"ageUnit\": \"YEARS\",\n  \"pregnancyFlag\": false,\n  \"referenceMin\": 13.0,\n  \"referenceMax\": 17.0,\n  \"referenceRange\": \"13.0 - 17.0\",\n  \"criticalLow\": 7.0,\n  \"criticalHigh\": 20.0,\n  \"effectiveFrom\": \"2020-01-01\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Parameter not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Overlapping demographic band",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterId\": \"<uuid>\",\n  \"gender\": \"MALE\",\n  \"ageMin\": 18,\n  \"ageMax\": 120,\n  \"ageUnit\": \"YEARS\",\n  \"pregnancyFlag\": false,\n  \"referenceMin\": 13.0,\n  \"referenceMax\": 17.0,\n  \"referenceRange\": \"13.0 - 17.0\",\n  \"criticalLow\": 7.0,\n  \"criticalHigh\": 20.0,\n  \"effectiveFrom\": \"2020-01-01\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Overlapping demographic band\"\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid age range",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterId\": \"<uuid>\",\n  \"gender\": \"MALE\",\n  \"ageMin\": 18,\n  \"ageMax\": 120,\n  \"ageUnit\": \"YEARS\",\n  \"pregnancyFlag\": false,\n  \"referenceMin\": 13.0,\n  \"referenceMax\": 17.0,\n  \"referenceRange\": \"13.0 - 17.0\",\n  \"criticalLow\": 7.0,\n  \"criticalHigh\": 20.0,\n  \"effectiveFrom\": \"2020-01-01\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid age range\"\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid effective date range",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterId\": \"<uuid>\",\n  \"gender\": \"MALE\",\n  \"ageMin\": 18,\n  \"ageMax\": 120,\n  \"ageUnit\": \"YEARS\",\n  \"pregnancyFlag\": false,\n  \"referenceMin\": 13.0,\n  \"referenceMax\": 17.0,\n  \"referenceRange\": \"13.0 - 17.0\",\n  \"criticalLow\": 7.0,\n  \"criticalHigh\": 20.0,\n  \"effectiveFrom\": \"2020-01-01\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid effective date range\"\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid reference bounds",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"branchId\": \"<uuid>\",\n  \"parameterId\": \"<uuid>\",\n  \"gender\": \"MALE\",\n  \"ageMin\": 18,\n  \"ageMax\": 120,\n  \"ageUnit\": \"YEARS\",\n  \"pregnancyFlag\": false,\n  \"referenceMin\": 13.0,\n  \"referenceMax\": 17.0,\n  \"referenceRange\": \"13.0 - 17.0\",\n  \"criticalLow\": 7.0,\n  \"criticalHigh\": 20.0,\n  \"effectiveFrom\": \"2020-01-01\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid reference bounds\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Lookup Reference Range",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reference-ranges/lookup?parameterId=<uuid>&gender=MALE&age=30&ageUnit=YEARS&pregnancyFlag=false&asOfDate=2024-06-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reference-ranges",
+                "lookup"
+              ],
+              "query": [
+                {
+                  "key": "parameterId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "gender",
+                  "value": "MALE"
+                },
+                {
+                  "key": "age",
+                  "value": "30"
+                },
+                {
+                  "key": "ageUnit",
+                  "value": "YEARS"
+                },
+                {
+                  "key": "pregnancyFlag",
+                  "value": "false"
+                },
+                {
+                  "key": "asOfDate",
+                  "value": "2024-06-01"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Success",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges/lookup?parameterId=<uuid>&gender=MALE&age=30&ageUnit=YEARS&pregnancyFlag=false&asOfDate=2024-06-01",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges",
+                    "lookup"
+                  ],
+                  "query": [
+                    {
+                      "key": "parameterId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "MALE"
+                    },
+                    {
+                      "key": "age",
+                      "value": "30"
+                    },
+                    {
+                      "key": "ageUnit",
+                      "value": "YEARS"
+                    },
+                    {
+                      "key": "pregnancyFlag",
+                      "value": "false"
+                    },
+                    {
+                      "key": "asOfDate",
+                      "value": "2024-06-01"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"referenceMin\": 13.0,\n    \"referenceMax\": 17.0,\n    \"referenceRange\": \"13.0 - 17.0\",\n    \"criticalLow\": 7.0,\n    \"criticalHigh\": 20.0,\n    \"effectiveFrom\": \"2020-01-01\",\n    \"effectiveTo\": null\n  }\n}"
+            },
+            {
+              "name": "404 Not Found - No matching reference range found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/reference-ranges/lookup?parameterId=<uuid>&gender=MALE&age=30&ageUnit=YEARS&pregnancyFlag=false&asOfDate=2024-06-01",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reference-ranges",
+                    "lookup"
+                  ],
+                  "query": [
+                    {
+                      "key": "parameterId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "MALE"
+                    },
+                    {
+                      "key": "age",
+                      "value": "30"
+                    },
+                    {
+                      "key": "ageUnit",
+                      "value": "YEARS"
+                    },
+                    {
+                      "key": "pregnancyFlag",
+                      "value": "false"
+                    },
+                    {
+                      "key": "asOfDate",
+                      "value": "2024-06-01"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"No matching reference range found\"\n}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

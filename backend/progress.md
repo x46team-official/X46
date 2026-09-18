@@ -36,7 +36,7 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 | 2.1 | Test Master CRUD + status | ✅ | ✅ | ✅ |
 | 2.2 | Test list & search | ✅ | ✅ | ✅ |
 | 2.3 | Department CRUD + status | ✅ | ✅ | ✅ |
-| 2.4 | Parameters & Reference Ranges | ⬜ | ⬜ | ⬜ |
+| 2.4 | Parameters & Reference Ranges | ✅ | ✅ | ✅ |
 | 2.5 | Test Packages | ⬜ | ⬜ | ⬜ |
 | 2.6 | Bill Test Package (needs 5.1 first) | ⬜ | ⬜ | ⬜ |
 
@@ -134,6 +134,53 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-19, Chunk 2.4: `ParameterMaster` + `ReferenceRangeMaster` entities
+  (both `AbstractTenantEntity`; only the columns API-111/112/113 touch are
+  mapped — `data_type`/`result_type`/`decimal_places`/`display_order` etc.
+  are left out of the INSERT so their DB defaults apply) + repositories + one
+  `ReferenceRangeService` + one `ReferenceRangeController` in `master`, all
+  gated `@perm.can('Reference Range Master', CREATE|VIEW)`. API-114–119 are
+  failure scenarios of the same two POSTs, not separate endpoints.
+  **Lookup's org/branch come from the caller's JWT**: API-113 lists
+  `organizationId`/`branchId` in `required_fields` and `scope` but defines no
+  query/path parameter for them, so `@AuthenticationPrincipal JwtPrincipal`
+  supplies them rather than inventing parameters. Also no `ScopeGuard` call
+  there — a valid token's org/branch always exist.
+  **Lookup gender is an exact match**, per API-113's documented filter — a
+  `MALE` lookup does *not* fall back to an `ANY` band. Clinically a fallback
+  may be wanted; not added since the contract doesn't specify it. Unknown
+  `parameterId` on lookup naturally matches no band → the contract's single
+  404 `"No matching reference range found"` (no separate existence check).
+  **Overlap 409 (API-116) comes from the DB trigger, not a Java copy of it**:
+  `saveAndFlush` + catch `DataAccessException` whose most-specific cause
+  contains `"overlapping demographic band"` (the trigger's `RAISE` text) →
+  `ConflictException`; any other DB failure is rethrown untouched (unit test
+  `createRangeOtherDatabaseFailureIsNotMaskedAsConflict`). Race-free, and the
+  trigger stays the single source of truth. The age/effective/bounds CHECKs
+  (API-117/118/119) *are* pre-validated in the service so callers get the
+  contract's exact 400 messages instead of a 500.
+  **Additions beyond the literal `errors[]`, same precedent as Chunk 2.1**:
+  missing required fields → 400 `"<field> is required"`; `gender`/`ageUnit`
+  outside the DB CHECK sets → 400 `"Invalid gender"`/`"Invalid age unit"`
+  (would otherwise be a CHECK-violation 500); duplicate `parameterName` → 409
+  `"Duplicate parameter name"` (`uq_parameter_master_name` is in API-111's
+  own `validation[]`); org/branch existence on both POSTs →
+  `scopeGuard.requireOrgBranch`; reference range's `parameterId` must belong
+  to the same org+branch, else 404 `"Parameter not found"`.
+  `mvn test` green (288/288 — 257 from 0.1-2.3 + 17
+  `ReferenceRangeServiceTest` Mockito cases (parameter: missing code 400,
+  org/branch 404, duplicate code/name 409 ×2, success; range: missing
+  parameterId 400, invalid gender 400, age/date/bounds 400 ×3, unknown
+  parameter 404, trigger-overlap 409, non-overlap DB error rethrown, contract
+  defaults applied; lookup: missing gender 400, no match 404, success with
+  defaulted date/pregnancy) + 14 `ReferenceRangeIntegrationTest` full-stack
+  cases against the real dockerized Postgres — including
+  `overlappingBandIsRejectedByTriggerWith409`, which proves the real trigger
+  error surfaces as the caught exception — plus a 403 and a 401).
+  Postman: `02-master-data.postman_collection.json` gained a "Chunk 2.4 -
+  Reference Ranges" folder (3 requests); API-114–119's error examples are
+  attached to the request they exercise, deduplicated, all verbatim from the
+  contracts.
 - 2026-09-18, Chunk 2.3: `DepartmentMaster` entity (extends
   `AbstractTenantEntity`; `is_active` mapped as boxed `Boolean` because the
   column is nullable — `DEFAULT TRUE` with no `NOT NULL` — and a NULL would
