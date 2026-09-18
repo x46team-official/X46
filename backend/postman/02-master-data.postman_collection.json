@@ -1407,6 +1407,846 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Chunk 2.3 - Departments",
+      "item": [
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "departments"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry\",\n  \"description\": \"Biochemistry Department\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created - Department created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Department created successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"departmentCode\": \"BIO\",\n    \"departmentName\": \"Biochemistry\",\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Validation error",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Validation error\"\n}"
+            },
+            {
+              "name": "404 Not Found - Organization or branch not found",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Organization or branch not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate department code/name",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate department code/name\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "View Department",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "departments",
+                ":departmentId"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "departmentId",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Department fetched successfully",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Department fetched successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"organizationId\": \"<uuid>\",\n    \"branchId\": \"<uuid>\",\n    \"departmentCode\": \"BIO\",\n    \"departmentName\": \"Biochemistry\",\n    \"description\": \"Biochemistry Department\",\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid request",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid request\"\n}"
+            },
+            {
+              "name": "404 Not Found - Department not found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Department not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Department",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "departments",
+                ":departmentId"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "departmentId",
+                  "value": "<uuid>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry Updated\",\n  \"description\": \"Biochemistry Department\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Department updated successfully",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry Updated\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Department updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"departmentCode\": \"BIO\",\n    \"departmentName\": \"Biochemistry Updated\",\n    \"isActive\": true\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Validation error",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry Updated\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Validation error\"\n}"
+            },
+            {
+              "name": "404 Not Found - Department not found",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry Updated\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Department not found\"\n}"
+            },
+            {
+              "name": "409 Conflict - Duplicate department code/name",
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentCode\": \"BIO\",\n  \"departmentName\": \"Biochemistry Updated\",\n  \"description\": \"Biochemistry Department\"\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Duplicate department code/name\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Department Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organizationId",
+                "branches",
+                ":branchId",
+                "departments",
+                ":departmentId",
+                "status"
+              ],
+              "variable": [
+                {
+                  "key": "organizationId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "branchId",
+                  "value": "<uuid>"
+                },
+                {
+                  "key": "departmentId",
+                  "value": "<uuid>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - Department status updated successfully",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId",
+                    "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActive\": false\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Department status updated successfully\",\n  \"data\": {\n    \"id\": \"<uuid>\",\n    \"isActive\": false\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request - Invalid status value",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId",
+                    "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActive\": false\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid status value\"\n}"
+            },
+            {
+              "name": "404 Not Found - Department not found",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/organizations/:organizationId/branches/:branchId/departments/:departmentId/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "organizations",
+                    ":organizationId",
+                    "branches",
+                    ":branchId",
+                    "departments",
+                    ":departmentId",
+                    "status"
+                  ],
+                  "variable": [
+                    {
+                      "key": "organizationId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<uuid>"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActive\": false\n}"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Department not found\"\n}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

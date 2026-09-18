@@ -35,7 +35,7 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 |---|---|---|---|---|
 | 2.1 | Test Master CRUD + status | ✅ | ✅ | ✅ |
 | 2.2 | Test list & search | ✅ | ✅ | ✅ |
-| 2.3 | Department CRUD + status | ⬜ | ⬜ | ⬜ |
+| 2.3 | Department CRUD + status | ✅ | ✅ | ✅ |
 | 2.4 | Parameters & Reference Ranges | ⬜ | ⬜ | ⬜ |
 | 2.5 | Test Packages | ⬜ | ⬜ | ⬜ |
 | 2.6 | Bill Test Package (needs 5.1 first) | ⬜ | ⬜ | ⬜ |
@@ -134,6 +134,54 @@ Status legend: `⬜ not started` · `🔄 in progress` · `✅ done` · `🚧 bl
 One line per completed chunk: date, chunk id, one-sentence note (deviations
 from plan.md, follow-ups filed, etc). Newest first.
 
+- 2026-09-18, Chunk 2.3: `DepartmentMaster` entity (extends
+  `AbstractTenantEntity`; `is_active` mapped as boxed `Boolean` because the
+  column is nullable — `DEFAULT TRUE` with no `NOT NULL` — and a NULL would
+  blow up unboxing into a primitive) + `DepartmentMasterRepository` +
+  `DepartmentService` + `DepartmentController` in `master`, gated
+  `@perm.can('Department Management', CREATE|VIEW|UPDATE)` (status uses
+  `UPDATE`, same as Test/Role/User). `created_by`/`updated_by` left unmapped —
+  no contract reads or writes them.
+  **One 404 via a scoped lookup, not `ScopeGuard`, on View/Update/Status**:
+  API-013/014/015 all collapse unknown org, unknown branch, unknown
+  department and out-of-scope department into the single message
+  `"Department not found"`, which `requireOrgBranch`'s combined
+  `"Organization or branch not found"` would contradict. A single
+  `findByIdAndOrganizationIdAndBranchId` lookup enforces the same tenancy
+  rule (a row under another org/branch simply isn't found) and yields the
+  contract's message for every case. Create still uses
+  `scopeGuard.requireOrgBranch`, since API-012's message matches it.
+  **Code-or-name duplicates share one 409** (`"Duplicate department
+  code/name"`), per both contracts; Update uses `…AndIdNot` so a department
+  never collides with itself. `departmentCode` is required at the API layer
+  even though the DB column is nullable — API-012's own note says this is
+  deliberate. Update only overwrites `description` when sent (same
+  optional-field handling as `TestService.update`) and bumps `updated_at`.
+  Request DTOs kept as 3 separate records per plan.md even though
+  Create/Update share a shape; 4 response DTOs because each contract returns
+  a different field set (only View includes `description`).
+  **Follow-up (not fixed, per rule 1):** Chunk 2.1's
+  `TestService.requireDepartment` still checks department existence with a
+  raw `JdbcTemplate` query because no Department entity existed then; it can
+  now use `DepartmentMasterRepository.findByIdAndOrganizationIdAndBranchId`
+  (or an `exists…` equivalent) instead.
+  **Unrelated uncommitted work stashed, not touched:** an unfinished
+  organization-status change (`OrganizationService` +
+  `OrganizationStatusRequest`/`Response`, not a plan.md chunk) broke
+  compilation for the whole module, so it was set aside with `git stash`
+  (`"WIP org status (stashed during Chunk 2.3)"`) to get a buildable tree —
+  `git stash pop` to resume it.
+  `mvn test` green (257/257 — 226 from 0.1-2.2 + CORS, + 15
+  `DepartmentServiceTest` Mockito cases (create: missing code / blank name
+  400, org/branch 404, duplicate code 409, duplicate name 409, success; view:
+  404, success; update: 400, 404, collision 409, success keeping description;
+  status: 400, 404, success) + 16 `DepartmentIntegrationTest` full-stack cases
+  against the real dockerized Postgres covering all 4 endpoints' success/error
+  paths, including a department viewed under another branch → 404, a
+  malformed UUID → 400 `"Invalid request"`, a `@perm.can`-driven 403 and a
+  401). Postman: `backend/postman/02-master-data.postman_collection.json`
+  gained a "Chunk 2.3 - Departments" folder with all 4 requests and example
+  responses taken verbatim from `API-012`–`API-015`.
 - 2026-09-17, Infra (not a plan.md chunk): **CORS was never actually wired up
   — the 2026-09-15 entry below is wrong.** That entry claims a
   `CorsConfigurationSource` bean was added to `SecurityConfig` and "wired into
